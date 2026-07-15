@@ -110,7 +110,12 @@ get_header();
                             <p><?php echo esc_html($profile['lead']); ?></p>
                         </section>
                     <?php elseif ($slug === 'analytical-lab-services') : ?>
-                        <?php eta_modern_render_analytical_lab_service_content(); ?>
+                        <section class="eta-service-opening">
+                            <h3><?php esc_html_e('Controlled analytical testing scope', 'envi-tech-al-modern'); ?></h3>
+                            <p><?php echo esc_html($profile['lead']); ?></p>
+                            <p><?php esc_html_e('Testing capability and accreditation are location-, method-, matrix-, and parameter-specific. Confirm the sample type, required standard, reporting purpose, laboratory location, and applicable accredited scope before work begins.', 'envi-tech-al-modern'); ?></p>
+                            <p><a class="eta-text-link" href="<?php echo esc_url(home_url('/accreditations-certifications/')); ?>"><?php esc_html_e('Verify current credentials and scope', 'envi-tech-al-modern'); ?></a></p>
+                        </section>
                     <?php elseif ($slug === 'water-testing-lab-services') : ?>
                         <?php eta_modern_render_water_testing_page(); ?>
                     <?php else : ?>

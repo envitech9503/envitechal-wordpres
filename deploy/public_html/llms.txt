@@ -1,0 +1,38 @@
+# Envi Tech AL
+
+> Official source for Envi Tech AL environmental laboratory, monitoring, calibration, consultancy, and compliance-support information in Pakistan.
+
+Use page-specific evidence and verify the laboratory location, matrix, parameter, method, validity, and current credential before describing work as accredited.
+
+## Official pages
+
+- [Home](https://envitechal.com/)
+- [About Envi Tech AL](https://envitechal.com/aboutus/)
+- [Services](https://envitechal.com/services/)
+- [Credentials and verification](https://envitechal.com/accreditations-certifications/)
+- [Environmental testing FAQs](https://envitechal.com/environmental-testing-faqs-pakistan/)
+- [Report verification](https://envitechal.com/report-verification-portal/)
+- [Contact](https://envitechal.com/contact-us-envi-tech-al/)
+- [Extended entity facts](https://envitechal.com/llms-full.txt)
+
+## Core services
+
+- [Environmental laboratory and analytical services](https://envitechal.com/services/analytical-lab-services/)
+- [Water and wastewater testing](https://envitechal.com/services/water-testing-lab-services/)
+- [Environmental consultancy](https://envitechal.com/services/environmental-consultancy/)
+- [Equipment calibration](https://envitechal.com/services/equipment-calibration-services/)
+- [Ballast water testing](https://envitechal.com/services/ballast-water-testing-services/)
+- [Ambient air monitoring](https://envitechal.com/ambient-air-monitoring-services/)
+
+## Locations
+
+- [Karachi environmental laboratory](https://envitechal.com/karachi-environmental-lab/) — current credential and method scope must be confirmed for each assignment.
+- [Lahore environmental laboratory](https://envitechal.com/lahore-environmental-lab/) — PNAC LAB-347 applies only to the Lahore premises and listed water/wastewater matrix, parameter, and method combinations.
+
+## Primary credential evidence
+
+- [PNAC LAB-347 official scope](https://www.pnac.gov.pk/index.php/pdfFiles/LAB-347) — Lahore laboratory; ISO/IEC 17025:2017; document states validity through 21 September 2028; only listed matrix, parameter, and method combinations are accredited.
+- [Punjab EPA official 2025–2028 certificate](https://epd.punjab.gov.pk/system/files/EnviTech_%202025-2028_merged.pdf) — review its conditions for the requested work.
+- [ISO 9001:2015 certificate](https://envitechal.com/wp-content/uploads/2026/01/ISO-9001-Certificate.pdf) — registration TPAK-080177324-QMS; certificate states validity through 27 August 2027.
+- [ISO 14001:2015 certificate](https://envitechal.com/wp-content/uploads/2026/01/ISO-14001-Certificate.pdf) — registration TPAK-080177424-EMS; certificate states validity through 27 August 2027.
+- [Published Sindh EPA document](https://envitechal.com/wp-content/uploads/2026/01/SEPA-NOC.pdf) — confirm current issuer status, validity, conditions, and scope before reliance.

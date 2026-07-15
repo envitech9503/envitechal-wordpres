@@ -1,0 +1,55 @@
+name: Theme quality
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  php-and-safety:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+
+      - name: Lint child-theme PHP
+        shell: bash
+        run: |
+          set -euo pipefail
+          find wp-content/themes/generatepress-envitechal -type f -name '*.php' -print0 \
+            | xargs -0 -n1 php -l
+
+      - name: Guard against known production regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          theme='wp-content/themes/generatepress-envitechal'
+
+          if grep -R -n -E 'eta_modern_render_analytical_lab_service_content|data-chatbot-id|assistant is taking longer than expected|company/envi-tech-al|#localbusiness|eta-modern-inline-css' "$theme"; then
+            echo 'A known production regression was found.' >&2
+            exit 1
+          fi
+
+          if grep -R -n -E 'API_KEY[[:space:]]*:|BEGIN (RSA|OPENSSH|EC) PRIVATE KEY|DB_PASSWORD|SECURE_AUTH_KEY' "$theme"; then
+            echo 'A possible secret was found in the public theme.' >&2
+            exit 1
+          fi
+
+      - name: Verify AI discovery artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s deploy/public_html/llms.txt
+          test -s deploy/public_html/llms-full.txt
+          grep -q 'inc/ai-visibility.php' wp-content/themes/generatepress-envitechal/functions.php
+          grep -q 'PNAC LAB-347' deploy/public_html/llms.txt

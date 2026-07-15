@@ -50,7 +50,7 @@ $service_tiles = [
         'image' => 'https://envitechal.com/wp-content/uploads/2026/05/environmental-consultancy-1.png',
     ],
     [
-        'kicker' => 'Accredited Laboratory',
+        'kicker' => 'Environmental Laboratory',
         'title' => 'Environmental Lab & Analytical Services',
         'text' => 'Defensible laboratory analysis for environmental samples, industrial compliance, and buyer-facing reports.',
         'url' => home_url('/services/analytical-lab-services/'),
@@ -87,8 +87,8 @@ $industries = [
 
 $credentials = [
     [
-        'title' => 'Sindh EPA Certified',
-        'subtitle' => 'Environmental testing lab',
+        'title' => 'Sindh EPA credential',
+        'subtitle' => 'Confirm current document and scope',
         'image' => 'https://envitechal.com/wp-content/uploads/2026/04/sepa-sindh-logo.png',
     ],
     [
@@ -102,13 +102,13 @@ $credentials = [
         'image' => 'https://envitechal.com/wp-content/uploads/2026/04/iso-14001-2015-logo.png',
     ],
     [
-        'title' => 'ISO/IEC 17025:2017',
-        'subtitle' => 'Laboratory accreditation',
+        'title' => 'PNAC LAB-347 (Lahore)',
+        'subtitle' => 'ISO/IEC 17025:2017; verify listed methods',
         'image' => 'https://envitechal.com/wp-content/uploads/2026/04/iso-iec-170252017-accreditation-logo.png',
     ],
     [
-        'title' => 'Punjab EPA Certified',
-        'subtitle' => 'Environmental testing lab',
+        'title' => 'Punjab EPA certification',
+        'subtitle' => 'Lahore laboratory, 2025–2028 document',
         'image' => 'https://envitechal.com/wp-content/uploads/2026/04/epa-new-logo-1.jpg',
     ],
 ];
@@ -127,8 +127,8 @@ $credentials = [
             decoding="async">
         <div class="eta-shell eta-home-stage-grid">
             <div class="eta-home-copy">
-                <p class="eta-eyebrow"><?php esc_html_e('Accredited laboratory & environmental consultancy', 'envi-tech-al-modern'); ?></p>
-                <h1 id="eta-home-title"><?php esc_html_e('EPA-ready environmental testing for teams that need clear, defensible reports.', 'envi-tech-al-modern'); ?></h1>
+                <p class="eta-eyebrow"><?php esc_html_e('Environmental laboratory & environmental consultancy', 'envi-tech-al-modern'); ?></p>
+                <h1 id="eta-home-title"><?php esc_html_e('Environmental testing and compliance support for teams that need clear, defensible reports.', 'envi-tech-al-modern'); ?></h1>
                 <p><?php esc_html_e('Envi Tech AL supports industries, hospitals, hotels, textile units, exporters, commercial facilities, and maritime operators with testing, monitoring, reporting, consultancy, calibration, and compliance guidance across Pakistan.', 'envi-tech-al-modern'); ?></p>
                 <div class="eta-actions">
                     <a class="eta-button" href="<?php echo esc_url(home_url('/contact-us-envi-tech-al/')); ?>"><?php esc_html_e('Request a quote', 'envi-tech-al-modern'); ?></a>
@@ -148,12 +148,12 @@ $credentials = [
     <section class="eta-home-proof" aria-label="<?php esc_attr_e('Company strengths', 'envi-tech-al-modern'); ?>">
         <div class="eta-shell eta-home-proof-grid">
             <div>
-                <strong><?php esc_html_e('ISO/IEC 17025', 'envi-tech-al-modern'); ?></strong>
-                <span><?php esc_html_e('Accredited laboratory discipline', 'envi-tech-al-modern'); ?></span>
+                <strong><?php esc_html_e('PNAC LAB-347', 'envi-tech-al-modern'); ?></strong>
+                <span><?php esc_html_e('Lahore scope; verify the listed methods', 'envi-tech-al-modern'); ?></span>
             </div>
             <div>
-                <strong><?php esc_html_e('EPA-ready', 'envi-tech-al-modern'); ?></strong>
-                <span><?php esc_html_e('Monitoring and reporting deliverables', 'envi-tech-al-modern'); ?></span>
+                <strong><?php esc_html_e('EPA-related', 'envi-tech-al-modern'); ?></strong>
+                <span><?php esc_html_e('Scope-matched monitoring and reporting', 'envi-tech-al-modern'); ?></span>
             </div>
             <div>
                 <strong><?php esc_html_e('Field + Lab', 'envi-tech-al-modern'); ?></strong>
@@ -179,7 +179,7 @@ $credentials = [
                             <p class="eta-mini-kicker"><?php echo esc_html($tile['kicker']); ?></p>
                             <h3><a href="<?php echo esc_url($tile['url']); ?>"><?php echo esc_html($tile['title']); ?></a></h3>
                             <p><?php echo esc_html($tile['text']); ?></p>
-                            <a class="eta-text-link" href="<?php echo esc_url($tile['url']); ?>"><?php esc_html_e('Explore service', 'envi-tech-al-modern'); ?></a>
+                            <a class="eta-text-link" href="<?php echo esc_url($tile['url']); ?>" aria-label="<?php echo esc_attr(sprintf(__('Explore service: %s', 'envi-tech-al-modern'), $tile['title'])); ?>"><?php esc_html_e('Explore service', 'envi-tech-al-modern'); ?></a>
                         </div>
                     </article>
                 <?php endforeach; ?>
@@ -236,7 +236,7 @@ $credentials = [
             <div>
                 <p class="eta-eyebrow"><?php esc_html_e('Maritime & vessel compliance', 'envi-tech-al-modern'); ?></p>
                 <h2><?php esc_html_e('Ballast water testing support for vessels that need fast, defensible results.', 'envi-tech-al-modern'); ?></h2>
-                <p><?php esc_html_e('Support for vessels and ships calling at Karachi port, with ISO/IEC 17025:2017 laboratory discipline, sampling coordination, and compliance-focused reporting for audit and inspection readiness.', 'envi-tech-al-modern'); ?></p>
+                <p><?php esc_html_e('Support for vessels and ships calling at Karachi port, with sampling coordination, scope-confirmed laboratory methods, and compliance-focused reporting for audit and inspection readiness.', 'envi-tech-al-modern'); ?></p>
                 <a class="eta-button eta-button-secondary" href="<?php echo esc_url(home_url('/services/ballast-water-testing-services/')); ?>"><?php esc_html_e('Explore ballast water testing', 'envi-tech-al-modern'); ?></a>
             </div>
             <div class="eta-home-maritime-points">
@@ -273,8 +273,8 @@ $credentials = [
                 <?php eta_modern_section_title('Why Envi Tech AL', 'Laboratory capability, field execution, and regulatory thinking in one team', 'That integration helps customers move faster on approvals, corrective actions, buyer requirements, and compliance-critical reporting.'); ?>
             </div>
             <div class="eta-home-why-list">
-                <span><?php esc_html_e('ISO/IEC 17025 aligned laboratory discipline', 'envi-tech-al-modern'); ?></span>
-                <span><?php esc_html_e('EPA-ready reports and monitoring deliverables', 'envi-tech-al-modern'); ?></span>
+                <span><?php esc_html_e('Location- and method-specific laboratory scopes', 'envi-tech-al-modern'); ?></span>
+                <span><?php esc_html_e('Reports prepared for defined regulatory requirements', 'envi-tech-al-modern'); ?></span>
                 <span><?php esc_html_e('Field, lab, and advisory support in one workflow', 'envi-tech-al-modern'); ?></span>
                 <span><?php esc_html_e('Responsive coverage in Karachi and Lahore', 'envi-tech-al-modern'); ?></span>
             </div>
@@ -338,7 +338,7 @@ $credentials = [
             <div>
                 <p class="eta-eyebrow"><?php esc_html_e('Need EPA / buyer / audit-ready environmental testing?', 'envi-tech-al-modern'); ?></p>
                 <h2><?php esc_html_e('Send the requirement before the deadline becomes urgent.', 'envi-tech-al-modern'); ?></h2>
-                <p><?php esc_html_e('Talk to Envi Tech AL for accredited testing, monitoring, reporting, calibration, and consultancy support aligned with your operational timelines.', 'envi-tech-al-modern'); ?></p>
+                <p><?php esc_html_e('Talk to Envi Tech AL for scope-confirmed testing, monitoring, reporting, calibration, and consultancy support aligned with your operational timelines.', 'envi-tech-al-modern'); ?></p>
             </div>
             <div class="eta-home-final-actions">
                 <a class="eta-button" href="<?php echo esc_url(home_url('/contact-us-envi-tech-al/')); ?>"><?php esc_html_e('Request a quotation', 'envi-tech-al-modern'); ?></a>
