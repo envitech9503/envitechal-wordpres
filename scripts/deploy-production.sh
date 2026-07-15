@@ -166,6 +166,9 @@ recover_theme() {
             echo "CRITICAL: could not restore the previous production theme (state: $state)." >&2
             return 1
         fi
+    elif [[ "$state" != "preparing" && "$state" != "moving-old" ]]; then
+        echo "CRITICAL: $old_swap is missing in production theme state $state." >&2
+        return 1
     elif ! test -d "$target" || test -L "$target"; then
         echo "CRITICAL: neither the original production theme nor its protected swap is available (state: $state)." >&2
         return 1
