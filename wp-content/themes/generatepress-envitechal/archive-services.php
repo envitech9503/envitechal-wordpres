@@ -84,7 +84,7 @@ $clusters = [
                                     <span><?php echo esc_html($outcome); ?></span>
                                 <?php endforeach; ?>
                             </div>
-                            <a class="eta-text-link" href="<?php echo esc_url(get_permalink($service)); ?>"><?php esc_html_e('Explore service', 'envi-tech-al-modern'); ?></a>
+                            <a class="eta-text-link" href="<?php echo esc_url(get_permalink($service)); ?>" aria-label="<?php echo esc_attr(sprintf(__('Explore service: %s', 'envi-tech-al-modern'), eta_modern_display_title($service))); ?>"><?php esc_html_e('Explore service', 'envi-tech-al-modern'); ?></a>
                         </div>
                     </article>
                 <?php endforeach; ?>
