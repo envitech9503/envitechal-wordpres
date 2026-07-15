@@ -58,6 +58,10 @@ test -f "$STAGING_ROOT/wp-load.php" || stop "staging WordPress root was not conf
 test -d "$TARGET" && test -f "$TARGET/functions.php" || stop "the deployed staging child theme was not found."
 test -x "$PHP_BIN" || stop "PHP CLI was not found."
 
+if find "$TARGET" -type l -print -quit | grep -q .; then
+    stop "deployed staging theme contains a symlink and cannot produce a guaranteed failed-version archive."
+fi
+
 THEMES_PARENT_REAL="$(realpath -e "$THEMES_PARENT")"
 TARGET_REAL="$(realpath -e "$TARGET")"
 [[ "$THEMES_PARENT_REAL" == "$THEMES_PARENT" ]] || stop "a staging themes path component is a symlink."
@@ -96,9 +100,9 @@ cleanup() {
     trap - EXIT INT TERM
 
     if ((status != 0)); then
-        if [[ "$SWAP_STATE" == "old-moved" ]] && ! test -e "$TARGET" && test -d "$OLD_SWAP"; then
+        if ! test -e "$TARGET" && test -d "$OLD_SWAP"; then
             mv "$OLD_SWAP" "$TARGET" || echo "CRITICAL: deployed theme could not be restored to TARGET." >&2
-        elif [[ "$SWAP_STATE" == "new-active" ]] && test -d "$TARGET" && test -d "$OLD_SWAP"; then
+        elif [[ "$SWAP_STATE" != "verified" && "$SWAP_STATE" != "complete" ]] && test -d "$TARGET" && test -d "$OLD_SWAP"; then
             if mv "$TARGET" "$RESTORE_DIR"; then
                 if mv "$OLD_SWAP" "$TARGET"; then
                     echo "The deployed staging theme was restored automatically." >&2
@@ -139,8 +143,10 @@ tar -tzf "$FAILED_ARCHIVE" >/dev/null
 sha256sum "$FAILED_ARCHIVE" >"$FAILED_ARCHIVE.sha256"
 sha256sum -c "$FAILED_ARCHIVE.sha256"
 
+SWAP_STATE="moving-old"
 mv "$TARGET" "$OLD_SWAP"
 SWAP_STATE="old-moved"
+SWAP_STATE="moving-new"
 mv "$RESTORE_DIR" "$TARGET"
 SWAP_STATE="new-active"
 
