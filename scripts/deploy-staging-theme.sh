@@ -6,7 +6,7 @@ STAGING_HOST="staging.envitechal.com"
 PRODUCTION_HOST="envitechal.com"
 REPO="${HOME}/repositories/envitechal-wordpres"
 THEME_REL="wp-content/themes/generatepress-envitechal"
-VALIDATED_PR_COMMIT="0e382bcd54fac3dcf5680c0684c74c6031b103d1"
+VALIDATED_PR_COMMIT="7e3888f6d41062ab1ae0077e96028f9f1bae19a0"
 BACKUP_DIR="${HOME}/backups/envitechal-ai-visibility"
 
 stop() {
@@ -146,6 +146,10 @@ if find "$NEW_THEME" -type l -print -quit | grep -q .; then
     stop "pinned theme tree contains a symlink."
 fi
 
+echo "Normalizing public theme permissions..."
+find "$NEW_THEME" -type d -exec chmod 0755 {} +
+find "$NEW_THEME" -type f -exec chmod 0644 {} +
+
 echo "Linting the prepared pinned staging tree..."
 find "$NEW_THEME" -type f -name '*.php' -print0 |
     xargs -0 -n1 "$PHP_BIN" -l
@@ -156,7 +160,7 @@ tar -tzf "$BACKUP" >/dev/null
 sha256sum "$BACKUP" >"$BACKUP.sha256"
 sha256sum -c "$BACKUP.sha256"
 printf '%s\n' "$BACKUP" >"$BACKUP_DIR/LAST_STAGING_THEME_BACKUP"
-chmod 0600 "$BACKUP_DIR/LAST_STAGING_THEME_BACKUP"
+chmod 0600 "$BACKUP" "$BACKUP.sha256" "$BACKUP_DIR/LAST_STAGING_THEME_BACKUP"
 
 echo "Swapping the validated theme into staging..."
 SWAP_STATE="moving-old"
@@ -174,6 +178,24 @@ find "$TARGET" -type f -name '*.php' -print0 |
     xargs -0 -n1 "$PHP_BIN" -l
 
 SWAP_STATE="verified"
+echo "Requesting a staging LiteSpeed cache purge..."
+WP_CLI="$(command -v wp || true)"
+if test -n "$WP_CLI"; then
+    if "$WP_CLI" --path="$STAGING_ROOT" eval '
+        if (!has_action("litespeed_purge_all")) {
+            fwrite(STDERR, "LiteSpeed purge hook is unavailable.\n");
+            exit(1);
+        }
+        do_action("litespeed_purge_all");
+    '; then
+        echo "Staging LiteSpeed cache purge requested."
+    else
+        echo "WARNING: WP-CLI could not request the staging LiteSpeed purge; purge staging manually before public QA." >&2
+    fi
+else
+    echo "WARNING: WP-CLI is unavailable; purge the staging LiteSpeed cache manually before public QA." >&2
+fi
+
 chmod -R u+rwX,go-rwx "$OLD_SWAP" || true
 case "$OLD_SWAP" in
     "$THEMES_PARENT"/.eta-previous-*) rm -rf --one-file-system -- "$OLD_SWAP" || echo "WARNING: protected previous tree needs manual cleanup." >&2 ;;
