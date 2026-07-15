@@ -32,6 +32,15 @@ def assert_recovery_indicators(path: str, required: tuple[str, ...]) -> None:
             raise AssertionError(f"{path}: missing signal-window recovery indicator {token!r}")
 
 
+def assert_occurrences(path: str, token: str, expected: int) -> None:
+    source = (ROOT / path).read_text(encoding="utf-8")
+    actual = source.count(token)
+    if actual != expected:
+        raise AssertionError(
+            f"{path}: expected {expected} occurrences of {token!r}, found {actual}"
+        )
+
+
 def main() -> None:
     deploy = "scripts/deploy-production.sh"
     rollback = "scripts/rollback-production.sh"
@@ -66,6 +75,11 @@ def main() -> None:
             "trap '' INT TERM",
         ),
     )
+    assert_occurrences(
+        deploy,
+        'elif [[ "$state" != "preparing" && "$state" != "moving-old" ]]; then',
+        2,
+    )
     assert_recovery_indicators(
         rollback,
         (
@@ -75,6 +89,11 @@ def main() -> None:
             'recover_current_theme "$THEME_STATE"',
             "trap '' INT TERM",
         ),
+    )
+    assert_occurrences(
+        rollback,
+        'elif [[ "$state" != "preparing" && "$state" != "moving-current" ]]; then',
+        2,
     )
 
 
