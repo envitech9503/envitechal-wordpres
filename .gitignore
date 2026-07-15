@@ -1,0 +1,45 @@
+# Secrets and configuration
+wp-config.php
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.sql
+*.sql.gz
+*.sqlite
+*.log
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+
+# WordPress user, runtime and backup data
+wp-content/uploads/
+wp-content/cache/
+wp-content/litespeed/
+wp-content/upgrade/
+wp-content/ai1wm-backups/
+wp-content/updraft/
+wp-content/backups*/
+wp-content/shortpixel-backups/
+wp-content/debug.log
+
+# WordPress core and third-party code are not stored here
+wp-admin/
+wp-includes/
+wp-content/languages/
+wp-content/plugins/*
+wp-content/themes/*
+
+# Explicitly tracked Envi Tech AL code
+!wp-content/plugins/envitech-ai-readiness/
+!wp-content/plugins/envitech-ai-readiness/**
+!wp-content/themes/generatepress-envitechal/
+!wp-content/themes/generatepress-envitechal/**
+
+# Local editor and OS files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
