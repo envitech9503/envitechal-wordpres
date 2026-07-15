@@ -134,6 +134,10 @@ if find "$RESTORE_DIR" -type l -print -quit | grep -q .; then
     stop "restored archive contains a symlink."
 fi
 
+echo "Normalizing restored public theme permissions..."
+find "$RESTORE_DIR" -type d -exec chmod 0755 {} +
+find "$RESTORE_DIR" -type f -exec chmod 0644 {} +
+
 find "$RESTORE_DIR" -type f -name '*.php' -print0 |
     xargs -0 -n1 "$PHP_BIN" -l
 RESTORE_DIGEST="$(tree_digest "$RESTORE_DIR")"
@@ -142,6 +146,7 @@ tar -czf "$FAILED_ARCHIVE" -C "$STAGING_ROOT" "$THEME_REL"
 tar -tzf "$FAILED_ARCHIVE" >/dev/null
 sha256sum "$FAILED_ARCHIVE" >"$FAILED_ARCHIVE.sha256"
 sha256sum -c "$FAILED_ARCHIVE.sha256"
+chmod 0600 "$FAILED_ARCHIVE" "$FAILED_ARCHIVE.sha256"
 
 SWAP_STATE="moving-old"
 mv "$TARGET" "$OLD_SWAP"
