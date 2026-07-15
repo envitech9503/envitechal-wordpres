@@ -156,6 +156,9 @@ recover_current_theme() {
             echo "CRITICAL: could not recover the pre-rollback production theme (state: $state)." >&2
             return 1
         fi
+    elif [[ "$state" != "preparing" && "$state" != "moving-current" ]]; then
+        echo "CRITICAL: $current_swap is missing in production rollback theme state $state." >&2
+        return 1
     elif ! test -d "$target" || test -L "$target"; then
         echo "CRITICAL: neither the pre-rollback theme nor its protected swap is available (state: $state)." >&2
         return 1
