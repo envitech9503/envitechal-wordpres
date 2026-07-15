@@ -19,47 +19,41 @@ This change set is designed for staging first. It must not be copied directly to
 
 The old assistant credential was embedded in publicly delivered JavaScript. Removing it from current source is not sufficient: revoke or rotate that credential at its provider before production deployment. The old value may also remain in Git history and caches, so it must be considered compromised.
 
-## Staging deployment outline
+## Staging deployment
 
-From the cPanel repository clone, replace `STAGING_ROOT` with the staging site's real document root:
+The repository includes a fail-closed staging script. It obtains both document roots from cPanel, rejects symlinked or overlapping staging/production paths, refuses a dirty repository, backs up and verifies the current staging theme, pulls `main`, verifies that the theme still matches the validated PR commit, builds directly from that pinned Git tree, lints the exact replacement, then performs an atomic directory swap. The previous tree is retained as a verified backup archive outside the webroot.
+
+From the cPanel Terminal:
 
 ```bash
 REPO="$HOME/repositories/envitechal-wordpres"
-STAGING_ROOT="/home/envitechal/REPLACE_WITH_STAGING_DOCUMENT_ROOT"
-THEME_REL="wp-content/themes/generatepress-envitechal"
-
 test -d "$REPO/.git"
-test -f "$STAGING_ROOT/wp-config.php"
-test -d "$STAGING_ROOT/$THEME_REL"
-
-mkdir -p "$HOME/backups/envitechal-ai-visibility"
-tar -czf "$HOME/backups/envitechal-ai-visibility/theme-before-$(date +%Y%m%d-%H%M%S).tar.gz" \
-  -C "$STAGING_ROOT" "$THEME_REL"
-
-rsync -a "$REPO/$THEME_REL/" "$STAGING_ROOT/$THEME_REL/"
+git -C "$REPO" fetch origin --prune
+git -C "$REPO" switch main
+git -C "$REPO" pull --ff-only origin main
+bash "$REPO/scripts/deploy-staging-theme.sh"
 ```
 
-Do not use `rsync --delete` on the first staging deployment.
+If the staging theme must be restored, run:
+
+```bash
+bash "$HOME/repositories/envitechal-wordpres/scripts/rollback-staging-theme.sh"
+```
+
+The rollback verifies the saved archive, restores the full previous theme directory, and retains the failed version for diagnosis.
 
 Do not copy the static `llms.txt` files to a publicly reachable staging host until the web server or CDN protects every static response with authentication or `X-Robots-Tag: noindex, nofollow, noarchive`. The theme provides virtual versions for staging tests. Static files bypass WordPress's staging-header hook.
 
 ## Staging checks
 
-Run PHP lint first:
+The deployment script already performs PHP lint before and after copying. Clear only the staging application/CDN cache, then verify:
 
 ```bash
-find "$STAGING_ROOT/wp-content/themes/generatepress-envitechal" -type f -name '*.php' -print0 \
-  | xargs -0 -n1 php -l
-```
-
-Then clear only the staging application/CDN cache and verify:
-
-```bash
-curl -fsS -o /dev/null -w '%{http_code}\n' "https://STAGING_HOST/services/analytical-lab-services/"
-curl -fsSI "https://STAGING_HOST/llms.txt"
-curl -fsS -H 'Accept: text/markdown' "https://STAGING_HOST/services/water-testing-lab-services/" | head -80
-curl -fsSI "https://STAGING_HOST/certificates-approvals/"
-curl -fsSI "https://STAGING_HOST/newsupdates/"
+curl -fsS -o /dev/null -w '%{http_code}\n' "https://staging.envitechal.com/services/analytical-lab-services/"
+curl -fsSI "https://staging.envitechal.com/llms.txt"
+curl -fsS -H 'Accept: text/markdown' "https://staging.envitechal.com/services/water-testing-lab-services/" | head -80
+curl -fsSI "https://staging.envitechal.com/certificates-approvals/"
+curl -fsSI "https://staging.envitechal.com/newsupdates/"
 ```
 
 Expected results:
@@ -71,17 +65,21 @@ Expected results:
 - no failed-assistant prose or assistant iframe in page source;
 - only one external `eta-modern.css` delivery;
 - JSON-LD contains `#organization`, `#website`, `#karachi-lab`, and `#lahore-lab`.
+- every staging response includes an effective `noindex` directive; the edge challenge must not replace it with an indexable response;
+- the analytical-service HTML canonical points to its own URL, not the homepage;
+- `/accreditations-certifications/` exists before the old credentials URL is accepted as a successful redirect.
 
 Also request Markdown followed by ordinary HTML, then repeat in the opposite order. The HTML response must never contain Markdown and the Markdown response must never contain HTML. Negotiated Markdown is deliberately marked `private, no-store`; keep it that way unless the CDN cache key has been explicitly configured and tested to vary on `Accept`.
 
-After staging approval, copy the reviewed static files to the production webroot so they take precedence over any older copies:
-
-```bash
-install -m 0644 "$REPO/deploy/public_html/llms.txt" "$PRODUCTION_ROOT/llms.txt"
-install -m 0644 "$REPO/deploy/public_html/llms-full.txt" "$PRODUCTION_ROOT/llms-full.txt"
-```
+After staging approval, use a separate production deployment with a fresh production backup and a pinned merged commit. Do not reuse the staging command by changing its hostname, and do not copy static AI files until the edge/WAF behavior has been corrected and retested.
 
 If Cloudflare or another edge worker generates `llms.txt` or Markdown, update or disable that rule as part of production deployment; origin theme code cannot override a response generated at the edge.
+
+## Edge and staging prerequisites
+
+At the time this remediation was prepared, fresh crawler-like requests were served a JavaScript verification page before reaching WordPress. Googlebot, GPTBot, and `Accept: text/markdown` requests must receive the intended origin response rather than challenge HTML. Ask A2 Hosting to preserve the site firewall while excluding verified search crawlers and the public `/llms.txt` and `/llms-full.txt` resources from JavaScript-only verification.
+
+The current staging database must also contain the canonical `/accreditations-certifications/` page. A redirect to a staging 404 is not a successful test. Do not update WordPress core or plugins during the theme test because unrelated changes would make the result harder to isolate.
 
 ## Evidence limits that remain intentional
 

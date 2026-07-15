@@ -53,3 +53,17 @@ jobs:
           test -s deploy/public_html/llms-full.txt
           grep -q 'inc/ai-visibility.php' wp-content/themes/generatepress-envitechal/functions.php
           grep -q 'PNAC LAB-347' deploy/public_html/llms.txt
+
+      - name: Validate staging deployment scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash -n scripts/deploy-staging-theme.sh
+          bash -n scripts/rollback-staging-theme.sh
+          grep -q 'archive --format=tar "$VALIDATED_PR_COMMIT"' scripts/deploy-staging-theme.sh
+          grep -q 'SWAP_STATE="new-active"' scripts/deploy-staging-theme.sh
+          grep -q 'TARGET_REAL' scripts/deploy-staging-theme.sh
+          if grep -R -n -E 'rsync|cp -a' scripts; then
+            echo 'Staging deployment must use the pinned Git archive and atomic swap.' >&2
+            exit 1
+          fi
