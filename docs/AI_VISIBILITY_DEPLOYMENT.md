@@ -1,27 +1,29 @@
-# AI visibility remediation and staging deployment
+# AI visibility remediation, staging validation, and production promotion
 
 This change set is designed for staging first. It must not be copied directly to the production document root without a staging smoke test and a current backup.
 
 ## What this phase fixes
 
 - Removes the undefined analytical-service renderer that caused the service-page failure.
-- Replaces the crawl-visible failed assistant panel with an accurately labelled WhatsApp link and removes the exposed agent credential from current source.
+- Replaces the crawl-visible failed assistant panel with an accurately labelled WhatsApp link, removes the exposed agent credential from current source, and filters the confirmed legacy raw chatbot snippet from final front-end HTML as a defense in depth.
 - Publishes a stable Organization, WebSite, Karachi branch, and Lahore branch schema graph with canonical IDs.
 - Corrects the LinkedIn entity URL and adds verified Instagram and YouTube profiles.
 - Adds 301 consolidation for duplicate credential and knowledge-hub URLs.
 - Removes the duplicated full inline stylesheet and the theme's forced global jQuery enqueue.
 - Adds direct issuer evidence and location/method limits for accreditation claims.
-- Adds `text/markdown` content negotiation for public WordPress pages.
+- Keeps public WordPress page URLs on one HTML representation to prevent `Accept`-header cache poisoning.
 - Provides reviewed `llms.txt` and `llms-full.txt` files for the webroot.
 - Improves keyboard focus visibility and repeated-link accessible names.
 
 ## Required security action
 
-The old assistant credential was embedded in publicly delivered JavaScript. Removing it from current source is not sufficient: revoke or rotate that credential at its provider before production deployment. The old value may also remain in Git history and caches, so it must be considered compromised.
+The old DigitalOcean assistant credential and agent/chatbot identifiers were embedded in publicly delivered JavaScript. Removing or filtering the snippet is not sufficient: revoke or rotate them at the provider before production deployment. The upstream source of the raw snippet must also be removed from its plugin, code-snippet configuration, or WordPress database record, followed by a cache purge. Old values may remain in Git history and caches, so they must be considered compromised.
+
+The theme's response filter is deliberately narrow: it removes only complete script tags carrying the confirmed agent/chatbot identifier attributes or a source ending in `/static/chatbot/widget.js`. It removes an immediately adjacent raw style block only when that block contains the distinctive `.chatbot-button` selector. It does not run for admin, AJAX, REST, feeds, the `llms` discovery endpoints, or non-HTML responses, and it does not replace upstream removal and credential revocation.
 
 ## Staging deployment
 
-The repository includes a fail-closed staging script. It obtains both document roots from cPanel, rejects symlinked or overlapping staging/production paths, refuses a dirty repository, backs up and verifies the current staging theme, pulls `main`, verifies that the theme still matches the validated PR commit, builds directly from that pinned Git tree, lints the exact replacement, then performs an atomic directory swap. The previous tree is retained as a verified backup archive outside the webroot.
+The repository includes a fail-closed staging script. It obtains both document roots from cPanel, rejects symlinked or overlapping staging/production paths, refuses a dirty repository, backs up and verifies the current staging theme, pulls `main`, verifies that the theme still matches the validated PR commit, builds directly from that pinned Git tree, normalizes the public theme tree to `0755` directories and `0644` files, lints the exact replacement, then performs an atomic directory swap. After verification it asks LiteSpeed to purge staging through WP-CLI's `do_action("litespeed_purge_all")` hook. The previous tree is retained as a verified private backup archive outside the webroot.
 
 From the cPanel Terminal:
 
@@ -40,18 +42,19 @@ If the staging theme must be restored, run:
 bash "$HOME/repositories/envitechal-wordpres/scripts/rollback-staging-theme.sh"
 ```
 
-The rollback verifies the saved archive, restores the full previous theme directory, and retains the failed version for diagnosis.
+The rollback verifies the saved archive, restores the full previous theme directory with public `0755` directory and `0644` file permissions, and retains the failed version in a private archive for diagnosis.
 
 Do not copy the static `llms.txt` files to a publicly reachable staging host until the web server or CDN protects every static response with authentication or `X-Robots-Tag: noindex, nofollow, noarchive`. The theme provides virtual versions for staging tests. Static files bypass WordPress's staging-header hook.
 
 ## Staging checks
 
-The deployment script already performs PHP lint before and after copying. Clear only the staging application/CDN cache, then verify:
+The deployment script already performs PHP lint before and after copying and requests a LiteSpeed purge. If it prints a WP-CLI or purge-hook warning, purge only staging manually before continuing. Then verify the canonical URLs without a cache-busting query string:
 
 ```bash
 curl -fsS -o /dev/null -w '%{http_code}\n' "https://staging.envitechal.com/services/analytical-lab-services/"
 curl -fsSI "https://staging.envitechal.com/llms.txt"
-curl -fsS -H 'Accept: text/markdown' "https://staging.envitechal.com/services/water-testing-lab-services/" | head -80
+curl -fsSI "https://staging.envitechal.com/llms-full.txt"
+curl -fsSI -H 'Accept: text/markdown' "https://staging.envitechal.com/services/water-testing-lab-services/"
 curl -fsSI "https://staging.envitechal.com/certificates-approvals/"
 curl -fsSI "https://staging.envitechal.com/newsupdates/"
 ```
@@ -59,8 +62,8 @@ curl -fsSI "https://staging.envitechal.com/newsupdates/"
 Expected results:
 
 - analytical service: HTTP 200 with the controlled scope block;
-- `llms.txt`: HTTP 200 and `text/plain`;
-- Markdown request: HTTP 200 and `text/markdown`;
+- `llms.txt` and `llms-full.txt`: HTTP 200 and `text/plain`;
+- an ordinary WordPress page remains HTML even when the request advertises `Accept: text/markdown`;
 - duplicate URLs: HTTP 301 to their canonical destinations;
 - no failed-assistant prose or assistant iframe in page source;
 - only one external `eta-modern.css` delivery;
@@ -69,15 +72,69 @@ Expected results:
 - the analytical-service HTML canonical points to its own URL, not the homepage;
 - `/accreditations-certifications/` exists before the old credentials URL is accepted as a successful redirect.
 
-Also request Markdown followed by ordinary HTML, then repeat in the opposite order. The HTML response must never contain Markdown and the Markdown response must never contain HTML. Negotiated Markdown is deliberately marked `private, no-store`; keep it that way unless the CDN cache key has been explicitly configured and tested to vary on `Accept`.
+WordPress page URLs deliberately do not negotiate Markdown and do not emit a theme-added `Vary: Accept`. Keep AI discovery on the dedicated `/llms.txt` and `/llms-full.txt` endpoints so LiteSpeed and other shared caches cannot store different bodies for the same page URL based on `Accept`.
 
-After staging approval, use a separate production deployment with a fresh production backup and a pinned merged commit. Do not reuse the staging command by changing its hostname, and do not copy static AI files until the edge/WAF behavior has been corrected and retested.
+After staging approval, use the separate production transaction below. Do not reuse the staging command by changing its hostname.
 
-If Cloudflare or another edge worker generates `llms.txt` or Markdown, update or disable that rule as part of production deployment; origin theme code cannot override a response generated at the edge.
+If Cloudflare or another edge worker generates `llms.txt`, update or disable that rule as part of production deployment; origin theme code cannot override a response generated at the edge.
+
+## Production promotion
+
+Production promotion is deliberately separate from staging. `scripts/deploy-production.sh` discovers both cPanel document roots through UAPI, rejects symlinked, identical, nested, or inode-identical roots and theme directories, refuses a dirty repository, and archives the exact theme plus the reviewed `deploy/public_html/llms.txt` and `llms-full.txt` from the hard-coded validated commit.
+
+The production transaction will stop unless the deployed staging theme tree digest is exactly the same as the prepared pinned theme tree. This is a promotion gate, not merely a Git comparison: after any correction, deploy that corrected candidate to staging and complete the public staging checks before updating the production pin. The production pin must never be changed just to make the gate pass.
+
+Before changing a public path, the script creates a timestamped private recovery set under `$HOME/backups/envitechal-ai-visibility`, verifies its manifest, and records whether each discovery file was previously present or absent. It normalizes theme directories to `0755`, theme files to `0644`, and discovery files to `0644`; lints and hashes the prepared tree; and atomically renames the theme and both discovery files into place. Any error or signal before all post-swap lint, path, permission, and digest checks pass restores every prior path automatically. The private recovery marker is outside the webroot.
+
+Production prerequisites:
+
+- the corrected pinned theme is deployed to staging and its canonical, non-cache-busted URLs have passed the staging checks;
+- the embedded DigitalOcean credential has been revoked or rotated, and the upstream raw snippet has been removed where possible;
+- the commit in `VALIDATED_PRODUCTION_COMMIT` is the reviewed candidate that passed those checks;
+- the production `/accreditations-certifications/` page is published. This target has already been confirmed on production; its absence from the current staging database is a staging-data parity issue, not evidence that the production target is missing;
+- no unrelated WordPress, plugin, content, or infrastructure change is bundled into this promotion.
+
+From cPanel Terminal:
+
+```bash
+REPO="$HOME/repositories/envitechal-wordpres"
+git -C "$REPO" fetch origin --prune
+git -C "$REPO" switch main
+git -C "$REPO" pull --ff-only origin main
+CONFIRM_PRODUCTION_DEPLOY=envitechal.com bash "$REPO/scripts/deploy-production.sh"
+```
+
+Do not change the confirmation value, hostname variables, or document-root logic. A successful run ends with `PRODUCTION DEPLOYMENT COMMITTED` and prints all three replacement digests plus the private recovery-set path. The script requests a LiteSpeed purge through WordPress's official `do_action("litespeed_purge_all")` hook when WP-CLI is available. If WP-CLI or the hook fails, the verified files remain deployed and the output clearly requires a manual application-cache purge.
+
+If post-deployment checks fail, restore the exact prior theme and the prior presence/content of both discovery files:
+
+```bash
+CONFIRM_PRODUCTION_ROLLBACK=envitechal.com \
+  bash "$HOME/repositories/envitechal-wordpres/scripts/rollback-production.sh"
+```
+
+Rollback verifies the saved manifest, prepares and lints the prior theme, preserves the version being removed in a second private recovery set, restores or removes each discovery file according to the recorded pre-deployment state, then verifies the restored digests and permissions before committing.
+
+## Production checks and edge work
+
+Purge the external CDN/edge cache separately after the script finishes; a WordPress LiteSpeed action cannot purge or reconfigure an upstream WAF. Then check the canonical URLs without cache-busting query strings:
+
+```bash
+curl -fsS https://envitechal.com/ | grep -F 'Environmental testing and compliance support'
+curl -fsSI https://envitechal.com/llms.txt
+curl -fsSI https://envitechal.com/llms-full.txt
+curl -fsSI https://envitechal.com/certificates-approvals/
+curl -fsS https://envitechal.com/accreditations-certifications/ | grep -F '<h1'
+curl -fsS https://envitechal.com/services/analytical-lab-services/ | grep -F 'PNAC LAB-347'
+```
+
+Confirm that the discovery files return origin `text/plain` content, the legacy credentials URL redirects to the existing canonical production page, ordinary pages remain HTML for `Accept: text/markdown`, no legacy chatbot script or identifier attributes are present, and the schema/canonical checks from staging remain true.
+
+The static discovery files may be safely installed at the origin by this transaction, but they do not create AI visibility while the edge replaces them with challenge HTML. Keep the firewall enabled and ask A2 Hosting or the edge provider to exempt verified search crawlers and the public discovery resources from JavaScript-only verification. Retest Googlebot-like, Bingbot-like, GPTBot-like, ordinary browser, `HEAD`, and `Accept: text/markdown` requests after the rule and edge-cache purge. Do not report the AI visibility remediation as complete until those requests reach the intended origin responses.
 
 ## Edge and staging prerequisites
 
-At the time this remediation was prepared, fresh crawler-like requests were served a JavaScript verification page before reaching WordPress. Googlebot, GPTBot, and `Accept: text/markdown` requests must receive the intended origin response rather than challenge HTML. Ask A2 Hosting to preserve the site firewall while excluding verified search crawlers and the public `/llms.txt` and `/llms-full.txt` resources from JavaScript-only verification.
+At the time this remediation was prepared, fresh crawler-like requests were served a JavaScript verification page before reaching WordPress. Googlebot, GPTBot, and requests for `/llms.txt` and `/llms-full.txt` must receive the intended origin response rather than challenge HTML. Ask A2 Hosting to preserve the site firewall while excluding verified search crawlers and the public discovery resources from JavaScript-only verification.
 
 The current staging database must also contain the canonical `/accreditations-certifications/` page. A redirect to a staging 404 is not a successful test. Do not update WordPress core or plugins during the theme test because unrelated changes would make the result harder to isolate.
 
