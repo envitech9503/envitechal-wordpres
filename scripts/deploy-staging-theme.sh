@@ -76,6 +76,10 @@ fi
 
 test -w "$THEMES_PARENT" && test -w "$TARGET" || stop "staging theme area is not writable."
 
+if find "$TARGET" -type l -print -quit | grep -q .; then
+    stop "existing staging theme contains a symlink and cannot produce a guaranteed rollback archive."
+fi
+
 if test -n "$(git -C "$REPO" status --porcelain)"; then
     git -C "$REPO" status --short >&2
     stop "repository contains local changes."
@@ -107,9 +111,9 @@ cleanup() {
     trap - EXIT INT TERM
 
     if ((status != 0)); then
-        if [[ "$SWAP_STATE" == "old-moved" ]] && ! test -e "$TARGET" && test -d "$OLD_SWAP"; then
+        if ! test -e "$TARGET" && test -d "$OLD_SWAP"; then
             mv "$OLD_SWAP" "$TARGET" || echo "CRITICAL: previous theme could not be restored to TARGET." >&2
-        elif [[ "$SWAP_STATE" == "new-active" ]] && test -d "$TARGET" && test -d "$OLD_SWAP"; then
+        elif [[ "$SWAP_STATE" != "verified" && "$SWAP_STATE" != "complete" ]] && test -d "$TARGET" && test -d "$OLD_SWAP"; then
             if mv "$TARGET" "$NEW_THEME"; then
                 if mv "$OLD_SWAP" "$TARGET"; then
                     echo "The previous staging theme was restored automatically." >&2
@@ -155,8 +159,10 @@ printf '%s\n' "$BACKUP" >"$BACKUP_DIR/LAST_STAGING_THEME_BACKUP"
 chmod 0600 "$BACKUP_DIR/LAST_STAGING_THEME_BACKUP"
 
 echo "Swapping the validated theme into staging..."
+SWAP_STATE="moving-old"
 mv "$TARGET" "$OLD_SWAP"
 SWAP_STATE="old-moved"
+SWAP_STATE="moving-new"
 mv "$NEW_THEME" "$TARGET"
 SWAP_STATE="new-active"
 
