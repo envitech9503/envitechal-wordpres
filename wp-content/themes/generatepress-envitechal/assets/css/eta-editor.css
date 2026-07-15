@@ -1,0 +1,16 @@
+body {
+    color: #172a33;
+    font-family: "Segoe UI", Arial, sans-serif;
+    line-height: 1.75;
+}
+
+a {
+    color: #1d6b4f;
+}
+
+h1,
+h2,
+h3 {
+    color: #102229;
+    letter-spacing: 0;
+}
