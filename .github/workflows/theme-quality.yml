@@ -101,6 +101,11 @@ jobs:
           grep -Fq 'WARNING: WP-CLI is unavailable' scripts/deploy-staging-theme.sh
           grep -Fq 'STAGING_HOST="staging.envitechal.com"' scripts/prepare-staging-ai-page-parity.sh
           grep -Fq 'staging and production use the same database and table prefix' scripts/prepare-staging-ai-page-parity.sh
+          grep -Fq 'wordpress_database_identity' scripts/prepare-staging-ai-page-parity.sh
+          grep -Fq -- '--skip-plugins --skip-themes eval' scripts/prepare-staging-ai-page-parity.sh
+          grep -Fq '$wpdb->get_var("SELECT DATABASE()")' scripts/prepare-staging-ai-page-parity.sh
+          grep -Fq 'ETA_DB_IDENTITY:' scripts/prepare-staging-ai-page-parity.sh
+          grep -Fq "sed -nE 's/^ETA_DB_IDENTITY:([0-9a-f]{64})$/\\1/p'" scripts/prepare-staging-ai-page-parity.sh
           grep -Fq 'flock -n 9' scripts/prepare-staging-ai-page-parity.sh
           grep -Fq 'post_status=auto-draft' scripts/prepare-staging-ai-page-parity.sh
           grep -Fq 'post_type=attachment' scripts/prepare-staging-ai-page-parity.sh
