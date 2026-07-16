@@ -1530,6 +1530,11 @@ add_action('send_headers', function () {
     }
 
     header('X-Robots-Tag: noindex, nofollow, noarchive', true);
+    $request_uri = isset($_SERVER['REQUEST_URI']) ? wp_unslash((string) $_SERVER['REQUEST_URI']) : '';
+    $request_path = $request_uri !== '' ? parse_url($request_uri, PHP_URL_PATH) : '';
+    if ($request_path === '/robots.txt') {
+        header('Content-Type: text/plain; charset=utf-8', true);
+    }
 });
 
 add_filter('robots_txt', function ($output, $public) {

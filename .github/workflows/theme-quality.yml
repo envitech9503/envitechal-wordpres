@@ -35,7 +35,9 @@ jobs:
 
       - name: Test legacy redirect map
         shell: bash
-        run: php tests/legacy-redirect-map-test.php
+        run: |
+          php tests/legacy-redirect-map-test.php
+          python3 tests/live-monitor-redirect-coverage-test.py
 
       - name: Guard against known production regressions
         shell: bash
@@ -68,6 +70,8 @@ jobs:
           grep -q "ob_start('eta_ai_visibility_filter_legacy_chatbot_response')" "$ai_visibility"
           grep -q 'eta-home-hero-1500.webp' wp-content/themes/generatepress-envitechal/front-page.php
           grep -q 'imagesizes="100vw"' wp-content/themes/generatepress-envitechal/functions.php
+          grep -q "rank_math/sitemap/enable_caching" wp-content/themes/generatepress-envitechal/inc/legacy-redirects.php
+          grep -Fq "if (\$request_path === '/robots.txt')" wp-content/themes/generatepress-envitechal/functions.php
           if grep -q 'script_loader_tag' "$ai_visibility"; then
             echo 'The raw legacy snippet must be filtered from the final HTML response.' >&2
             exit 1

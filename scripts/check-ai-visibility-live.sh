@@ -191,7 +191,7 @@ assert_body_contains 'robots.txt' 'User-agent: *'
 assert_body_contains 'robots.txt' 'Sitemap: https://envitechal.com/sitemap_index.xml'
 assert_body_excludes_challenge 'robots.txt'
 
-fetch 'sitemap index' "$googlebot_ua" '/sitemap_index.xml'
+fetch 'sitemap index' "$googlebot_ua" '/sitemap_index.xml' 'GET' '*/*' ''
 assert_status_200 'sitemap index'
 assert_type_contains 'sitemap index' 'xml'
 assert_body_contains 'sitemap index' '<sitemapindex'
@@ -201,22 +201,69 @@ if grep -Fq 'staging.envitechal.com' "$FETCH_BODY"; then
 else
     pass 'sitemap index contains no staging URL'
 fi
+sitemap_index_body="$FETCH_BODY"
+mapfile -t sitemap_urls < <(
+    grep -oE '<loc>[^<]+</loc>' "$sitemap_index_body" |
+        sed -E 's#</?loc>##g'
+)
+sitemap_body_files=()
+if ((${#sitemap_urls[@]} == 0)); then
+    fail 'sitemap index contains no child sitemap URLs'
+fi
+for sitemap_url in "${sitemap_urls[@]}"; do
+    if [[ "$sitemap_url" != "$BASE_URL/"* ]]; then
+        fail "sitemap index contains an unexpected external child: $sitemap_url"
+        continue
+    fi
+    sitemap_path="/${sitemap_url#"$BASE_URL/"}"
+    fetch "child sitemap $sitemap_path" "$googlebot_ua" "$sitemap_path" 'GET' '*/*' ''
+    assert_status_200 "child sitemap $sitemap_path"
+    assert_type_contains "child sitemap $sitemap_path" 'xml'
+    assert_body_contains "child sitemap $sitemap_path" '<urlset'
+    assert_body_excludes_challenge "child sitemap $sitemap_path"
+    sitemap_body_files+=("$FETCH_BODY")
+done
 
-fetch 'post sitemap' "$googlebot_ua" '/post-sitemap.xml'
-assert_status_200 'post sitemap'
-assert_type_contains 'post sitemap' 'xml'
-assert_body_contains 'post sitemap' '<urlset'
-assert_body_excludes_challenge 'post sitemap'
 for legacy_sitemap_path in \
+    '/certificates-approvals/' \
+    '/newsupdates/' \
+    '/our-services/' \
+    '/air-quality-testing/' \
+    '/environmental-testing-services/' \
+    '/water-testing-lab-karachi/' \
+    '/services/water-testing-services/' \
+    '/water-testing-in-pakistan/' \
+    '/water-testing-lab-near-me/' \
+    '/water-quality-testing-mastering-your-ultimate-guide-to-excellence/' \
+    '/get-accurate-results-from-our-water-testing-lab-in-lahore/' \
+    '/reliable-water-testing-services-environmental-lab-karachi/' \
+    '/discover-the-best-testing-laboratory-near-you-for-reliable-and-accurate-results/' \
+    '/https-envitechal-com-services-environmental-consultancy/' \
+    '/https-envitechal-com-calibration-of-equipment-in-karachi/' \
+    '/22653-2/' \
     '/hiring-an-environmental-lab/' \
     '/environmental-water-testing-lab-in-pakistan/' \
     '/environmental-lab-excellence-the-services-of-envi-tech-al/' \
+    '/whats-new-focused-insightful-of-environmental-lab/' \
+    '/environmental-testing-lab-in-lahore/' \
+    '/environmental-testing-lab-in-karachi-lahore/' \
     '/sindh-epa-noc-guide/' \
-    '/frequently-asked-questions-water-testing-in-karachi/'; do
-    if grep -Fq "$BASE_URL$legacy_sitemap_path" "$FETCH_BODY"; then
-        fail "post sitemap still contains redirected URL: $legacy_sitemap_path"
+    '/frequently-asked-questions-water-testing-in-karachi/' \
+    '/consulting-services-for-ginners-gots-ocs-regenagri-certification/' \
+    '/unlock-precision-why-calibration-services-in-karachi-are-non‐negotiable-for-industry-success/' \
+    '/unlock-precision-why-calibration-services-in-karachi-are-non%E2%80%90negotiable-for-industry-success/' \
+    '/unlock-precision-why-calibration-services-in-karachi-are-non-negotiable-for-industry-success/'; do
+    legacy_sitemap_found=0
+    for sitemap_body_file in "${sitemap_body_files[@]}"; do
+        if grep -Fiq "$BASE_URL$legacy_sitemap_path" "$sitemap_body_file"; then
+            legacy_sitemap_found=1
+            break
+        fi
+    done
+    if ((legacy_sitemap_found != 0)); then
+        fail "a child sitemap still contains redirected URL: $legacy_sitemap_path"
     else
-        pass "post sitemap excludes redirected URL: $legacy_sitemap_path"
+        pass "all child sitemaps exclude redirected URL: $legacy_sitemap_path"
     fi
 done
 
@@ -253,6 +300,52 @@ if [[ "$redirect_status" == '301' && "$redirect_url" == "$BASE_URL/accreditation
 else
     fail "legacy credentials redirect is status=$redirect_status location=$redirect_url"
 fi
+
+legacy_redirect_pairs=(
+    '/certificates-approvals/|/accreditations-certifications/'
+    '/newsupdates/|/blognewsupdates/'
+    '/our-services/|/services/'
+    '/air-quality-testing/|/gaseous-air-emission-testing-lab-near-me/'
+    '/environmental-testing-services/|/services/analytical-lab-services/'
+    '/water-testing-lab-karachi/|/services/water-testing-lab-services/'
+    '/services/water-testing-services/|/services/water-testing-lab-services/'
+    '/water-testing-in-pakistan/|/services/water-testing-lab-services/'
+    '/water-testing-lab-near-me/|/services/water-testing-lab-services/'
+    '/water-quality-testing-mastering-your-ultimate-guide-to-excellence/|/services/water-testing-lab-services/'
+    '/get-accurate-results-from-our-water-testing-lab-in-lahore/|/lahore-environmental-lab/'
+    '/reliable-water-testing-services-environmental-lab-karachi/|/karachi-environmental-lab/'
+    '/discover-the-best-testing-laboratory-near-you-for-reliable-and-accurate-results/|/how-to-choose-the-suitable-environmental-lab/'
+    '/https-envitechal-com-services-environmental-consultancy/|/services/environmental-consultancy/'
+    '/https-envitechal-com-calibration-of-equipment-in-karachi/|/services/equipment-calibration-services/'
+    '/22653-2/|/services/water-testing-lab-services/'
+    '/hiring-an-environmental-lab/|/how-to-choose-the-suitable-environmental-lab/'
+    '/environmental-water-testing-lab-in-pakistan/|/services/water-testing-lab-services/'
+    '/environmental-lab-excellence-the-services-of-envi-tech-al/|/services/analytical-lab-services/'
+    '/whats-new-focused-insightful-of-environmental-lab/|/services/analytical-lab-services/'
+    '/environmental-testing-lab-in-lahore/|/lahore-environmental-lab/'
+    '/environmental-testing-lab-in-karachi-lahore/|/services/analytical-lab-services/'
+    '/frequently-asked-questions-water-testing-in-karachi/|/environmental-testing-faqs-pakistan/'
+    '/sindh-epa-noc-guide/|/services/environmental-consultancy/'
+    '/consulting-services-for-ginners-gots-ocs-regenagri-certification/|/services/certification-advisory/'
+    '/unlock-precision-why-calibration-services-in-karachi-are-non%E2%80%90negotiable-for-industry-success/|/services/equipment-calibration-services/'
+    '/unlock-precision-why-calibration-services-in-karachi-are-non-negotiable-for-industry-success/|/services/equipment-calibration-services/'
+)
+
+for redirect_pair in "${legacy_redirect_pairs[@]}"; do
+    redirect_source="${redirect_pair%%|*}"
+    redirect_target="${redirect_pair#*|}"
+    redirect_metadata="$(curl --http1.1 --silent --show-error --connect-timeout 10 --max-time 30 \
+        --max-redirs 0 --user-agent "$ordinary_ua" --output /dev/null \
+        --write-out $'%{http_code}\n%{redirect_url}\n' \
+        "$BASE_URL$redirect_source")"
+    redirect_status="$(sed -n '1p' <<<"$redirect_metadata")"
+    redirect_url="$(sed -n '2p' <<<"$redirect_metadata")"
+    if [[ "$redirect_status" == '301' && "$redirect_url" == "$BASE_URL$redirect_target" ]]; then
+        pass "$redirect_source is a one-hop 301 to $redirect_target"
+    else
+        fail "$redirect_source redirect is status=$redirect_status location=$redirect_url; expected $BASE_URL$redirect_target"
+    fi
+done
 
 if ((FAILURES > 0)); then
     printf '\nAI visibility live check failed with %d finding(s).\n' "$FAILURES" >&2
