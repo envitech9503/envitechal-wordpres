@@ -24,7 +24,7 @@ The theme's response filter is deliberately narrow: it removes only complete scr
 
 ## Staging deployment
 
-The repository includes a fail-closed staging script. It obtains both document roots from cPanel, rejects symlinked or overlapping staging/production paths, refuses a dirty repository, backs up and verifies the current staging theme, pulls `main`, verifies that the theme still matches the validated PR commit, builds directly from that pinned Git tree, normalizes the public theme tree to `0755` directories and `0644` files, lints the exact replacement, then performs an atomic directory swap. After verification it asks LiteSpeed to purge staging through WP-CLI's `do_action("litespeed_purge_all")` hook. The previous tree is retained as a verified private backup archive outside the webroot.
+The repository includes a fail-closed staging script. It obtains both document roots from cPanel, rejects symlinked or overlapping staging/production paths, refuses a dirty repository, backs up and verifies the current staging theme, pulls `main`, verifies that the theme still matches the validated PR commit, builds directly from that pinned Git tree, normalizes the public theme tree to `0755` directories and `0644` files, lints the exact replacement, then performs an atomic directory swap. After verification it asks LiteSpeed to purge application caches through WP-CLI's `do_action("litespeed_purge_all")` hook; when the installed cache integration is connected to Cloudflare, that action may also notify Cloudflare. The previous tree is retained as a verified private backup archive outside the webroot.
 
 From the cPanel Terminal:
 
@@ -49,7 +49,7 @@ Do not copy the static `llms.txt` files to a publicly reachable staging host unt
 
 ## Staging checks
 
-The deployment script already performs PHP lint before and after copying and requests a LiteSpeed purge. If it prints a WP-CLI or purge-hook warning, purge only staging manually before continuing. Then verify the canonical URLs without a cache-busting query string:
+The deployment script already performs PHP lint before and after copying and requests an application-cache purge, which may also notify the configured Cloudflare integration. If it prints a WP-CLI or purge-hook warning, purge the staging application's caches manually before continuing, taking care not to alter production configuration. Then verify the canonical URLs without a cache-busting query string:
 
 ```bash
 curl -fsS -o /dev/null -w '%{http_code}\n' "https://staging.envitechal.com/services/analytical-lab-services/"
@@ -142,7 +142,7 @@ The scheduled `Live AI visibility` workflow runs `scripts/check-ai-visibility-li
 
 The current staging database must also contain the canonical `/accreditations-certifications/` page. A redirect to a staging 404 is not a successful test. Do not update WordPress core or plugins during the theme test because unrelated changes would make the result harder to isolate.
 
-If the staging database is missing the theme-rendered credentials, Karachi laboratory, or consolidated FAQ records, run `bash "$REPO/scripts/prepare-staging-ai-page-parity.sh"` before redeploying staging. The helper fails closed unless cPanel confirms separate staging/production roots and WordPress confirms separate database/prefix identities; it creates only missing empty page records for those three slugs because their reviewed visible content comes from the theme.
+If the staging database is missing the theme-rendered credentials, Karachi laboratory, or consolidated FAQ records, run `bash "$REPO/scripts/prepare-staging-ai-page-parity.sh"` before redeploying staging. The helper fails closed unless cPanel confirms separate staging/production roots and WordPress confirms separate database/prefix identities. A private lock prevents concurrent runs; page, trash, auto-draft, and root-attachment slug collisions stop the run; and any page records created by a failed run are force-deleted before exit. The exact three-slug allowlist is enforced by CI. Their reviewed visible content comes from the theme, so the helper creates only missing empty staging page records and verifies that each public staging URL resolves to the expected page ID.
 
 ## Evidence limits that remain intentional
 
