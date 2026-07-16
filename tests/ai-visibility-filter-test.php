@@ -7,6 +7,11 @@ function add_action()
     // WordPress hook registration is intentionally inert in this pure helper test.
 }
 
+function home_url($path = '')
+{
+    return 'https://envitechal.com' . $path;
+}
+
 require dirname(__DIR__) . '/wp-content/themes/generatepress-envitechal/inc/ai-visibility.php';
 
 function eta_test_same($expected, $actual, $label)
@@ -74,6 +79,20 @@ eta_test_same(
     'similar but non-distinctive style remains'
 );
 
+$delayed_widget_script = '<script type="litespeed/javascript" src="https://example.invalid/static/chatbot/widget.js?ver=1&amp;delay=1#fragment"></script>';
+eta_test_same(
+    '<main>safe</main>',
+    eta_ai_visibility_remove_legacy_chatbot_html($delayed_widget_script . '<main>safe</main>'),
+    'widget source with optimizer type, query, entity encoding and fragment is removed'
+);
+
+$similar_widget_path = '<script src="https://example.invalid/static/chatbot/widget.js-extra?ver=1"></script>';
+eta_test_same(
+    $similar_widget_path,
+    eta_ai_visibility_remove_legacy_chatbot_html($similar_widget_path),
+    'similar widget filename is not removed'
+);
+
 $attribute_value_only = '<script data-note="data-agent-id=example">window.safe = true;</script>';
 eta_test_same(
     $attribute_value_only,
@@ -101,4 +120,16 @@ eta_test_same(
     'headerless full HTML response is filtered'
 );
 
-echo "Legacy chatbot response filter tests passed.\n";
+eta_test_same(
+    file_get_contents(dirname(__DIR__) . '/deploy/public_html/llms.txt'),
+    eta_ai_visibility_llms_text(false),
+    'static and virtual llms.txt stay identical'
+);
+
+eta_test_same(
+    file_get_contents(dirname(__DIR__) . '/deploy/public_html/llms-full.txt'),
+    eta_ai_visibility_llms_text(true),
+    'static and virtual llms-full.txt stay identical'
+);
+
+echo "Legacy chatbot response filter and LLMS parity tests passed.\n";

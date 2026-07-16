@@ -33,6 +33,10 @@ jobs:
         shell: bash
         run: php tests/ai-visibility-filter-test.php
 
+      - name: Test legacy redirect map
+        shell: bash
+        run: php tests/legacy-redirect-map-test.php
+
       - name: Guard against known production regressions
         shell: bash
         run: |
@@ -62,6 +66,8 @@ jobs:
           grep -q "'/llms.txt'" "$ai_visibility"
           grep -q "'/llms-full.txt'" "$ai_visibility"
           grep -q "ob_start('eta_ai_visibility_filter_legacy_chatbot_response')" "$ai_visibility"
+          grep -q 'eta-home-hero-1500.webp' wp-content/themes/generatepress-envitechal/front-page.php
+          grep -q 'imagesizes="100vw"' wp-content/themes/generatepress-envitechal/functions.php
           if grep -q 'script_loader_tag' "$ai_visibility"; then
             echo 'The raw legacy snippet must be filtered from the final HTML response.' >&2
             exit 1
@@ -77,6 +83,7 @@ jobs:
           set -euo pipefail
           bash -n scripts/deploy-staging-theme.sh
           bash -n scripts/rollback-staging-theme.sh
+          bash -n scripts/check-ai-visibility-live.sh
           grep -q 'archive --format=tar "$VALIDATED_PR_COMMIT"' scripts/deploy-staging-theme.sh
           grep -q 'SWAP_STATE="new-active"' scripts/deploy-staging-theme.sh
           grep -q 'TARGET_REAL' scripts/deploy-staging-theme.sh
