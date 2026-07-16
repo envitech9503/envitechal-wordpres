@@ -73,6 +73,51 @@ function eta_modern_legacy_redirect_target($path)
 }
 
 /**
+ * Resolve an eligible public request against the reviewed legacy map.
+ *
+ * @param string $request_method HTTP request method.
+ * @param string $request_uri    Request URI, optionally including a query.
+ * @return string|null Reviewed site-relative destination, or null.
+ */
+function eta_modern_legacy_request_target($request_method, $request_uri)
+{
+    if (!is_string($request_method) || !is_string($request_uri)) {
+        return null;
+    }
+
+    $request_method = strtoupper(trim($request_method));
+    if (!in_array($request_method, ['GET', 'HEAD'], true)) {
+        return null;
+    }
+
+    return eta_modern_legacy_redirect_target($request_uri);
+}
+
+/**
+ * Apply the reviewed redirect map before plugin/database redirect rules run.
+ *
+ * Rank Math may contain older redirect records for the same source paths. This
+ * early exact-map handler makes the version-controlled destination authoritative
+ * without affecting non-GET/HEAD requests or URLs outside the reviewed map.
+ *
+ * @return void
+ */
+function eta_modern_maybe_redirect_legacy_request()
+{
+    $request_method = isset($_SERVER['REQUEST_METHOD']) ? (string) $_SERVER['REQUEST_METHOD'] : '';
+    $request_uri = isset($_SERVER['REQUEST_URI']) ? (string) $_SERVER['REQUEST_URI'] : '';
+    $target = eta_modern_legacy_request_target($request_method, $request_uri);
+
+    if ($target === null) {
+        return;
+    }
+
+    if (wp_safe_redirect(home_url($target), 301, 'Envi Tech AL')) {
+        exit;
+    }
+}
+
+/**
  * Keep redirected legacy URLs out of Rank Math XML sitemaps.
  *
  * @param array|false $url    Sitemap entry data.
@@ -105,6 +150,10 @@ function eta_modern_disable_rank_math_sitemap_transient_cache($enabled)
 {
     unset($enabled);
     return false;
+}
+
+if (function_exists('add_action')) {
+    add_action('init', 'eta_modern_maybe_redirect_legacy_request', -9999);
 }
 
 if (function_exists('add_filter')) {
