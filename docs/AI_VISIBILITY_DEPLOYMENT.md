@@ -9,12 +9,13 @@ This change set is designed for staging first. It must not be copied directly to
 - Publishes a stable Organization, WebSite, Karachi branch, and Lahore branch schema graph with canonical IDs.
 - Corrects the LinkedIn entity URL and adds verified Instagram and YouTube profiles.
 - Adds 301 consolidation for duplicate credential and knowledge-hub URLs.
-- Removes redirected legacy URLs from Rank Math XML sitemaps.
+- Removes redirected legacy URLs from Rank Math XML sitemaps and disables Rank Math's transient sitemap cache so redirect-map changes are reflected immediately at the application layer.
 - Removes the duplicated full inline stylesheet and the theme's forced global jQuery enqueue.
 - Adds direct issuer evidence and location/method limits for accreditation claims.
 - Removes theme-level content negotiation and keeps any upstream Markdown representation isolated from the shared HTML cache.
 - Provides reviewed `llms.txt` and `llms-full.txt` files for the webroot.
 - Improves keyboard focus visibility and repeated-link accessible names.
+- Normalizes the staging `robots.txt` content type for both GET and HEAD while retaining the staging-wide noindex header.
 
 ## Required security action
 
@@ -75,6 +76,8 @@ Expected results:
 - `/accreditations-certifications/` exists before the old credentials URL is accepted as a successful redirect.
 
 The theme deliberately does not negotiate Markdown and does not add `Vary: Accept`. Production currently has an upstream WordPress/hosting Markdown representation: it emits `Vary: Accept`, `private`, `no-store`, and `no-cache`, and an HTML → Markdown → HTML test returned byte-identical HTML before and after the Markdown response. Keep `/llms.txt` and `/llms-full.txt` as the stable AI discovery endpoints and monitor the upstream representation so shared caches never mix the two bodies.
+
+Rank Math's transient sitemap cache is disabled through its documented `rank_math/sitemap/enable_caching` filter because the redirect map is version-controlled and a stale sitemap can otherwise continue advertising redirected URLs after deployment. LiteSpeed and edge caches are separate layers: keep sitemap XML/XSL paths excluded from full-page caching where possible, and purge configured application/edge caches after each release.
 
 After staging approval, use the separate production transaction below. Do not reuse the staging command by changing its hostname.
 
