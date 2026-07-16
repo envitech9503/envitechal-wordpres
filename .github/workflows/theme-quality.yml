@@ -37,8 +37,11 @@ jobs:
         shell: bash
         run: |
           php tests/legacy-redirect-map-test.php
+          php tests/internal-link-canonicalization-test.php
           php tests/robots-directives-test.php
+          php tests/discovery-cache-remediation-test.php
           python3 tests/live-monitor-redirect-coverage-test.py
+          python3 tests/internal-link-pathways-contract-test.py
 
       - name: Guard against known production regressions
         shell: bash
@@ -96,8 +99,11 @@ jobs:
           bash -n scripts/deploy-staging-theme.sh
           bash -n scripts/rollback-staging-theme.sh
           bash -n scripts/check-ai-visibility-live.sh
+          bash -n scripts/remediate-discovery-cache-headers.sh
+          bash -n scripts/rollback-discovery-cache-headers.sh
           bash -n scripts/prepare-staging-ai-page-parity.sh
           python3 tests/staging-page-parity-script-test.py
+          python3 tests/discovery-cache-remediation-script-test.py
           grep -q 'archive --format=tar "$VALIDATED_PR_COMMIT"' scripts/deploy-staging-theme.sh
           grep -q 'SWAP_STATE="new-active"' scripts/deploy-staging-theme.sh
           grep -q 'TARGET_REAL' scripts/deploy-staging-theme.sh
@@ -107,6 +113,11 @@ jobs:
           grep -Fq 'WP_CLI="$(command -v wp || true)"' scripts/deploy-staging-theme.sh
           grep -Fq 'do_action("litespeed_purge_all")' scripts/deploy-staging-theme.sh
           grep -Fq 'WARNING: WP-CLI is unavailable' scripts/deploy-staging-theme.sh
+          grep -Fq 'CONFIRM_STAGING_DISCOVERY_CACHE' scripts/remediate-discovery-cache-headers.sh
+          grep -Fq 'CONFIRM_PRODUCTION_DISCOVERY_CACHE' scripts/remediate-discovery-cache-headers.sh
+          grep -Fq 'CONFIRM_DISCOVERY_CACHE_ROLLBACK' scripts/rollback-discovery-cache-headers.sh
+          grep -Fq 'SetEnvIf Request_URI' scripts/remediate-discovery-cache-headers.sh
+          grep -Fq 'public, max-age=300, s-maxage=3600, must-revalidate' scripts/remediate-discovery-cache-headers.sh
           grep -Fq 'STAGING_HOST="staging.envitechal.com"' scripts/prepare-staging-ai-page-parity.sh
           grep -Fq 'staging and production use the same database and table prefix' scripts/prepare-staging-ai-page-parity.sh
           grep -Fq 'wordpress_database_identity' scripts/prepare-staging-ai-page-parity.sh

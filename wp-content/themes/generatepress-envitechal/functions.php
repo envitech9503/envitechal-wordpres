@@ -4082,6 +4082,31 @@ function eta_modern_render_ai_faq_center_page()
             <?php endforeach; ?>
         </div>
     </section>
+    <nav class="eta-band eta-band-light" aria-label="<?php esc_attr_e('Related environmental testing pathways', 'envi-tech-al-modern'); ?>">
+        <div class="eta-shell">
+            <?php eta_modern_section_title('Related pathways', 'Continue from an answer to the right service or evidence', 'Use these direct paths to review laboratory services, local coordination, credentials, or an issued report.'); ?>
+            <div class="eta-grid eta-grid-3">
+                <a class="eta-card eta-card-body" href="<?php echo esc_url(home_url('/services/analytical-lab-services/')); ?>">
+                    <strong><?php esc_html_e('Analytical laboratory services', 'envi-tech-al-modern'); ?></strong>
+                </a>
+                <a class="eta-card eta-card-body" href="<?php echo esc_url(home_url('/services/water-testing-lab-services/')); ?>">
+                    <strong><?php esc_html_e('Water testing laboratory services', 'envi-tech-al-modern'); ?></strong>
+                </a>
+                <a class="eta-card eta-card-body" href="<?php echo esc_url(home_url('/karachi-environmental-lab/')); ?>">
+                    <strong><?php esc_html_e('Karachi environmental laboratory', 'envi-tech-al-modern'); ?></strong>
+                </a>
+                <a class="eta-card eta-card-body" href="<?php echo esc_url(home_url('/lahore-environmental-lab/')); ?>">
+                    <strong><?php esc_html_e('Lahore environmental laboratory', 'envi-tech-al-modern'); ?></strong>
+                </a>
+                <a class="eta-card eta-card-body" href="<?php echo esc_url(home_url('/accreditations-certifications/')); ?>">
+                    <strong><?php esc_html_e('Accreditations and certifications', 'envi-tech-al-modern'); ?></strong>
+                </a>
+                <a class="eta-card eta-card-body" href="<?php echo esc_url(home_url('/report-verification-portal/')); ?>">
+                    <strong><?php esc_html_e('Report verification portal', 'envi-tech-al-modern'); ?></strong>
+                </a>
+            </div>
+        </div>
+    </nav>
     <section class="eta-utility-final">
         <div class="eta-shell eta-utility-final-grid">
             <h2><?php esc_html_e('Need a testing, monitoring, calibration, or compliance scope?', 'envi-tech-al-modern'); ?></h2>

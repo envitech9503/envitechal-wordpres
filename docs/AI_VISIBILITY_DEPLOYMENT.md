@@ -18,6 +18,8 @@ This change set is designed for staging first. It must not be copied directly to
 - Improves keyboard focus visibility and repeated-link accessible names.
 - Aligns staging HTML robots meta with the staging-wide `X-Robots-Tag`, and gives virtual `robots.txt` a short edge TTL plus a LiteSpeed no-cache directive.
 - Keeps the responsive homepage LCP hero eager and same-origin by excluding that one image from ShortPixel Adaptive Images rewriting; its preload and 520/900/1500 WebP candidates stay on the same URL contract.
+- Canonicalizes reviewed legacy internal links at render time in classic menus, generated post/page/custom-post permalinks, post content, excerpts, widget text, and block output. External/lookalike hosts, non-default ports, relative URLs, and non-HTTP schemes are unchanged; query strings and fragments are preserved, and no database value is rewritten.
+- Adds a contextual Karachi laboratory pathway on the homepage and related service, location, credential, and verification pathways on the national FAQ page.
 
 ## Required security action
 
@@ -85,6 +87,39 @@ After staging approval, use the separate production transaction below. Do not re
 
 If Cloudflare or another edge worker generates `llms.txt`, update or disable that rule as part of production deployment; origin theme code cannot override a response generated at the edge.
 
+## Discovery cache-header transaction
+
+The hosting-wide text-file expiry policy can otherwise give `robots.txt`, `llms.txt`, `llms-full.txt`, and `/.well-known/agent-skills/index.json` a one-year browser TTL. After the reviewed theme is deployed to staging, run the separate, narrowly scoped `.htaccess` transaction:
+
+```bash
+REPO="$HOME/repositories/envitechal-wordpres"
+DISCOVERY_CACHE_TARGET=staging \
+CONFIRM_STAGING_DISCOVERY_CACHE=staging.envitechal.com \
+  bash "$REPO/scripts/remediate-discovery-cache-headers.sh"
+```
+
+The script independently resolves production and staging through cPanel, rejects equal, nested, symlinked, or inode-identical roots, requires a clean local `main` exactly equal to `origin/main`, and makes a verified private backup. It appends one marked, exact-`Request_URI` header block after hosting-wide directives. Only the four reviewed discovery paths receive one `Cache-Control: public, max-age=300, s-maxage=3600, must-revalidate` field and no `Expires` field. Homepage and theme-asset negative controls prove that this policy does not leak to ordinary URLs. Canonical and cache-busted GET and HEAD requests must all pass status, MIME, body, challenge, and cache-header checks before commit.
+
+A staging success writes a 24-hour private attestation bound to the repository commit and SHA-256 digests of the remediation script and both validators. Production refuses any different or stale evidence and rechecks staging immediately before mutation. Then run:
+
+```bash
+DISCOVERY_CACHE_TARGET=production \
+CONFIRM_PRODUCTION_DISCOVERY_CACHE=envitechal.com \
+  bash "$REPO/scripts/remediate-discovery-cache-headers.sh"
+```
+
+On production only, the transaction removes either all nine reviewed duplicate `.htaccess` redirect lines or none; partial, altered, duplicate, or `RewriteCond`-governed rules stop the run. All 27 legacy sources must then return GET and HEAD 301 responses with `X-Redirect-By: Envi Tech AL`, and every unique canonical target must return a direct 200. Any failure automatically restores the exact previous `.htaccess`, purges again, and leaves the private recovery set for inspection. The firewall/WAF is never disabled or weakened.
+
+For a deliberate rollback after a committed run, copy the exact `Recovery set:` path printed by that run:
+
+```bash
+DISCOVERY_CACHE_RECOVERY_SET="$HOME/backups/envitechal-ai-visibility/PASTE-EXACT-PRINTED-DIRECTORY" \
+CONFIRM_DISCOVERY_CACHE_ROLLBACK=envitechal.com \
+  bash "$REPO/scripts/rollback-discovery-cache-headers.sh"
+```
+
+Use `staging.envitechal.com` as the confirmation only when rolling back a staging recovery set. Rollback verifies the saved manifest and metadata, stops if active `.htaccess` has drifted from the recorded candidate digest, preserves the removed version, restores the exact prior present/absent state with a same-directory rename, purges through the official LiteSpeed hook, and rechecks public availability. Never substitute a different backup directory or bypass a drift failure.
+
 ## Production promotion
 
 Production promotion is deliberately separate from staging. `scripts/deploy-production.sh` discovers both cPanel document roots through UAPI, rejects symlinked, identical, nested, or inode-identical roots and theme directories, refuses a dirty repository, and archives the exact theme plus the reviewed `deploy/public_html/llms.txt` and `llms-full.txt` from the hard-coded validated commit.
@@ -143,7 +178,7 @@ The static discovery files may be safely installed at the origin by this transac
 
 ## Edge and staging prerequisites
 
-Fresh crawler-like requests were initially served a JavaScript verification page before reaching WordPress. After the production release and external cache purge, cookie-free ordinary, Googlebot, Bingbot, GPTBot, and OAI-SearchBot GET/HEAD checks returned the intended origin responses on 16 July 2026. Treat that result as monitored state, not a permanent assumption: the public edge can regress independently of the theme.
+Fresh crawler-like requests were initially served a JavaScript verification page before reaching WordPress. After the production release and external cache purge, cookie-free ordinary, Googlebot, Bingbot, GPTBot, and OAI-SearchBot GET/HEAD checks returned the intended origin responses on 16 July 2026. Treat that result as monitored state, not a permanent assumption: the public edge can regress independently of the theme. User-Agent simulation can detect differential treatment and challenges, but it is not proof of a provider-verified crawler identity; WAF allow rules must use the provider's documented IP/DNS verification mechanism rather than trusting the User-Agent string.
 
 The scheduled `Live AI visibility` workflow runs `scripts/check-ai-visibility-live.sh` on the first day of every month and can also be dispatched manually. It checks the homepage, robots, sitemap, both LLMS files, crawler-like GET/HEAD behavior, Markdown cache isolation, the legacy credentials redirect, and challenge/chatbot markers. Any recurrence of 403, 415, 429, 5xx, challenge HTML, unsafe cache controls, cross-representation contamination, or an incorrect content type requires immediate edge-provider review. Keep the firewall enabled; any exception must use provider-verified crawler identity rather than trusting User-Agent alone.
 
