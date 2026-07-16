@@ -137,7 +137,7 @@ function eta_modern_canonicalize_rendered_internal_url($url)
 
         $host = strtolower(rtrim((string) $parts['host'], '.'));
         if (!in_array($host, eta_modern_internal_link_hosts(), true) ||
-            !preg_match('#^(//[^/?#]+)#', $url, $matches)) {
+            !preg_match('~^(//[^/?#]+)~', $url, $matches)) {
             return $url;
         }
         $prefix = $matches[1];
@@ -156,7 +156,7 @@ function eta_modern_canonicalize_rendered_internal_url($url)
 
         $host = strtolower(rtrim((string) $parts['host'], '.'));
         if (!in_array($host, eta_modern_internal_link_hosts(), true) ||
-            !preg_match('#^([a-z][a-z0-9+.-]*://[^/?#]+)#i', $url, $matches)) {
+            !preg_match('~^([a-z][a-z0-9+.-]*://[^/?#]+)~i', $url, $matches)) {
             return $url;
         }
         $prefix = $matches[1];
