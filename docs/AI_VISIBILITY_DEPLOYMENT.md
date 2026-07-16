@@ -11,7 +11,7 @@ This change set is designed for staging first. It must not be copied directly to
 - Adds 301 consolidation for duplicate credential and knowledge-hub URLs.
 - Removes the duplicated full inline stylesheet and the theme's forced global jQuery enqueue.
 - Adds direct issuer evidence and location/method limits for accreditation claims.
-- Keeps public WordPress page URLs on one HTML representation to prevent `Accept`-header cache poisoning.
+- Removes theme-level content negotiation and keeps any upstream Markdown representation isolated from the shared HTML cache.
 - Provides reviewed `llms.txt` and `llms-full.txt` files for the webroot.
 - Improves keyboard focus visibility and repeated-link accessible names.
 
@@ -63,7 +63,7 @@ Expected results:
 
 - analytical service: HTTP 200 with the controlled scope block;
 - `llms.txt` and `llms-full.txt`: HTTP 200 and `text/plain`;
-- an ordinary WordPress page remains HTML even when the request advertises `Accept: text/markdown`;
+- an ordinary WordPress page either remains HTML for `Accept: text/markdown` or returns a controlled Markdown representation with `Vary: Accept` and private/no-store cache controls;
 - duplicate URLs: HTTP 301 to their canonical destinations;
 - no failed-assistant prose or assistant iframe in page source;
 - only one external `eta-modern.css` delivery;
@@ -72,7 +72,7 @@ Expected results:
 - the analytical-service HTML canonical points to its own URL, not the homepage;
 - `/accreditations-certifications/` exists before the old credentials URL is accepted as a successful redirect.
 
-WordPress page URLs deliberately do not negotiate Markdown and do not emit a theme-added `Vary: Accept`. Keep AI discovery on the dedicated `/llms.txt` and `/llms-full.txt` endpoints so LiteSpeed and other shared caches cannot store different bodies for the same page URL based on `Accept`.
+The theme deliberately does not negotiate Markdown and does not add `Vary: Accept`. Production currently has an upstream WordPress/hosting Markdown representation: it emits `Vary: Accept`, `private`, `no-store`, and `no-cache`, and an HTML → Markdown → HTML test returned byte-identical HTML before and after the Markdown response. Keep `/llms.txt` and `/llms-full.txt` as the stable AI discovery endpoints and monitor the upstream representation so shared caches never mix the two bodies.
 
 After staging approval, use the separate production transaction below. Do not reuse the staging command by changing its hostname.
 
@@ -128,13 +128,15 @@ curl -fsS https://envitechal.com/accreditations-certifications/ | grep -F '<h1'
 curl -fsS https://envitechal.com/services/analytical-lab-services/ | grep -F 'PNAC LAB-347'
 ```
 
-Confirm that the discovery files return origin `text/plain` content, the legacy credentials URL redirects to the existing canonical production page, ordinary pages remain HTML for `Accept: text/markdown`, no legacy chatbot script or identifier attributes are present, and the schema/canonical checks from staging remain true.
+Confirm that the discovery files return origin `text/plain` content, the legacy credentials URL redirects to the existing canonical production page, any `Accept: text/markdown` response is private/no-store and cannot alter the following HTML response, no legacy chatbot script or identifier attributes are present, and the schema/canonical checks from staging remain true.
 
 The static discovery files may be safely installed at the origin by this transaction, but they do not create AI visibility while the edge replaces them with challenge HTML. Keep the firewall enabled and ask A2 Hosting or the edge provider to exempt verified search crawlers and the public discovery resources from JavaScript-only verification. Retest Googlebot-like, Bingbot-like, GPTBot-like, ordinary browser, `HEAD`, and `Accept: text/markdown` requests after the rule and edge-cache purge. Do not report the AI visibility remediation as complete until those requests reach the intended origin responses.
 
 ## Edge and staging prerequisites
 
-At the time this remediation was prepared, fresh crawler-like requests were served a JavaScript verification page before reaching WordPress. Googlebot, GPTBot, and requests for `/llms.txt` and `/llms-full.txt` must receive the intended origin response rather than challenge HTML. Ask A2 Hosting to preserve the site firewall while excluding verified search crawlers and the public discovery resources from JavaScript-only verification.
+Fresh crawler-like requests were initially served a JavaScript verification page before reaching WordPress. After the production release and external cache purge, cookie-free ordinary, Googlebot, Bingbot, GPTBot, and OAI-SearchBot GET/HEAD checks returned the intended origin responses on 16 July 2026. Treat that result as monitored state, not a permanent assumption: the public edge can regress independently of the theme.
+
+The scheduled `Live AI visibility` workflow runs `scripts/check-ai-visibility-live.sh` on the first day of every month and can also be dispatched manually. It checks the homepage, robots, sitemap, both LLMS files, crawler-like GET/HEAD behavior, Markdown cache isolation, the legacy credentials redirect, and challenge/chatbot markers. Any recurrence of 403, 415, 429, 5xx, challenge HTML, unsafe cache controls, cross-representation contamination, or an incorrect content type requires immediate edge-provider review. Keep the firewall enabled; any exception must use provider-verified crawler identity rather than trusting User-Agent alone.
 
 The current staging database must also contain the canonical `/accreditations-certifications/` page. A redirect to a staging 404 is not a successful test. Do not update WordPress core or plugins during the theme test because unrelated changes would make the result harder to isolate.
 
