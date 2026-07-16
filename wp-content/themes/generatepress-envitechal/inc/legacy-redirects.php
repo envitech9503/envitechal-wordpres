@@ -71,3 +71,26 @@ function eta_modern_legacy_redirect_target($path)
     $redirects = eta_modern_legacy_redirect_map();
     return isset($redirects[$normalized_path]) ? $redirects[$normalized_path] : null;
 }
+
+/**
+ * Keep redirected legacy URLs out of Rank Math XML sitemaps.
+ *
+ * @param array|false $url    Sitemap entry data.
+ * @param string      $type   Sitemap object type.
+ * @param object|null $object Source object.
+ * @return array|false
+ */
+function eta_modern_filter_legacy_redirect_sitemap_entry($url, $type = '', $object = null)
+{
+    unset($type, $object);
+
+    if (!is_array($url) || !isset($url['loc']) || !is_string($url['loc']) || $url['loc'] === '') {
+        return $url;
+    }
+
+    return eta_modern_legacy_redirect_target($url['loc']) === null ? $url : false;
+}
+
+if (function_exists('add_filter')) {
+    add_filter('rank_math/sitemap/entry', 'eta_modern_filter_legacy_redirect_sitemap_entry', 10, 3);
+}
