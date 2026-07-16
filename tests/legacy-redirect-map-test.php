@@ -2,6 +2,21 @@
 
 define('ABSPATH', __DIR__);
 
+$eta_redirect_test_actions = [];
+$eta_redirect_test_filters = [];
+
+function add_action($hook, $callback, $priority = 10, $accepted_args = 1)
+{
+    global $eta_redirect_test_actions;
+    $eta_redirect_test_actions[] = [$hook, $callback, $priority, $accepted_args];
+}
+
+function add_filter($hook, $callback, $priority = 10, $accepted_args = 1)
+{
+    global $eta_redirect_test_filters;
+    $eta_redirect_test_filters[] = [$hook, $callback, $priority, $accepted_args];
+}
+
 require dirname(__DIR__) . '/wp-content/themes/generatepress-envitechal/inc/legacy-redirects.php';
 
 function eta_redirect_test_same($expected, $actual, $label)
@@ -21,6 +36,9 @@ $expected_redirects = [
     '/environmental-testing-lab-in-lahore/' => '/lahore-environmental-lab/',
     '/frequently-asked-questions-water-testing-in-karachi/' => '/environmental-testing-faqs-pakistan/',
     '/sindh-epa-noc-guide/' => '/services/environmental-consultancy/',
+    '/22653-2/' => '/services/water-testing-lab-services/',
+    '/https-envitechal-com-calibration-of-equipment-in-karachi/' => '/services/equipment-calibration-services/',
+    '/https-envitechal-com-services-environmental-consultancy/' => '/services/environmental-consultancy/',
 ];
 
 foreach ($expected_redirects as $source => $target) {
@@ -37,6 +55,25 @@ eta_redirect_test_same(
 
 eta_redirect_test_same(null, eta_modern_legacy_redirect_target('/services/analytical-lab-services/'), 'canonical target does not redirect');
 eta_redirect_test_same(null, eta_modern_legacy_redirect_target('not-an-absolute-path'), 'invalid relative path does not redirect');
+eta_redirect_test_same(
+    '/services/water-testing-lab-services/',
+    eta_modern_legacy_request_target('GET', '/22653-2/?utm_source=legacy'),
+    'GET request resolves before plugin redirects'
+);
+eta_redirect_test_same(
+    '/services/equipment-calibration-services/',
+    eta_modern_legacy_request_target('head', '/https-envitechal-com-calibration-of-equipment-in-karachi/'),
+    'HEAD request resolves before plugin redirects'
+);
+eta_redirect_test_same(null, eta_modern_legacy_request_target('POST', '/22653-2/'), 'POST request does not redirect');
+eta_redirect_test_same(null, eta_modern_legacy_request_target('', '/22653-2/'), 'missing method does not redirect');
+eta_redirect_test_same(null, eta_modern_legacy_request_target('GET', '/not-in-the-reviewed-map/'), 'unmapped request does not redirect');
+
+eta_redirect_test_same(
+    ['init', 'eta_modern_maybe_redirect_legacy_request', -9999, 1],
+    $eta_redirect_test_actions[0] ?? null,
+    'reviewed redirect handler is registered before plugin redirect rules'
+);
 
 $canonical_sitemap_entry = [
     'loc' => 'https://envitechal.com/services/analytical-lab-services/',

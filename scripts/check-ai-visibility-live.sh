@@ -129,6 +129,35 @@ assert_type_contains 'ordinary homepage' 'text/html'
 assert_body_contains 'ordinary homepage' 'Environmental testing and compliance support for teams that need clear, defensible reports.'
 assert_body_contains 'ordinary homepage' 'eta-home-hero-1500.webp'
 assert_body_excludes_challenge 'ordinary homepage'
+homepage_flat="$(tr '\n' ' ' <"$FETCH_BODY")"
+hero_tag="$(grep -oE '<img[^>]*class="eta-home-bg-img"[^>]*>' <<<"$homepage_flat" | sed -n '1p' || true)"
+if [[ -z "$hero_tag" ]]; then
+    fail 'ordinary homepage is missing the reviewed LCP hero tag'
+else
+    hero_contract_ok=1
+    for marker in \
+        'data-spai-excluded="true"' \
+        'loading="eager"' \
+        'fetchpriority="high"' \
+        'sizes="100vw"' \
+        'eta-home-hero-520.webp' \
+        'eta-home-hero-900.webp' \
+        'eta-home-hero-1500.webp'; do
+        if [[ "$hero_tag" != *"$marker"* ]]; then
+            fail "ordinary homepage hero is missing: $marker"
+            hero_contract_ok=0
+        fi
+    done
+    for marker in 'loading="lazy"' 'cdn.shortpixel.ai' 'data-spai="' 'data-spai-loading'; do
+        if [[ "$hero_tag" == *"$marker"* ]]; then
+            fail "ordinary homepage hero contains forbidden optimizer marker: $marker"
+            hero_contract_ok=0
+        fi
+    done
+    if ((hero_contract_ok != 0)); then
+        pass 'ordinary homepage hero remains eager, responsive, and excluded from SPAI rewriting'
+    fi
+fi
 if grep -Eiq 'digitalocean|/static/chatbot/widget\.js|data-(agent|chatbot)-id' "$FETCH_BODY"; then
     fail 'ordinary homepage contains a legacy DigitalOcean chatbot marker'
 else
@@ -190,6 +219,11 @@ assert_type_contains 'robots.txt' 'text/plain'
 assert_body_contains 'robots.txt' 'User-agent: *'
 assert_body_contains 'robots.txt' 'Sitemap: https://envitechal.com/sitemap_index.xml'
 assert_body_excludes_challenge 'robots.txt'
+if grep -Eiq '^cache-control:[[:space:]]*public,[[:space:]]*max-age=300,[[:space:]]*s-maxage=3600' "$FETCH_HEADERS"; then
+    pass 'robots.txt uses the reviewed short cache policy'
+else
+    fail 'robots.txt is missing the reviewed max-age=300, s-maxage=3600 cache policy'
+fi
 
 fetch 'sitemap index' "$googlebot_ua" '/sitemap_index.xml' 'GET' '*/*' ''
 assert_status_200 'sitemap index'

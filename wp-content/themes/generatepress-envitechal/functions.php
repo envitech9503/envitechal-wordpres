@@ -9,6 +9,7 @@ if (!defined('ABSPATH')) {
 
 require_once get_stylesheet_directory() . '/inc/premium-post-patterns.php';
 require_once get_stylesheet_directory() . '/inc/legacy-redirects.php';
+require_once get_stylesheet_directory() . '/inc/robots-directives.php';
 require_once get_stylesheet_directory() . '/inc/ai-visibility.php';
 
 add_action('wp_enqueue_scripts', function () {
@@ -1524,27 +1525,6 @@ add_filter('generatepress_option_defaults', function ($defaults) {
     return $defaults;
 });
 
-add_action('send_headers', function () {
-    if (!eta_modern_is_staging_host()) {
-        return;
-    }
-
-    header('X-Robots-Tag: noindex, nofollow, noarchive', true);
-    $request_uri = isset($_SERVER['REQUEST_URI']) ? wp_unslash((string) $_SERVER['REQUEST_URI']) : '';
-    $request_path = $request_uri !== '' ? parse_url($request_uri, PHP_URL_PATH) : '';
-    if ($request_path === '/robots.txt') {
-        header('Content-Type: text/plain; charset=utf-8', true);
-    }
-});
-
-add_filter('robots_txt', function ($output, $public) {
-    if (!eta_modern_is_staging_host()) {
-        return $output;
-    }
-
-    return "User-agent: *\nDisallow: /\n";
-}, 20, 2);
-
 add_action('wp_enqueue_scripts', function () {
     if (is_admin() || eta_modern_allow_legacy_builder_assets()) {
         return;
@@ -1882,12 +1862,6 @@ function eta_modern_is_admin_request()
 {
     $path = isset($_SERVER['REQUEST_URI']) ? parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) : '';
     return is_string($path) && strpos($path, '/wp-admin/') === 0;
-}
-
-function eta_modern_is_staging_host()
-{
-    $host = isset($_SERVER['HTTP_HOST']) ? strtolower($_SERVER['HTTP_HOST']) : '';
-    return $host === 'staging.envitechal.com';
 }
 
 function eta_modern_allow_legacy_builder_assets()

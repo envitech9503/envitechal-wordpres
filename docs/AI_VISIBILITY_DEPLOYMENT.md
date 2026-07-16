@@ -9,13 +9,15 @@ This change set is designed for staging first. It must not be copied directly to
 - Publishes a stable Organization, WebSite, Karachi branch, and Lahore branch schema graph with canonical IDs.
 - Corrects the LinkedIn entity URL and adds verified Instagram and YouTube profiles.
 - Adds 301 consolidation for duplicate credential and knowledge-hub URLs.
+- Makes the reviewed Git redirect map authoritative before older Rank Math database redirect records can run.
 - Removes redirected legacy URLs from Rank Math XML sitemaps and disables Rank Math's transient sitemap cache so redirect-map changes are reflected immediately at the application layer.
 - Removes the duplicated full inline stylesheet and the theme's forced global jQuery enqueue.
 - Adds direct issuer evidence and location/method limits for accreditation claims.
 - Removes theme-level content negotiation and keeps any upstream Markdown representation isolated from the shared HTML cache.
 - Provides reviewed `llms.txt` and `llms-full.txt` files for the webroot.
 - Improves keyboard focus visibility and repeated-link accessible names.
-- Normalizes the staging `robots.txt` content type for both GET and HEAD while retaining the staging-wide noindex header.
+- Aligns staging HTML robots meta with the staging-wide `X-Robots-Tag`, and gives virtual `robots.txt` a short edge TTL plus a LiteSpeed no-cache directive.
+- Keeps the responsive homepage LCP hero eager and same-origin by excluding that one image from ShortPixel Adaptive Images rewriting; its preload and 520/900/1500 WebP candidates stay on the same URL contract.
 
 ## Required security action
 
@@ -72,7 +74,7 @@ Expected results:
 - only one external `eta-modern.css` delivery;
 - JSON-LD contains `#organization`, `#website`, `#karachi-lab`, and `#lahore-lab`.
 - every staging response includes an effective `noindex` directive; the edge challenge must not replace it with an indexable response;
-- the analytical-service HTML canonical points to its own URL, not the homepage;
+- Rank Math may intentionally omit HTML canonicals on staging after the staging-only `noindex` filter applies; verify the theme/schema URL remains self-consistent there and confirm exact self-canonicals again on production, where the filter is inactive;
 - `/accreditations-certifications/` exists before the old credentials URL is accepted as a successful redirect.
 
 The theme deliberately does not negotiate Markdown and does not add `Vary: Accept`. Production currently has an upstream WordPress/hosting Markdown representation: it emits `Vary: Accept`, `private`, `no-store`, and `no-cache`, and an HTML → Markdown → HTML test returned byte-identical HTML before and after the Markdown response. Keep `/llms.txt` and `/llms-full.txt` as the stable AI discovery endpoints and monitor the upstream representation so shared caches never mix the two bodies.
@@ -133,7 +135,9 @@ curl -fsS https://envitechal.com/accreditations-certifications/ | grep -F '<h1'
 curl -fsS https://envitechal.com/services/analytical-lab-services/ | grep -F 'PNAC LAB-347'
 ```
 
-Confirm that the discovery files return origin `text/plain` content, the legacy credentials URL redirects to the existing canonical production page, any `Accept: text/markdown` response is private/no-store and cannot alter the following HTML response, no legacy chatbot script or identifier attributes are present, and the schema/canonical checks from staging remain true.
+Confirm that the discovery files return origin `text/plain` content, the legacy credentials URL redirects to the existing canonical production page, any `Accept: text/markdown` response is private/no-store and cannot alter the following HTML response, no legacy chatbot script or identifier attributes are present, the staging schema checks remain true, and production emits exact self-canonicals.
+
+Also confirm that `img.eta-home-bg-img` retains `data-spai-excluded="true"`, `loading="eager"`, `fetchpriority="high"`, dimensions, `sizes="100vw"`, and all three same-origin hero candidates. Its browser `currentSrc` must remain on `envitechal.com`; no ShortPixel placeholder, lazy marker, or `cdn.shortpixel.ai` hero request should appear after the cache purge.
 
 The static discovery files may be safely installed at the origin by this transaction, but they do not create AI visibility while the edge replaces them with challenge HTML. Keep the firewall enabled and ask A2 Hosting or the edge provider to exempt verified search crawlers and the public discovery resources from JavaScript-only verification. Retest Googlebot-like, Bingbot-like, GPTBot-like, ordinary browser, `HEAD`, and `Accept: text/markdown` requests after the rule and edge-cache purge. Do not report the AI visibility remediation as complete until those requests reach the intended origin responses.
 

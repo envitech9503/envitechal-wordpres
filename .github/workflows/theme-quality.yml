@@ -37,6 +37,7 @@ jobs:
         shell: bash
         run: |
           php tests/legacy-redirect-map-test.php
+          php tests/robots-directives-test.php
           python3 tests/live-monitor-redirect-coverage-test.py
 
       - name: Guard against known production regressions
@@ -70,8 +71,15 @@ jobs:
           grep -q "ob_start('eta_ai_visibility_filter_legacy_chatbot_response')" "$ai_visibility"
           grep -q 'eta-home-hero-1500.webp' wp-content/themes/generatepress-envitechal/front-page.php
           grep -q 'imagesizes="100vw"' wp-content/themes/generatepress-envitechal/functions.php
+          python3 tests/home-hero-contract-test.py
           grep -q "rank_math/sitemap/enable_caching" wp-content/themes/generatepress-envitechal/inc/legacy-redirects.php
-          grep -Fq "if (\$request_path === '/robots.txt')" wp-content/themes/generatepress-envitechal/functions.php
+          robots_directives="$theme/inc/robots-directives.php"
+          grep -q 'inc/robots-directives.php' "$theme/functions.php"
+          grep -Fq "add_action('init', 'eta_modern_maybe_redirect_legacy_request', -9999)" "$theme/inc/legacy-redirects.php"
+          grep -Fq "add_filter('rank_math/frontend/robots', 'eta_modern_filter_rank_math_staging_robots', 99, 1)" "$robots_directives"
+          grep -Fq "add_filter('wp_robots', 'eta_modern_filter_wordpress_staging_robots', 99, 1)" "$robots_directives"
+          grep -Fq "'Cache-Control' => 'public, max-age=300, s-maxage=3600'" "$robots_directives"
+          grep -Fq "'X-LiteSpeed-Cache-Control' => 'no-cache'" "$robots_directives"
           if grep -q 'script_loader_tag' "$ai_visibility"; then
             echo 'The raw legacy snippet must be filtered from the final HTML response.' >&2
             exit 1
