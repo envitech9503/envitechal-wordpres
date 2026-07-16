@@ -202,6 +202,24 @@ else
     pass 'sitemap index contains no staging URL'
 fi
 
+fetch 'post sitemap' "$googlebot_ua" '/post-sitemap.xml'
+assert_status_200 'post sitemap'
+assert_type_contains 'post sitemap' 'xml'
+assert_body_contains 'post sitemap' '<urlset'
+assert_body_excludes_challenge 'post sitemap'
+for legacy_sitemap_path in \
+    '/hiring-an-environmental-lab/' \
+    '/environmental-water-testing-lab-in-pakistan/' \
+    '/environmental-lab-excellence-the-services-of-envi-tech-al/' \
+    '/sindh-epa-noc-guide/' \
+    '/frequently-asked-questions-water-testing-in-karachi/'; do
+    if grep -Fq "$BASE_URL$legacy_sitemap_path" "$FETCH_BODY"; then
+        fail "post sitemap still contains redirected URL: $legacy_sitemap_path"
+    else
+        pass "post sitemap excludes redirected URL: $legacy_sitemap_path"
+    fi
+done
+
 fetch 'llms.txt' "$gptbot_ua" '/llms.txt'
 assert_status_200 'llms.txt'
 assert_type_contains 'llms.txt' 'text/plain'
