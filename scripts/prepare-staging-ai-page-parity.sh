@@ -47,6 +47,40 @@ url_host()
     '
 }
 
+wordpress_database_identity()
+{
+    local root="$1"
+    local output
+    local -a matches=()
+
+    if ! output="$("$WP_BIN" --path="$root" --skip-plugins --skip-themes eval '
+        global $wpdb;
+        if (!is_object($wpdb) || !isset($wpdb->prefix)) {
+            fwrite(STDERR, "WordPress database identity is unavailable.\n");
+            exit(1);
+        }
+
+        $database = (string) $wpdb->get_var("SELECT DATABASE()");
+        $prefix = (string) $wpdb->prefix;
+        if ($database === "" || $prefix === "") {
+            fwrite(STDERR, "WordPress database identity is empty.\n");
+            exit(1);
+        }
+
+        echo "\nETA_DB_IDENTITY:" . hash("sha256", $database . "\0" . $prefix) . "\n";
+    ' 2>&1)"; then
+        stop "WordPress could not calculate a database identity for $root."
+    fi
+
+    mapfile -t matches < <(
+        printf '%s\n' "$output" |
+            tr -d '\r' |
+            sed -nE 's/^ETA_DB_IDENTITY:([0-9a-f]{64})$/\1/p'
+    )
+    ((${#matches[@]} == 1)) || stop "WordPress returned an invalid database identity for $root."
+    printf '%s' "${matches[0]}"
+}
+
 ensure_private_directory()
 {
     local directory="$1"
@@ -104,12 +138,9 @@ STAGING_SITEURL="$("$WP_BIN" --path="$STAGING_ROOT" option get siteurl)"
 [[ "$(printf '%s' "$STAGING_HOME" | url_host)" == "$STAGING_HOST" ]] || stop "staging home does not use $STAGING_HOST."
 [[ "$(printf '%s' "$STAGING_SITEURL" | url_host)" == "$STAGING_HOST" ]] || stop "staging siteurl does not use $STAGING_HOST."
 
-STAGING_DB="$("$WP_BIN" --path="$STAGING_ROOT" db query 'SELECT DATABASE()' --skip-column-names | tail -n 1 | tr -d '\r')"
-PRODUCTION_DB="$("$WP_BIN" --path="$PRODUCTION_ROOT" db query 'SELECT DATABASE()' --skip-column-names | tail -n 1 | tr -d '\r')"
-STAGING_PREFIX="$("$WP_BIN" --path="$STAGING_ROOT" db prefix)"
-PRODUCTION_PREFIX="$("$WP_BIN" --path="$PRODUCTION_ROOT" db prefix)"
-test -n "$STAGING_DB" && test -n "$PRODUCTION_DB" || stop "a database identity was empty."
-[[ "$STAGING_DB:$STAGING_PREFIX" != "$PRODUCTION_DB:$PRODUCTION_PREFIX" ]] ||
+STAGING_DB_ID="$(wordpress_database_identity "$STAGING_ROOT")"
+PRODUCTION_DB_ID="$(wordpress_database_identity "$PRODUCTION_ROOT")"
+[[ "$STAGING_DB_ID" != "$PRODUCTION_DB_ID" ]] ||
     stop "staging and production use the same database and table prefix."
 
 WPS=("$WP_BIN" "--path=$STAGING_ROOT" "--url=$STAGING_HOME")
