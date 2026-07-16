@@ -62,9 +62,17 @@ eta_redirect_test_same(
     'encoded unicode redirect sitemap entry is excluded'
 );
 eta_redirect_test_same([], eta_modern_filter_legacy_redirect_sitemap_entry([], 'post', null), 'empty sitemap entry remains');
+eta_redirect_test_same(false, eta_modern_disable_rank_math_sitemap_transient_cache(true), 'Rank Math sitemap transient cache is disabled');
 
 $redirects = eta_modern_legacy_redirect_map();
 foreach ($redirects as $source => $target) {
+    eta_redirect_test_same(
+        false,
+        eta_modern_filter_legacy_redirect_sitemap_entry([
+            'loc' => 'https://envitechal.com' . $source,
+        ], 'post', null),
+        "redirect source is excluded from sitemap {$source}"
+    );
     if (isset($redirects[$target])) {
         file_put_contents('php://stderr', "FAILED: redirect chain {$source} -> {$target} -> {$redirects[$target]}\n", FILE_APPEND);
         exit(1);
