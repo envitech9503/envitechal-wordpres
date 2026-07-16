@@ -73,6 +73,181 @@ function eta_modern_legacy_redirect_target($path)
 }
 
 /**
+ * Return the exact hostnames that are owned by this WordPress site.
+ *
+ * The explicit aliases cover production content rendered on staging (and old
+ * absolute links that still include www). No other subdomain is treated as
+ * internal, so a matching path on an external host is never rewritten.
+ *
+ * @return array<int,string>
+ */
+function eta_modern_internal_link_hosts()
+{
+    $hosts = [
+        'envitechal.com',
+        'www.envitechal.com',
+        'staging.envitechal.com',
+    ];
+
+    if (function_exists('home_url')) {
+        $home_host = parse_url((string) home_url('/'), PHP_URL_HOST);
+        if (is_string($home_host) && $home_host !== '') {
+            $hosts[] = strtolower(rtrim($home_host, '.'));
+        }
+    }
+
+    return array_values(array_unique($hosts));
+}
+
+/**
+ * Replace a rendered internal legacy URL with its reviewed canonical target.
+ *
+ * Only site-root-relative URLs and HTTP(S) URLs on an exact owned hostname are
+ * eligible. The original query string, fragment, scheme, host spelling and
+ * port are retained. Relative paths, external URLs, user-info URLs and other
+ * schemes are deliberately left byte-for-byte unchanged.
+ *
+ * @param mixed $url Candidate rendered URL.
+ * @return mixed Canonicalized URL, or the original value when ineligible.
+ */
+function eta_modern_canonicalize_rendered_internal_url($url)
+{
+    if (!is_string($url) || $url === '') {
+        return $url;
+    }
+
+    $parts = parse_url($url);
+    if (!is_array($parts)) {
+        return $url;
+    }
+
+    $path = isset($parts['path']) && is_string($parts['path']) ? $parts['path'] : '';
+    $target = eta_modern_legacy_redirect_target($path);
+    if ($target === null) {
+        return $url;
+    }
+
+    $prefix = '';
+    if (strncmp($url, '//', 2) === 0) {
+        // A protocol-relative non-default port cannot be assessed without a
+        // scheme, so only the site's ordinary origin form is eligible.
+        if (isset($parts['user']) || isset($parts['pass']) || isset($parts['port']) || !isset($parts['host'])) {
+            return $url;
+        }
+
+        $host = strtolower(rtrim((string) $parts['host'], '.'));
+        if (!in_array($host, eta_modern_internal_link_hosts(), true) ||
+            !preg_match('#^(//[^/?#]+)#', $url, $matches)) {
+            return $url;
+        }
+        $prefix = $matches[1];
+    } elseif (isset($parts['scheme']) || isset($parts['host'])) {
+        $scheme = isset($parts['scheme']) ? strtolower((string) $parts['scheme']) : '';
+        if (!in_array($scheme, ['http', 'https'], true) ||
+            isset($parts['user']) || isset($parts['pass']) || !isset($parts['host'])) {
+            return $url;
+        }
+        if (isset($parts['port'])) {
+            $port = (int) $parts['port'];
+            if (($scheme === 'http' && $port !== 80) || ($scheme === 'https' && $port !== 443)) {
+                return $url;
+            }
+        }
+
+        $host = strtolower(rtrim((string) $parts['host'], '.'));
+        if (!in_array($host, eta_modern_internal_link_hosts(), true) ||
+            !preg_match('#^([a-z][a-z0-9+.-]*://[^/?#]+)#i', $url, $matches)) {
+            return $url;
+        }
+        $prefix = $matches[1];
+    } elseif ($url[0] !== '/' || strncmp($url, '//', 2) === 0) {
+        return $url;
+    }
+
+    // Keep even empty query/fragment delimiters exactly as they were rendered.
+    $query_position = strpos($url, '?');
+    $fragment_position = strpos($url, '#');
+    if ($query_position === false) {
+        $suffix_position = $fragment_position;
+    } elseif ($fragment_position === false) {
+        $suffix_position = $query_position;
+    } else {
+        $suffix_position = min($query_position, $fragment_position);
+    }
+    $suffix = $suffix_position === false ? '' : substr($url, $suffix_position);
+
+    return $prefix . $target . $suffix;
+}
+
+/**
+ * Canonicalize legacy internal anchor destinations in rendered public HTML.
+ *
+ * WordPress's streaming HTML processor is used when present. The conservative
+ * fallback only touches quoted href attributes inside anchor start tags.
+ * Neither route writes to the database or changes non-link attributes.
+ *
+ * @param mixed $html Rendered HTML.
+ * @return mixed Filtered HTML, or the original non-string value.
+ */
+function eta_modern_canonicalize_rendered_internal_links($html)
+{
+    if (!is_string($html) || $html === '' ||
+        (function_exists('is_admin') && is_admin())) {
+        return $html;
+    }
+
+    if (class_exists('WP_HTML_Tag_Processor')) {
+        $processor = new WP_HTML_Tag_Processor($html);
+        while ($processor->next_tag('A')) {
+            $href = $processor->get_attribute('href');
+            if (!is_string($href)) {
+                continue;
+            }
+
+            $canonical = eta_modern_canonicalize_rendered_internal_url($href);
+            if ($canonical !== $href) {
+                $processor->set_attribute('href', $canonical);
+            }
+        }
+
+        return $processor->get_updated_html();
+    }
+
+    return preg_replace_callback(
+        '/<a\b[^>]*>/i',
+        function ($anchor_match) {
+            return preg_replace_callback(
+                '/(\bhref\s*=\s*)(["\'])(.*?)\2/is',
+                function ($href_match) {
+                    return $href_match[1] . $href_match[2] .
+                        eta_modern_canonicalize_rendered_internal_url($href_match[3]) .
+                        $href_match[2];
+                },
+                $anchor_match[0],
+                1
+            );
+        },
+        $html
+    );
+}
+
+/**
+ * Canonicalize the href emitted for a classic WordPress navigation-menu item.
+ *
+ * @param array<mixed> $attributes Menu-link attributes.
+ * @return array<mixed>
+ */
+function eta_modern_canonicalize_nav_menu_link_attributes($attributes)
+{
+    if (!is_array($attributes) || !isset($attributes['href'])) {
+        return $attributes;
+    }
+
+    $attributes['href'] = eta_modern_canonicalize_rendered_internal_url($attributes['href']);
+    return $attributes;
+}
+
+/**
  * Resolve an eligible public request against the reviewed legacy map.
  *
  * @param string $request_method HTTP request method.
@@ -159,4 +334,13 @@ if (function_exists('add_action')) {
 if (function_exists('add_filter')) {
     add_filter('rank_math/sitemap/entry', 'eta_modern_filter_legacy_redirect_sitemap_entry', 10, 3);
     add_filter('rank_math/sitemap/enable_caching', 'eta_modern_disable_rank_math_sitemap_transient_cache', 10, 1);
+    add_filter('nav_menu_link_attributes', 'eta_modern_canonicalize_nav_menu_link_attributes', 99, 4);
+    add_filter('post_link', 'eta_modern_canonicalize_rendered_internal_url', 99, 3);
+    add_filter('page_link', 'eta_modern_canonicalize_rendered_internal_url', 99, 3);
+    add_filter('post_type_link', 'eta_modern_canonicalize_rendered_internal_url', 99, 4);
+    add_filter('the_content', 'eta_modern_canonicalize_rendered_internal_links', 99, 1);
+    add_filter('the_excerpt', 'eta_modern_canonicalize_rendered_internal_links', 99, 1);
+    add_filter('widget_text', 'eta_modern_canonicalize_rendered_internal_links', 99, 1);
+    add_filter('widget_text_content', 'eta_modern_canonicalize_rendered_internal_links', 99, 1);
+    add_filter('render_block', 'eta_modern_canonicalize_rendered_internal_links', 99, 2);
 }

@@ -224,6 +224,7 @@ $credentials = [
         <div class="eta-shell eta-home-industries-grid">
             <div>
                 <?php eta_modern_section_title('Industry coverage', 'Trusted across compliance-critical sectors', 'Environmental support for operations where testing quality, response time, and documentation clarity directly affect approvals, shipments, safety, and reputation.'); ?>
+                <p><a class="eta-text-link" href="<?php echo esc_url(home_url('/karachi-environmental-lab/')); ?>"><?php esc_html_e('Review environmental laboratory support in Karachi', 'envi-tech-al-modern'); ?></a></p>
                 <a class="eta-button" href="<?php echo esc_url(home_url('/contact-us-envi-tech-al/')); ?>"><?php esc_html_e('Discuss your facility', 'envi-tech-al-modern'); ?></a>
             </div>
             <div class="eta-home-sector-grid" aria-label="<?php esc_attr_e('Industries served', 'envi-tech-al-modern'); ?>">
