@@ -51,7 +51,7 @@ wordpress_database_identity()
 {
     local root="$1"
     local output
-    local -a matches=()
+    local identity
 
     if ! output="$("$WP_BIN" --path="$root" --skip-plugins --skip-themes eval '
         global $wpdb;
@@ -72,13 +72,13 @@ wordpress_database_identity()
         stop "WordPress could not calculate a database identity for $root."
     fi
 
-    mapfile -t matches < <(
+    identity="$(
         printf '%s\n' "$output" |
             tr -d '\r' |
             sed -nE 's/^ETA_DB_IDENTITY:([0-9a-f]{64})$/\1/p'
-    )
-    ((${#matches[@]} == 1)) || stop "WordPress returned an invalid database identity for $root."
-    printf '%s' "${matches[0]}"
+    )"
+    [[ "$identity" =~ ^[0-9a-f]{64}$ ]] || stop "WordPress returned an invalid database identity for $root."
+    printf '%s' "$identity"
 }
 
 ensure_private_directory()

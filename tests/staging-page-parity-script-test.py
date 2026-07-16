@@ -49,7 +49,7 @@ required_safety_markers = [
     '$wpdb->get_var("SELECT DATABASE()")',
     'echo "\\nETA_DB_IDENTITY:" . hash("sha256", $database . "\\0" . $prefix)',
     "sed -nE 's/^ETA_DB_IDENTITY:([0-9a-f]{64})$/\\1/p'",
-    '((${#matches[@]} == 1))',
+    '[[ "$identity" =~ ^[0-9a-f]{64}$ ]]',
     "CREATED_IDS",
     'post delete "$created_id" --force',
     "trap cleanup_created_pages EXIT",
@@ -60,5 +60,13 @@ required_safety_markers = [
 missing = [marker for marker in required_safety_markers if marker not in script]
 if missing:
     raise SystemExit(f"staging page helper is missing fail-closed safety markers: {missing!r}")
+
+forbidden_portability_markers = ["< <(", "mapfile", "readarray"]
+present_forbidden = [marker for marker in forbidden_portability_markers if marker in script]
+if present_forbidden:
+    raise SystemExit(
+        "staging page helper must not require /dev/fd process substitution: "
+        f"{present_forbidden!r}"
+    )
 
 print("Staging page-parity helper safety contract passed.")
