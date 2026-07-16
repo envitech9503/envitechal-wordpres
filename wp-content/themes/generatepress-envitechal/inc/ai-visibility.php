@@ -34,7 +34,12 @@ function eta_ai_visibility_is_legacy_chatbot_script($tag)
     }
 
     $source = html_entity_decode(trim($source), ENT_QUOTES | ENT_HTML5, 'UTF-8');
-    return (bool) preg_match('#/static/chatbot/widget\.js$#i', $source);
+    $source_path = parse_url($source, PHP_URL_PATH);
+    if (!is_string($source_path) || $source_path === '') {
+        return false;
+    }
+
+    return (bool) preg_match('#/static/chatbot/widget\.js$#i', $source_path);
 }
 
 function eta_ai_visibility_is_legacy_chatbot_style($tag)
