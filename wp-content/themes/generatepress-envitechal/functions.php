@@ -8,6 +8,7 @@ if (!defined('ABSPATH')) {
 }
 
 require_once get_stylesheet_directory() . '/inc/premium-post-patterns.php';
+require_once get_stylesheet_directory() . '/inc/legacy-redirects.php';
 require_once get_stylesheet_directory() . '/inc/ai-visibility.php';
 
 add_action('wp_enqueue_scripts', function () {
@@ -1032,8 +1033,8 @@ add_action('wp_head', function () {
     if (is_front_page()) {
         $hero_base = get_stylesheet_directory_uri() . '/assets/images/';
         printf(
-            '<link rel="preload" as="image" href="%1$s" imagesrcset="%2$s 520w, %3$s 900w, %4$s 1500w" imagesizes="(max-width: 640px) 520px, 1180px">' . "\n",
-            esc_url($hero_base . 'eta-home-hero-900.webp'),
+            '<link rel="preload" as="image" href="%1$s" imagesrcset="%2$s 520w, %3$s 900w, %4$s 1500w" imagesizes="100vw">' . "\n",
+            esc_url($hero_base . 'eta-home-hero-1500.webp'),
             esc_url($hero_base . 'eta-home-hero-520.webp'),
             esc_url($hero_base . 'eta-home-hero-900.webp'),
             esc_url($hero_base . 'eta-home-hero-1500.webp')
@@ -1828,6 +1829,11 @@ add_action('init', function () {
 }, 0);
 
 add_action('template_redirect', function () {
+    $request_method = isset($_SERVER['REQUEST_METHOD']) ? strtoupper((string) $_SERVER['REQUEST_METHOD']) : 'GET';
+    if (!in_array($request_method, ['GET', 'HEAD'], true)) {
+        return;
+    }
+
     $path = isset($_SERVER['REQUEST_URI']) ? parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) : '';
 
     if ($path === '/services/technical-advisory/') {
@@ -1850,28 +1856,9 @@ add_action('template_redirect', function () {
         exit;
     }
 
-    $legacy_redirects = [
-        '/certificates-approvals/' => '/accreditations-certifications/',
-        '/newsupdates/' => '/blognewsupdates/',
-        '/our-services/' => '/services/',
-        '/air-quality-testing/' => '/gaseous-air-emission-testing-lab-near-me/',
-        '/environmental-testing-services/' => '/services/analytical-lab-services/',
-        '/water-testing-lab-karachi/' => '/services/water-testing-lab-services/',
-        '/services/water-testing-services/' => '/services/water-testing-lab-services/',
-        '/water-testing-in-pakistan/' => '/services/water-testing-lab-services/',
-        '/water-testing-lab-near-me/' => '/services/water-testing-lab-services/',
-        '/water-quality-testing-mastering-your-ultimate-guide-to-excellence/' => '/services/water-testing-lab-services/',
-        '/get-accurate-results-from-our-water-testing-lab-in-lahore/' => '/lahore-environmental-lab/',
-        '/reliable-water-testing-services-environmental-lab-karachi/' => '/karachi-environmental-lab/',
-        '/discover-the-best-testing-laboratory-near-you-for-reliable-and-accurate-results/' => '/how-to-choose-the-suitable-environmental-lab/',
-        '/https-envitechal-com-services-environmental-consultancy/' => '/services/environmental-consultancy/',
-        '/https-envitechal-com-calibration-of-equipment-in-karachi/' => '/services/equipment-calibration-services/',
-        '/22653-2/' => '/services/water-testing-lab-services/',
-    ];
-
-    $redirect_key = untrailingslashit((string) $path) . '/';
-    if (isset($legacy_redirects[$redirect_key])) {
-        wp_safe_redirect(home_url($legacy_redirects[$redirect_key]), 301);
+    $legacy_target = eta_modern_legacy_redirect_target($path);
+    if ($legacy_target !== null) {
+        wp_safe_redirect(home_url($legacy_target), 301);
         exit;
     }
 
