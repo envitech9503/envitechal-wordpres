@@ -9,6 +9,7 @@ This change set is designed for staging first. It must not be copied directly to
 - Publishes a stable Organization, WebSite, Karachi branch, and Lahore branch schema graph with canonical IDs.
 - Corrects the LinkedIn entity URL and adds verified Instagram and YouTube profiles.
 - Adds 301 consolidation for duplicate credential and knowledge-hub URLs.
+- Removes redirected legacy URLs from Rank Math XML sitemaps.
 - Removes the duplicated full inline stylesheet and the theme's forced global jQuery enqueue.
 - Adds direct issuer evidence and location/method limits for accreditation claims.
 - Removes theme-level content negotiation and keeps any upstream Markdown representation isolated from the shared HTML cache.
@@ -65,6 +66,7 @@ Expected results:
 - `llms.txt` and `llms-full.txt`: HTTP 200 and `text/plain`;
 - an ordinary WordPress page either remains HTML for `Accept: text/markdown` or returns a controlled Markdown representation with `Vary: Accept` and private/no-store cache controls;
 - duplicate URLs: HTTP 301 to their canonical destinations;
+- redirected legacy URLs are absent from `post-sitemap.xml` after the sitemap/application cache purge;
 - no failed-assistant prose or assistant iframe in page source;
 - only one external `eta-modern.css` delivery;
 - JSON-LD contains `#organization`, `#website`, `#karachi-lab`, and `#lahore-lab`.

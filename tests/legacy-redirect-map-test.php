@@ -38,6 +38,31 @@ eta_redirect_test_same(
 eta_redirect_test_same(null, eta_modern_legacy_redirect_target('/services/analytical-lab-services/'), 'canonical target does not redirect');
 eta_redirect_test_same(null, eta_modern_legacy_redirect_target('not-an-absolute-path'), 'invalid relative path does not redirect');
 
+$canonical_sitemap_entry = [
+    'loc' => 'https://envitechal.com/services/analytical-lab-services/',
+    'mod' => '2026-07-16T00:00:00+00:00',
+];
+eta_redirect_test_same(
+    $canonical_sitemap_entry,
+    eta_modern_filter_legacy_redirect_sitemap_entry($canonical_sitemap_entry, 'post', null),
+    'canonical sitemap entry remains'
+);
+eta_redirect_test_same(
+    false,
+    eta_modern_filter_legacy_redirect_sitemap_entry([
+        'loc' => 'https://envitechal.com/hiring-an-environmental-lab/?utm_source=sitemap-test',
+    ], 'post', null),
+    'redirected sitemap entry is excluded'
+);
+eta_redirect_test_same(
+    false,
+    eta_modern_filter_legacy_redirect_sitemap_entry([
+        'loc' => 'https://envitechal.com/unlock-precision-why-calibration-services-in-karachi-are-non%E2%80%90negotiable-for-industry-success/',
+    ], 'post', null),
+    'encoded unicode redirect sitemap entry is excluded'
+);
+eta_redirect_test_same([], eta_modern_filter_legacy_redirect_sitemap_entry([], 'post', null), 'empty sitemap entry remains');
+
 $redirects = eta_modern_legacy_redirect_map();
 foreach ($redirects as $source => $target) {
     if (isset($redirects[$target])) {
