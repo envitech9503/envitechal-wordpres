@@ -91,6 +91,23 @@ function eta_modern_filter_legacy_redirect_sitemap_entry($url, $type = '', $obje
     return eta_modern_legacy_redirect_target($url['loc']) === null ? $url : false;
 }
 
+/**
+ * Keep Rank Math from reusing a sitemap generated before the redirect map changed.
+ *
+ * Rank Math documents this filter for sites where sitemap freshness is more
+ * important than its transient cache. Full-page/edge caches still need a purge
+ * or a sitemap exclusion rule at their respective layers.
+ *
+ * @param bool $enabled Whether Rank Math's sitemap transient cache is enabled.
+ * @return bool
+ */
+function eta_modern_disable_rank_math_sitemap_transient_cache($enabled)
+{
+    unset($enabled);
+    return false;
+}
+
 if (function_exists('add_filter')) {
     add_filter('rank_math/sitemap/entry', 'eta_modern_filter_legacy_redirect_sitemap_entry', 10, 3);
+    add_filter('rank_math/sitemap/enable_caching', 'eta_modern_disable_rank_math_sitemap_transient_cache', 10, 1);
 }
