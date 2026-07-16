@@ -118,6 +118,7 @@ $credentials = [
     <section class="eta-home-stage" aria-labelledby="eta-home-title">
         <img
             class="eta-home-bg-img"
+            data-spai-excluded="true"
             src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/eta-home-hero-1500.webp'); ?>"
             srcset="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/eta-home-hero-520.webp'); ?> 520w, <?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/eta-home-hero-900.webp'); ?> 900w, <?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/eta-home-hero-1500.webp'); ?> 1500w"
             sizes="100vw"
