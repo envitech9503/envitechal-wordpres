@@ -118,9 +118,11 @@ $credentials = [
     <section class="eta-home-stage" aria-labelledby="eta-home-title">
         <img
             class="eta-home-bg-img"
-            src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/eta-home-hero-900.webp'); ?>"
+            src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/eta-home-hero-1500.webp'); ?>"
             srcset="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/eta-home-hero-520.webp'); ?> 520w, <?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/eta-home-hero-900.webp'); ?> 900w, <?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/eta-home-hero-1500.webp'); ?> 1500w"
-            sizes="(max-width: 640px) 520px, 1180px"
+            sizes="100vw"
+            width="1500"
+            height="844"
             alt="<?php esc_attr_e('Environmental laboratory team performing testing and compliance analysis', 'envi-tech-al-modern'); ?>"
             loading="eager"
             fetchpriority="high"
