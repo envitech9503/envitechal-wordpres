@@ -142,6 +142,8 @@ The scheduled `Live AI visibility` workflow runs `scripts/check-ai-visibility-li
 
 The current staging database must also contain the canonical `/accreditations-certifications/` page. A redirect to a staging 404 is not a successful test. Do not update WordPress core or plugins during the theme test because unrelated changes would make the result harder to isolate.
 
+If the staging database is missing the theme-rendered credentials, Karachi laboratory, or consolidated FAQ records, run `bash "$REPO/scripts/prepare-staging-ai-page-parity.sh"` before redeploying staging. The helper fails closed unless cPanel confirms separate staging/production roots and WordPress confirms separate database/prefix identities; it creates only missing empty page records for those three slugs because their reviewed visible content comes from the theme.
+
 ## Evidence limits that remain intentional
 
 - PNAC LAB-347 is for the Lahore laboratory and only the water/wastewater methods listed in the official scope.
