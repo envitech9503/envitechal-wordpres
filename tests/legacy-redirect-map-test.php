@@ -75,6 +75,74 @@ eta_redirect_test_same(
     'reviewed redirect handler is registered before plugin redirect rules'
 );
 
+$canonical_sitemap_post = (object) [
+    'ID' => 9001,
+    'post_name' => 'analytical-lab-services',
+    'post_type' => 'services',
+];
+eta_redirect_test_same(
+    $canonical_sitemap_post,
+    eta_modern_filter_legacy_redirect_sitemap_post_object($canonical_sitemap_post),
+    'canonical post object remains in the sitemap'
+);
+eta_redirect_test_same(
+    false,
+    eta_modern_filter_legacy_redirect_sitemap_post_object((object) [
+        'ID' => 9002,
+        'post_name' => 'hiring-an-environmental-lab',
+        'post_type' => 'post',
+    ]),
+    'legacy post object is excluded before its permalink is canonicalized'
+);
+eta_redirect_test_same(
+    false,
+    eta_modern_filter_legacy_redirect_sitemap_post_object((object) [
+        'ID' => 9003,
+        'post_name' => 'water-testing-services',
+        'post_type' => 'services',
+    ]),
+    'nested legacy service object is excluded by its exact source slug'
+);
+eta_redirect_test_same(
+    false,
+    eta_modern_filter_legacy_redirect_sitemap_post_object((object) [
+        'ID' => 9004,
+        'post_name' => 'unlock-precision-why-calibration-services-in-karachi-are-non%E2%80%90negotiable-for-industry-success',
+        'post_type' => 'post',
+    ]),
+    'percent-encoded Unicode legacy post slug is excluded'
+);
+$sitemap_post_without_slug = (object) ['ID' => 9005, 'post_type' => 'post'];
+eta_redirect_test_same(
+    $sitemap_post_without_slug,
+    eta_modern_filter_legacy_redirect_sitemap_post_object($sitemap_post_without_slug),
+    'post object without a slug remains unchanged'
+);
+$lookalike_sitemap_post = (object) [
+    'ID' => 9006,
+    'post_name' => 'hiring-an-environmental-lab-review',
+];
+eta_redirect_test_same(
+    $lookalike_sitemap_post,
+    eta_modern_filter_legacy_redirect_sitemap_post_object($lookalike_sitemap_post),
+    'lookalike post slug remains unchanged'
+);
+
+eta_redirect_test_same(
+    true,
+    in_array(
+        [
+            'rank_math/sitemap/post_object',
+            'eta_modern_filter_legacy_redirect_sitemap_post_object',
+            10,
+            1,
+        ],
+        $eta_redirect_test_filters,
+        true
+    ),
+    'Rank Math post-object exclusion filter is registered'
+);
+
 $canonical_sitemap_entry = [
     'loc' => 'https://envitechal.com/services/analytical-lab-services/',
     'mod' => '2026-07-16T00:00:00+00:00',
@@ -102,7 +170,33 @@ eta_redirect_test_same([], eta_modern_filter_legacy_redirect_sitemap_entry([], '
 eta_redirect_test_same(false, eta_modern_disable_rank_math_sitemap_transient_cache(true), 'Rank Math sitemap transient cache is disabled');
 
 $redirects = eta_modern_legacy_redirect_map();
+$redirect_source_slugs = [];
+$redirect_target_slugs = [];
 foreach ($redirects as $source => $target) {
+    $source_path = eta_modern_normalize_legacy_redirect_path($source);
+    $source_slug = rawurldecode(basename(rtrim($source_path, '/')));
+    if (isset($redirect_source_slugs[$source_slug])) {
+        file_put_contents(
+            'php://stderr',
+            "FAILED: duplicate legacy source slug {$source_slug}: " .
+                "{$redirect_source_slugs[$source_slug]} and {$source}\n",
+            FILE_APPEND
+        );
+        exit(1);
+    }
+    $redirect_source_slugs[$source_slug] = $source;
+
+    $target_path = eta_modern_normalize_legacy_redirect_path($target);
+    $target_slug = rawurldecode(basename(rtrim($target_path, '/')));
+    $redirect_target_slugs[$target_slug] = $target;
+
+    eta_redirect_test_same(
+        false,
+        eta_modern_filter_legacy_redirect_sitemap_post_object((object) [
+            'post_name' => rawurlencode($source_slug),
+        ]),
+        "redirect source post object is excluded before permalink generation {$source}"
+    );
     eta_redirect_test_same(
         false,
         eta_modern_filter_legacy_redirect_sitemap_entry([
@@ -118,6 +212,17 @@ foreach ($redirects as $source => $target) {
         file_put_contents('php://stderr', "FAILED: self redirect {$source}\n", FILE_APPEND);
         exit(1);
     }
+}
+
+$redirect_slug_collisions = array_intersect_key($redirect_source_slugs, $redirect_target_slugs);
+if ($redirect_slug_collisions !== []) {
+    file_put_contents(
+        'php://stderr',
+        'FAILED: a canonical redirect target reuses a retired source slug: ' .
+            var_export($redirect_slug_collisions, true) . "\n",
+        FILE_APPEND
+    );
+    exit(1);
 }
 
 echo "Legacy redirect map tests passed.\n";

@@ -1974,15 +1974,19 @@ function eta_modern_clean_content($content)
 
     if (eta_modern_is_premium_legacy_html($content)) {
         $content = eta_modern_preg_replace('/>\s+</', ">\n<", $content);
-        return wp_kses_post(trim(eta_modern_strip_invisible_content($content)));
+        $content = wp_kses_post(trim(eta_modern_strip_invisible_content($content)));
+    } else {
+        $content = eta_modern_preg_replace('#<\s*h1([^>]*)>#i', '<h2$1>', $content);
+        $content = eta_modern_preg_replace('#<\s*/\s*h1\s*>#i', '</h2>', $content);
+        $content = eta_modern_preg_replace('/\s+/', ' ', $content);
+        $content = trim(eta_modern_strip_invisible_content($content));
+        $content = wp_kses_post(wpautop($content));
     }
 
-    $content = eta_modern_preg_replace('#<\s*h1([^>]*)>#i', '<h2$1>', $content);
-    $content = eta_modern_preg_replace('#<\s*/\s*h1\s*>#i', '</h2>', $content);
-    $content = eta_modern_preg_replace('/\s+/', ' ', $content);
-    $content = trim(eta_modern_strip_invisible_content($content));
-
-    return wp_kses_post(wpautop($content));
+    // Custom page, service, and single-post renderers read raw post content
+    // directly, so their output does not pass through the_content. Apply the
+    // same reviewed legacy-link canonicalizer at this shared final HTML sink.
+    return eta_modern_canonicalize_rendered_internal_links($content);
 }
 
 function eta_modern_is_premium_legacy_html($content)

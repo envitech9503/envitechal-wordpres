@@ -171,6 +171,50 @@ eta_link_test_same(
 );
 eta_link_test_same(false, eta_modern_canonicalize_rendered_internal_links(false), 'non-string HTML is unchanged');
 
+$classic_post_html = <<<'HTML'
+<p>Envi Tech AL is a <a href="https://staging.envitechal.com/environmental-water-testing-lab-in-pakistan/" target="_blank" rel="noopener">PNAC-accredited environmental laboratory in Pakistan</a>, providing professional <a href="https://staging.envitechal.com/reliable-water-testing-services-environmental-lab-karachi/" target="_blank" rel="noopener">environmental laboratory services</a>.</p>
+HTML;
+
+$expected_classic_post_html = <<<'HTML'
+<p>Envi Tech AL is a <a href="https://staging.envitechal.com/services/water-testing-lab-services/" target="_blank" rel="noopener">PNAC-accredited environmental laboratory in Pakistan</a>, providing professional <a href="https://staging.envitechal.com/karachi-environmental-lab/" target="_blank" rel="noopener">environmental laboratory services</a>.</p>
+HTML;
+
+eta_link_test_same(
+    $expected_classic_post_html,
+    eta_modern_canonicalize_rendered_internal_links($classic_post_html),
+    'the two legacy hrefs observed in classic staging post content are canonicalized'
+);
+
+$functions_source = file_get_contents(
+    dirname(__DIR__) . '/wp-content/themes/generatepress-envitechal/functions.php'
+);
+eta_link_test_same(true, is_string($functions_source), 'theme functions source is readable');
+
+$clean_content_match = [];
+$clean_content_found = preg_match(
+    '/function eta_modern_clean_content\(\$content\)\s*\{(?P<body>.*?)\n\}\n\nfunction eta_modern_is_premium_legacy_html/s',
+    $functions_source,
+    $clean_content_match
+);
+eta_link_test_same(1, $clean_content_found, 'custom renderer clean-content sink is located');
+
+$clean_content_body = $clean_content_match['body'] ?? '';
+eta_link_test_same(
+    1,
+    substr_count($clean_content_body, 'return eta_modern_canonicalize_rendered_internal_links($content);'),
+    'all clean-content branches converge on the rendered-link canonicalizer'
+);
+eta_link_test_same(
+    1,
+    substr_count($clean_content_body, 'return '),
+    'clean-content has no early return that can bypass canonicalization'
+);
+eta_link_test_same(
+    true,
+    strpos($functions_source, '$post_content = eta_modern_clean_content($rendered_post_content);') !== false,
+    'the custom single-post renderer uses the protected clean-content sink'
+);
+
 $menu_attributes = [
     'class' => 'menu-link',
     'href' => 'https://envitechal.com/our-services/?utm_source=navigation#all',
