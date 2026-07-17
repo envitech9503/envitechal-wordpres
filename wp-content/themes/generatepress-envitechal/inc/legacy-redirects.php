@@ -293,6 +293,48 @@ function eta_modern_maybe_redirect_legacy_request()
 }
 
 /**
+ * Keep a legacy post object out of Rank Math before its permalink is built.
+ *
+ * Rank Math resolves get_permalink() before applying its sitemap-entry filter.
+ * The public-link canonicalizer therefore turns a legacy permalink into its
+ * canonical target too early for the later entry filter to identify the source
+ * object. Rank Math's post-object filter explicitly accepts false to omit an
+ * object, so match the object's exact stored slug against the reviewed map.
+ *
+ * Legacy-map source slugs are unique. Both the stored WordPress slug and the
+ * map slug are decoded before comparison so the reviewed Unicode-hyphen route
+ * is handled without broad or substring matching.
+ *
+ * @param object|false $post Post object supplied by Rank Math.
+ * @return object|false Original object, or false for a reviewed legacy source.
+ */
+function eta_modern_filter_legacy_redirect_sitemap_post_object($post)
+{
+    if (!is_object($post) || !isset($post->post_name) || !is_string($post->post_name)) {
+        return $post;
+    }
+
+    $post_slug = rawurldecode($post->post_name);
+    if ($post_slug === '' || strpos($post_slug, '/') !== false || strpos($post_slug, "\0") !== false) {
+        return $post;
+    }
+
+    foreach (array_keys(eta_modern_legacy_redirect_map()) as $source) {
+        $source_path = eta_modern_normalize_legacy_redirect_path($source);
+        if ($source_path === null) {
+            continue;
+        }
+
+        $source_slug = rawurldecode(basename(rtrim($source_path, '/')));
+        if ($source_slug === $post_slug) {
+            return false;
+        }
+    }
+
+    return $post;
+}
+
+/**
  * Keep redirected legacy URLs out of Rank Math XML sitemaps.
  *
  * @param array|false $url    Sitemap entry data.
@@ -332,6 +374,7 @@ if (function_exists('add_action')) {
 }
 
 if (function_exists('add_filter')) {
+    add_filter('rank_math/sitemap/post_object', 'eta_modern_filter_legacy_redirect_sitemap_post_object', 10, 1);
     add_filter('rank_math/sitemap/entry', 'eta_modern_filter_legacy_redirect_sitemap_entry', 10, 3);
     add_filter('rank_math/sitemap/enable_caching', 'eta_modern_disable_rank_math_sitemap_transient_cache', 10, 1);
     add_filter('nav_menu_link_attributes', 'eta_modern_canonicalize_nav_menu_link_attributes', 99, 4);
