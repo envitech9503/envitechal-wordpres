@@ -95,7 +95,7 @@ verify_discovery_request() {
     local method="$4"
     local suffix="$5"
     local request_dir="$6"
-    local label metadata status mime url headers body expected_mime
+    local label metadata status mime url headers body expected_mime attempt retry_after
     local -a curl_args
 
     label="${method}-${path//\//_}-${suffix:-canonical}"
@@ -120,9 +120,22 @@ verify_discovery_request() {
         curl_args+=(--head)
     fi
 
-    curl "${curl_args[@]}" "$url" >"$metadata" || stop "$method $url failed."
+    attempt=1
+    while :; do
+        curl "${curl_args[@]}" "$url" >"$metadata" || stop "$method $url failed."
+        status="$(sed -n '1p' "$metadata")"
+        if [[ "$status" != "429" || "$attempt" -ge 4 ]]; then
+            break
+        fi
+        retry_after="$(sed -nE 's/^[Rr]etry-[Aa]fter:[[:space:]]*([0-9]+).*$/\\1/p' "$headers" | tail -n 1)"
+        [[ "$retry_after" =~ ^[0-9]+$ ]] || retry_after=10
+        ((retry_after > 30)) && retry_after=30
+        printf 'WARN: %s %s returned 429; retrying in %ss (attempt %s/4).\\n' \\
+            "$method" "$url" "$retry_after" "$attempt" >&2
+        sleep "$retry_after"
+        attempt=$((attempt + 1))
+    done
     sleep 0.25
-    status="$(sed -n '1p' "$metadata")"
     mime="$(sed -n '2p' "$metadata")"
     [[ "$status" == "200" ]] || stop "$method $url returned HTTP $status."
 
