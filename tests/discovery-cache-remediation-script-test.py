@@ -46,12 +46,16 @@ def main() -> None:
         'rollback activation': 'mv -f -- "$ROLLBACK_CANDIDATE" "$HTACCESS"',
         'WordPress cache purge': 'do_action("litespeed_purge_all")',
         'canonical/cache-busted loop': 'for suffix in \'\' "?eta_discovery_cache_verify=${STAMP}"',
+        'cache-busted request bypass': "curl_args+=(--header 'Cache-Control: no-cache')",
         'GET/HEAD loop': 'for method in GET HEAD',
         'redirect ownership check': 'X-Redirect-By',
         'redirect GET/HEAD loop': 'for method in GET HEAD',
         'direct target 200 check': 'redirect target $target returned $target_status instead of a direct 200',
         'firewall invariant': 'WAF status: unchanged',
         'negative scope test': 'managed discovery cache policy leaked onto ordinary path',
+        'pre-attestation drift guard': 'active .htaccess drifted during live verification',
+        'automatic rollback proof': 'ROLLBACK VERIFIED: the exact prior .htaccess state and mode were restored',
+        'failed attestation invalidation': 'INVALIDATED_STAGING_DISCOVERY_CACHE_VERIFICATION',
         'paced public verification': 'sleep 0.25',
     }
     for label, token in required_script_tokens.items():
@@ -79,6 +83,18 @@ def main() -> None:
     )
     require(script, 'Header onsuccess unset Expires', 'successful-response Expires removal')
     require(script, 'Header always unset Expires', 'always-table Expires removal')
+    require(script, 'Header onsuccess unset Cache-Control', 'normal-table Cache-Control removal')
+    require(
+        script,
+        'Header always set Cache-Control "public, max-age=300, s-maxage=3600, must-revalidate"',
+        'always-table Cache-Control replacement',
+    )
+    if 'Header always unset Cache-Control' in script:
+        raise AssertionError('always-table Cache-Control must be replaced, not removed before an onsuccess set')
+    if 'Header onsuccess set Cache-Control' in script:
+        raise AssertionError('PHP/LSAPI Cache-Control must be set in the always table')
+    if script.index('Header onsuccess unset Cache-Control') > script.index('Header always set Cache-Control'):
+        raise AssertionError('normal-table Cache-Control removal must precede always-table replacement')
 
     if re.search(r'\b(?:iptables|nft|ufw)\b', script, flags=re.IGNORECASE):
         raise AssertionError('remediation must not invoke firewall administration commands')
@@ -131,6 +147,8 @@ def main() -> None:
     require(transformer, '$candidate .= $block;', 'managed block appended after existing directives')
 
     require(validator, 'count($cacheValues) !== 1', 'single Cache-Control field requirement')
+    require(validator, '$finalHeaders', 'final response header-block selection')
+    require(validator, '$status >= 100 && $status < 200', 'informational response exclusion')
     require(validator, '$absenceMode', 'explicit managed-policy absence mode')
     require(validator, '(int) $ageMatch[1] > 3600', 'maximum age safety cap')
     require(validator, "preg_match('/^expires\\s*:/mi'", 'Expires rejection')
