@@ -109,11 +109,13 @@ verify_discovery_request() {
         --connect-timeout 10 --max-time 30
         --user-agent 'Mozilla/5.0 (compatible; GPTBot/1.2; +https://openai.com/gptbot)'
         --header 'Accept: */*'
-        --header 'Cache-Control: no-cache'
         --dump-header "$headers"
         --output "$body"
         --write-out $'%{http_code}\n%{content_type}\n%{url_effective}\n'
     )
+    if [[ -n "$suffix" ]]; then
+        curl_args+=(--header 'Cache-Control: no-cache')
+    fi
     if [[ "$method" == "HEAD" ]]; then
         curl_args+=(--head)
     fi
@@ -358,9 +360,10 @@ cat >"$BLOCK_FILE" <<'HTACCESS_BLOCK'
 <IfModule mod_headers.c>
     Header onsuccess unset Expires env=ETA_DISCOVERY_SHORT_CACHE
     Header always unset Expires env=ETA_DISCOVERY_SHORT_CACHE
+    # PHP/LSAPI response headers live in Apache's always table. Remove any
+    # normal-table value, then replace the always-table value exactly once.
     Header onsuccess unset Cache-Control env=ETA_DISCOVERY_SHORT_CACHE
-    Header always unset Cache-Control env=ETA_DISCOVERY_SHORT_CACHE
-    Header onsuccess set Cache-Control "public, max-age=300, s-maxage=3600, must-revalidate" env=ETA_DISCOVERY_SHORT_CACHE
+    Header always set Cache-Control "public, max-age=300, s-maxage=3600, must-revalidate" env=ETA_DISCOVERY_SHORT_CACHE
 </IfModule>
 # END Envi Tech AL discovery cache policy
 HTACCESS_BLOCK
@@ -464,24 +467,99 @@ COMMITTED=0
 RESTORE_REQUIRED=0
 cleanup() {
     local status=$?
+    local active_digest=''
+    local active_mode=''
+    local drift_snapshot
     local failed_path
+    local invalidated_attestation
+    local rollback_verified=0
     trap - EXIT
     trap '' INT TERM
 
     if ((status != 0 && RESTORE_REQUIRED != 0)); then
         echo "Discovery-cache verification failed; restoring the exact prior .htaccess state..." >&2
         if [[ "$ORIGINAL_STATE" == "present" ]]; then
-            install -m "$ORIGINAL_MODE" -- "$BACKUP_SET/htaccess.before" "$ROLLBACK_CANDIDATE"
-            mv -f -- "$ROLLBACK_CANDIDATE" "$HTACCESS"
-            [[ "$(file_digest "$HTACCESS")" == "$ORIGINAL_DIGEST" ]] ||
-                echo "CRITICAL: the restored .htaccess digest is wrong." >&2
+            if test -f "$HTACCESS" && test ! -L "$HTACCESS" &&
+                active_digest="$(file_digest "$HTACCESS")" &&
+                active_mode="$(stat -Lc '%a' "$HTACCESS")"; then
+                if [[ "$active_digest" == "$ORIGINAL_DIGEST" && "$active_mode" == "$ORIGINAL_MODE" ]]; then
+                    rollback_verified=1
+                elif [[ "$active_digest" == "$CANDIDATE_DIGEST" && "$active_mode" == "$ORIGINAL_MODE" ]]; then
+                    if install -m "$ORIGINAL_MODE" -- "$BACKUP_SET/htaccess.before" "$ROLLBACK_CANDIDATE" &&
+                        mv -f -- "$ROLLBACK_CANDIDATE" "$HTACCESS"; then
+                        if test -f "$HTACCESS" && test ! -L "$HTACCESS" &&
+                            active_digest="$(file_digest "$HTACCESS")" &&
+                            active_mode="$(stat -Lc '%a' "$HTACCESS")" &&
+                            [[ "$active_digest" == "$ORIGINAL_DIGEST" ]] &&
+                            [[ "$active_mode" == "$ORIGINAL_MODE" ]]; then
+                            rollback_verified=1
+                        fi
+                    else
+                        echo "CRITICAL: the verified prior .htaccess could not be atomically restored." >&2
+                    fi
+                else
+                    drift_snapshot="$BACKUP_SET/drifted-active.htaccess"
+                    if install -m 0600 -- "$HTACCESS" "$drift_snapshot"; then
+                        echo "Preserved a private snapshot of the drifted active .htaccess at $drift_snapshot." >&2
+                    else
+                        echo "CRITICAL: the drifted active .htaccess could not be snapshotted." >&2
+                    fi
+                    echo "CRITICAL: active .htaccess drifted after activation; automatic rollback refused to avoid overwriting an external change." >&2
+                fi
+            elif test -e "$HTACCESS" || test -L "$HTACCESS"; then
+                echo "CRITICAL: active .htaccess is not a safe readable regular file; automatic rollback refused." >&2
+            else
+                echo "CRITICAL: active .htaccess disappeared after activation; automatic rollback refused." >&2
+            fi
         elif test -e "$HTACCESS" || test -L "$HTACCESS"; then
-            failed_path="$BACKUP_SET/failed-active.htaccess"
-            mv -- "$HTACCESS" "$failed_path" ||
-                echo "CRITICAL: could not restore the original absence of .htaccess." >&2
+            if test -f "$HTACCESS" && test ! -L "$HTACCESS" &&
+                active_digest="$(file_digest "$HTACCESS")" &&
+                active_mode="$(stat -Lc '%a' "$HTACCESS")"; then
+                if [[ "$active_digest" == "$CANDIDATE_DIGEST" && "$active_mode" == "$ORIGINAL_MODE" ]]; then
+                    failed_path="$BACKUP_SET/failed-active.htaccess"
+                    if mv -- "$HTACCESS" "$failed_path"; then
+                        if test ! -e "$HTACCESS" && test ! -L "$HTACCESS"; then
+                            rollback_verified=1
+                        fi
+                    else
+                        echo "CRITICAL: could not restore the original absence of .htaccess." >&2
+                    fi
+                else
+                    drift_snapshot="$BACKUP_SET/drifted-active.htaccess"
+                    if install -m 0600 -- "$HTACCESS" "$drift_snapshot"; then
+                        echo "Preserved a private snapshot of the drifted active .htaccess at $drift_snapshot." >&2
+                    else
+                        echo "CRITICAL: the drifted active .htaccess could not be snapshotted." >&2
+                    fi
+                    echo "CRITICAL: active .htaccess drifted after activation; automatic rollback refused to avoid deleting an external change." >&2
+                fi
+            else
+                echo "CRITICAL: active .htaccess is not a safe readable regular file; automatic rollback refused." >&2
+            fi
+        else
+            rollback_verified=1
+        fi
+        if ((rollback_verified != 0)); then
+            echo "ROLLBACK VERIFIED: the exact prior .htaccess state and mode were restored." >&2
+        else
+            echo "CRITICAL: the exact prior .htaccess state, digest, or mode was not restored." >&2
+        fi
+        if [[ "$TARGET_ENVIRONMENT" == "staging" ]] &&
+            (test -e "$STAGING_ATTESTATION" || test -L "$STAGING_ATTESTATION"); then
+            if test -f "$STAGING_ATTESTATION" && test ! -L "$STAGING_ATTESTATION"; then
+                invalidated_attestation="$BACKUP_DIR/INVALIDATED_STAGING_DISCOVERY_CACHE_VERIFICATION.${STAMP}"
+                if mv -- "$STAGING_ATTESTATION" "$invalidated_attestation" &&
+                    chmod 0600 "$invalidated_attestation"; then
+                    echo "Invalidated the prior staging attestation after the failed transaction." >&2
+                else
+                    echo "CRITICAL: the prior staging attestation could not be safely invalidated." >&2
+                fi
+            else
+                echo "CRITICAL: the staging attestation is not a safe regular file and was not moved." >&2
+            fi
         fi
         purge_application_cache "$TARGET_ROOT" || true
-        echo "Rollback attempted; the verified private recovery set remains at $BACKUP_SET." >&2
+        echo "The verified private recovery set remains at $BACKUP_SET." >&2
     fi
 
     rm -f -- "$CANDIDATE" "$ROLLBACK_CANDIDATE" "$BLOCK_FILE" || true
@@ -511,6 +589,8 @@ verify_negative_scope "$TARGET_HOST" "$REQUEST_DIR"
 if [[ "$TARGET_ENVIRONMENT" == "production" ]]; then
     verify_production_redirects "$REQUEST_DIR"
 fi
+[[ "$(file_digest "$HTACCESS")" == "$CANDIDATE_DIGEST" ]] ||
+    stop "active .htaccess drifted during live verification."
 
 if [[ "$TARGET_ENVIRONMENT" == "staging" ]]; then
     ATTESTATION_TMP="$BACKUP_DIR/.LAST_STAGING_DISCOVERY_CACHE_VERIFICATION.${STAMP}"
