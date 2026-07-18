@@ -57,6 +57,8 @@ def main() -> None:
         'automatic rollback proof': 'ROLLBACK VERIFIED: the exact prior .htaccess state and mode were restored',
         'failed attestation invalidation': 'INVALIDATED_STAGING_DISCOVERY_CACHE_VERIFICATION',
         'paced public verification': 'sleep 0.25',
+        'bounded 429 retry': 'returned 429; retrying in',
+        'Retry-After support': '[Rr]etry-[Aa]fter:',
     }
     for label, token in required_script_tokens.items():
         require(script, token, label)
