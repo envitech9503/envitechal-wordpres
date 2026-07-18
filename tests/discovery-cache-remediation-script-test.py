@@ -59,6 +59,7 @@ def main() -> None:
         'paced public verification': 'sleep 0.25',
         'bounded 429 retry': 'returned 429; retrying in',
         'Retry-After support': '[Rr]etry-[Aa]fter:',
+        'unique retry cache key': 'eta_discovery_cache_retry=${attempt}',
     }
     for label, token in required_script_tokens.items():
         require(script, token, label)
