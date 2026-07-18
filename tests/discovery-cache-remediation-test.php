@@ -51,9 +51,10 @@ $block = <<<'BLOCK'
 <IfModule mod_headers.c>
     Header onsuccess unset Expires env=ETA_DISCOVERY_SHORT_CACHE
     Header always unset Expires env=ETA_DISCOVERY_SHORT_CACHE
+    # PHP/LSAPI response headers live in Apache's always table. Remove any
+    # normal-table value, then replace the always-table value exactly once.
     Header onsuccess unset Cache-Control env=ETA_DISCOVERY_SHORT_CACHE
-    Header always unset Cache-Control env=ETA_DISCOVERY_SHORT_CACHE
-    Header onsuccess set Cache-Control "public, max-age=300, s-maxage=3600, must-revalidate" env=ETA_DISCOVERY_SHORT_CACHE
+    Header always set Cache-Control "public, max-age=300, s-maxage=3600, must-revalidate" env=ETA_DISCOVERY_SHORT_CACHE
 </IfModule>
 # END Envi Tech AL discovery cache policy
 BLOCK;
@@ -165,10 +166,36 @@ $ordinaryHeaders = "HTTP/1.1 200 OK\r\nCache-Control: public, max-age=86400\r\n"
 file_put_contents($work . '/headers-ordinary', $ordinaryHeaders);
 $status = eta_cache_test_run([PHP_BINARY, $validator, '--assert-absent', $work . '/headers-ordinary'], $output);
 eta_cache_test_assert($status === 0, 'absence mode permits an unrelated ordinary cache policy', $output);
+
+$proxyThenMissing = $validHeaders . "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n";
+file_put_contents($work . '/headers-proxy-then-missing', $proxyThenMissing);
+$status = eta_cache_test_run([PHP_BINARY, $validator, $work . '/headers-proxy-then-missing'], $output);
+eta_cache_test_assert($status !== 0, 'an earlier policy cannot hide a missing final response policy');
+
+$proxyThenValid = "HTTP/1.1 200 Connection established\r\n" .
+    "Cache-Control: public, max-age=31536000\r\nExpires: tomorrow\r\n\r\n" .
+    $validHeaders;
+file_put_contents($work . '/headers-proxy-then-valid', $proxyThenValid);
+$status = eta_cache_test_run([PHP_BINARY, $validator, $work . '/headers-proxy-then-valid'], $output);
+eta_cache_test_assert($status === 0, 'only the final response block controls exact validation', $output);
+
+$informationalThenValid = "HTTP/1.1 100 Continue\nInterim: yes\n\n" .
+    str_replace("\r\n", "\n", $validHeaders);
+file_put_contents($work . '/headers-informational-then-valid', $informationalThenValid);
+$status = eta_cache_test_run([PHP_BINARY, $validator, $work . '/headers-informational-then-valid'], $output);
+eta_cache_test_assert($status === 0, 'informational blocks and LF-only final headers are handled', $output);
+
 $leakedWithNoise = $validHeaders . "Cache-Control: immutable\r\nExpires: tomorrow\r\n";
 file_put_contents($work . '/headers-leaked-with-noise', $leakedWithNoise);
 $status = eta_cache_test_run([PHP_BINARY, $validator, '--assert-absent', $work . '/headers-leaked-with-noise'], $output);
 eta_cache_test_assert($status !== 0, 'absence mode detects managed policy even with duplicate/noisy headers');
+
+$splitLeak = "HTTP/1.1 200 OK\r\n" .
+    "Cache-Control: public, max-age=300\r\n" .
+    "Cache-Control: s-maxage=3600, must-revalidate\r\n\r\n";
+file_put_contents($work . '/headers-split-leak', $splitLeak);
+$status = eta_cache_test_run([PHP_BINARY, $validator, '--assert-absent', $work . '/headers-split-leak'], $output);
+eta_cache_test_assert($status !== 0, 'absence mode combines list-valued Cache-Control fields before leak detection');
 
 $invalidHeaders = [
     'long age' => str_replace('max-age=300', 'max-age=31536000', $validHeaders),
