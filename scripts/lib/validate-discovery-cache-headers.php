@@ -20,26 +20,52 @@ if (!is_string($headers)) {
     exit(65);
 }
 
-preg_match_all('/^cache-control\s*:\s*([^\r\n]*)/mi', $headers, $cacheMatches);
+// curl --dump-header may contain a proxy CONNECT response, informational
+// responses, redirects, or retries before the response being validated. Only
+// the final non-informational response block is authoritative.
+$normalizedHeaders = str_replace(["\r\n", "\r"], "\n", $headers);
+$headerBlocks = preg_split('/\n\n+/', trim($normalizedHeaders));
+$finalHeaders = null;
+foreach (is_array($headerBlocks) ? $headerBlocks : [] as $headerBlock) {
+    $lines = explode("\n", trim($headerBlock));
+    $statusLine = trim($lines[0] ?? '');
+    if (!preg_match('/^HTTP\/\S+\s+([0-9]{3})(?:\s|$)/i', $statusLine, $statusMatch)) {
+        continue;
+    }
+    $status = (int) $statusMatch[1];
+    if ($status >= 100 && $status < 200) {
+        continue;
+    }
+    $finalHeaders = $headerBlock;
+}
+if (!is_string($finalHeaders)) {
+    fwrite(STDERR, "Could not find a final HTTP response header block.\n");
+    exit(1);
+}
+
+preg_match_all('/^cache-control\s*:\s*([^\r\n]*)/mi', $finalHeaders, $cacheMatches);
 $cacheValues = $cacheMatches[1] ?? [];
 if ($absenceMode) {
+    // Cache-Control is list-valued: multiple field lines are semantically one
+    // combined directive list. Aggregate them before checking for leakage so
+    // an intermediary cannot split the managed policy across field lines.
+    $normalizedDirectives = [];
     foreach ($cacheValues as $cacheValue) {
-        $normalizedDirectives = [];
         foreach (explode(',', strtolower($cacheValue)) as $directive) {
             $normalized = preg_replace('/\s*=\s*/', '=', trim($directive));
             if (is_string($normalized)) {
                 $normalizedDirectives[$normalized] = true;
             }
         }
-        if (isset(
-            $normalizedDirectives['public'],
-            $normalizedDirectives['max-age=300'],
-            $normalizedDirectives['s-maxage=3600'],
-            $normalizedDirectives['must-revalidate']
-        )) {
-            fwrite(STDERR, "The managed discovery cache policy leaked onto an out-of-scope response.\n");
-            exit(1);
-        }
+    }
+    if (isset(
+        $normalizedDirectives['public'],
+        $normalizedDirectives['max-age=300'],
+        $normalizedDirectives['s-maxage=3600'],
+        $normalizedDirectives['must-revalidate']
+    )) {
+        fwrite(STDERR, "The managed discovery cache policy leaked onto an out-of-scope response.\n");
+        exit(1);
     }
     echo "Managed discovery cache policy is absent.\n";
     exit(0);
@@ -78,7 +104,7 @@ if (in_array(false, $expected, true)) {
     exit(1);
 }
 
-if (preg_match('/^expires\s*:/mi', $headers)) {
+if (preg_match('/^expires\s*:/mi', $finalHeaders)) {
     fwrite(STDERR, "Expires must be absent from managed discovery responses.\n");
     exit(1);
 }
