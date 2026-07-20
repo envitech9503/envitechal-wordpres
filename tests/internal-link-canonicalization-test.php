@@ -189,6 +189,7 @@ $functions_source = file_get_contents(
     dirname(__DIR__) . '/wp-content/themes/generatepress-envitechal/functions.php'
 );
 eta_link_test_same(true, is_string($functions_source), 'theme functions source is readable');
+$functions_source = str_replace("\r\n", "\n", $functions_source);
 
 $clean_content_match = [];
 $clean_content_found = preg_match(

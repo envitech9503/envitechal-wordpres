@@ -44,9 +44,13 @@ eta_robots_test_same(
     'WordPress production directives remain unchanged'
 );
 eta_robots_test_same(
-    "User-agent: *\nAllow: /\n",
+    "User-agent: *\n"
+        . "Disallow: /wp-admin/\n"
+        . "Allow: /wp-admin/admin-ajax.php\n"
+        . "Content-Signal: ai-train=no, search=yes, ai-input=yes\n\n"
+        . "Sitemap: https://envitechal.com/sitemap_index.xml\n",
     eta_modern_filter_robots_txt("User-agent: *\nAllow: /\n", true),
-    'production robots.txt body remains unchanged'
+    'production robots.txt keeps Content-Signal inside the user-agent group'
 );
 
 $_SERVER['HTTP_HOST'] = 'staging.envitechal.com';

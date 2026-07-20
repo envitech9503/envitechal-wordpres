@@ -24,6 +24,16 @@ function eta_test_same($expected, $actual, $label)
     exit(1);
 }
 
+function eta_test_true($condition, $label)
+{
+    if ($condition) {
+        return;
+    }
+
+    file_put_contents('php://stderr', "FAILED: {$label}\n", FILE_APPEND);
+    exit(1);
+}
+
 $ordinary_script = '<script src="/assets/site.js">window.site = true;</script>';
 $ordinary_style = '<style>.site-button { color: green; }</style>';
 eta_test_same(
@@ -120,16 +130,52 @@ eta_test_same(
     'headerless full HTML response is filtered'
 );
 
+$_SERVER['HTTP_ACCEPT'] = 'text/html, text/markdown;q=1.0';
+eta_test_true(eta_ai_visibility_wants_markdown(), 'Markdown Accept media range is recognised');
+$_SERVER['HTTP_ACCEPT'] = 'text/markdown;q=0, text/html';
+eta_test_true(!eta_ai_visibility_wants_markdown(), 'Markdown q=0 media range is refused');
+
+$rendered_html = <<<'HTML'
+<!doctype html><html><body>
+<header>Header navigation</header>
+<main id="primary">
+  <h1>Parameters &amp; Panels</h1>
+  <p>Testing &amp; analysis with <a href="/services/">service details</a>.</p>
+  <ul><li>Water testing</li><li>Air monitoring</li></ul>
+  <table><tr><th>Parameter</th><th>Matrix</th></tr><tr><td>COD</td><td>Effluent</td></tr></table>
+  <aside class="sidebar">Sidebar text</aside>
+  <div class="eta-chatbot-root">Chatbot text</div>
+  <script>window.secret = true;</script>
+</main>
+<footer>Footer navigation</footer>
+</body></html>
+HTML;
+$rendered_markdown = eta_ai_visibility_extract_main_markdown($rendered_html, 'https://envitechal.com/example/');
+eta_test_same('Parameters & Panels', $rendered_markdown['title'], 'rendered H1 entities are decoded before use');
+eta_test_true(strpos($rendered_markdown['content'], '# Parameters & Panels') !== false, 'rendered heading is preserved');
+eta_test_true(strpos($rendered_markdown['content'], '[service details](https://envitechal.com/services/)') !== false, 'relative links become absolute');
+eta_test_true(strpos($rendered_markdown['content'], '- Water testing') !== false, 'unordered lists are preserved');
+eta_test_true(strpos($rendered_markdown['content'], '| Parameter | Matrix |') !== false, 'tables are preserved');
+eta_test_true(strpos($rendered_markdown['content'], 'Sidebar text') === false, 'sidebar is excluded');
+eta_test_true(strpos($rendered_markdown['content'], 'Chatbot text') === false, 'chatbot root is excluded');
+eta_test_true(strpos($rendered_markdown['content'], 'window.secret') === false, 'scripts are excluded');
+
 eta_test_same(
-    file_get_contents(dirname(__DIR__) . '/deploy/public_html/llms.txt'),
-    eta_ai_visibility_llms_text(false),
+    str_replace("\r\n", "\n", file_get_contents(dirname(__DIR__) . '/deploy/public_html/llms.txt')),
+    str_replace("\r\n", "\n", eta_ai_visibility_llms_text(false)),
     'static and virtual llms.txt stay identical'
 );
 
 eta_test_same(
-    file_get_contents(dirname(__DIR__) . '/deploy/public_html/llms-full.txt'),
-    eta_ai_visibility_llms_text(true),
+    str_replace("\r\n", "\n", file_get_contents(dirname(__DIR__) . '/deploy/public_html/llms-full.txt')),
+    str_replace("\r\n", "\n", eta_ai_visibility_llms_text(true)),
     'static and virtual llms-full.txt stay identical'
+);
+
+eta_test_same(
+    "Contact: mailto:info@envitechal.com\nPreferred-Languages: en, ur\nCanonical: https://envitechal.com/.well-known/security.txt\nExpires: 2027-07-21T23:59:59Z\n",
+    eta_ai_visibility_security_text('2027-07-21T23:59:59Z'),
+    'security.txt fields remain exact'
 );
 
 echo "Legacy chatbot response filter and LLMS parity tests passed.\n";
