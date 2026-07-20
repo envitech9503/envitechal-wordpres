@@ -670,6 +670,18 @@ function eta_modern_schema_credentials()
             ],
             'validThrough' => '2028-03-23',
         ],
+        'sindh-epa-karachi' => [
+            '@type' => 'EducationalOccupationalCredential',
+            'name' => 'Sindh EPA environmental laboratory certification',
+            'credentialCategory' => 'Environmental laboratory certification',
+            'identifier' => 'EPA/Lab/L.C/ENVI TECH AL AL-2/20/2020',
+            'recognizedBy' => [
+                '@type' => 'Organization',
+                'name' => 'Sindh Environmental Protection Agency',
+                'url' => 'https://envitechal.com/wp-content/uploads/2026/01/SEPA-NOC.pdf',
+            ],
+            'validThrough' => '2028-06-09',
+        ],
         'iso-9001' => [
             '@type' => 'EducationalOccupationalCredential',
             'name' => 'ISO 9001:2015',
@@ -763,6 +775,7 @@ function eta_modern_schema_organization()
         'hasCredential' => [
             $credentials['pnac-lahore'],
             $credentials['punjab-epa-lahore'],
+            $credentials['sindh-epa-karachi'],
             $credentials['iso-9001'],
             $credentials['iso-14001'],
         ],
@@ -795,6 +808,9 @@ function eta_modern_schema_local_business($location, $description = '')
                 '@type' => 'GeoCoordinates',
                 'latitude' => 24.883882777821796,
                 'longitude' => 67.06932881033588,
+            ],
+            'hasCredential' => [
+                $credentials['sindh-epa-karachi'],
             ],
             'address' => [
                 '@type' => 'PostalAddress',
@@ -1368,7 +1384,7 @@ add_action('wp_head', function () {
                 'name' => 'Envi Tech AL credentials',
                 'itemListElement' => [
                     ['@type' => 'ListItem', 'position' => 1, 'name' => 'PNAC LAB-347 Lahore laboratory accreditation scope'],
-                    ['@type' => 'ListItem', 'position' => 2, 'name' => 'Sindh EPA document requiring current confirmation'],
+                    ['@type' => 'ListItem', 'position' => 2, 'name' => 'Sindh EPA environmental laboratory certification for the Karachi laboratory'],
                     ['@type' => 'ListItem', 'position' => 3, 'name' => 'Punjab EPA approval information'],
                     ['@type' => 'ListItem', 'position' => 4, 'name' => 'ISO 9001:2015 and ISO 14001:2015 system certificates'],
                 ],
