@@ -11,6 +11,7 @@ require_once get_stylesheet_directory() . '/inc/premium-post-patterns.php';
 require_once get_stylesheet_directory() . '/inc/legacy-redirects.php';
 require_once get_stylesheet_directory() . '/inc/robots-directives.php';
 require_once get_stylesheet_directory() . '/inc/ai-visibility.php';
+require_once get_stylesheet_directory() . '/inc/eta-agent.php';
 
 add_action('wp_enqueue_scripts', function () {
     $modern_css = get_stylesheet_directory() . '/assets/css/eta-modern.css';
@@ -393,6 +394,11 @@ add_filter('rank_math/json_ld', function ($data) {
     return eta_modern_rank_math_schema_templates(is_array($data) ? $data : []);
 }, 99);
 
+add_filter('language_attributes', function ($output) {
+    $output = preg_replace('/\blang=("[^"]*"|\'[^\']*\')/i', 'lang="en-GB"', (string) $output, 1);
+    return strpos((string) $output, 'lang=') === false ? trim((string) $output . ' lang="en-GB"') : $output;
+}, 99, 1);
+
 add_action('template_redirect', function () {
     if (is_admin() || is_feed() || wp_doing_ajax() || (defined('REST_REQUEST') && REST_REQUEST)) {
         return;
@@ -400,6 +406,25 @@ add_action('template_redirect', function () {
 
     ob_start('eta_modern_normalize_head_meta');
 }, 0);
+
+function eta_modern_protect_json_ld_entities($html)
+{
+    return preg_replace_callback(
+        '#(<script\b[^>]*type=["\']application/ld\+json["\'][^>]*>)(.*?)(</script>)#is',
+        function ($matches) {
+            $decoded_source = html_entity_decode($matches[2], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            $data = json_decode($decoded_source, true);
+            if (!is_array($data) || json_last_error() !== JSON_ERROR_NONE) {
+                return $matches[0];
+            }
+
+            return $matches[1]
+                . wp_json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_AMP)
+                . $matches[3];
+        },
+        (string) $html
+    );
+}
 
 function eta_modern_normalize_head_meta($html)
 {
@@ -451,7 +476,8 @@ function eta_modern_normalize_head_meta($html)
         );
     }
 
-    return preg_replace('/<\/head>/i', $tag_html . '</head>', $html, 1);
+    $html = preg_replace('/<\/head>/i', $tag_html . '</head>', $html, 1);
+    return eta_modern_protect_json_ld_entities($html);
 }
 
 function eta_modern_meta_description()
@@ -604,12 +630,122 @@ function eta_modern_rank_math_active()
     return defined('RANK_MATH_VERSION') || class_exists('RankMath');
 }
 
+function eta_modern_schema_decode_entities($value)
+{
+    if (is_array($value)) {
+        foreach ($value as $key => $item) {
+            $value[$key] = eta_modern_schema_decode_entities($item);
+        }
+        return $value;
+    }
+
+    return is_string($value)
+        ? html_entity_decode($value, ENT_QUOTES | ENT_HTML5, 'UTF-8')
+        : $value;
+}
+
+function eta_modern_schema_credentials()
+{
+    return [
+        'pnac-lahore' => [
+            '@type' => 'EducationalOccupationalCredential',
+            'name' => 'ISO/IEC 17025:2017 accreditation',
+            'credentialCategory' => 'Accreditation',
+            'identifier' => 'LAB-347',
+            'recognizedBy' => [
+                '@type' => 'Organization',
+                'name' => 'Pakistan National Accreditation Council',
+                'url' => 'https://www.pnac.gov.pk/index.php/pdfFiles/LAB-347',
+            ],
+            'validThrough' => '2028-09-21',
+        ],
+        'punjab-epa-lahore' => [
+            '@type' => 'EducationalOccupationalCredential',
+            'name' => 'Punjab EPA environmental laboratory certification',
+            'credentialCategory' => 'Environmental laboratory certification',
+            'recognizedBy' => [
+                '@type' => 'Organization',
+                'name' => 'Environmental Protection Agency, Government of the Punjab',
+                'url' => 'https://epd.punjab.gov.pk/system/files/EnviTech_%202025-2028_merged.pdf',
+            ],
+            'validThrough' => '2028-03-23',
+        ],
+        'sindh-epa-karachi' => [
+            '@type' => 'EducationalOccupationalCredential',
+            'name' => 'Sindh EPA environmental laboratory certification',
+            'credentialCategory' => 'Environmental laboratory certification',
+            'identifier' => 'EPA/Lab/L.C/ENVI TECH AL AL-2/20/2020',
+            'recognizedBy' => [
+                '@type' => 'Organization',
+                'name' => 'Sindh Environmental Protection Agency',
+                'url' => 'https://envitechal.com/wp-content/uploads/2026/01/SEPA-NOC.pdf',
+            ],
+            'validThrough' => '2028-06-09',
+        ],
+        'iso-9001' => [
+            '@type' => 'EducationalOccupationalCredential',
+            'name' => 'ISO 9001:2015',
+            'credentialCategory' => 'Quality management system certification',
+            'identifier' => 'TPAK-080177324-QMS',
+            'recognizedBy' => [
+                '@type' => 'Organization',
+                'name' => 'TÜV Austria Bureau of Inspection & Certification (Pvt.) Ltd.',
+                'url' => 'https://envitechal.com/wp-content/uploads/2026/01/ISO-9001-Certificate.pdf',
+            ],
+            'validThrough' => '2027-08-27',
+        ],
+        'iso-14001' => [
+            '@type' => 'EducationalOccupationalCredential',
+            'name' => 'ISO 14001:2015',
+            'credentialCategory' => 'Environmental management system certification',
+            'identifier' => 'TPAK-080177424-EMS',
+            'recognizedBy' => [
+                '@type' => 'Organization',
+                'name' => 'TÜV Austria Bureau of Inspection & Certification (Pvt.) Ltd.',
+                'url' => 'https://envitechal.com/wp-content/uploads/2026/01/ISO-14001-Certificate.pdf',
+            ],
+            'validThrough' => '2027-08-27',
+        ],
+    ];
+}
+
+function eta_modern_schema_offer_catalog($area_served)
+{
+    $services = [
+        ['Environmental Lab & Analytical Services', 'Environmental laboratory and analytical testing', '/services/analytical-lab-services/'],
+        ['Water Testing Lab Services', 'Water and wastewater testing', '/services/water-testing-lab-services/'],
+        ['Equipment Calibration', 'Equipment calibration', '/services/equipment-calibration-services/'],
+        ['Environmental Consultancy', 'Environmental consultancy', '/services/environmental-consultancy/'],
+        ['Ballast Water Testing Services', 'Ballast water testing', '/services/ballast-water-testing-services/'],
+    ];
+
+    return [
+        '@type' => 'OfferCatalog',
+        'name' => 'Envi Tech AL service catalogue',
+        'itemListElement' => array_map(function ($service) use ($area_served) {
+            return [
+                '@type' => 'Offer',
+                'itemOffered' => [
+                    '@type' => 'Service',
+                    'name' => $service[0],
+                    'serviceType' => $service[1],
+                    'url' => home_url($service[2]),
+                    'areaServed' => $area_served,
+                ],
+            ];
+        }, $services),
+    ];
+}
+
 function eta_modern_schema_organization()
 {
+    $credentials = eta_modern_schema_credentials();
     return [
         '@type' => 'Organization',
         '@id' => home_url('/#organization'),
         'name' => 'Envi Tech AL',
+        'legalName' => 'Envi Tech AL (Pvt.) Ltd.',
+        'description' => 'Environmental testing laboratory and consultancy supporting laboratory analysis, field monitoring, equipment calibration, and environmental compliance documentation in Pakistan.',
         'url' => home_url('/'),
         'logo' => [
             '@type' => 'ImageObject',
@@ -618,6 +754,31 @@ function eta_modern_schema_organization()
         'image' => eta_modern_default_share_image(),
         'email' => 'info@envitechal.com',
         'telephone' => ['+923102288801', '+923152006074', '+924232296099'],
+        'knowsAbout' => [
+            'environmental testing',
+            'water and wastewater analysis',
+            'stack emissions monitoring',
+            'ambient air monitoring',
+            'noise monitoring',
+            'EIA/EMP/EMR documentation',
+            'ISO 14001',
+            'equipment calibration',
+            'ballast water testing',
+        ],
+        'contactPoint' => [
+            '@type' => 'ContactPoint',
+            'contactType' => 'customer service',
+            'email' => 'info@envitechal.com',
+            'telephone' => '+923102288801',
+            'availableLanguage' => ['en', 'ur'],
+        ],
+        'hasCredential' => [
+            $credentials['pnac-lahore'],
+            $credentials['punjab-epa-lahore'],
+            $credentials['sindh-epa-karachi'],
+            $credentials['iso-9001'],
+            $credentials['iso-14001'],
+        ],
         'sameAs' => [
             'https://www.facebook.com/envitechal',
             'https://www.linkedin.com/company/envitech-al',
@@ -625,7 +786,7 @@ function eta_modern_schema_organization()
             'https://www.instagram.com/envitech2026/',
             'https://www.youtube.com/channel/UC4C6CEHceAOGuzmSX_t7CpQ',
         ],
-        'subOrganization' => [
+        'department' => [
             ['@id' => home_url('/#karachi-lab')],
             ['@id' => home_url('/#lahore-lab')],
         ],
@@ -634,6 +795,7 @@ function eta_modern_schema_organization()
 
 function eta_modern_schema_local_business($location, $description = '')
 {
+    $credentials = eta_modern_schema_credentials();
     $branches = [
         'karachi' => [
             '@id' => home_url('/#karachi-lab'),
@@ -642,6 +804,14 @@ function eta_modern_schema_local_business($location, $description = '')
             'telephone' => '+923102288801',
             'description' => 'Environmental testing, field monitoring, and consultancy coordination for Karachi and Sindh. Confirm the laboratory location, parameter, method, and current credential before relying on an accreditation claim.',
             'areaServed' => ['Karachi', 'Sindh', 'Pakistan'],
+            'geo' => [
+                '@type' => 'GeoCoordinates',
+                'latitude' => 24.883882777821796,
+                'longitude' => 67.06932881033588,
+            ],
+            'hasCredential' => [
+                $credentials['sindh-epa-karachi'],
+            ],
             'address' => [
                 '@type' => 'PostalAddress',
                 'streetAddress' => 'First Floor, 345, Street 15, Bahadurabad Block 3, Bahadur Yar Jang CHS',
@@ -658,6 +828,15 @@ function eta_modern_schema_local_business($location, $description = '')
             'telephone' => '+924232296099',
             'description' => 'Environmental water and wastewater testing for Lahore and Punjab. PNAC LAB-347 applies only to the Lahore laboratory and the methods listed in its published scope.',
             'areaServed' => ['Lahore', 'Punjab', 'Pakistan'],
+            'geo' => [
+                '@type' => 'GeoCoordinates',
+                'latitude' => 31.473004708007117,
+                'longitude' => 74.29714724390335,
+            ],
+            'hasCredential' => [
+                $credentials['pnac-lahore'],
+                $credentials['punjab-epa-lahore'],
+            ],
             'address' => [
                 '@type' => 'PostalAddress',
                 'streetAddress' => '87-E Madina Heights, Office A/30-31, 8th Floor, Maulana Shaukat Ali Road, Johar Town',
@@ -676,6 +855,7 @@ function eta_modern_schema_local_business($location, $description = '')
     return array_merge([
         '@type' => 'LocalBusiness',
         'parentOrganization' => ['@id' => home_url('/#organization')],
+        'branchOf' => ['@id' => home_url('/#organization')],
         'logo' => [
             '@type' => 'ImageObject',
             'url' => 'https://envitechal.com/wp-content/uploads/2026/06/envitechal-logo-header-hq-transparent.png',
@@ -683,14 +863,7 @@ function eta_modern_schema_local_business($location, $description = '')
         'image' => eta_modern_default_share_image(),
         'email' => 'info@envitechal.com',
         'description' => $description ?: eta_modern_meta_description(),
-        'priceRange' => 'Quotation-based',
-        'makesOffer' => [
-        ['@type' => 'Offer', 'name' => 'Environmental Lab & Analytical Services'],
-        ['@type' => 'Offer', 'name' => 'Water Testing Lab Services'],
-        ['@type' => 'Offer', 'name' => 'Equipment Calibration'],
-        ['@type' => 'Offer', 'name' => 'Environmental Consultancy'],
-        ['@type' => 'Offer', 'name' => 'Ballast Water Testing Services'],
-        ],
+        'hasOfferCatalog' => eta_modern_schema_offer_catalog($branch['areaServed']),
     ], $branch);
 }
 
@@ -723,6 +896,8 @@ function eta_modern_schema_faq_page($faqs, $name = '')
         '@id' => get_permalink() . '#faq',
         'name' => $name ?: eta_modern_display_title(get_the_ID()),
         'url' => get_permalink(),
+        'isPartOf' => ['@id' => home_url('/#website')],
+        'inLanguage' => 'en-GB',
         'mainEntity' => $entities,
     ];
 }
@@ -871,7 +1046,15 @@ function eta_modern_rank_math_schema_templates($data)
             'name' => 'Envi Tech AL',
             'url' => home_url('/'),
             'publisher' => ['@id' => home_url('/#organization')],
-            'inLanguage' => 'en-PK',
+            'inLanguage' => 'en-GB',
+            'potentialAction' => [
+                '@type' => 'SearchAction',
+                'target' => [
+                    '@type' => 'EntryPoint',
+                    'urlTemplate' => home_url('/?s={search_term_string}'),
+                ],
+                'query-input' => 'required name=search_term_string',
+            ],
         ],
     ];
 
@@ -953,6 +1136,7 @@ function eta_modern_rank_math_schema_templates($data)
             'dateModified' => get_the_modified_date('c'),
             'author' => ['@id' => home_url('/#organization')],
             'publisher' => ['@id' => home_url('/#organization')],
+            'inLanguage' => 'en-GB',
             'mainEntityOfPage' => get_permalink(),
             'image' => eta_modern_post_image_url($post_id),
         ];
@@ -1023,7 +1207,7 @@ function eta_modern_rank_math_schema_templates($data)
         $schema['eta-breadcrumbs'] = $breadcrumbs;
     }
 
-    return $schema;
+    return eta_modern_schema_decode_entities($schema);
 }
 
 add_action('wp_head', function () {
@@ -1200,7 +1384,7 @@ add_action('wp_head', function () {
                 'name' => 'Envi Tech AL credentials',
                 'itemListElement' => [
                     ['@type' => 'ListItem', 'position' => 1, 'name' => 'PNAC LAB-347 Lahore laboratory accreditation scope'],
-                    ['@type' => 'ListItem', 'position' => 2, 'name' => 'Sindh EPA document requiring current confirmation'],
+                    ['@type' => 'ListItem', 'position' => 2, 'name' => 'Sindh EPA environmental laboratory certification for the Karachi laboratory'],
                     ['@type' => 'ListItem', 'position' => 3, 'name' => 'Punjab EPA approval information'],
                     ['@type' => 'ListItem', 'position' => 4, 'name' => 'ISO 9001:2015 and ISO 14001:2015 system certificates'],
                 ],
@@ -1343,7 +1527,7 @@ add_action('wp_head', function () {
         <meta property="og:title" content="Water Testing Laboratory in Karachi &amp; Lahore | Envi Tech AL">
         <meta property="og:image" content="https://envitechal.com/wp-content/uploads/2026/05/water-testing-services-karachi-lahore.png">
     <?php endif; ?>
-    <script type="application/ld+json"><?php echo wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE); ?></script>
+    <script type="application/ld+json" data-no-optimize="1" data-no-defer="1"><?php echo wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_AMP); ?></script>
     <?php
 }, 12);
 
@@ -1445,11 +1629,109 @@ add_action('wp_footer', function () {
         return;
     }
     ?>
-    <div class="eta-chatbot-root">
-        <a id="eta-chatbot-launcher" class="eta-chatbot-launcher" href="https://wa.me/923102288801" target="_blank" rel="noopener noreferrer" aria-label="<?php esc_attr_e('Chat with Envi Tech AL on WhatsApp', 'envi-tech-al-modern'); ?>" title="<?php esc_attr_e('Chat with Envi Tech AL on WhatsApp', 'envi-tech-al-modern'); ?>">
-            <span class="screen-reader-text"><?php esc_html_e('Chat with Envi Tech AL on WhatsApp', 'envi-tech-al-modern'); ?></span>
-        </a>
+    <div
+        class="eta-chatbot-root"
+        data-bundle-url="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/js/eta-chatbot.js'); ?>"
+        data-health-url="<?php echo esc_url(rest_url('eta/v1/agent/health')); ?>"
+        data-message-url="<?php echo esc_url(rest_url('eta/v1/agent/message')); ?>"
+        data-rest-nonce="<?php echo esc_attr(wp_create_nonce('wp_rest')); ?>">
+        <button id="eta-chatbot-launcher" class="eta-chatbot-launcher" type="button" aria-haspopup="dialog" aria-controls="eta-chatbot-panel" aria-expanded="false" aria-label="<?php esc_attr_e('Open the Envi Tech AL assistant', 'envi-tech-al-modern'); ?>" title="<?php esc_attr_e('Open the Envi Tech AL assistant', 'envi-tech-al-modern'); ?>">
+            <span class="screen-reader-text"><?php esc_html_e('Open the Envi Tech AL assistant', 'envi-tech-al-modern'); ?></span>
+        </button>
+        <section id="eta-chatbot-panel" class="eta-chatbot-panel" role="dialog" aria-modal="true" aria-labelledby="eta-chatbot-title" tabindex="-1" hidden>
+            <header class="eta-chatbot-panel-header">
+                <div class="eta-chatbot-panel-copy">
+                    <p class="eta-chatbot-panel-kicker"><?php esc_html_e('Environmental information assistant', 'envi-tech-al-modern'); ?></p>
+                    <h2 id="eta-chatbot-title" class="eta-chatbot-panel-title"><?php esc_html_e('Ask Envi Tech AL', 'envi-tech-al-modern'); ?></h2>
+                    <p class="eta-chatbot-panel-summary"><?php esc_html_e('Get source-linked guidance about services, locations, credentials, and report verification.', 'envi-tech-al-modern'); ?></p>
+                </div>
+                <button class="eta-chatbot-close" type="button" aria-label="<?php esc_attr_e('Close assistant', 'envi-tech-al-modern'); ?>">&times;</button>
+            </header>
+            <div class="eta-chatbot-panel-body">
+                <p class="eta-chatbot-status" role="status" aria-live="polite"><?php esc_html_e('Connecting to the assistant…', 'envi-tech-al-modern'); ?></p>
+                <div class="eta-chatbot-frame-wrap">
+                    <div class="eta-chatbot-messages" role="log" aria-live="polite" aria-relevant="additions text"></div>
+                    <form class="eta-chatbot-form">
+                        <label class="screen-reader-text" for="eta-chatbot-question"><?php esc_html_e('Your question', 'envi-tech-al-modern'); ?></label>
+                        <textarea id="eta-chatbot-question" name="message" rows="2" maxlength="1200" placeholder="<?php esc_attr_e('Ask about services, scope, locations, or report verification', 'envi-tech-al-modern'); ?>" required></textarea>
+                        <button class="eta-chatbot-send" type="submit"><?php esc_html_e('Send', 'envi-tech-al-modern'); ?></button>
+                    </form>
+                </div>
+                <div class="eta-chatbot-fallback" hidden>
+                    <p><?php esc_html_e('The AI assistant is unavailable right now. The team can still help on WhatsApp or by email.', 'envi-tech-al-modern'); ?></p>
+                    <div class="eta-chatbot-actions">
+                        <a class="eta-chatbot-action eta-chatbot-action-primary" href="https://wa.me/923102288801" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Open WhatsApp', 'envi-tech-al-modern'); ?></a>
+                        <a class="eta-chatbot-action" href="mailto:info@envitechal.com"><?php esc_html_e('Email the team', 'envi-tech-al-modern'); ?></a>
+                    </div>
+                </div>
+            </div>
+            <footer class="eta-chatbot-panel-footer">
+                <a class="eta-chatbot-footer-link" href="https://wa.me/923102288801" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Prefer a person? Continue on WhatsApp', 'envi-tech-al-modern'); ?></a>
+            </footer>
+        </section>
     </div>
+    <script id="eta-chatbot-bootstrap" data-no-optimize="1" data-no-defer="1" data-cfasync="false">
+        (function () {
+            var root = document.querySelector('.eta-chatbot-root');
+            if (!root) return;
+            var launcher = root.querySelector('.eta-chatbot-launcher');
+            var panel = root.querySelector('.eta-chatbot-panel');
+            var close = root.querySelector('.eta-chatbot-close');
+            var status = root.querySelector('.eta-chatbot-status');
+            var fallback = root.querySelector('.eta-chatbot-fallback');
+            var loading = false;
+
+            function closePanel() {
+                panel.hidden = true;
+                root.classList.remove('is-open');
+                launcher.setAttribute('aria-expanded', 'false');
+                launcher.focus();
+            }
+
+            function showUnavailable() {
+                status.textContent = '<?php echo esc_js(__('Assistant unavailable — WhatsApp support is ready.', 'envi-tech-al-modern')); ?>';
+                fallback.hidden = false;
+                root.dataset.etaState = 'unavailable';
+            }
+
+            function loadBundle() {
+                if (window.etaChatbotInit) {
+                    window.etaChatbotInit(root);
+                    return;
+                }
+                if (loading) return;
+                loading = true;
+                var script = document.createElement('script');
+                script.src = root.dataset.bundleUrl;
+                script.async = true;
+                script.dataset.noOptimize = '1';
+                script.dataset.noDefer = '1';
+                script.setAttribute('data-cfasync', 'false');
+                script.onload = function () {
+                    loading = false;
+                    if (window.etaChatbotInit) window.etaChatbotInit(root);
+                    else showUnavailable();
+                };
+                script.onerror = showUnavailable;
+                document.head.appendChild(script);
+                window.setTimeout(function () {
+                    if (!window.etaChatbotInit) showUnavailable();
+                }, 10000);
+            }
+
+            launcher.addEventListener('click', function () {
+                panel.hidden = false;
+                root.classList.add('is-open');
+                launcher.setAttribute('aria-expanded', 'true');
+                panel.focus();
+                loadBundle();
+            });
+            close.addEventListener('click', closePanel);
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape' && !panel.hidden) closePanel();
+            });
+        }());
+    </script>
     <?php
 }, 100);
 
@@ -1477,7 +1759,6 @@ add_action('init', function () {
             'post_status' => 'publish',
             'post_title' => 'Sindh Environmental Quality Standards (SEQS): Limits, Parameters and Compliance',
             'post_name' => 'sindh-environmental-quality-standards-seqs',
-            'post_content' => 'SEQS compliance hub rendered by the GeneratePress child theme.',
             'post_excerpt' => eta_modern_seqs_meta_description(),
         ]);
     }

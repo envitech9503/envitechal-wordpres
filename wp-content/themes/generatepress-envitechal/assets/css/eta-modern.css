@@ -8174,7 +8174,7 @@ h3 {
 }
 
 .eta-chatbot-root.has-live-chat .eta-chatbot-panel-body {
-    flex: 0 0 auto;
+    flex: 1 1 auto;
     padding: 8px 11px 10px;
 }
 
@@ -8199,7 +8199,96 @@ h3 {
 }
 
 .eta-chatbot-root.has-live-chat .eta-chatbot-frame-wrap {
-    min-height: 0;
+    min-height: 380px;
+}
+
+.eta-chatbot-frame-wrap[hidden] {
+    display: none !important;
+}
+
+.eta-chatbot-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 280px;
+    max-height: min(48vh, 430px);
+    padding: 12px;
+    overflow-y: auto;
+}
+
+.eta-chatbot-message {
+    max-width: 88%;
+    padding: 10px 12px;
+    border-radius: 12px;
+    color: var(--eta-ink);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.eta-chatbot-message p {
+    margin: 0;
+    white-space: pre-wrap;
+}
+
+.eta-chatbot-message-assistant {
+    align-self: flex-start;
+    border: 1px solid rgba(29, 107, 79, 0.16);
+    background: rgba(29, 107, 79, 0.08);
+}
+
+.eta-chatbot-message-user {
+    align-self: flex-end;
+    background: var(--eta-navy);
+    color: #fff;
+}
+
+.eta-chatbot-citations {
+    margin: 8px 0 0;
+    padding-left: 18px;
+    font-size: 0.78rem;
+    overflow-wrap: anywhere;
+}
+
+.eta-chatbot-citations a {
+    color: var(--eta-green);
+}
+
+.eta-chatbot-form {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    padding: 10px;
+    border-top: 1px solid rgba(16, 34, 41, 0.08);
+    background: #fff;
+}
+
+.eta-chatbot-form textarea {
+    min-height: 44px;
+    max-height: 120px;
+    resize: vertical;
+    border: 1px solid rgba(16, 34, 41, 0.22);
+    border-radius: 10px;
+    padding: 9px 10px;
+    color: var(--eta-ink);
+    font: inherit;
+}
+
+.eta-chatbot-send {
+    align-self: end;
+    min-height: 44px;
+    padding: 8px 14px;
+    border: 0;
+    border-radius: 10px;
+    background: var(--eta-green);
+    color: #fff;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.eta-chatbot-send:disabled,
+.eta-chatbot-form textarea:disabled {
+    cursor: not-allowed;
+    opacity: 0.62;
 }
 
 .eta-chatbot-iframe {
@@ -8262,7 +8351,7 @@ h3 {
 }
 
 .eta-chatbot-root.has-live-chat .eta-chatbot-panel-footer {
-    display: none;
+    display: block;
 }
 
 .eta-chatbot-footer-link {

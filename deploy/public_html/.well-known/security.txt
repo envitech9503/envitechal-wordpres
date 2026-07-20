@@ -1,0 +1,4 @@
+Contact: mailto:info@envitechal.com
+Preferred-Languages: en, ur
+Canonical: https://envitechal.com/.well-known/security.txt
+Expires: 2027-07-21T23:59:59Z

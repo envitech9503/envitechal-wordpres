@@ -63,7 +63,7 @@ function eta_modern_send_robots_headers()
 }
 
 /**
- * Keep staging's virtual robots.txt closed while production remains unchanged.
+ * Keep staging closed and emit the reviewed production crawler policy.
  *
  * @param string $output Existing virtual robots.txt body.
  * @param bool   $public Whether WordPress marks the site as public.
@@ -78,7 +78,11 @@ function eta_modern_filter_robots_txt($output, $public)
     eta_modern_send_robots_headers();
 
     if (!eta_modern_is_staging_host()) {
-        return $output;
+        return "User-agent: *\n"
+            . "Disallow: /wp-admin/\n"
+            . "Allow: /wp-admin/admin-ajax.php\n"
+            . "Content-Signal: ai-train=no, search=yes, ai-input=yes\n\n"
+            . "Sitemap: https://envitechal.com/sitemap_index.xml\n";
     }
 
     return "User-agent: *\nDisallow: /\n";
