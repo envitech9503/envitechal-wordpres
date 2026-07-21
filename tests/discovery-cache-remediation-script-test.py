@@ -49,6 +49,7 @@ def main() -> None:
         'cache-busted request key': '?eta_discovery_cache_verify=${STAMP}',
         'GET/HEAD loop': 'for method in GET HEAD',
         'redirect ownership check': 'X-Redirect-By',
+        'redirect CRLF normalization': "tr -d '\\r' <\"$headers\"",
         'redirect GET/HEAD loop': 'for method in GET HEAD',
         'direct target 200 check': 'redirect target $target returned $target_status instead of a direct 200',
         'firewall invariant': 'WAF status: unchanged',
