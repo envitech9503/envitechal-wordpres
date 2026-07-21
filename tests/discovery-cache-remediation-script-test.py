@@ -46,7 +46,7 @@ def main() -> None:
         'rollback activation': 'mv -f -- "$ROLLBACK_CANDIDATE" "$HTACCESS"',
         'WordPress cache purge': 'do_action("litespeed_purge_all")',
         'canonical/cache-busted loop': 'for suffix in \'\' "?eta_discovery_cache_verify=${STAMP}"',
-        'cache-busted request bypass': "curl_args+=(--header 'Cache-Control: no-cache')",
+        'cache-busted request key': '?eta_discovery_cache_verify=${STAMP}',
         'GET/HEAD loop': 'for method in GET HEAD',
         'redirect ownership check': 'X-Redirect-By',
         'redirect GET/HEAD loop': 'for method in GET HEAD',
@@ -67,6 +67,9 @@ def main() -> None:
     }
     for label, token in required_script_tokens.items():
         require(script, token, label)
+
+    if "curl_args+=(--header 'Cache-Control: no-cache')" in script:
+        raise AssertionError('cache-busted verification must not trigger LiteSpeed request bypass mode')
 
     if '## Organization facts' in script:
         raise AssertionError('remediation must not depend on the removed llms-full marker')
