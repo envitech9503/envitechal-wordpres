@@ -121,9 +121,10 @@ verify_discovery_request() {
         --output "$body"
         --write-out $'%{http_code}\n%{content_type}\n%{url_effective}\n'
     )
-    if [[ -n "$suffix" ]]; then
-        curl_args+=(--header 'Cache-Control: no-cache')
-    fi
+    # The timestamped suffix is already a unique cache key. Do not add a
+    # request Cache-Control: no-cache directive: LiteSpeed rewrites the
+    # response cache policy for that diagnostic request, which would test the
+    # server's bypass mode instead of the public resource's actual headers.
     if [[ "$method" == "HEAD" ]]; then
         curl_args+=(--head)
     fi
