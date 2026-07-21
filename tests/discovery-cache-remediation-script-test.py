@@ -99,12 +99,27 @@ def main() -> None:
         'Header always set Cache-Control "public, max-age=300, s-maxage=3600, must-revalidate"',
         'always-table Cache-Control replacement',
     )
-    if 'Header always unset Cache-Control' in script:
-        raise AssertionError('always-table Cache-Control must be replaced, not removed before an onsuccess set')
+    require(
+        script,
+        '<FilesMatch "^(robots\\.txt|llms\\.txt|llms-full\\.txt|index\\.json)$">',
+        'physical discovery-file override',
+    )
+    require(
+        script,
+        'Header always unset Cache-Control env=ETA_DISCOVERY_SHORT_CACHE',
+        'physical-file always-table cleanup',
+    )
+    require(
+        script,
+        'Header set Cache-Control "public, max-age=300, s-maxage=3600, must-revalidate" env=ETA_DISCOVERY_SHORT_CACHE',
+        'physical-file normal-table replacement',
+    )
     if 'Header onsuccess set Cache-Control' in script:
         raise AssertionError('PHP/LSAPI Cache-Control must be set in the always table')
     if script.index('Header onsuccess unset Cache-Control') > script.index('Header always set Cache-Control'):
         raise AssertionError('normal-table Cache-Control removal must precede always-table replacement')
+    if script.index('Header always set Cache-Control') > script.index('Header always unset Cache-Control'):
+        raise AssertionError('physical-file cleanup must run after the outer PHP/LSAPI replacement')
 
     if re.search(r'\b(?:iptables|nft|ufw)\b', script, flags=re.IGNORECASE):
         raise AssertionError('remediation must not invoke firewall administration commands')

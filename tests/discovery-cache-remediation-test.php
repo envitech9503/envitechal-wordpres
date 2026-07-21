@@ -55,6 +55,17 @@ $block = <<<'BLOCK'
     # normal-table value, then replace the always-table value exactly once.
     Header onsuccess unset Cache-Control env=ETA_DISCOVERY_SHORT_CACHE
     Header always set Cache-Control "public, max-age=300, s-maxage=3600, must-revalidate" env=ETA_DISCOVERY_SHORT_CACHE
+    # Production serves these resources as physical files. A hosting/plugin
+    # FilesMatch context can run after the outer per-directory header rules,
+    # so replace both header tables again in an equally specific, URI-gated
+    # context. Staging's virtual WordPress responses resolve to index.php and
+    # continue to use the outer PHP/LSAPI handling above.
+    <FilesMatch "^(robots\.txt|llms\.txt|llms-full\.txt|index\.json)$">
+        Header unset Expires env=ETA_DISCOVERY_SHORT_CACHE
+        Header always unset Expires env=ETA_DISCOVERY_SHORT_CACHE
+        Header always unset Cache-Control env=ETA_DISCOVERY_SHORT_CACHE
+        Header set Cache-Control "public, max-age=300, s-maxage=3600, must-revalidate" env=ETA_DISCOVERY_SHORT_CACHE
+    </FilesMatch>
 </IfModule>
 # END Envi Tech AL discovery cache policy
 BLOCK;
