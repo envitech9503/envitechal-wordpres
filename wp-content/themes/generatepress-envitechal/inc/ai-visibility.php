@@ -333,6 +333,10 @@ function eta_ai_visibility_build_markdown_document($html)
         '- Robots and Content Signals: ' . home_url('/robots.txt'),
         '- Sitemap: ' . home_url('/sitemap_index.xml'),
         '- Agent skills index: ' . home_url('/.well-known/agent-skills/index.json'),
+        '- Full Markdown corpus: ' . home_url('/llms-full.txt'),
+        '- Service catalogue: ' . home_url('/services/'),
+        '- Report verification: ' . home_url('/report-verification-portal/'),
+        '- Security contact: ' . home_url('/.well-known/security.txt'),
     ];
 
     return implode("\n", $lines) . "\n";
