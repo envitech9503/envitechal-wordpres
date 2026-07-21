@@ -61,10 +61,10 @@ $block = <<<'BLOCK'
     # context. Staging's virtual WordPress responses resolve to index.php and
     # continue to use the outer PHP/LSAPI handling above.
     <FilesMatch "^(robots\.txt|llms\.txt|llms-full\.txt|index\.json)$">
-        Header unset Expires env=ETA_DISCOVERY_SHORT_CACHE
-        Header always unset Expires env=ETA_DISCOVERY_SHORT_CACHE
-        Header always unset Cache-Control env=ETA_DISCOVERY_SHORT_CACHE
-        Header set Cache-Control "public, max-age=300, s-maxage=3600, must-revalidate" env=ETA_DISCOVERY_SHORT_CACHE
+        Header unset Expires "expr=%{REQUEST_URI} =~ m#^/(robots\.txt|llms\.txt|llms-full\.txt|\.well-known/agent-skills/index\.json)(\?.*)?$#"
+        Header always unset Expires "expr=%{REQUEST_URI} =~ m#^/(robots\.txt|llms\.txt|llms-full\.txt|\.well-known/agent-skills/index\.json)(\?.*)?$#"
+        Header always unset Cache-Control "expr=%{REQUEST_URI} =~ m#^/(robots\.txt|llms\.txt|llms-full\.txt|\.well-known/agent-skills/index\.json)(\?.*)?$#"
+        Header set Cache-Control "public, max-age=300, s-maxage=3600, must-revalidate" "expr=%{REQUEST_URI} =~ m#^/(robots\.txt|llms\.txt|llms-full\.txt|\.well-known/agent-skills/index\.json)(\?.*)?$#"
     </FilesMatch>
 </IfModule>
 # END Envi Tech AL discovery cache policy
