@@ -109,12 +109,12 @@ def main() -> None:
     )
     require(
         script,
-        'Header always unset Cache-Control env=ETA_DISCOVERY_SHORT_CACHE',
+        'Header always unset Cache-Control "expr=%{REQUEST_URI} =~ m#^/(robots\\.txt|llms\\.txt|llms-full\\.txt|\\.well-known/agent-skills/index\\.json)(\\?.*)?$#"',
         'physical-file always-table cleanup',
     )
     require(
         script,
-        'Header set Cache-Control "public, max-age=300, s-maxage=3600, must-revalidate" env=ETA_DISCOVERY_SHORT_CACHE',
+        'Header set Cache-Control "public, max-age=300, s-maxage=3600, must-revalidate" "expr=%{REQUEST_URI} =~ m#^/(robots\\.txt|llms\\.txt|llms-full\\.txt|\\.well-known/agent-skills/index\\.json)(\\?.*)?$#"',
         'physical-file normal-table replacement',
     )
     if 'Header onsuccess set Cache-Control' in script:
