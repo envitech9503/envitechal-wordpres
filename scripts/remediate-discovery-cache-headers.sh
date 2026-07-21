@@ -277,8 +277,8 @@ verify_production_redirects() {
                 stop "$method redirect verification request failed for $source."
             sleep 0.25
             status="$(cat "$metadata")"
-            location="$(sed -nE 's/^[Ll]ocation:[[:space:]]*(.*)\r?$/\1/p' "$headers" | tail -n 1)"
-            redirect_by="$(sed -nE 's/^[Xx]-[Rr]edirect-[Bb]y:[[:space:]]*(.*)\r?$/\1/p' "$headers" | tail -n 1)"
+            location="$(tr -d '\r' <"$headers" | sed -nE 's/^[Ll]ocation:[[:space:]]*(.*)$/\1/p' | tail -n 1)"
+            redirect_by="$(tr -d '\r' <"$headers" | sed -nE 's/^[Xx]-[Rr]edirect-[Bb]y:[[:space:]]*(.*)$/\1/p' | tail -n 1)"
             [[ "$status" == "301" ]] || stop "$method $source returned $status instead of 301."
             [[ "$location" == "https://${PRODUCTION_HOST}${target}" ]] ||
                 stop "$method $source redirected to '$location' instead of https://${PRODUCTION_HOST}${target}."
