@@ -106,7 +106,14 @@ jobs:
           bash -n scripts/prepare-staging-ai-page-parity.sh
           python3 tests/staging-page-parity-script-test.py
           python3 tests/discovery-cache-remediation-script-test.py
+          grep -Eq '^VALIDATED_PR_COMMIT="[0-9a-f]{40}"$' scripts/deploy-staging-theme.sh
           grep -q 'archive --format=tar "$VALIDATED_PR_COMMIT"' scripts/deploy-staging-theme.sh
+          staging_pin="$(sed -nE 's/^VALIDATED_PR_COMMIT="([0-9a-f]{40})"$/\1/p' scripts/deploy-staging-theme.sh)"
+          production_pin="$(sed -nE 's/^VALIDATED_PRODUCTION_COMMIT="([0-9a-f]{40})"$/\1/p' scripts/deploy-production.sh)"
+          if [[ "$staging_pin" != "$production_pin" ]]; then
+            echo 'Staging must deploy the exact candidate pinned for production promotion.' >&2
+            exit 1
+          fi
           grep -q 'SWAP_STATE="new-active"' scripts/deploy-staging-theme.sh
           grep -q 'TARGET_REAL' scripts/deploy-staging-theme.sh
           grep -Fq 'find "$NEW_THEME" -type d -exec chmod 0755 {} +' scripts/deploy-staging-theme.sh
