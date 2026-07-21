@@ -1631,6 +1631,7 @@ add_action('wp_footer', function () {
     ?>
     <div
         class="eta-chatbot-root"
+        hidden
         data-bundle-url="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/js/eta-chatbot.js'); ?>"
         data-health-url="<?php echo esc_url(rest_url('eta/v1/agent/health')); ?>"
         data-message-url="<?php echo esc_url(rest_url('eta/v1/agent/message')); ?>"
@@ -1677,8 +1678,6 @@ add_action('wp_footer', function () {
             var launcher = root.querySelector('.eta-chatbot-launcher');
             var panel = root.querySelector('.eta-chatbot-panel');
             var close = root.querySelector('.eta-chatbot-close');
-            var status = root.querySelector('.eta-chatbot-status');
-            var fallback = root.querySelector('.eta-chatbot-fallback');
             var loading = false;
 
             function closePanel() {
@@ -1689,9 +1688,34 @@ add_action('wp_footer', function () {
             }
 
             function showUnavailable() {
-                status.textContent = '<?php echo esc_js(__('Assistant unavailable — WhatsApp support is ready.', 'envi-tech-al-modern')); ?>';
-                fallback.hidden = false;
                 root.dataset.etaState = 'unavailable';
+                root.dataset.etaPreflight = 'failed';
+                panel.hidden = true;
+                root.classList.remove('is-open');
+                launcher.setAttribute('aria-expanded', 'false');
+                launcher.blur();
+                root.hidden = true;
+            }
+
+            function preflight() {
+                var controller = new AbortController();
+                var timer = window.setTimeout(function () {
+                    controller.abort();
+                }, 6500);
+
+                window.fetch(root.dataset.healthUrl, {
+                    method: 'GET',
+                    credentials: 'same-origin',
+                    headers: { 'X-WP-Nonce': root.dataset.restNonce },
+                    signal: controller.signal
+                }).then(function (response) {
+                    if (!response.ok) throw new Error('Assistant preflight failed.');
+                    root.dataset.etaPreflight = 'ready';
+                    root.dataset.etaState = 'ready';
+                    root.hidden = false;
+                }).catch(showUnavailable).finally(function () {
+                    window.clearTimeout(timer);
+                });
             }
 
             function loadBundle() {
@@ -1730,6 +1754,7 @@ add_action('wp_footer', function () {
             document.addEventListener('keydown', function (event) {
                 if (event.key === 'Escape' && !panel.hidden) closePanel();
             });
+            preflight();
         }());
     </script>
     <?php

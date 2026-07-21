@@ -62,6 +62,28 @@ function eta_agent_is_configured()
     return eta_agent_access_key() !== '' || (eta_agent_uuid() !== '' && eta_agent_chatbot_key() !== '');
 }
 
+function eta_agent_runtime_cache_key($suffix)
+{
+    $identity = eta_agent_endpoint() . '|' . eta_agent_uuid();
+    return 'eta_agent_' . sanitize_key($suffix) . '_' . substr(hash('sha256', $identity), 0, 12);
+}
+
+function eta_agent_runtime_unavailable()
+{
+    return (bool) get_transient(eta_agent_runtime_cache_key('circuit_open'));
+}
+
+function eta_agent_open_runtime_circuit()
+{
+    delete_transient(eta_agent_runtime_cache_key('health_ready'));
+    set_transient(eta_agent_runtime_cache_key('circuit_open'), 1, 5 * MINUTE_IN_SECONDS);
+}
+
+function eta_agent_close_runtime_circuit()
+{
+    delete_transient(eta_agent_runtime_cache_key('circuit_open'));
+}
+
 function eta_agent_system_instruction()
 {
     return implode(' ', [
@@ -138,16 +160,18 @@ function eta_agent_remote_completion($messages, $timeout = 20)
         return new WP_Error('eta_agent_unavailable', 'The AI assistant is not configured.', ['status' => 503]);
     }
 
+    if (eta_agent_runtime_unavailable()) {
+        return new WP_Error('eta_agent_circuit_open', 'The AI assistant is temporarily unavailable.', ['status' => 503]);
+    }
+
     $messages = array_values(array_filter($messages, function ($entry) {
         return is_array($entry) && in_array($entry['role'] ?? '', ['user', 'assistant'], true);
     }));
-    $last_error = null;
-
     for ($attempt = 0; $attempt < 2; $attempt++) {
         $token = eta_agent_bearer_token($attempt > 0);
         if (is_wp_error($token)) {
-            $last_error = $token;
-            continue;
+            eta_agent_open_runtime_circuit();
+            return $token;
         }
 
         $response = wp_remote_post(eta_agent_endpoint() . '/api/v1/chat/completions', [
@@ -168,19 +192,29 @@ function eta_agent_remote_completion($messages, $timeout = 20)
         ]);
 
         if (is_wp_error($response)) {
-            $last_error = new WP_Error('eta_agent_connection', 'The AI assistant could not be reached.', ['status' => 503]);
-            continue;
+            eta_agent_open_runtime_circuit();
+            return new WP_Error('eta_agent_connection', 'The AI assistant could not be reached.', ['status' => 503]);
         }
 
         $status = (int) wp_remote_retrieve_response_code($response);
         $data = json_decode((string) wp_remote_retrieve_body($response), true);
         if ($status >= 200 && $status < 300 && is_array($data)) {
+            eta_agent_close_runtime_circuit();
             return $data;
         }
-        $last_error = new WP_Error('eta_agent_upstream', 'The AI assistant is temporarily unavailable.', ['status' => 503]);
+
+        if (in_array($status, [401, 403], true) && $attempt === 0 && eta_agent_access_key() === '') {
+            continue;
+        }
+
+        if ($status === 429 || $status >= 500) {
+            eta_agent_open_runtime_circuit();
+        }
+        return new WP_Error('eta_agent_upstream', 'The AI assistant is temporarily unavailable.', ['status' => 503]);
     }
 
-    return $last_error ?: new WP_Error('eta_agent_upstream', 'The AI assistant is temporarily unavailable.', ['status' => 503]);
+    eta_agent_open_runtime_circuit();
+    return new WP_Error('eta_agent_upstream', 'The AI assistant is temporarily unavailable.', ['status' => 503]);
 }
 
 function eta_agent_curated_response($message)
@@ -309,13 +343,24 @@ function eta_agent_health_response()
         return new WP_Error('eta_agent_unavailable', 'AI assistant unavailable; WhatsApp support remains available.', ['status' => 503]);
     }
 
+    if (get_transient(eta_agent_runtime_cache_key('health_ready'))) {
+        return rest_ensure_response(['status' => 'ready']);
+    }
+
     $result = eta_agent_remote_completion([
         ['role' => 'user', 'content' => 'Health check only. Reply with READY.'],
-    ], 12);
+    ], 5);
     if (is_wp_error($result)) {
         return $result;
     }
 
+    $reply = $result['choices'][0]['message']['content'] ?? '';
+    if (!is_string($reply) || stripos($reply, 'READY') === false) {
+        eta_agent_open_runtime_circuit();
+        return new WP_Error('eta_agent_health_invalid', 'The AI assistant returned an invalid health response.', ['status' => 503]);
+    }
+
+    set_transient(eta_agent_runtime_cache_key('health_ready'), 1, MINUTE_IN_SECONDS);
     return rest_ensure_response(['status' => 'ready']);
 }
 
@@ -349,7 +394,7 @@ function eta_agent_chat_response(WP_REST_Request $request)
     }
     $messages[] = ['role' => 'user', 'content' => eta_agent_policy_prompt($message)];
 
-    $result = eta_agent_remote_completion($messages, 25);
+    $result = eta_agent_remote_completion($messages, 15);
     if (is_wp_error($result)) {
         return $result;
     }

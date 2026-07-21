@@ -1,6 +1,21 @@
 <?php
 
 define('ABSPATH', __DIR__);
+define('MINUTE_IN_SECONDS', 60);
+
+class WP_Error
+{
+    public $code;
+
+    public function __construct($code)
+    {
+        $this->code = $code;
+    }
+}
+
+$GLOBALS['eta_agent_test_transients'] = [];
+$GLOBALS['eta_agent_test_remote_queue'] = [];
+$GLOBALS['eta_agent_test_remote_calls'] = [];
 
 function add_action()
 {
@@ -10,6 +25,59 @@ function add_action()
 function get_option($name, $default = '')
 {
     return $default;
+}
+
+function sanitize_key($value)
+{
+    return preg_replace('/[^a-z0-9_\-]/', '', strtolower((string) $value));
+}
+
+function get_transient($key)
+{
+    return $GLOBALS['eta_agent_test_transients'][$key] ?? false;
+}
+
+function set_transient($key, $value)
+{
+    $GLOBALS['eta_agent_test_transients'][$key] = $value;
+    return true;
+}
+
+function delete_transient($key)
+{
+    unset($GLOBALS['eta_agent_test_transients'][$key]);
+    return true;
+}
+
+function is_wp_error($value)
+{
+    return $value instanceof WP_Error;
+}
+
+function wp_json_encode($value, $flags = 0)
+{
+    return json_encode($value, $flags);
+}
+
+function wp_remote_post($url, $args)
+{
+    $GLOBALS['eta_agent_test_remote_calls'][] = ['url' => $url, 'args' => $args];
+    return array_shift($GLOBALS['eta_agent_test_remote_queue']);
+}
+
+function wp_remote_retrieve_response_code($response)
+{
+    return $response['response']['code'] ?? 0;
+}
+
+function wp_remote_retrieve_body($response)
+{
+    return $response['body'] ?? '';
+}
+
+function rest_ensure_response($value)
+{
+    return $value;
 }
 
 function wp_http_validate_url($url)
@@ -89,5 +157,29 @@ eta_agent_test_true(
     array_values($citations) === ['https://envitechal.com/report-verification-portal/'],
     'only canonical Envi Tech AL citations are returned to the browser'
 );
+
+putenv('ETA_AGENT_ENDPOINT=https://example.agents.do-ai.run');
+putenv('ETA_AGENT_ACCESS_KEY=server-only-test-key');
+$GLOBALS['eta_agent_test_remote_calls'] = [];
+$GLOBALS['eta_agent_test_remote_queue'] = [new WP_Error('http_request_failed')];
+$failed = eta_agent_remote_completion([['role' => 'user', 'content' => 'test']], 5);
+eta_agent_test_true(is_wp_error($failed) && $failed->code === 'eta_agent_connection', 'a connection failure returns the safe proxy error');
+eta_agent_test_true(count($GLOBALS['eta_agent_test_remote_calls']) === 1, 'a connection timeout is never retried');
+
+$circuit_result = eta_agent_remote_completion([['role' => 'user', 'content' => 'test']], 5);
+eta_agent_test_true(is_wp_error($circuit_result) && $circuit_result->code === 'eta_agent_circuit_open', 'an open circuit fails immediately');
+eta_agent_test_true(count($GLOBALS['eta_agent_test_remote_calls']) === 1, 'the open circuit makes no upstream request');
+
+$GLOBALS['eta_agent_test_transients'] = [];
+$GLOBALS['eta_agent_test_remote_calls'] = [];
+$GLOBALS['eta_agent_test_remote_queue'] = [[
+    'response' => ['code' => 200],
+    'body' => '{"choices":[{"message":{"content":"READY"}}]}',
+]];
+$first_health = eta_agent_health_response();
+$second_health = eta_agent_health_response();
+eta_agent_test_true($first_health === ['status' => 'ready'] && $second_health === ['status' => 'ready'], 'healthy preflight returns the ready state');
+eta_agent_test_true(count($GLOBALS['eta_agent_test_remote_calls']) === 1, 'a healthy preflight is cached for the short readiness window');
+eta_agent_test_true($GLOBALS['eta_agent_test_remote_calls'][0]['args']['timeout'] === 5, 'the upstream health probe is capped at five seconds');
 
 echo "Agent proxy safety tests passed.\n";
