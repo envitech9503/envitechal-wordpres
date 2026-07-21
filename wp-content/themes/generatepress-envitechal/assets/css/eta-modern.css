@@ -8009,6 +8009,10 @@ h3 {
     z-index: 9999;
 }
 
+.eta-chatbot-root[hidden] {
+    display: none !important;
+}
+
 .eta-chatbot-launcher {
     position: relative;
     display: inline-flex;

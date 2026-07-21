@@ -5,12 +5,6 @@
         return;
     }
 
-    function delay(milliseconds) {
-        return new Promise(function (resolve) {
-            window.setTimeout(resolve, milliseconds);
-        });
-    }
-
     function request(url, options, timeout) {
         var controller = new AbortController();
         var timer = window.setTimeout(function () {
@@ -34,6 +28,10 @@
 
     window.etaChatbotInit = function (root) {
         if (!root || root.dataset.etaInitialised === '1') {
+            return;
+        }
+        if (root.dataset.etaPreflight !== 'ready') {
+            root.hidden = true;
             return;
         }
         root.dataset.etaInitialised = '1';
@@ -91,29 +89,7 @@
             messages.scrollTop = messages.scrollHeight;
         }
 
-        function checkHealth(attempt) {
-            setState('connecting', attempt ? 'Still connecting — retrying safely…' : 'Connecting to the assistant…');
-            return request(root.dataset.healthUrl, {
-                method: 'GET',
-                credentials: 'same-origin',
-                headers: { 'X-WP-Nonce': root.dataset.restNonce }
-            }, 14000).then(function () {
-                setState('ready', 'Ready — answers include source links and avoid unsupported claims.');
-                if (!messages.childNodes.length) {
-                    addMessage('assistant', 'Hello. Ask about services, laboratory locations, credential scope, compliance references, or report verification.');
-                }
-                input.focus();
-            }).catch(function () {
-                if (attempt < 2) {
-                    return delay(750 * Math.pow(2, attempt)).then(function () {
-                        return checkHealth(attempt + 1);
-                    });
-                }
-                setState('unavailable', 'Assistant unavailable — WhatsApp support is ready.');
-            });
-        }
-
-        function sendQuestion(message, attempt) {
+        function sendQuestion(message) {
             return request(root.dataset.messageUrl, {
                 method: 'POST',
                 credentials: 'same-origin',
@@ -122,14 +98,7 @@
                     'X-WP-Nonce': root.dataset.restNonce
                 },
                 body: JSON.stringify({ message: message, history: history.slice(-8) })
-            }, 30000).catch(function (error) {
-                if (attempt < 2 && error.name !== 'AbortError') {
-                    return delay(800 * Math.pow(2, attempt)).then(function () {
-                        return sendQuestion(message, attempt + 1);
-                    });
-                }
-                throw error;
-            });
+            }, 20000);
         }
 
         form.addEventListener('submit', function (event) {
@@ -145,7 +114,7 @@
             send.disabled = true;
             status.textContent = 'Preparing a source-checked answer…';
 
-            sendQuestion(question, 0).then(function (data) {
+            sendQuestion(question).then(function (data) {
                 var answer = typeof data.answer === 'string' ? data.answer.trim() : '';
                 if (!answer) {
                     throw new Error('The assistant returned no answer.');
@@ -184,7 +153,11 @@
             }
         });
 
+        setState('ready', 'Ready — answers include source links and avoid unsupported claims.');
+        if (!messages.childNodes.length) {
+            addMessage('assistant', 'Hello. Ask about services, laboratory locations, credential scope, compliance references, or report verification.');
+        }
         launcher.setAttribute('aria-expanded', 'true');
-        checkHealth(0);
+        input.focus();
     };
 }(window, document));
