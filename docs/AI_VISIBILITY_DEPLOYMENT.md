@@ -5,7 +5,7 @@ This change set is designed for staging first. It must not be copied directly to
 ## What this phase fixes
 
 - Removes the undefined analytical-service renderer that caused the service-page failure.
-- Replaces the crawl-visible failed assistant panel with an accurately labelled WhatsApp link, removes the exposed agent credential from current source, and filters the confirmed legacy raw chatbot snippet from final front-end HTML as a defense in depth.
+- Replaces the legacy third-party assistant embed with a same-origin WordPress proxy and WhatsApp fallback, keeps DigitalOcean chatbot identifiers out of final page source, and filters the confirmed legacy raw widget snippet from front-end HTML as a defense in depth.
 - Publishes a stable Organization, WebSite, Karachi branch, and Lahore branch schema graph with canonical IDs.
 - Corrects the LinkedIn entity URL and adds verified Instagram and YouTube profiles.
 - Adds 301 consolidation for duplicate credential and knowledge-hub URLs.
@@ -22,11 +22,13 @@ This change set is designed for staging first. It must not be copied directly to
 - Canonicalizes reviewed legacy internal links at render time in classic menus, generated post/page/custom-post permalinks, post content, excerpts, widget text, and block output. External/lookalike hosts, non-default ports, relative URLs, and non-HTTP schemes are unchanged; query strings and fragments are preserved, and no database value is rewritten.
 - Adds a contextual Karachi laboratory pathway on the homepage and related service, location, credential, and verification pathways on the national FAQ page.
 
-## Required security action
+## DigitalOcean credential handling
 
-The old DigitalOcean assistant credential and agent/chatbot identifiers were embedded in publicly delivered JavaScript. Removing or filtering the snippet is not sufficient: revoke or rotate them at the provider before production deployment. The upstream source of the raw snippet must also be removed from its plugin, code-snippet configuration, or WordPress database record, followed by a cache purge. Old values may remain in Git history and caches, so they must be considered compromised.
+The legacy widget published `data-agent-id` and `data-chatbot-id` in its embed HTML. DigitalOcean's current [agent application documentation](https://docs.digitalocean.com/products/inference/how-to/use-agents/#use-chatbot-interface) explicitly says those two fields do not need to be treated as secrets. They are public chatbot identifiers, not OAuth tokens, agent endpoint API keys, bearer tokens, or model-provider keys, so their appearance in historical page source does not by itself require credential rotation.
 
-The theme's response filter is deliberately narrow: it removes only complete script tags carrying the confirmed agent/chatbot identifier attributes or a source ending in `/static/chatbot/widget.js`. It removes an immediately adjacent raw style block only when that block contains the distinctive `.chatbot-button` selector. It does not run for admin, AJAX, REST, feeds, the `llms` discovery endpoints, or non-HTML responses, and it does not replace upstream removal and credential revocation.
+True secrets must never be delivered to a browser or committed to Git. If a DigitalOcean OAuth token, agent endpoint API key, bearer token, or model-provider key is ever exposed, revoke or regenerate that credential at the provider before deployment. Configure the provider's chatbot allowed-domain list whenever the third-party widget is used.
+
+The theme's response filter remains deliberately narrow: it removes only complete script tags carrying the confirmed agent/chatbot identifier attributes or a source ending in `/static/chatbot/widget.js`. It removes an immediately adjacent raw style block only when that block contains the distinctive `.chatbot-button` selector. It does not run for admin, AJAX, REST, feeds, the `llms` discovery endpoints, or non-HTML responses. Remove the obsolete widget at its upstream WordPress source where possible and purge caches; the filter is defense in depth, not the primary configuration mechanism.
 
 ## Staging deployment
 
@@ -133,7 +135,7 @@ Before changing a public path, the script creates a timestamped private recovery
 Production prerequisites:
 
 - the corrected pinned theme is deployed to staging and its canonical, non-cache-busted URLs have passed the staging checks;
-- the embedded DigitalOcean credential has been revoked or rotated, and the upstream raw snippet has been removed where possible;
+- the legacy DigitalOcean widget is absent from final front-end HTML, its upstream raw snippet has been removed where possible, and no true secret is present in client-delivered code;
 - the commit in `VALIDATED_PRODUCTION_COMMIT` is the reviewed candidate that passed those checks;
 - the production `/accreditations-certifications/` page is published. This target has already been confirmed on production; its absence from the current staging database is a staging-data parity issue, not evidence that the production target is missing;
 - no unrelated WordPress, plugin, content, or infrastructure change is bundled into this promotion.
