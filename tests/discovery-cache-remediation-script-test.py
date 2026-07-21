@@ -110,12 +110,12 @@ def main() -> None:
     )
     require(
         script,
-        'Header always unset Cache-Control "expr=%{REQUEST_URI} =~ m#^/(robots\\.txt|llms\\.txt|llms-full\\.txt|\\.well-known/agent-skills/index\\.json)(\\?.*)?$#"',
+        'Header always unset Cache-Control "expr=%{THE_REQUEST} =~ m#^[A-Z]+[ ]+/(robots\\.txt|llms\\.txt|llms-full\\.txt|\\.well-known/agent-skills/index\\.json)(\\?[^ ]*)?[ ]+HTTP/#"',
         'physical-file always-table cleanup',
     )
     require(
         script,
-        'Header set Cache-Control "public, max-age=300, s-maxage=3600, must-revalidate" "expr=%{REQUEST_URI} =~ m#^/(robots\\.txt|llms\\.txt|llms-full\\.txt|\\.well-known/agent-skills/index\\.json)(\\?.*)?$#"',
+        'Header set Cache-Control "public, max-age=300, s-maxage=3600, must-revalidate" "expr=%{THE_REQUEST} =~ m#^[A-Z]+[ ]+/(robots\\.txt|llms\\.txt|llms-full\\.txt|\\.well-known/agent-skills/index\\.json)(\\?[^ ]*)?[ ]+HTTP/#"',
         'physical-file normal-table replacement',
     )
     if 'Header onsuccess set Cache-Control' in script:

@@ -61,10 +61,10 @@ $block = <<<'BLOCK'
     # context. Staging's virtual WordPress responses resolve to index.php and
     # continue to use the outer PHP/LSAPI handling above.
     <FilesMatch "^(robots\.txt|llms\.txt|llms-full\.txt|index\.json)$">
-        Header unset Expires "expr=%{REQUEST_URI} =~ m#^/(robots\.txt|llms\.txt|llms-full\.txt|\.well-known/agent-skills/index\.json)(\?.*)?$#"
-        Header always unset Expires "expr=%{REQUEST_URI} =~ m#^/(robots\.txt|llms\.txt|llms-full\.txt|\.well-known/agent-skills/index\.json)(\?.*)?$#"
-        Header always unset Cache-Control "expr=%{REQUEST_URI} =~ m#^/(robots\.txt|llms\.txt|llms-full\.txt|\.well-known/agent-skills/index\.json)(\?.*)?$#"
-        Header set Cache-Control "public, max-age=300, s-maxage=3600, must-revalidate" "expr=%{REQUEST_URI} =~ m#^/(robots\.txt|llms\.txt|llms-full\.txt|\.well-known/agent-skills/index\.json)(\?.*)?$#"
+        Header unset Expires "expr=%{THE_REQUEST} =~ m#^[A-Z]+[ ]+/(robots\.txt|llms\.txt|llms-full\.txt|\.well-known/agent-skills/index\.json)(\?[^ ]*)?[ ]+HTTP/#"
+        Header always unset Expires "expr=%{THE_REQUEST} =~ m#^[A-Z]+[ ]+/(robots\.txt|llms\.txt|llms-full\.txt|\.well-known/agent-skills/index\.json)(\?[^ ]*)?[ ]+HTTP/#"
+        Header always unset Cache-Control "expr=%{THE_REQUEST} =~ m#^[A-Z]+[ ]+/(robots\.txt|llms\.txt|llms-full\.txt|\.well-known/agent-skills/index\.json)(\?[^ ]*)?[ ]+HTTP/#"
+        Header set Cache-Control "public, max-age=300, s-maxage=3600, must-revalidate" "expr=%{THE_REQUEST} =~ m#^[A-Z]+[ ]+/(robots\.txt|llms\.txt|llms-full\.txt|\.well-known/agent-skills/index\.json)(\?[^ ]*)?[ ]+HTTP/#"
     </FilesMatch>
 </IfModule>
 # END Envi Tech AL discovery cache policy
