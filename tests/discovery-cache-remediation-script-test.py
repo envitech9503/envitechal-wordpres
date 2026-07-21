@@ -60,9 +60,16 @@ def main() -> None:
         'bounded 429 retry': 'returned 429; retrying in',
         'Retry-After support': '[Rr]etry-[Aa]fter:',
         'unique retry cache key': 'eta_discovery_cache_retry=${attempt}',
+        'search crawler verification identity': 'OAI-SearchBot/1.0',
+        'search crawler robots allow policy': 'User-agent: OAI-SearchBot',
+        'training crawler robots disallow policy': 'User-agent: GPTBot',
+        'current LLMS corpus marker': '# Envi Tech AL full AI-readable corpus',
     }
     for label, token in required_script_tokens.items():
         require(script, token, label)
+
+    if '## Organization facts' in script:
+        raise AssertionError('remediation must not depend on the removed llms-full marker')
 
     for path in (
         '/robots.txt',

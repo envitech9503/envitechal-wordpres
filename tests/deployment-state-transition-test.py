@@ -48,6 +48,8 @@ def main() -> None:
     for move, state in (
         ('mv -- "$TARGET" "$OLD_THEME"', 'THEME_STATE="moving-old"'),
         ('mv -- "$NEW_THEME" "$TARGET"', 'THEME_STATE="moving-new"'),
+        ('mv -- "$ROBOTS_TARGET" "$OLD_ROBOTS"', 'ROBOTS_STATE="moving-old"'),
+        ('mv -- "$NEW_ROBOTS" "$ROBOTS_TARGET"', 'ROBOTS_STATE="moving-new"'),
         ('mv -- "$LLMS_TARGET" "$OLD_LLMS"', 'LLMS_STATE="moving-old"'),
         ('mv -- "$NEW_LLMS" "$LLMS_TARGET"', 'LLMS_STATE="moving-new"'),
         ('mv -- "$LLMS_FULL_TARGET" "$OLD_LLMS_FULL"', 'LLMS_FULL_STATE="moving-old"'),
@@ -58,6 +60,8 @@ def main() -> None:
     for move, state in (
         ('mv -- "$TARGET" "$CURRENT_THEME"', 'THEME_STATE="moving-current"'),
         ('mv -- "$RESTORE_THEME" "$TARGET"', 'THEME_STATE="moving-desired"'),
+        ('mv -- "$ROBOTS_TARGET" "$CURRENT_ROBOTS"', 'ROBOTS_STATE="moving-current"'),
+        ('mv -- "$RESTORE_ROBOTS" "$ROBOTS_TARGET"', 'ROBOTS_STATE="moving-desired"'),
         ('mv -- "$LLMS_TARGET" "$CURRENT_LLMS"', 'LLMS_STATE="moving-current"'),
         ('mv -- "$RESTORE_LLMS" "$LLMS_TARGET"', 'LLMS_STATE="moving-desired"'),
         ('mv -- "$LLMS_FULL_TARGET" "$CURRENT_LLMS_FULL"', 'LLMS_FULL_STATE="moving-current"'),
@@ -70,6 +74,7 @@ def main() -> None:
         (
             'if test -f "$old_swap"; then',
             'if test -d "$old_swap"; then',
+            'recover_public_file "$ROBOTS_STATE"',
             'recover_public_file "$LLMS_FULL_STATE"',
             'recover_theme "$THEME_STATE"',
             "trap '' INT TERM",
@@ -85,6 +90,7 @@ def main() -> None:
         (
             'if test -f "$current_swap"; then',
             'if test -d "$current_swap"; then',
+            'recover_current_public_file "$ROBOTS_STATE"',
             'recover_current_public_file "$LLMS_FULL_STATE"',
             'recover_current_theme "$THEME_STATE"',
             "trap '' INT TERM",

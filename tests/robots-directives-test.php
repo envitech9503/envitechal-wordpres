@@ -33,6 +33,17 @@ $_SERVER['HTTP_HOST'] = 'envitechal.com';
 $_SERVER['REQUEST_URI'] = '/robots.txt';
 $rank_math_production = ['index' => 'index', 'follow' => 'follow', 'max-snippet' => '-1'];
 $wordpress_production = ['max-image-preview' => 'large'];
+$expected_production_robots = "User-agent: OAI-SearchBot\n"
+    . "Allow: /\n"
+    . "Content-Signal: ai-train=no, search=yes, ai-input=yes\n\n"
+    . "User-agent: GPTBot\n"
+    . "Disallow: /\n"
+    . "Content-Signal: ai-train=no, search=yes, ai-input=yes\n\n"
+    . "User-agent: *\n"
+    . "Disallow: /wp-admin/\n"
+    . "Allow: /wp-admin/admin-ajax.php\n"
+    . "Content-Signal: ai-train=no, search=yes, ai-input=yes\n\n"
+    . "Sitemap: https://envitechal.com/sitemap_index.xml\n";
 eta_robots_test_same(
     $rank_math_production,
     eta_modern_filter_rank_math_staging_robots($rank_math_production),
@@ -44,13 +55,14 @@ eta_robots_test_same(
     'WordPress production directives remain unchanged'
 );
 eta_robots_test_same(
-    "User-agent: *\n"
-        . "Disallow: /wp-admin/\n"
-        . "Allow: /wp-admin/admin-ajax.php\n"
-        . "Content-Signal: ai-train=no, search=yes, ai-input=yes\n\n"
-        . "Sitemap: https://envitechal.com/sitemap_index.xml\n",
+    $expected_production_robots,
     eta_modern_filter_robots_txt("User-agent: *\nAllow: /\n", true),
-    'production robots.txt keeps Content-Signal inside the user-agent group'
+    'production robots.txt permits search discovery, blocks training crawl, and keeps Content-Signal scoped'
+);
+eta_robots_test_same(
+    $expected_production_robots,
+    str_replace(["\r\n", "\r"], "\n", (string) file_get_contents(dirname(__DIR__) . '/deploy/public_html/robots.txt')),
+    'static and WordPress-generated production robots policies remain byte-identical'
 );
 
 $_SERVER['HTTP_HOST'] = 'staging.envitechal.com';
@@ -94,7 +106,7 @@ eta_robots_test_same(
 eta_robots_test_same(
     [
         'Content-Type' => 'text/plain; charset=utf-8',
-        'Cache-Control' => 'public, max-age=300, s-maxage=3600',
+        'Cache-Control' => 'public, max-age=300, s-maxage=3600, must-revalidate',
         'X-LiteSpeed-Cache-Control' => 'no-cache',
     ],
     eta_modern_robots_txt_response_headers('/robots.txt?cache-bust=1'),

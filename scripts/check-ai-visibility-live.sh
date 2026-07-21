@@ -4,8 +4,14 @@ set -euo pipefail
 
 BASE_URL="${AI_VISIBILITY_BASE_URL:-https://envitechal.com}"
 BASE_URL="${BASE_URL%/}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+HEADER_VALIDATOR="$SCRIPT_DIR/lib/validate-discovery-cache-headers.php"
 WORK_DIR="$(mktemp -d)"
 trap 'rm -rf "$WORK_DIR"' EXIT
+
+command -v curl >/dev/null || { printf 'curl is required.\n' >&2; exit 1; }
+command -v php >/dev/null || { printf 'php is required.\n' >&2; exit 1; }
+test -f "$HEADER_VALIDATOR" || { printf 'Discovery cache-header validator is missing.\n' >&2; exit 1; }
 
 FAILURES=0
 REQUEST_NUMBER=0
@@ -34,7 +40,8 @@ fetch()
     local method="${4:-GET}"
     local accept="${5:-*/*}"
     local cache_control="${6-no-cache}"
-    local metadata
+    local metadata request_path retry_after
+    local attempt=1
     local -a curl_args
 
     REQUEST_NUMBER=$((REQUEST_NUMBER + 1))
@@ -60,19 +67,50 @@ fetch()
         curl_args+=(--head)
     fi
 
-    if ! metadata="$(curl "${curl_args[@]}" "$BASE_URL$path")"; then
-        fail "$label request failed"
-        FETCH_STATUS='000'
-        FETCH_TYPE=''
-        FETCH_URL=''
-        : >"$FETCH_BODY"
-        return 1
-    fi
+    while :; do
+        request_path="$path"
+        if ((attempt > 1)); then
+            if [[ "$request_path" == *\?* ]]; then
+                request_path="${request_path}&eta_live_retry=${attempt}"
+            else
+                request_path="${request_path}?eta_live_retry=${attempt}"
+            fi
+        fi
+        if ! metadata="$(curl "${curl_args[@]}" "$BASE_URL$request_path")"; then
+            fail "$label request failed"
+            FETCH_STATUS='000'
+            FETCH_TYPE=''
+            FETCH_URL=''
+            : >"$FETCH_BODY"
+            return 1
+        fi
 
-    FETCH_STATUS="$(sed -n '1p' <<<"$metadata")"
+        FETCH_STATUS="$(sed -n '1p' <<<"$metadata")"
+        if [[ "$FETCH_STATUS" != '429' || "$attempt" -ge 3 ]]; then
+            break
+        fi
+
+        retry_after="$(sed -nE 's/^[Rr]etry-[Aa]fter:[[:space:]]*([0-9]+).*$/\1/p' "$FETCH_HEADERS" | tail -n 1)"
+        [[ "$retry_after" =~ ^[0-9]+$ ]] || retry_after=5
+        ((retry_after > 15)) && retry_after=15
+        fail "$label returned 429 on attempt $attempt; retrying with a fresh cache key in ${retry_after}s"
+        sleep "$retry_after"
+        attempt=$((attempt + 1))
+    done
+
     FETCH_TYPE="$(sed -n '2p' <<<"$metadata")"
     FETCH_URL="$(sed -n '3p' <<<"$metadata")"
     printf '%s: status=%s type=%s url=%s\n' "$label" "$FETCH_STATUS" "$FETCH_TYPE" "$FETCH_URL"
+}
+
+assert_reviewed_discovery_cache()
+{
+    local label="$1"
+    if php "$HEADER_VALIDATOR" "$FETCH_HEADERS" >/dev/null; then
+        pass "$label uses the exact reviewed short cache policy and no Expires header"
+    else
+        fail "$label has an unsafe or inconsistent discovery cache policy"
+    fi
 }
 
 assert_status_200()
@@ -120,7 +158,6 @@ assert_body_excludes_challenge()
 ordinary_ua='Mozilla/5.0 (compatible; EnviTechAIMonitor/1.0; +https://envitechal.com/)'
 googlebot_ua='Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'
 bingbot_ua='Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)'
-gptbot_ua='Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; GPTBot/1.2; +https://openai.com/gptbot'
 oai_search_ua='Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; OAI-SearchBot/1.0; +https://openai.com/searchbot'
 
 fetch 'ordinary homepage' "$ordinary_ua" '/' 'GET' 'text/html' ''
@@ -184,7 +221,7 @@ if [[ "${FETCH_TYPE,,}" == *'text/html'* ]]; then
     assert_body_contains 'homepage with Markdown Accept' 'Environmental testing and compliance support for teams that need clear, defensible reports.'
 elif [[ "${FETCH_TYPE,,}" == *'text/markdown'* ]]; then
     pass 'Markdown Accept returned the controlled Markdown representation'
-    assert_body_contains 'homepage with Markdown Accept' '# Envi Tech AL | Environmental Testing Lab & Consultancy'
+    assert_body_contains 'homepage with Markdown Accept' 'Environmental testing and compliance support for teams that need clear, defensible reports.'
     assert_body_contains 'homepage with Markdown Accept' 'PNAC LAB-347'
     if grep -Eiq '^vary:.*accept' "$FETCH_HEADERS"; then
         pass 'Markdown representation varies on Accept'
@@ -216,13 +253,22 @@ fi
 fetch 'robots.txt' "$googlebot_ua" '/robots.txt'
 assert_status_200 'robots.txt'
 assert_type_contains 'robots.txt' 'text/plain'
+assert_body_contains 'robots.txt' 'User-agent: OAI-SearchBot'
+assert_body_contains 'robots.txt' 'User-agent: GPTBot'
 assert_body_contains 'robots.txt' 'User-agent: *'
 assert_body_contains 'robots.txt' 'Sitemap: https://envitechal.com/sitemap_index.xml'
 assert_body_excludes_challenge 'robots.txt'
-if grep -Eiq '^cache-control:[[:space:]]*public,[[:space:]]*max-age=300,[[:space:]]*s-maxage=3600' "$FETCH_HEADERS"; then
-    pass 'robots.txt uses the reviewed short cache policy'
+assert_reviewed_discovery_cache 'robots.txt'
+robots_body="$(tr -d '\r' <"$FETCH_BODY")"
+if [[ "$robots_body" == *$'User-agent: OAI-SearchBot\nAllow: /\nContent-Signal: ai-train=no, search=yes, ai-input=yes'* ]]; then
+    pass 'robots.txt explicitly permits OAI-SearchBot discovery'
 else
-    fail 'robots.txt is missing the reviewed max-age=300, s-maxage=3600 cache policy'
+    fail 'robots.txt does not contain the reviewed OAI-SearchBot allow group'
+fi
+if [[ "$robots_body" == *$'User-agent: GPTBot\nDisallow: /\nContent-Signal: ai-train=no, search=yes, ai-input=yes'* ]]; then
+    pass 'robots.txt explicitly blocks GPTBot training crawl'
+else
+    fail 'robots.txt does not contain the reviewed GPTBot disallow group'
 fi
 
 fetch 'sitemap index' "$googlebot_ua" '/sitemap_index.xml' 'GET' '*/*' ''
@@ -301,25 +347,42 @@ for legacy_sitemap_path in \
     fi
 done
 
-fetch 'llms.txt' "$gptbot_ua" '/llms.txt'
+fetch 'llms.txt' "$oai_search_ua" '/llms.txt'
 assert_status_200 'llms.txt'
 assert_type_contains 'llms.txt' 'text/plain'
 assert_body_contains 'llms.txt' '# Envi Tech AL'
 assert_body_excludes_challenge 'llms.txt'
+assert_reviewed_discovery_cache 'llms.txt'
 
 fetch 'llms-full.txt' "$oai_search_ua" '/llms-full.txt'
 assert_status_200 'llms-full.txt'
 assert_type_contains 'llms-full.txt' 'text/plain'
-assert_body_contains 'llms-full.txt' '## Organization facts'
+assert_body_contains 'llms-full.txt' '# Envi Tech AL full AI-readable corpus'
 assert_body_excludes_challenge 'llms-full.txt'
+assert_reviewed_discovery_cache 'llms-full.txt'
 
-for head_path in '/robots.txt' '/sitemap_index.xml' '/llms.txt' '/llms-full.txt'; do
-    fetch "GPTBot HEAD $head_path" "$gptbot_ua" "$head_path" 'HEAD'
-    assert_status_200 "GPTBot HEAD $head_path"
+fetch 'agent-skills index' "$oai_search_ua" '/.well-known/agent-skills/index.json'
+assert_status_200 'agent-skills index'
+assert_type_contains 'agent-skills index' 'application/json'
+assert_body_excludes_challenge 'agent-skills index'
+if php -r '$body = file_get_contents($argv[1]); $json = is_string($body) ? json_decode($body, true) : null; exit(is_array($json) && $json !== [] && json_last_error() === JSON_ERROR_NONE ? 0 : 1);' "$FETCH_BODY"; then
+    pass 'agent-skills index is valid non-empty JSON'
+else
+    fail 'agent-skills index is not valid non-empty JSON'
+fi
+assert_reviewed_discovery_cache 'agent-skills index'
+
+for head_path in '/robots.txt' '/sitemap_index.xml' '/llms.txt' '/llms-full.txt' '/.well-known/agent-skills/index.json'; do
+    fetch "OAI-SearchBot HEAD $head_path" "$oai_search_ua" "$head_path" 'HEAD'
+    assert_status_200 "OAI-SearchBot HEAD $head_path"
     if [[ "$head_path" == '/sitemap_index.xml' ]]; then
-        assert_type_contains "GPTBot HEAD $head_path" 'xml'
+        assert_type_contains "OAI-SearchBot HEAD $head_path" 'xml'
+    elif [[ "$head_path" == '/.well-known/agent-skills/index.json' ]]; then
+        assert_type_contains "OAI-SearchBot HEAD $head_path" 'application/json'
+        assert_reviewed_discovery_cache "OAI-SearchBot HEAD $head_path"
     else
-        assert_type_contains "GPTBot HEAD $head_path" 'text/plain'
+        assert_type_contains "OAI-SearchBot HEAD $head_path" 'text/plain'
+        assert_reviewed_discovery_cache "OAI-SearchBot HEAD $head_path"
     fi
 done
 
