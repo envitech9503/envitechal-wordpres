@@ -108,12 +108,10 @@ jobs:
           python3 tests/discovery-cache-remediation-script-test.py
           grep -Eq '^VALIDATED_PR_COMMIT="[0-9a-f]{40}"$' scripts/deploy-staging-theme.sh
           grep -q 'archive --format=tar "$VALIDATED_PR_COMMIT"' scripts/deploy-staging-theme.sh
-          staging_pin="$(sed -nE 's/^VALIDATED_PR_COMMIT="([0-9a-f]{40})"$/\1/p' scripts/deploy-staging-theme.sh)"
-          production_pin="$(sed -nE 's/^VALIDATED_PRODUCTION_COMMIT="([0-9a-f]{40})"$/\1/p' scripts/deploy-production.sh)"
-          if [[ "$staging_pin" != "$production_pin" ]]; then
-            echo 'Staging must deploy the exact candidate pinned for production promotion.' >&2
-            exit 1
-          fi
+          # Staging may lead production while a newly reviewed candidate is being validated.
+          # Production remains blocked by its separate pin and staging-tree digest gate.
+          grep -Fq 'git -C "$REPO" diff --quiet "$VALIDATED_PRODUCTION_COMMIT" HEAD --' scripts/deploy-production.sh
+          grep -Fq 'the deployed staging theme is not the exact pinned production candidate' scripts/deploy-production.sh
           grep -q 'SWAP_STATE="new-active"' scripts/deploy-staging-theme.sh
           grep -q 'TARGET_REAL' scripts/deploy-staging-theme.sh
           grep -Fq 'find "$NEW_THEME" -type d -exec chmod 0755 {} +' scripts/deploy-staging-theme.sh
