@@ -160,6 +160,11 @@ eta_test_true(strpos($rendered_markdown['content'], 'Sidebar text') === false, '
 eta_test_true(strpos($rendered_markdown['content'], 'Chatbot text') === false, 'chatbot root is excluded');
 eta_test_true(strpos($rendered_markdown['content'], 'window.secret') === false, 'scripts are excluded');
 
+$visibility_source = file_get_contents(dirname(__DIR__) . '/wp-content/themes/generatepress-envitechal/inc/ai-visibility.php');
+foreach (['/llms-full.txt', '/services/', '/report-verification-portal/', '/.well-known/security.txt'] as $discovery_path) {
+    eta_test_true(strpos($visibility_source, "home_url('{$discovery_path}')") !== false, "Markdown discovery metadata includes {$discovery_path}");
+}
+
 eta_test_same(
     str_replace("\r\n", "\n", file_get_contents(dirname(__DIR__) . '/deploy/public_html/llms.txt')),
     str_replace("\r\n", "\n", eta_ai_visibility_llms_text(false)),
