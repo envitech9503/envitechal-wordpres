@@ -14,7 +14,8 @@ This change set is designed for staging first. It must not be copied directly to
 - Removes the duplicated full inline stylesheet and the theme's forced global jQuery enqueue.
 - Adds direct issuer evidence and location/method limits for accreditation claims.
 - Removes theme-level content negotiation and keeps any upstream Markdown representation isolated from the shared HTML cache.
-- Provides reviewed `llms.txt` and `llms-full.txt` files for the webroot.
+- Provides reviewed `robots.txt`, `llms.txt`, and `llms-full.txt` files for the production webroot.
+- Explicitly permits `OAI-SearchBot` for ChatGPT search discovery while disallowing the separate `GPTBot` training crawler; the wildcard policy still protects WordPress administration paths.
 - Improves keyboard focus visibility and repeated-link accessible names.
 - Aligns staging HTML robots meta with the staging-wide `X-Robots-Tag`, and gives virtual `robots.txt` a short edge TTL plus a LiteSpeed no-cache directive.
 - Keeps the responsive homepage LCP hero eager and same-origin by excluding that one image from ShortPixel Adaptive Images rewriting; its preload and 520/900/1500 WebP candidates stay on the same URL contract.
@@ -69,6 +70,7 @@ Expected results:
 
 - analytical service: HTTP 200 with the controlled scope block;
 - `llms.txt` and `llms-full.txt`: HTTP 200 and `text/plain`;
+- production `robots.txt`: an `OAI-SearchBot` group with `Allow: /`, a `GPTBot` group with `Disallow: /`, and the reviewed `Content-Signal` policy;
 - an ordinary WordPress page either remains HTML for `Accept: text/markdown` or returns a controlled Markdown representation with `Vary: Accept` and private/no-store cache controls;
 - duplicate URLs: HTTP 301 to their canonical destinations;
 - redirected legacy URLs are absent from `post-sitemap.xml` after the sitemap/application cache purge;
@@ -122,11 +124,11 @@ Use `staging.envitechal.com` as the confirmation only when rolling back a stagin
 
 ## Production promotion
 
-Production promotion is deliberately separate from staging. `scripts/deploy-production.sh` discovers both cPanel document roots through UAPI, rejects symlinked, identical, nested, or inode-identical roots and theme directories, refuses a dirty repository, and archives the exact theme plus the reviewed `deploy/public_html/llms.txt` and `llms-full.txt` from the hard-coded validated commit.
+Production promotion is deliberately separate from staging. `scripts/deploy-production.sh` discovers both cPanel document roots through UAPI, rejects symlinked, identical, nested, or inode-identical roots and theme directories, refuses a dirty repository, and archives the exact theme plus the reviewed `deploy/public_html/robots.txt`, `llms.txt`, and `llms-full.txt` from the hard-coded validated commit.
 
 The production transaction will stop unless the deployed staging theme tree digest is exactly the same as the prepared pinned theme tree. This is a promotion gate, not merely a Git comparison: after any correction, deploy that corrected candidate to staging and complete the public staging checks before updating the production pin. The production pin must never be changed just to make the gate pass.
 
-Before changing a public path, the script creates a timestamped private recovery set under `$HOME/backups/envitechal-ai-visibility`, verifies its manifest, and records whether each discovery file was previously present or absent. It normalizes theme directories to `0755`, theme files to `0644`, and discovery files to `0644`; lints and hashes the prepared tree; and atomically renames the theme and both discovery files into place. Any error or signal before all post-swap lint, path, permission, and digest checks pass restores every prior path automatically. The private recovery marker is outside the webroot.
+Before changing a public path, the script creates a timestamped private recovery set under `$HOME/backups/envitechal-ai-visibility`, verifies its manifest, and records whether each discovery file was previously present or absent. It normalizes theme directories to `0755`, theme files to `0644`, and discovery files to `0644`; lints and hashes the prepared tree; and atomically renames the theme and all three discovery files into place. Any error or signal before all post-swap lint, path, permission, and digest checks pass restores every prior path automatically. The private recovery marker is outside the webroot.
 
 Production prerequisites:
 
@@ -148,7 +150,7 @@ CONFIRM_PRODUCTION_DEPLOY=envitechal.com bash "$REPO/scripts/deploy-production.s
 
 Do not change the confirmation value, hostname variables, or document-root logic. A successful run ends with `PRODUCTION DEPLOYMENT COMMITTED` and prints all three replacement digests plus the private recovery-set path. The script requests a LiteSpeed purge through WordPress's official `do_action("litespeed_purge_all")` hook when WP-CLI is available. If WP-CLI or the hook fails, the verified files remain deployed and the output clearly requires a manual application-cache purge.
 
-If post-deployment checks fail, restore the exact prior theme and the prior presence/content of both discovery files:
+If post-deployment checks fail, restore the exact prior theme and the prior presence/content of all three discovery files:
 
 ```bash
 CONFIRM_PRODUCTION_ROLLBACK=envitechal.com \
@@ -170,15 +172,15 @@ curl -fsS https://envitechal.com/accreditations-certifications/ | grep -F '<h1'
 curl -fsS https://envitechal.com/services/analytical-lab-services/ | grep -F 'PNAC LAB-347'
 ```
 
-Confirm that the discovery files return origin `text/plain` content, the legacy credentials URL redirects to the existing canonical production page, any `Accept: text/markdown` response is private/no-store and cannot alter the following HTML response, no legacy chatbot script or identifier attributes are present, the staging schema checks remain true, and production emits exact self-canonicals.
+Confirm that the discovery files return origin `text/plain` content, `/.well-known/agent-skills/index.json` returns non-empty JSON, all four discovery resources use exactly `Cache-Control: public, max-age=300, s-maxage=3600, must-revalidate` with no `Expires` field, the legacy credentials URL redirects to the existing canonical production page, any `Accept: text/markdown` response is private/no-store and cannot alter the following HTML response, no legacy chatbot script or identifier attributes are present, the staging schema checks remain true, and production emits exact self-canonicals.
 
 Also confirm that `img.eta-home-bg-img` retains `data-spai-excluded="true"`, `loading="eager"`, `fetchpriority="high"`, dimensions, `sizes="100vw"`, and all three same-origin hero candidates. Its browser `currentSrc` must remain on `envitechal.com`; no ShortPixel placeholder, lazy marker, or `cdn.shortpixel.ai` hero request should appear after the cache purge.
 
-The static discovery files may be safely installed at the origin by this transaction, but they do not create AI visibility while the edge replaces them with challenge HTML. Keep the firewall enabled and ask A2 Hosting or the edge provider to exempt verified search crawlers and the public discovery resources from JavaScript-only verification. Retest Googlebot-like, Bingbot-like, GPTBot-like, ordinary browser, `HEAD`, and `Accept: text/markdown` requests after the rule and edge-cache purge. Do not report the AI visibility remediation as complete until those requests reach the intended origin responses.
+The static discovery files may be safely installed at the origin by this transaction, but they do not create AI visibility while the edge replaces them with challenge HTML. Keep the firewall enabled and ask A2 Hosting or the edge provider to exempt verified search crawlers and the public discovery resources from JavaScript-only verification. Retest Googlebot-like, Bingbot-like, OAI-SearchBot-like, ordinary browser, `HEAD`, and `Accept: text/markdown` requests after the rule and edge-cache purge. Do not report the AI visibility remediation as complete until those requests reach the intended origin responses.
 
 ## Edge and staging prerequisites
 
-Fresh crawler-like requests were initially served a JavaScript verification page before reaching WordPress. After the production release and external cache purge, cookie-free ordinary, Googlebot, Bingbot, GPTBot, and OAI-SearchBot GET/HEAD checks returned the intended origin responses on 16 July 2026. Treat that result as monitored state, not a permanent assumption: the public edge can regress independently of the theme. User-Agent simulation can detect differential treatment and challenges, but it is not proof of a provider-verified crawler identity; WAF allow rules must use the provider's documented IP/DNS verification mechanism rather than trusting the User-Agent string.
+Fresh crawler-like requests were initially served a JavaScript verification page before reaching WordPress. After the production release and external cache purge, cookie-free ordinary, Googlebot, Bingbot, and OAI-SearchBot GET/HEAD checks returned the intended origin responses on 16 July 2026. Treat that result as monitored state, not a permanent assumption: the public edge can regress independently of the theme. User-Agent simulation can detect differential treatment and challenges, but it is not proof of a provider-verified crawler identity; WAF allow rules must use the provider's documented IP/DNS verification mechanism rather than trusting the User-Agent string. `GPTBot` is validated as a disallowed robots group rather than used as the discovery-monitor client.
 
 The scheduled `Live AI visibility` workflow runs `scripts/check-ai-visibility-live.sh` on the first day of every month and can also be dispatched manually. It checks the homepage, robots, sitemap, both LLMS files, crawler-like GET/HEAD behavior, Markdown cache isolation, the legacy credentials redirect, and challenge/chatbot markers. Any recurrence of 403, 415, 429, 5xx, challenge HTML, unsafe cache controls, cross-representation contamination, or an incorrect content type requires immediate edge-provider review. Keep the firewall enabled; any exception must use provider-verified crawler identity rather than trusting User-Agent alone.
 

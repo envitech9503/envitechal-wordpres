@@ -54,6 +54,7 @@ assert_body() {
     local environment="$1"
     local path="$2"
     local body="$3"
+    local normalized_body
 
     if grep -Eiq 'One moment, please|Checking your browser|Verify you are human|Access denied' "$body"; then
         stop "$path returned a challenge or access-denied response."
@@ -65,6 +66,13 @@ assert_body() {
             if [[ "$environment" == "staging" ]]; then
                 grep -Fq 'Disallow: /' "$body" || stop "staging robots.txt is not closed to crawling."
             else
+                normalized_body="$(tr -d '\r' <"$body")"
+                grep -Fq 'User-agent: OAI-SearchBot' "$body" ||
+                    stop "production robots.txt is missing the OAI-SearchBot policy."
+                [[ "$normalized_body" == *$'User-agent: OAI-SearchBot\nAllow: /\nContent-Signal: ai-train=no, search=yes, ai-input=yes'* ]] ||
+                    stop "production robots.txt does not explicitly allow OAI-SearchBot."
+                [[ "$normalized_body" == *$'User-agent: GPTBot\nDisallow: /\nContent-Signal: ai-train=no, search=yes, ai-input=yes'* ]] ||
+                    stop "production robots.txt does not explicitly disallow GPTBot."
                 grep -Fq 'Sitemap: https://envitechal.com/sitemap_index.xml' "$body" ||
                     stop "production robots.txt is missing the canonical sitemap."
             fi
@@ -73,7 +81,7 @@ assert_body() {
             grep -Fq '# Envi Tech AL' "$body" || stop "llms.txt is missing its reviewed identity marker."
             ;;
         '/llms-full.txt')
-            grep -Fq '## Organization facts' "$body" || stop "llms-full.txt is missing its reviewed facts marker."
+            grep -Fq '# Envi Tech AL full AI-readable corpus' "$body" || stop "llms-full.txt is missing its reviewed corpus marker."
             ;;
         '/.well-known/agent-skills/index.json')
             php -r '
@@ -107,7 +115,7 @@ verify_discovery_request() {
     curl_args=(
         --http1.1 --silent --show-error --path-as-is
         --connect-timeout 10 --max-time 30
-        --user-agent 'Mozilla/5.0 (compatible; GPTBot/1.2; +https://openai.com/gptbot)'
+        --user-agent 'Mozilla/5.0 (compatible; OAI-SearchBot/1.0; +https://openai.com/searchbot)'
         --header 'Accept: */*'
         --dump-header "$headers"
         --output "$body"

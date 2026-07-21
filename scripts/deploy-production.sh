@@ -6,12 +6,13 @@ PRODUCTION_HOST="envitechal.com"
 STAGING_HOST="staging.envitechal.com"
 REPO="${HOME}/repositories/envitechal-wordpres"
 THEME_REL="wp-content/themes/generatepress-envitechal"
+ROBOTS_REL="deploy/public_html/robots.txt"
 LLMS_REL="deploy/public_html/llms.txt"
 LLMS_FULL_REL="deploy/public_html/llms-full.txt"
 
 # SECURITY PIN: change this only to a commit whose theme and discovery files
 # have passed staging validation and review. The script archives this exact tree.
-VALIDATED_PRODUCTION_COMMIT="ea06c0b6af6113f01cd7d12a371d6be2d7e6fde7"
+VALIDATED_PRODUCTION_COMMIT="5caab23ecf39231d42d5dace340e2db0dd29500a"
 
 BACKUP_DIR="${HOME}/backups/envitechal-ai-visibility"
 BACKUP_MARKER="${BACKUP_DIR}/LAST_PRODUCTION_BACKUP"
@@ -216,6 +217,7 @@ test -f "$STAGING_ROOT/wp-load.php" || stop "staging WordPress root was not conf
 THEMES_PARENT="${PRODUCTION_ROOT}/wp-content/themes"
 TARGET="${PRODUCTION_ROOT}/${THEME_REL}"
 STAGING_TARGET="${STAGING_ROOT}/${THEME_REL}"
+ROBOTS_TARGET="${PRODUCTION_ROOT}/robots.txt"
 LLMS_TARGET="${PRODUCTION_ROOT}/llms.txt"
 LLMS_FULL_TARGET="${PRODUCTION_ROOT}/llms-full.txt"
 
@@ -253,6 +255,7 @@ if find "$TARGET" -type l -print -quit | grep -q .; then
 fi
 assert_regular_or_absent "$LLMS_TARGET"
 assert_regular_or_absent "$LLMS_FULL_TARGET"
+assert_regular_or_absent "$ROBOTS_TARGET"
 
 test -d "$REPO/.git" || stop "repository clone was not found."
 REPO_REAL="$(realpath -e "$REPO")"
@@ -276,12 +279,12 @@ test -z "$(git -C "$REPO" status --porcelain)" || stop "repository became dirty 
 git -C "$REPO" cat-file -e "${VALIDATED_PRODUCTION_COMMIT}^{commit}" || stop "the validated production commit is unavailable locally."
 git -C "$REPO" merge-base --is-ancestor "$VALIDATED_PRODUCTION_COMMIT" HEAD ||
     stop "the validated production commit is not an ancestor of main."
-for required_path in "$THEME_REL" "$LLMS_REL" "$LLMS_FULL_REL"; do
+for required_path in "$THEME_REL" "$ROBOTS_REL" "$LLMS_REL" "$LLMS_FULL_REL"; do
     git -C "$REPO" cat-file -e "${VALIDATED_PRODUCTION_COMMIT}:${required_path}" ||
         stop "the validated commit does not contain $required_path."
 done
 git -C "$REPO" diff --quiet "$VALIDATED_PRODUCTION_COMMIT" HEAD -- \
-    "$THEME_REL" "$LLMS_REL" "$LLMS_FULL_REL" ||
+    "$THEME_REL" "$ROBOTS_REL" "$LLMS_REL" "$LLMS_FULL_REL" ||
     stop "main's production payload differs from the validated production commit."
 
 umask 077
@@ -307,23 +310,26 @@ ARCHIVE_ROOT="${BUILD_PARENT}/archive"
 NEW_THEME="${ARCHIVE_ROOT}/${THEME_REL}"
 OLD_THEME="${THEMES_PARENT}/.eta-production-previous-${STAMP}"
 DISCOVERY_STAGE="${PRODUCTION_ROOT}/.eta-production-public-${STAMP}"
+NEW_ROBOTS="${DISCOVERY_STAGE}/robots.txt"
 NEW_LLMS="${DISCOVERY_STAGE}/llms.txt"
 NEW_LLMS_FULL="${DISCOVERY_STAGE}/llms-full.txt"
+OLD_ROBOTS="${PRODUCTION_ROOT}/.eta-robots-previous-${STAMP}.txt"
 OLD_LLMS="${PRODUCTION_ROOT}/.eta-llms-previous-${STAMP}.txt"
 OLD_LLMS_FULL="${PRODUCTION_ROOT}/.eta-llms-full-previous-${STAMP}.txt"
 BACKUP_SET="${BACKUP_DIR}/production-before-${STAMP}"
 
-for protected_path in "$BUILD_PARENT" "$OLD_THEME" "$DISCOVERY_STAGE" "$OLD_LLMS" "$OLD_LLMS_FULL" "$BACKUP_SET"; do
+for protected_path in "$BUILD_PARENT" "$OLD_THEME" "$DISCOVERY_STAGE" "$OLD_ROBOTS" "$OLD_LLMS" "$OLD_LLMS_FULL" "$BACKUP_SET"; do
     test ! -e "$protected_path" && test ! -L "$protected_path" || stop "protected transaction path already exists: $protected_path"
 done
 
 mkdir -m 0700 "$BUILD_PARENT" "$ARCHIVE_ROOT" "$DISCOVERY_STAGE" "$BACKUP_SET"
 
 git -C "$REPO" archive --format=tar "$VALIDATED_PRODUCTION_COMMIT" \
-    "$THEME_REL" "$LLMS_REL" "$LLMS_FULL_REL" |
+    "$THEME_REL" "$ROBOTS_REL" "$LLMS_REL" "$LLMS_FULL_REL" |
     tar -xf - -C "$ARCHIVE_ROOT"
 
 test -f "$NEW_THEME/functions.php" || stop "the pinned Git archive did not contain the child theme."
+test -s "${ARCHIVE_ROOT}/${ROBOTS_REL}" || stop "the pinned Git archive did not contain robots.txt."
 test -s "${ARCHIVE_ROOT}/${LLMS_REL}" || stop "the pinned Git archive did not contain llms.txt."
 test -s "${ARCHIVE_ROOT}/${LLMS_FULL_REL}" || stop "the pinned Git archive did not contain llms-full.txt."
 if find "$ARCHIVE_ROOT" -type l -print -quit | grep -q .; then
@@ -343,10 +349,12 @@ if find "$NEW_THEME" -type f ! -perm 0644 -print -quit | grep -q .; then
     stop "a prepared theme file does not have mode 0644."
 fi
 
+install -m 0644 -- "${ARCHIVE_ROOT}/${ROBOTS_REL}" "$NEW_ROBOTS"
 install -m 0644 -- "${ARCHIVE_ROOT}/${LLMS_REL}" "$NEW_LLMS"
 install -m 0644 -- "${ARCHIVE_ROOT}/${LLMS_FULL_REL}" "$NEW_LLMS_FULL"
 
 PREPARED_THEME_DIGEST="$(tree_digest "$NEW_THEME")"
+PREPARED_ROBOTS_DIGEST="$(file_digest "$NEW_ROBOTS")"
 PREPARED_LLMS_DIGEST="$(file_digest "$NEW_LLMS")"
 PREPARED_LLMS_FULL_DIGEST="$(file_digest "$NEW_LLMS_FULL")"
 ORIGINAL_THEME_DIGEST="$(tree_digest "$TARGET")"
@@ -360,20 +368,23 @@ tar -tzf "$BACKUP_SET/theme.tar.gz" >/dev/null
 [[ "$(tree_digest "$TARGET")" == "$ORIGINAL_THEME_DIGEST" ]] || stop "the production theme changed while it was being backed up."
 printf '%s\n' "$ORIGINAL_THEME_DIGEST" >"$BACKUP_SET/theme-tree.sha256"
 
+ROBOTS_PRIOR_STATE=""
+ROBOTS_PRIOR_DIGEST=""
 LLMS_PRIOR_STATE=""
 LLMS_PRIOR_DIGEST=""
 LLMS_FULL_PRIOR_STATE=""
 LLMS_FULL_PRIOR_DIGEST=""
+backup_public_file "$ROBOTS_TARGET" "$BACKUP_SET/robots.txt.before" ROBOTS_PRIOR_STATE ROBOTS_PRIOR_DIGEST
 backup_public_file "$LLMS_TARGET" "$BACKUP_SET/llms.txt.before" LLMS_PRIOR_STATE LLMS_PRIOR_DIGEST
 backup_public_file "$LLMS_FULL_TARGET" "$BACKUP_SET/llms-full.txt.before" LLMS_FULL_PRIOR_STATE LLMS_FULL_PRIOR_DIGEST
 
-printf 'llms.txt\t%s\nllms-full.txt\t%s\n' \
-    "$LLMS_PRIOR_STATE" "$LLMS_FULL_PRIOR_STATE" >"$BACKUP_SET/discovery-state.tsv"
-printf 'host\t%s\ncreated_utc\t%s\nvalidated_commit\t%s\nrepository_head\t%s\nproduction_root\t%s\nstaging_theme_digest\t%s\noriginal_theme_digest\t%s\nreplacement_theme_digest\t%s\nreplacement_llms_digest\t%s\nreplacement_llms_full_digest\t%s\n' \
+printf 'robots.txt\t%s\nllms.txt\t%s\nllms-full.txt\t%s\n' \
+    "$ROBOTS_PRIOR_STATE" "$LLMS_PRIOR_STATE" "$LLMS_FULL_PRIOR_STATE" >"$BACKUP_SET/discovery-state.tsv"
+printf 'host\t%s\ncreated_utc\t%s\nvalidated_commit\t%s\nrepository_head\t%s\nproduction_root\t%s\nstaging_theme_digest\t%s\noriginal_theme_digest\t%s\nreplacement_theme_digest\t%s\nreplacement_robots_digest\t%s\nreplacement_llms_digest\t%s\nreplacement_llms_full_digest\t%s\n' \
     "$PRODUCTION_HOST" "$STAMP" "$VALIDATED_PRODUCTION_COMMIT" \
     "$(git -C "$REPO" rev-parse HEAD)" "$PRODUCTION_ROOT" \
     "$STAGING_THEME_DIGEST" "$ORIGINAL_THEME_DIGEST" "$PREPARED_THEME_DIGEST" \
-    "$PREPARED_LLMS_DIGEST" "$PREPARED_LLMS_FULL_DIGEST" >"$BACKUP_SET/deployment-metadata.tsv"
+    "$PREPARED_ROBOTS_DIGEST" "$PREPARED_LLMS_DIGEST" "$PREPARED_LLMS_FULL_DIGEST" >"$BACKUP_SET/deployment-metadata.tsv"
 
 (
     cd "$BACKUP_SET"
@@ -391,8 +402,10 @@ chmod 0600 "$MARKER_TMP"
 mv -f -- "$MARKER_TMP" "$BACKUP_MARKER"
 
 THEME_STATE="preparing"
+ROBOTS_STATE="preparing"
 LLMS_STATE="preparing"
 LLMS_FULL_STATE="preparing"
+if [[ "$ROBOTS_PRIOR_STATE" == "present" ]]; then ROBOTS_HAD_OLD=1; else ROBOTS_HAD_OLD=0; fi
 if [[ "$LLMS_PRIOR_STATE" == "present" ]]; then LLMS_HAD_OLD=1; else LLMS_HAD_OLD=0; fi
 if [[ "$LLMS_FULL_PRIOR_STATE" == "present" ]]; then LLMS_FULL_HAD_OLD=1; else LLMS_FULL_HAD_OLD=0; fi
 
@@ -405,6 +418,8 @@ cleanup() {
     if ((status != 0)); then
         echo "Production transaction did not commit; restoring every path..." >&2
 
+        recover_public_file "$ROBOTS_STATE" "$ROBOTS_HAD_OLD" \
+            "$ROBOTS_TARGET" "$OLD_ROBOTS" "$DISCOVERY_STAGE/failed-robots.txt" || recovery_failed=1
         recover_public_file "$LLMS_FULL_STATE" "$LLMS_FULL_HAD_OLD" \
             "$LLMS_FULL_TARGET" "$OLD_LLMS_FULL" "$DISCOVERY_STAGE/failed-llms-full.txt" || recovery_failed=1
         recover_public_file "$LLMS_STATE" "$LLMS_HAD_OLD" \
@@ -437,6 +452,7 @@ trap 'exit 143' TERM
     stop "the staging theme changed after promotion validation."
 assert_unchanged_public_file "$LLMS_TARGET" "$LLMS_PRIOR_STATE" "$LLMS_PRIOR_DIGEST"
 assert_unchanged_public_file "$LLMS_FULL_TARGET" "$LLMS_FULL_PRIOR_STATE" "$LLMS_FULL_PRIOR_DIGEST"
+assert_unchanged_public_file "$ROBOTS_TARGET" "$ROBOTS_PRIOR_STATE" "$ROBOTS_PRIOR_DIGEST"
 
 echo "Atomically activating the validated production theme..."
 THEME_STATE="moving-old"
@@ -447,6 +463,17 @@ mv -- "$NEW_THEME" "$TARGET"
 THEME_STATE="new-active"
 
 echo "Atomically activating the reviewed AI discovery files..."
+if test -f "$ROBOTS_TARGET"; then
+    ROBOTS_STATE="moving-old"
+    mv -- "$ROBOTS_TARGET" "$OLD_ROBOTS"
+    ROBOTS_STATE="old-moved"
+else
+    ROBOTS_STATE="no-old"
+fi
+ROBOTS_STATE="moving-new"
+mv -- "$NEW_ROBOTS" "$ROBOTS_TARGET"
+ROBOTS_STATE="new-active"
+
 if test -f "$LLMS_TARGET"; then
     LLMS_STATE="moving-old"
     mv -- "$LLMS_TARGET" "$OLD_LLMS"
@@ -470,11 +497,14 @@ mv -- "$NEW_LLMS_FULL" "$LLMS_FULL_TARGET"
 LLMS_FULL_STATE="new-active"
 
 [[ "$(realpath -e "$TARGET")" == "$TARGET" ]] || stop "the deployed production theme path did not verify."
+[[ "$(realpath -e "$ROBOTS_TARGET")" == "$ROBOTS_TARGET" ]] || stop "the deployed robots.txt path did not verify."
 [[ "$(realpath -e "$LLMS_TARGET")" == "$LLMS_TARGET" ]] || stop "the deployed llms.txt path did not verify."
 [[ "$(realpath -e "$LLMS_FULL_TARGET")" == "$LLMS_FULL_TARGET" ]] || stop "the deployed llms-full.txt path did not verify."
 [[ "$(tree_digest "$TARGET")" == "$PREPARED_THEME_DIGEST" ]] || stop "the deployed production theme digest did not verify."
+[[ "$(file_digest "$ROBOTS_TARGET")" == "$PREPARED_ROBOTS_DIGEST" ]] || stop "the deployed robots.txt digest did not verify."
 [[ "$(file_digest "$LLMS_TARGET")" == "$PREPARED_LLMS_DIGEST" ]] || stop "the deployed llms.txt digest did not verify."
 [[ "$(file_digest "$LLMS_FULL_TARGET")" == "$PREPARED_LLMS_FULL_DIGEST" ]] || stop "the deployed llms-full.txt digest did not verify."
+[[ "$(stat -Lc '%a' "$ROBOTS_TARGET")" == "644" ]] || stop "robots.txt does not have mode 0644."
 [[ "$(stat -Lc '%a' "$LLMS_TARGET")" == "644" ]] || stop "llms.txt does not have mode 0644."
 [[ "$(stat -Lc '%a' "$LLMS_FULL_TARGET")" == "644" ]] || stop "llms-full.txt does not have mode 0644."
 if find "$TARGET" -type d ! -perm 0755 -print -quit | grep -q .; then
@@ -487,6 +517,7 @@ find "$TARGET" -type f -name '*.php' -print0 |
     xargs -0 -r -n1 "$PHP_BIN" -l
 
 THEME_STATE="verified"
+ROBOTS_STATE="verified"
 LLMS_STATE="verified"
 LLMS_FULL_STATE="verified"
 
@@ -499,7 +530,7 @@ chmod -R u+rwX,go-rwx "$OLD_THEME" || true
 case "$OLD_THEME" in
     "$THEMES_PARENT"/.eta-production-previous-*) rm -rf --one-file-system -- "$OLD_THEME" || echo "WARNING: protected prior theme needs manual cleanup." >&2 ;;
 esac
-rm -f -- "$OLD_LLMS" "$OLD_LLMS_FULL" || echo "WARNING: protected prior discovery files need manual cleanup." >&2
+rm -f -- "$OLD_ROBOTS" "$OLD_LLMS" "$OLD_LLMS_FULL" || echo "WARNING: protected prior discovery files need manual cleanup." >&2
 case "$BUILD_PARENT" in
     "$THEMES_PARENT"/.eta-production-build-*) rm -rf --one-file-system -- "$BUILD_PARENT" || echo "WARNING: protected build tree needs manual cleanup." >&2 ;;
 esac
@@ -522,9 +553,9 @@ if WP_BIN="$(command -v wp || true)" && test -x "$WP_BIN"; then
     fi
 fi
 
-printf '\nPRODUCTION DEPLOYMENT COMMITTED\nPinned content commit: %s\nRepository HEAD: %s\nTheme digest: %s\nllms.txt digest: %s\nllms-full.txt digest: %s\nRecovery set: %s\nApplication cache: %s\n\n' \
+printf '\nPRODUCTION DEPLOYMENT COMMITTED\nPinned content commit: %s\nRepository HEAD: %s\nTheme digest: %s\nrobots.txt digest: %s\nllms.txt digest: %s\nllms-full.txt digest: %s\nRecovery set: %s\nApplication cache: %s\n\n' \
     "$VALIDATED_PRODUCTION_COMMIT" "$(git -C "$REPO" rev-parse HEAD)" \
-    "$PREPARED_THEME_DIGEST" "$PREPARED_LLMS_DIGEST" "$PREPARED_LLMS_FULL_DIGEST" \
+    "$PREPARED_THEME_DIGEST" "$PREPARED_ROBOTS_DIGEST" "$PREPARED_LLMS_DIGEST" "$PREPARED_LLMS_FULL_DIGEST" \
     "$BACKUP_SET" "$PURGE_RESULT"
 printf '%s\n' \
     "EXTERNAL EDGE/WAF ACTION STILL REQUIRED: purge the CDN/edge cache separately and configure crawler/discovery-path allow rules without disabling the firewall."

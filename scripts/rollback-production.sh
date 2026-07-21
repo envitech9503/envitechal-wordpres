@@ -200,6 +200,7 @@ test -f "$STAGING_ROOT/wp-load.php" || stop "staging WordPress root was not conf
 THEMES_PARENT="${PRODUCTION_ROOT}/wp-content/themes"
 TARGET="${PRODUCTION_ROOT}/${THEME_REL}"
 STAGING_TARGET="${STAGING_ROOT}/${THEME_REL}"
+ROBOTS_TARGET="${PRODUCTION_ROOT}/robots.txt"
 LLMS_TARGET="${PRODUCTION_ROOT}/llms.txt"
 LLMS_FULL_TARGET="${PRODUCTION_ROOT}/llms-full.txt"
 
@@ -222,6 +223,7 @@ if find "$TARGET" -type l -print -quit | grep -q .; then
 fi
 assert_regular_or_absent "$LLMS_TARGET"
 assert_regular_or_absent "$LLMS_FULL_TARGET"
+assert_regular_or_absent "$ROBOTS_TARGET"
 test -w "$PRODUCTION_ROOT" || stop "the production webroot is not writable."
 test -w "$THEMES_PARENT" && test -w "$TARGET" || stop "the production theme area is not writable."
 
@@ -258,14 +260,22 @@ tar -tzf "$BACKUP_SET/theme.tar.gz" >/dev/null
 
 test -f "$BACKUP_SET/discovery-state.tsv" || stop "the discovery recovery state was not found."
 mapfile -t DISCOVERY_STATE <"$BACKUP_SET/discovery-state.tsv"
-[[ "${#DISCOVERY_STATE[@]}" == "2" ]] || stop "the discovery recovery state is malformed."
-IFS=$'\t' read -r LLMS_KEY LLMS_DESIRED_STATE LLMS_EXTRA <<<"${DISCOVERY_STATE[0]}"
-IFS=$'\t' read -r LLMS_FULL_KEY LLMS_FULL_DESIRED_STATE LLMS_FULL_EXTRA <<<"${DISCOVERY_STATE[1]}"
+[[ "${#DISCOVERY_STATE[@]}" == "3" ]] || stop "the discovery recovery state is malformed."
+IFS=$'\t' read -r ROBOTS_KEY ROBOTS_DESIRED_STATE ROBOTS_EXTRA <<<"${DISCOVERY_STATE[0]}"
+IFS=$'\t' read -r LLMS_KEY LLMS_DESIRED_STATE LLMS_EXTRA <<<"${DISCOVERY_STATE[1]}"
+IFS=$'\t' read -r LLMS_FULL_KEY LLMS_FULL_DESIRED_STATE LLMS_FULL_EXTRA <<<"${DISCOVERY_STATE[2]}"
+[[ "$ROBOTS_KEY" == "robots.txt" && -z "$ROBOTS_EXTRA" ]] || stop "the robots.txt recovery state is malformed."
 [[ "$LLMS_KEY" == "llms.txt" && -z "$LLMS_EXTRA" ]] || stop "the llms.txt recovery state is malformed."
 [[ "$LLMS_FULL_KEY" == "llms-full.txt" && -z "$LLMS_FULL_EXTRA" ]] || stop "the llms-full.txt recovery state is malformed."
+[[ "$ROBOTS_DESIRED_STATE" == "present" || "$ROBOTS_DESIRED_STATE" == "absent" ]] || stop "the robots.txt recovery state is invalid."
 [[ "$LLMS_DESIRED_STATE" == "present" || "$LLMS_DESIRED_STATE" == "absent" ]] || stop "the llms.txt recovery state is invalid."
 [[ "$LLMS_FULL_DESIRED_STATE" == "present" || "$LLMS_FULL_DESIRED_STATE" == "absent" ]] || stop "the llms-full.txt recovery state is invalid."
 
+if [[ "$ROBOTS_DESIRED_STATE" == "present" ]]; then
+    test -f "$BACKUP_SET/robots.txt.before" || stop "the saved robots.txt is missing."
+else
+    test ! -e "$BACKUP_SET/robots.txt.before" || stop "the saved robots.txt conflicts with its absence state."
+fi
 if [[ "$LLMS_DESIRED_STATE" == "present" ]]; then
     test -f "$BACKUP_SET/llms.txt.before" || stop "the saved llms.txt is missing."
 else
@@ -289,13 +299,15 @@ RESTORE_BUILD="${THEMES_PARENT}/.eta-production-restore-${STAMP}"
 RESTORE_THEME="${RESTORE_BUILD}/generatepress-envitechal"
 CURRENT_THEME="${THEMES_PARENT}/.eta-production-rollback-current-${STAMP}"
 DISCOVERY_STAGE="${PRODUCTION_ROOT}/.eta-production-restore-public-${STAMP}"
+RESTORE_ROBOTS="${DISCOVERY_STAGE}/robots.txt"
 RESTORE_LLMS="${DISCOVERY_STAGE}/llms.txt"
 RESTORE_LLMS_FULL="${DISCOVERY_STAGE}/llms-full.txt"
+CURRENT_ROBOTS="${PRODUCTION_ROOT}/.eta-robots-rollback-current-${STAMP}.txt"
 CURRENT_LLMS="${PRODUCTION_ROOT}/.eta-llms-rollback-current-${STAMP}.txt"
 CURRENT_LLMS_FULL="${PRODUCTION_ROOT}/.eta-llms-full-rollback-current-${STAMP}.txt"
 FAILED_SET="${BACKUP_DIR}/production-rolled-back-from-${STAMP}"
 
-for protected_path in "$RESTORE_BUILD" "$CURRENT_THEME" "$DISCOVERY_STAGE" "$CURRENT_LLMS" "$CURRENT_LLMS_FULL" "$FAILED_SET"; do
+for protected_path in "$RESTORE_BUILD" "$CURRENT_THEME" "$DISCOVERY_STAGE" "$CURRENT_ROBOTS" "$CURRENT_LLMS" "$CURRENT_LLMS_FULL" "$FAILED_SET"; do
     test ! -e "$protected_path" && test ! -L "$protected_path" || stop "protected rollback path already exists: $protected_path"
 done
 
@@ -311,6 +323,9 @@ find "$RESTORE_THEME" -type f -name '*.php' -print0 |
     xargs -0 -r -n1 "$PHP_BIN" -l
 [[ "$(tree_digest "$RESTORE_THEME")" == "$BACKED_THEME_DIGEST" ]] || stop "the prepared rollback theme digest did not verify."
 
+if [[ "$ROBOTS_DESIRED_STATE" == "present" ]]; then
+    install -m 0644 -- "$BACKUP_SET/robots.txt.before" "$RESTORE_ROBOTS"
+fi
 if [[ "$LLMS_DESIRED_STATE" == "present" ]]; then
     install -m 0644 -- "$BACKUP_SET/llms.txt.before" "$RESTORE_LLMS"
 fi
@@ -324,14 +339,17 @@ tar -tzf "$FAILED_SET/theme.tar.gz" >/dev/null
 [[ "$(tree_digest "$TARGET")" == "$CURRENT_THEME_DIGEST" ]] || stop "the current production theme changed while it was being archived."
 printf '%s\n' "$CURRENT_THEME_DIGEST" >"$FAILED_SET/theme-tree.sha256"
 
+ROBOTS_CURRENT_STATE=""
+ROBOTS_CURRENT_DIGEST=""
 LLMS_CURRENT_STATE=""
 LLMS_FULL_CURRENT_STATE=""
 LLMS_CURRENT_DIGEST=""
 LLMS_FULL_CURRENT_DIGEST=""
+backup_current_public_file "$ROBOTS_TARGET" "$FAILED_SET/robots.txt.before" ROBOTS_CURRENT_STATE ROBOTS_CURRENT_DIGEST
 backup_current_public_file "$LLMS_TARGET" "$FAILED_SET/llms.txt.before" LLMS_CURRENT_STATE LLMS_CURRENT_DIGEST
 backup_current_public_file "$LLMS_FULL_TARGET" "$FAILED_SET/llms-full.txt.before" LLMS_FULL_CURRENT_STATE LLMS_FULL_CURRENT_DIGEST
-printf 'llms.txt\t%s\nllms-full.txt\t%s\n' \
-    "$LLMS_CURRENT_STATE" "$LLMS_FULL_CURRENT_STATE" >"$FAILED_SET/discovery-state.tsv"
+printf 'robots.txt\t%s\nllms.txt\t%s\nllms-full.txt\t%s\n' \
+    "$ROBOTS_CURRENT_STATE" "$LLMS_CURRENT_STATE" "$LLMS_FULL_CURRENT_STATE" >"$FAILED_SET/discovery-state.tsv"
 printf 'host\t%s\ncreated_utc\t%s\nrestored_from\t%s\npre_rollback_theme_digest\t%s\nrestored_theme_digest\t%s\n' \
     "$PRODUCTION_HOST" "$STAMP" "$BACKUP_SET" "$CURRENT_THEME_DIGEST" "$BACKED_THEME_DIGEST" \
     >"$FAILED_SET/rollback-metadata.tsv"
@@ -351,8 +369,10 @@ chmod 0600 "$ROLLBACK_MARKER_TMP"
 mv -f -- "$ROLLBACK_MARKER_TMP" "$BACKUP_DIR/LAST_PRODUCTION_ROLLBACK_SOURCE"
 
 THEME_STATE="preparing"
+ROBOTS_STATE="preparing"
 LLMS_STATE="preparing"
 LLMS_FULL_STATE="preparing"
+if [[ "$ROBOTS_CURRENT_STATE" == "present" ]]; then ROBOTS_HAD_CURRENT=1; else ROBOTS_HAD_CURRENT=0; fi
 if [[ "$LLMS_CURRENT_STATE" == "present" ]]; then LLMS_HAD_CURRENT=1; else LLMS_HAD_CURRENT=0; fi
 if [[ "$LLMS_FULL_CURRENT_STATE" == "present" ]]; then LLMS_FULL_HAD_CURRENT=1; else LLMS_FULL_HAD_CURRENT=0; fi
 
@@ -365,6 +385,8 @@ cleanup() {
     if ((status != 0)); then
         echo "Production rollback did not commit; recovering the pre-rollback paths..." >&2
 
+        recover_current_public_file "$ROBOTS_STATE" "$ROBOTS_HAD_CURRENT" \
+            "$ROBOTS_TARGET" "$CURRENT_ROBOTS" "$DISCOVERY_STAGE/failed-restored-robots.txt" || recovery_failed=1
         recover_current_public_file "$LLMS_FULL_STATE" "$LLMS_FULL_HAD_CURRENT" \
             "$LLMS_FULL_TARGET" "$CURRENT_LLMS_FULL" "$DISCOVERY_STAGE/failed-restored-llms-full.txt" || recovery_failed=1
         recover_current_public_file "$LLMS_STATE" "$LLMS_HAD_CURRENT" \
@@ -395,6 +417,7 @@ trap 'exit 143' TERM
 [[ "$(tree_digest "$TARGET")" == "$CURRENT_THEME_DIGEST" ]] || stop "the production theme changed after the rollback recovery archive was created."
 assert_current_public_file_unchanged "$LLMS_TARGET" "$LLMS_CURRENT_STATE" "$LLMS_CURRENT_DIGEST"
 assert_current_public_file_unchanged "$LLMS_FULL_TARGET" "$LLMS_FULL_CURRENT_STATE" "$LLMS_FULL_CURRENT_DIGEST"
+assert_current_public_file_unchanged "$ROBOTS_TARGET" "$ROBOTS_CURRENT_STATE" "$ROBOTS_CURRENT_DIGEST"
 
 echo "Atomically restoring the prior production theme..."
 THEME_STATE="moving-current"
@@ -405,6 +428,19 @@ mv -- "$RESTORE_THEME" "$TARGET"
 THEME_STATE="new-active"
 
 echo "Restoring the exact prior discovery-file presence and content..."
+if test -f "$ROBOTS_TARGET"; then
+    ROBOTS_STATE="moving-current"
+    mv -- "$ROBOTS_TARGET" "$CURRENT_ROBOTS"
+    ROBOTS_STATE="current-moved"
+else
+    ROBOTS_STATE="no-current"
+fi
+if [[ "$ROBOTS_DESIRED_STATE" == "present" ]]; then
+    ROBOTS_STATE="moving-desired"
+    mv -- "$RESTORE_ROBOTS" "$ROBOTS_TARGET"
+fi
+ROBOTS_STATE="desired-active"
+
 if test -f "$LLMS_TARGET"; then
     LLMS_STATE="moving-current"
     mv -- "$LLMS_TARGET" "$CURRENT_LLMS"
@@ -442,6 +478,13 @@ if find "$TARGET" -type f ! -perm 0644 -print -quit | grep -q .; then
     stop "a restored theme file does not have mode 0644."
 fi
 
+if [[ "$ROBOTS_DESIRED_STATE" == "present" ]]; then
+    [[ "$(realpath -e "$ROBOTS_TARGET")" == "$ROBOTS_TARGET" ]] || stop "the restored robots.txt path did not verify."
+    [[ "$(file_digest "$ROBOTS_TARGET")" == "$(file_digest "$BACKUP_SET/robots.txt.before")" ]] || stop "the restored robots.txt digest did not verify."
+    [[ "$(stat -Lc '%a' "$ROBOTS_TARGET")" == "644" ]] || stop "the restored robots.txt does not have mode 0644."
+else
+    test ! -e "$ROBOTS_TARGET" && test ! -L "$ROBOTS_TARGET" || stop "robots.txt should have been removed by rollback."
+fi
 if [[ "$LLMS_DESIRED_STATE" == "present" ]]; then
     [[ "$(realpath -e "$LLMS_TARGET")" == "$LLMS_TARGET" ]] || stop "the restored llms.txt path did not verify."
     [[ "$(file_digest "$LLMS_TARGET")" == "$(file_digest "$BACKUP_SET/llms.txt.before")" ]] || stop "the restored llms.txt digest did not verify."
@@ -458,6 +501,7 @@ else
 fi
 
 THEME_STATE="verified"
+ROBOTS_STATE="verified"
 LLMS_STATE="verified"
 LLMS_FULL_STATE="verified"
 trap - EXIT INT TERM
@@ -466,7 +510,7 @@ chmod -R u+rwX,go-rwx "$CURRENT_THEME" || true
 case "$CURRENT_THEME" in
     "$THEMES_PARENT"/.eta-production-rollback-current-*) rm -rf --one-file-system -- "$CURRENT_THEME" || echo "WARNING: protected pre-rollback theme needs manual cleanup." >&2 ;;
 esac
-rm -f -- "$CURRENT_LLMS" "$CURRENT_LLMS_FULL" || echo "WARNING: protected pre-rollback discovery files need manual cleanup." >&2
+rm -f -- "$CURRENT_ROBOTS" "$CURRENT_LLMS" "$CURRENT_LLMS_FULL" || echo "WARNING: protected pre-rollback discovery files need manual cleanup." >&2
 case "$RESTORE_BUILD" in
     "$THEMES_PARENT"/.eta-production-restore-*) rm -rf --one-file-system -- "$RESTORE_BUILD" || echo "WARNING: protected restore tree needs manual cleanup." >&2 ;;
 esac

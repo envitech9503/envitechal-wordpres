@@ -40,7 +40,7 @@ function eta_modern_robots_txt_response_headers($request_uri)
 
     return [
         'Content-Type' => 'text/plain; charset=utf-8',
-        'Cache-Control' => 'public, max-age=300, s-maxage=3600',
+        'Cache-Control' => 'public, max-age=300, s-maxage=3600, must-revalidate',
         'X-LiteSpeed-Cache-Control' => 'no-cache',
     ];
 }
@@ -78,7 +78,13 @@ function eta_modern_filter_robots_txt($output, $public)
     eta_modern_send_robots_headers();
 
     if (!eta_modern_is_staging_host()) {
-        return "User-agent: *\n"
+        return "User-agent: OAI-SearchBot\n"
+            . "Allow: /\n"
+            . "Content-Signal: ai-train=no, search=yes, ai-input=yes\n\n"
+            . "User-agent: GPTBot\n"
+            . "Disallow: /\n"
+            . "Content-Signal: ai-train=no, search=yes, ai-input=yes\n\n"
+            . "User-agent: *\n"
             . "Disallow: /wp-admin/\n"
             . "Allow: /wp-admin/admin-ajax.php\n"
             . "Content-Signal: ai-train=no, search=yes, ai-input=yes\n\n"

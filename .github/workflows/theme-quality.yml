@@ -41,6 +41,7 @@ jobs:
           php tests/robots-directives-test.php
           php tests/discovery-cache-remediation-test.php
           python3 tests/live-monitor-redirect-coverage-test.py
+          python3 tests/live-monitor-ai-discovery-contract-test.py
           python3 tests/internal-link-pathways-contract-test.py
 
       - name: Guard against known production regressions
@@ -81,16 +82,17 @@ jobs:
           grep -Fq "add_action('init', 'eta_modern_maybe_redirect_legacy_request', -9999)" "$theme/inc/legacy-redirects.php"
           grep -Fq "add_filter('rank_math/frontend/robots', 'eta_modern_filter_rank_math_staging_robots', 99, 1)" "$robots_directives"
           grep -Fq "add_filter('wp_robots', 'eta_modern_filter_wordpress_staging_robots', 99, 1)" "$robots_directives"
-          grep -Fq "'Cache-Control' => 'public, max-age=300, s-maxage=3600'" "$robots_directives"
+          grep -Fq "'Cache-Control' => 'public, max-age=300, s-maxage=3600, must-revalidate'" "$robots_directives"
+          grep -Fq 'User-agent: OAI-SearchBot' deploy/public_html/robots.txt
+          grep -Fq 'User-agent: GPTBot' deploy/public_html/robots.txt
           grep -Fq "'X-LiteSpeed-Cache-Control' => 'no-cache'" "$robots_directives"
           if grep -q 'script_loader_tag' "$ai_visibility"; then
             echo 'The raw legacy snippet must be filtered from the final HTML response.' >&2
             exit 1
           fi
-          if grep -R -n -E 'HTTP_ACCEPT|Vary: Accept|text/markdown' "$theme"; then
-            echo 'WordPress page URLs must not negotiate response bodies by Accept.' >&2
-            exit 1
-          fi
+          grep -Fq "header('Vary: Accept', false);" "$ai_visibility"
+          grep -Fq "header('Cache-Control: private, no-store, no-cache, must-revalidate', true);" "$ai_visibility"
+          grep -Fq "'X-ETA-Markdown-Source' => '1'" "$ai_visibility"
 
       - name: Validate staging deployment scripts
         shell: bash
@@ -160,11 +162,12 @@ jobs:
           grep -Fq 'DomainInfo single_domain_data domain="$domain"' "$deploy"
           grep -Fq 'DomainInfo single_domain_data domain="$domain"' "$rollback"
           grep -Fq 'git -C "$REPO" archive --format=tar "$VALIDATED_PRODUCTION_COMMIT"' "$deploy"
-          grep -Fq '"$THEME_REL" "$LLMS_REL" "$LLMS_FULL_REL"' "$deploy"
+          grep -Fq '"$THEME_REL" "$ROBOTS_REL" "$LLMS_REL" "$LLMS_FULL_REL"' "$deploy"
           grep -Fq 'the deployed staging theme is not the exact pinned production candidate' "$deploy"
           grep -Fq '[[ "$(tree_digest "$STAGING_TARGET")" == "$PREPARED_THEME_DIGEST" ]]' "$deploy"
           grep -Fq 'find "$NEW_THEME" -type d -exec chmod 0755 {} +' "$deploy"
           grep -Fq 'find "$NEW_THEME" -type f -exec chmod 0644 {} +' "$deploy"
+          grep -Fq 'install -m 0644 -- "${ARCHIVE_ROOT}/${ROBOTS_REL}" "$NEW_ROBOTS"' "$deploy"
           grep -Fq 'install -m 0644 -- "${ARCHIVE_ROOT}/${LLMS_REL}" "$NEW_LLMS"' "$deploy"
           grep -Fq 'LAST_PRODUCTION_BACKUP' "$deploy"
           grep -Fq 'sha256sum -c MANIFEST.sha256' "$deploy"
