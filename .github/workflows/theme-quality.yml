@@ -90,10 +90,9 @@ jobs:
             echo 'The raw legacy snippet must be filtered from the final HTML response.' >&2
             exit 1
           fi
-          if grep -R -n -E 'HTTP_ACCEPT|Vary: Accept|text/markdown' "$theme"; then
-            echo 'WordPress page URLs must not negotiate response bodies by Accept.' >&2
-            exit 1
-          fi
+          grep -Fq "header('Vary: Accept', false);" "$ai_visibility"
+          grep -Fq "header('Cache-Control: private, no-store, no-cache, must-revalidate', true);" "$ai_visibility"
+          grep -Fq "'X-ETA-Markdown-Source' => '1'" "$ai_visibility"
 
       - name: Validate staging deployment scripts
         shell: bash

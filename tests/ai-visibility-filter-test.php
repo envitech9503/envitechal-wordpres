@@ -164,6 +164,13 @@ $visibility_source = file_get_contents(dirname(__DIR__) . '/wp-content/themes/ge
 foreach (['/llms-full.txt', '/services/', '/report-verification-portal/', '/.well-known/security.txt'] as $discovery_path) {
     eta_test_true(strpos($visibility_source, "home_url('{$discovery_path}')") !== false, "Markdown discovery metadata includes {$discovery_path}");
 }
+foreach ([
+    "header('Vary: Accept', false);" => 'Markdown responses vary on Accept',
+    "header('Cache-Control: private, no-store, no-cache, must-revalidate', true);" => 'Markdown responses cannot enter shared caches',
+    "'X-ETA-Markdown-Source' => '1'" => 'Markdown source fetches carry the recursion guard',
+] as $source_contract => $label) {
+    eta_test_true(strpos($visibility_source, $source_contract) !== false, $label);
+}
 
 eta_test_same(
     str_replace("\r\n", "\n", file_get_contents(dirname(__DIR__) . '/deploy/public_html/llms.txt')),
