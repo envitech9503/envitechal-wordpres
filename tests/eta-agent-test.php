@@ -13,6 +13,21 @@ class WP_Error
     }
 }
 
+class WP_REST_Request
+{
+    private $params;
+
+    public function __construct($params = [])
+    {
+        $this->params = $params;
+    }
+
+    public function get_param($name)
+    {
+        return $this->params[$name] ?? null;
+    }
+}
+
 $GLOBALS['eta_agent_test_transients'] = [];
 $GLOBALS['eta_agent_test_remote_queue'] = [];
 $GLOBALS['eta_agent_test_remote_calls'] = [];
@@ -30,6 +45,11 @@ function get_option($name, $default = '')
 function sanitize_key($value)
 {
     return preg_replace('/[^a-z0-9_\-]/', '', strtolower((string) $value));
+}
+
+function sanitize_textarea_field($value)
+{
+    return trim(strip_tags((string) $value));
 }
 
 function get_transient($key)
@@ -133,6 +153,9 @@ eta_agent_test_true(!preg_match('/(?:PKR|Rs\.?|\$)\s*\d/i', $pricing['answer']),
 $services = eta_agent_curated_response('What services does Envi Tech AL provide?');
 eta_agent_test_true(strpos($services['answer'], 'PNAC LAB-347 applies only to the Lahore premises') !== false, 'service summary cannot generalise accreditation');
 
+$specific_service = eta_agent_curated_response('Do you provide stack emission monitoring?');
+eta_agent_test_true(strpos($specific_service['answer'], 'stack-emissions monitoring') !== false, 'specific service questions receive the verified service summary');
+
 $seqs = eta_agent_curated_response('What are SEQS limits for industrial effluent COD?');
 eta_agent_test_true(strpos($seqs['answer'], '150 mg/L') !== false && strpos($seqs['answer'], '400 mg/L') !== false, 'SEQS COD response uses the published table values');
 
@@ -144,6 +167,9 @@ eta_agent_test_true(strpos($turnaround['answer'], 'cannot state or estimate a tu
 
 $report = eta_agent_curated_response('How do I verify a report you issued?');
 eta_agent_test_true($report['citations'] === ['https://envitechal.com/report-verification-portal/'], 'report verification routes to the canonical portal');
+
+$contact = eta_agent_curated_response('What is your email and WhatsApp number?');
+eta_agent_test_true(strpos($contact['answer'], 'info@envitechal.com') !== false && strpos($contact['answer'], '+92 310 2288801') !== false, 'contact questions use only the published contact route');
 
 $guarantee = eta_agent_curated_response('Can you guarantee my facility passes the EPA inspection?');
 eta_agent_test_true(strpos($guarantee['answer'], 'cannot guarantee') !== false, 'EPA outcome guarantee is explicitly declined');
@@ -158,6 +184,22 @@ eta_agent_test_true(
     'only canonical Envi Tech AL citations are returned to the browser'
 );
 
+$safe_fallback = eta_agent_safe_fallback_response();
+eta_agent_test_true(strpos($safe_fallback['answer'], 'source-verified') !== false, 'unmatched questions decline unsupported answers');
+eta_agent_test_true(
+    $safe_fallback['citations'] === ['https://envitechal.com/services/', 'https://envitechal.com/contact-us-envi-tech-al/'],
+    'the deterministic fallback supplies only canonical next-step sources'
+);
+eta_agent_test_true(eta_agent_verified_catalogue_ready(), 'the local verified catalogue passes its readiness contract');
+eta_agent_test_true(!eta_agent_remote_enabled(), 'generative answers are fail-closed by default');
+
+$GLOBALS['eta_agent_test_remote_calls'] = [];
+$verified_message = eta_agent_chat_response(new WP_REST_Request(['message' => 'How do I verify my report?']));
+eta_agent_test_true($verified_message['citations'] === ['https://envitechal.com/report-verification-portal/'], 'the public message route serves verified catalogue answers without an upstream call');
+$unmatched_message = eta_agent_chat_response(new WP_REST_Request(['message' => 'Tell me something completely unrelated.']));
+eta_agent_test_true(strpos($unmatched_message['answer'], 'source-verified') !== false, 'the public message route declines unmatched questions immediately');
+eta_agent_test_true(count($GLOBALS['eta_agent_test_remote_calls']) === 0, 'verified and unmatched public messages make no external request while generation is disabled');
+
 putenv('ETA_AGENT_ENDPOINT=https://example.agents.do-ai.run');
 putenv('ETA_AGENT_ACCESS_KEY=server-only-test-key');
 $GLOBALS['eta_agent_test_remote_calls'] = [];
@@ -170,16 +212,18 @@ $circuit_result = eta_agent_remote_completion([['role' => 'user', 'content' => '
 eta_agent_test_true(is_wp_error($circuit_result) && $circuit_result->code === 'eta_agent_circuit_open', 'an open circuit fails immediately');
 eta_agent_test_true(count($GLOBALS['eta_agent_test_remote_calls']) === 1, 'the open circuit makes no upstream request');
 
-$GLOBALS['eta_agent_test_transients'] = [];
 $GLOBALS['eta_agent_test_remote_calls'] = [];
-$GLOBALS['eta_agent_test_remote_queue'] = [[
-    'response' => ['code' => 200],
-    'body' => '{"choices":[{"message":{"content":"READY"}}]}',
-]];
 $first_health = eta_agent_health_response();
 $second_health = eta_agent_health_response();
-eta_agent_test_true($first_health === ['status' => 'ready'] && $second_health === ['status' => 'ready'], 'healthy preflight returns the ready state');
-eta_agent_test_true(count($GLOBALS['eta_agent_test_remote_calls']) === 1, 'a healthy preflight is cached for the short readiness window');
-eta_agent_test_true($GLOBALS['eta_agent_test_remote_calls'][0]['args']['timeout'] === 5, 'the upstream health probe is capped at five seconds');
+eta_agent_test_true(
+    $first_health === ['status' => 'ready', 'mode' => 'verified'] && $second_health === ['status' => 'ready', 'mode' => 'verified'],
+    'healthy preflight returns the provider-independent verified state'
+);
+eta_agent_test_true(count($GLOBALS['eta_agent_test_remote_calls']) === 0, 'public readiness never waits for an external model or knowledge base');
+
+putenv('ETA_AGENT_REMOTE_ENABLED=true');
+eta_agent_test_true(eta_agent_remote_enabled(), 'grounded generation can be deliberately enabled server-side after validation');
+eta_agent_test_true(eta_agent_health_response() === ['status' => 'ready', 'mode' => 'hybrid'], 'health reports hybrid mode when remote generation is explicitly enabled');
+putenv('ETA_AGENT_REMOTE_ENABLED');
 
 echo "Agent proxy safety tests passed.\n";

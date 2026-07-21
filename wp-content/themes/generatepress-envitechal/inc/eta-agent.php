@@ -62,6 +62,17 @@ function eta_agent_is_configured()
     return eta_agent_access_key() !== '' || (eta_agent_uuid() !== '' && eta_agent_chatbot_key() !== '');
 }
 
+/**
+ * Generative answers are an optional enhancement, never an availability
+ * dependency. They remain off until an operator has validated grounded
+ * retrieval and deliberately enables them server-side.
+ */
+function eta_agent_remote_enabled()
+{
+    $value = strtolower(eta_agent_config_value('ETA_AGENT_REMOTE_ENABLED', 'ETA_AGENT_REMOTE_ENABLED', 'eta_agent_remote_enabled'));
+    return in_array($value, ['1', 'true', 'yes', 'on'], true);
+}
+
 function eta_agent_runtime_cache_key($suffix)
 {
     $identity = eta_agent_endpoint() . '|' . eta_agent_uuid();
@@ -250,7 +261,23 @@ function eta_agent_curated_response($message)
         ];
     }
 
-    if ($has(['what services', 'services do you provide', 'services does envi tech al provide', 'services do you offer'])) {
+    if (
+        $has([
+            'what services',
+            'services do you provide',
+            'services does envi tech al provide',
+            'services do you offer',
+            'water testing',
+            'wastewater testing',
+            'analytical laboratory',
+            'environmental consultancy',
+            'equipment calibration',
+            'stack emission',
+            'ambient air',
+            'noise monitoring',
+        ])
+        && !$has(['price', 'pricing', 'cost', 'rate', 'fee', 'quotation', 'quote', 'turnaround', 'how long', 'completion time', 'reporting time'])
+    ) {
         return [
             'answer' => 'Envi Tech AL provides water and wastewater testing, analytical laboratory services, environmental consultancy, equipment calibration, stack-emissions monitoring, ambient-air monitoring, noise monitoring, and EIA/EMP/EMR documentation support. Accreditation must be confirmed separately for the laboratory premises, matrix, parameter, and method; PNAC LAB-347 applies only to the Lahore premises and its published scope. See https://envitechal.com/services/ and https://envitechal.com/accreditations-certifications/.',
             'citations' => ['https://envitechal.com/services/', 'https://envitechal.com/accreditations-certifications/'],
@@ -292,6 +319,13 @@ function eta_agent_curated_response($message)
         ];
     }
 
+    if ($has(['contact', 'email', 'phone', 'telephone', 'whatsapp', 'working hour', 'opening hour'])) {
+        return [
+            'answer' => 'For requirement-specific guidance, contact Envi Tech AL at info@envitechal.com or WhatsApp +92 310 2288801. Published office details and the enquiry form are available at https://envitechal.com/contact-us-envi-tech-al/. Please confirm current working hours directly with the team.',
+            'citations' => ['https://envitechal.com/contact-us-envi-tech-al/'],
+        ];
+    }
+
     if ($has(['iso 17025', 'iso/iec 17025']) && $has(['certified', 'certification', 'accredited', 'accreditation'])) {
         return [
             'answer' => 'ISO/IEC 17025 is laboratory accreditation, not management-system certification. Envi Tech AL\'s PNAC LAB-347 accreditation applies to the Lahore premises only and only to the matrix, parameter, and method combinations in its published scope; it does not apply to the Karachi laboratory. Verify the scope at https://www.pnac.gov.pk/index.php/pdfFiles/LAB-347 and see https://envitechal.com/accreditations-certifications/.',
@@ -314,6 +348,31 @@ function eta_agent_curated_response($message)
     }
 
     return null;
+}
+
+/**
+ * A deterministic, source-linked response for questions outside the verified
+ * catalogue. This prevents an upstream outage from becoming a slow or
+ * speculative brand experience.
+ */
+function eta_agent_safe_fallback_response()
+{
+    return [
+        'answer' => 'I could not match that question to a source-verified Envi Tech AL answer. I can help with services, laboratory locations, accreditation scope, compliance references, contact details, or report verification. For a requirement-specific answer, contact info@envitechal.com or WhatsApp +92 310 2288801 through https://envitechal.com/contact-us-envi-tech-al/.',
+        'citations' => [
+            'https://envitechal.com/services/',
+            'https://envitechal.com/contact-us-envi-tech-al/',
+        ],
+    ];
+}
+
+function eta_agent_verified_catalogue_ready()
+{
+    $probe = eta_agent_curated_response('How do I verify a report you issued?');
+    return is_array($probe)
+        && is_string($probe['answer'] ?? null)
+        && strpos($probe['answer'], 'https://envitechal.com/report-verification-portal/') !== false
+        && ($probe['citations'] ?? null) === ['https://envitechal.com/report-verification-portal/'];
 }
 
 function eta_agent_collect_citations($value, &$citations)
@@ -339,29 +398,14 @@ function eta_agent_collect_citations($value, &$citations)
 
 function eta_agent_health_response()
 {
-    if (!eta_agent_is_configured()) {
-        return new WP_Error('eta_agent_unavailable', 'AI assistant unavailable; WhatsApp support remains available.', ['status' => 503]);
+    if (!eta_agent_verified_catalogue_ready()) {
+        return new WP_Error('eta_agent_catalogue_unavailable', 'The verified information assistant is unavailable.', ['status' => 503]);
     }
 
-    if (get_transient(eta_agent_runtime_cache_key('health_ready'))) {
-        return rest_ensure_response(['status' => 'ready']);
-    }
-
-    $result = eta_agent_remote_completion([
-        ['role' => 'user', 'content' => 'Health check only. Reply with READY.'],
-    ], 5);
-    if (is_wp_error($result)) {
-        return $result;
-    }
-
-    $reply = $result['choices'][0]['message']['content'] ?? '';
-    if (!is_string($reply) || stripos($reply, 'READY') === false) {
-        eta_agent_open_runtime_circuit();
-        return new WP_Error('eta_agent_health_invalid', 'The AI assistant returned an invalid health response.', ['status' => 503]);
-    }
-
-    set_transient(eta_agent_runtime_cache_key('health_ready'), 1, MINUTE_IN_SECONDS);
-    return rest_ensure_response(['status' => 'ready']);
+    return rest_ensure_response([
+        'status' => 'ready',
+        'mode' => eta_agent_remote_enabled() ? 'hybrid' : 'verified',
+    ]);
 }
 
 function eta_agent_chat_response(WP_REST_Request $request)
@@ -377,6 +421,10 @@ function eta_agent_chat_response(WP_REST_Request $request)
     $curated = eta_agent_curated_response($message);
     if (is_array($curated)) {
         return rest_ensure_response($curated);
+    }
+
+    if (!eta_agent_remote_enabled()) {
+        return rest_ensure_response(eta_agent_safe_fallback_response());
     }
 
     $messages = [];
@@ -396,21 +444,18 @@ function eta_agent_chat_response(WP_REST_Request $request)
 
     $result = eta_agent_remote_completion($messages, 15);
     if (is_wp_error($result)) {
-        return $result;
+        return rest_ensure_response(eta_agent_safe_fallback_response());
     }
 
     $answer = $result['choices'][0]['message']['content'] ?? '';
     if (!is_string($answer) || trim($answer) === '') {
-        return new WP_Error('eta_agent_empty_response', 'The AI assistant returned no answer.', ['status' => 503]);
+        return rest_ensure_response(eta_agent_safe_fallback_response());
     }
 
     $citations = [];
     eta_agent_collect_citations($answer, $citations);
     if (!$citations) {
-        return rest_ensure_response([
-            'answer' => 'I could not verify a canonical Envi Tech AL source for that answer. Please contact info@envitechal.com or WhatsApp +92 310 2288801 through https://envitechal.com/contact-us-envi-tech-al/.',
-            'citations' => ['https://envitechal.com/contact-us-envi-tech-al/'],
-        ]);
+        return rest_ensure_response(eta_agent_safe_fallback_response());
     }
     return rest_ensure_response([
         'answer' => trim($answer),

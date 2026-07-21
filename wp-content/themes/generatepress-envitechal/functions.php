@@ -1709,10 +1709,16 @@ add_action('wp_footer', function () {
                     headers: { 'X-WP-Nonce': root.dataset.restNonce },
                     signal: controller.signal
                 }).then(function (response) {
-                    if (!response.ok) throw new Error('Assistant preflight failed.');
-                    root.dataset.etaPreflight = 'ready';
-                    root.dataset.etaState = 'ready';
-                    root.hidden = false;
+                    return response.json().catch(function () {
+                        return {};
+                    }).then(function (data) {
+                        if (!response.ok || data.status !== 'ready') {
+                            throw new Error('Assistant preflight failed.');
+                        }
+                        root.dataset.etaPreflight = 'ready';
+                        root.dataset.etaState = 'ready';
+                        root.hidden = false;
+                    });
                 }).catch(showUnavailable).finally(function () {
                     window.clearTimeout(timer);
                 });
