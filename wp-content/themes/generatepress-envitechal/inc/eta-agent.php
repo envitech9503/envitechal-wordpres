@@ -228,7 +228,7 @@ function eta_agent_remote_completion($messages, $timeout = 20)
     return new WP_Error('eta_agent_upstream', 'The AI assistant is temporarily unavailable.', ['status' => 503]);
 }
 
-function eta_agent_curated_response($message)
+function eta_agent_curated_response($message, $context = '')
 {
     $normalise = static function ($value) {
         $value = function_exists('mb_strtolower') ? mb_strtolower((string) $value) : strtolower((string) $value);
@@ -236,6 +236,7 @@ function eta_agent_curated_response($message)
         return trim(preg_replace('/\s+/u', ' ', (string) $value));
     };
     $question = $normalise($message);
+    $topic_context = trim($question . ' ' . $normalise($context));
     $has = static function ($terms) use ($question, $normalise) {
         foreach ((array) $terms as $term) {
             $needle = $normalise($term);
@@ -245,17 +246,60 @@ function eta_agent_curated_response($message)
         }
         return false;
     };
+    $topic_has = static function ($terms) use ($topic_context, $normalise) {
+        foreach ((array) $terms as $term) {
+            $needle = $normalise($term);
+            if ($needle !== '' && strpos(' ' . $topic_context . ' ', ' ' . $needle . ' ') !== false) {
+                return true;
+            }
+        }
+        return false;
+    };
+    $asks_parameters = $has([
+        'parameter',
+        'parameters',
+        'which test',
+        'which tests',
+        'what to test',
+        'what should i test',
+        'what should we test',
+        'tests required',
+        'test required',
+        'test panel',
+        'testing panel',
+    ]);
+
+    if (in_array($question, ['hi', 'hello', 'hey', 'salam', 'assalam o alaikum', 'good morning', 'good afternoon'], true)) {
+        return [
+            'answer' => 'Hello. Ask a specific question about testing parameters, monitoring, calibration, consultancy, locations, accreditation, or report verification.',
+            'citations' => ['https://envitechal.com/services/'],
+        ];
+    }
+
+    if ($has(['who are you', 'what are you'])) {
+        return [
+            'answer' => 'I am Envi Tech AL\'s source-checked information assistant. I answer from the company\'s published service, location, accreditation, compliance, and report-verification information.',
+            'citations' => ['https://envitechal.com/aboutus/'],
+        ];
+    }
 
     if ($has('karachi') && $has(['pnac', 'accredit', 'iso 17025', 'iso/iec 17025'])) {
         return [
-            'answer' => 'No. PNAC LAB-347 applies to Envi Tech AL\'s Lahore premises only, and only to the matrix, parameter, and method combinations listed in the published scope. It must not be applied to the Karachi laboratory. Verify the current scope at https://www.pnac.gov.pk/index.php/pdfFiles/LAB-347 and see https://envitechal.com/accreditations-certifications/.',
+            'answer' => 'No. PNAC LAB-347 applies to Envi Tech AL\'s Lahore premises only, and only to the matrix, parameter, and method combinations listed in the published scope. It must not be applied to the Karachi laboratory. Verify the current published scope before relying on an accreditation claim.',
             'citations' => ['https://envitechal.com/accreditations-certifications/'],
         ];
     }
 
     if ($has('pnac') && $has(['number', 'identifier', 'valid', 'expiry', 'expire', 'accreditation'])) {
         return [
-            'answer' => 'The PNAC accreditation identifier is LAB-347. It applies to the Lahore premises only and only to the matrix, parameter, and method combinations in the published scope. The PNAC document states validity through 21-09-2028, subject to surveillance and current status. Verify it at https://www.pnac.gov.pk/index.php/pdfFiles/LAB-347 and see https://envitechal.com/accreditations-certifications/.',
+            'answer' => 'The PNAC accreditation identifier is LAB-347. It applies to the Lahore premises only and only to the matrix, parameter, and method combinations in the published scope. The published document states validity through 21-09-2028, subject to surveillance and current status.',
+            'citations' => ['https://envitechal.com/accreditations-certifications/'],
+        ];
+    }
+
+    if ($has(['hexavalent chromium', 'chromium vi', 'cr(vi)', 'cr vi']) && $has(['scope', 'accredit', 'accredited', 'accreditation'])) {
+        return [
+            'answer' => 'I cannot assert that hexavalent chromium is within the accredited scope. PNAC LAB-347 applies only to the Lahore premises and only to exact matrix, parameter, and method combinations in the published scope. Confirm the requested matrix and method with the laboratory.',
             'citations' => ['https://envitechal.com/accreditations-certifications/'],
         ];
     }
@@ -267,28 +311,59 @@ function eta_agent_curated_response($message)
         ];
     }
 
-    if ($has(['stack emission', 'stack emissions', 'gaseous emission', 'gaseous emissions', 'chimney emission', 'chimney emissions'])) {
+    if ($has(['turnaround', 'how long', 'completion time', 'reporting time', 'when will', 'how many days'])) {
+        return [
+            'answer' => 'I cannot state or estimate a turnaround time. Timing depends on the matrix, parameters, methods, sampling, and reporting requirements. Contact info@envitechal.com or WhatsApp +92 310 2288801 for a requirement-specific schedule.',
+            'citations' => ['https://envitechal.com/contact-us-envi-tech-al/'],
+        ];
+    }
+
+    if ($has(['stack emission', 'stack emissions', 'gaseous emission', 'gaseous emissions', 'chimney emission', 'chimney emissions']) || ($asks_parameters && $topic_has(['stack emission', 'stack emissions', 'gaseous emission', 'gaseous emissions', 'chimney emission', 'chimney emissions']))) {
+        if ($asks_parameters) {
+            return [
+                'answer' => 'Stack-emission scopes are source-specific. The published service covers gases, particulates, and combustion-related parameters; the exact panel depends on whether the source is a boiler, generator, chimney, or process stack and on its operating conditions.',
+                'citations' => ['https://envitechal.com/gaseous-air-emission-testing-lab-near-me/'],
+            ];
+        }
         return [
             'answer' => 'Yes. Envi Tech AL provides stack and gaseous-emission monitoring for boilers, generators, chimneys, and process exhausts. The exact parameters, locations, operating conditions, and reporting purpose must be confirmed before fieldwork.',
             'citations' => ['https://envitechal.com/gaseous-air-emission-testing-lab-near-me/'],
         ];
     }
 
-    if ($has(['ambient air', 'air quality monitoring'])) {
+    if ($has(['ambient air', 'air quality monitoring']) || ($asks_parameters && $topic_has(['ambient air', 'air quality monitoring']))) {
+        if ($asks_parameters) {
+            return [
+                'answer' => 'Published ambient-air indicators include PM10, PM2.5, SO2, NOx, CO, CO2, and ozone where required, together with meteorological and site-condition notes. The final panel depends on the site and reporting purpose.',
+                'citations' => ['https://envitechal.com/ambient-air-monitoring-services/'],
+            ];
+        }
         return [
             'answer' => 'Yes. Envi Tech AL provides ambient-air monitoring for industrial sites, construction projects, and other compliance-sensitive facilities. The monitoring plan and required indicators are confirmed for each site.',
             'citations' => ['https://envitechal.com/ambient-air-monitoring-services/'],
         ];
     }
 
-    if ($has(['noise monitoring', 'noise survey', 'dosimetry', 'noise dosimetry'])) {
+    if ($has(['noise monitoring', 'noise survey', 'dosimetry', 'noise dosimetry']) || ($asks_parameters && $topic_has(['noise monitoring', 'noise survey', 'dosimetry', 'noise dosimetry']))) {
+        if ($asks_parameters) {
+            return [
+                'answer' => 'Noise monitoring can include Leq, Lmax, Lmin, personal dose where applicable, time-weighted exposure, monitoring-location notes, and activity conditions. The exact set depends on workplace, boundary, or project-monitoring needs.',
+                'citations' => ['https://envitechal.com/noise-monitoring-dosimetry/'],
+            ];
+        }
         return [
             'answer' => 'Yes. Envi Tech AL provides boundary-noise, workplace-noise, area-monitoring, and personal-exposure dosimetry services. The activity, locations, duration, and reporting purpose must be scoped before monitoring.',
             'citations' => ['https://envitechal.com/noise-monitoring-dosimetry/'],
         ];
     }
 
-    if ($has(['calibrate', 'calibration', 'equipment calibration'])) {
+    if ($has(['calibrate', 'calibration', 'equipment calibration']) || ($asks_parameters && $topic_has(['calibrate', 'calibration', 'equipment calibration']))) {
+        if ($asks_parameters || $has(['which instrument', 'which instruments', 'what instruments', 'equipment list'])) {
+            return [
+                'answer' => 'Published calibration categories include balances, thermometers, pH meters, conductivity meters, pressure gauges, flow meters, and environmental meters. Capability is confirmed against the exact instrument type and range before booking.',
+                'citations' => ['https://envitechal.com/services/equipment-calibration-services/'],
+            ];
+        }
         if ($has(['ph meter', 'ph meters'])) {
             return [
                 'answer' => 'Yes. Envi Tech AL lists pH meters among the common instrument categories supported by its equipment-calibration service. Share the instrument range, location, acceptance criteria, and certificate requirement before booking.',
@@ -301,104 +376,336 @@ function eta_agent_curated_response($message)
         ];
     }
 
-    if ($has(['soil testing', 'soil test', 'test soil', 'testing soil'])) {
+    if ($has(['soil testing', 'soil test', 'test soil', 'testing soil']) || ($asks_parameters && $topic_has('soil'))) {
+        if ($asks_parameters) {
+            return [
+                'answer' => 'Published soil-testing indicators include pH, moisture, heavy metals, oil and grease where scoped, organic indicators where required, and site-specific analytes. The final panel depends on the site history and decision the report must support.',
+                'citations' => ['https://envitechal.com/soil-hazardous-waste-testing/'],
+            ];
+        }
         return [
             'answer' => 'Yes. Envi Tech AL provides soil testing. Share the site context, target analytes, and intended use of the report so the correct sampling and testing scope can be confirmed.',
             'citations' => ['https://envitechal.com/soil-hazardous-waste-testing/'],
         ];
     }
 
-    if ($has(['sludge testing', 'sludge test', 'test sludge'])) {
+    if ($has(['sludge testing', 'sludge test', 'test sludge']) || ($asks_parameters && $topic_has('sludge'))) {
+        if ($asks_parameters) {
+            return [
+                'answer' => 'Sludge parameters must be selected from the sludge type and report purpose. Published indicators include pH, moisture, heavy metals, oil and grease where scoped, organic indicators where required, and waste-characterization indicators.',
+                'citations' => ['https://envitechal.com/soil-hazardous-waste-testing/'],
+            ];
+        }
         return [
             'answer' => 'Yes. Envi Tech AL provides sludge testing support. Share the sludge type, target analytes, and intended use of the report so the exact scope can be confirmed.',
             'citations' => ['https://envitechal.com/soil-hazardous-waste-testing/'],
         ];
     }
 
-    if ($has(['hazardous waste testing', 'hazardous waste test', 'test hazardous waste'])) {
+    if ($has(['hazardous waste testing', 'hazardous waste test', 'test hazardous waste']) || ($asks_parameters && $topic_has(['hazardous waste testing', 'hazardous waste test', 'test hazardous waste']))) {
+        if ($asks_parameters) {
+            return [
+                'answer' => 'Hazardous-waste parameters must be selected from the waste type and intended decision. Published indicators include pH, moisture, heavy metals, oil and grease where scoped, organic indicators where required, and waste-characterization indicators.',
+                'citations' => ['https://envitechal.com/soil-hazardous-waste-testing/'],
+            ];
+        }
         return [
             'answer' => 'Yes. Envi Tech AL provides hazardous-waste testing support. Share the waste type, target analytes, and intended use of the report so the exact scope can be confirmed.',
             'citations' => ['https://envitechal.com/soil-hazardous-waste-testing/'],
         ];
     }
 
-    if ($has(['drinking water', 'potable water'])) {
+    $drinking_water_terms = [
+        'drinking water',
+        'potable water',
+        'kitchen water',
+        'tap water',
+        'household water',
+        'domestic water',
+        'cooking water',
+        'bore water',
+        'groundwater',
+        'ground water',
+        'well water',
+        'ro water',
+        'ro plant water',
+    ];
+    $drinking_water_topic = $has($drinking_water_terms) || ($asks_parameters && $topic_has($drinking_water_terms));
+    if ($drinking_water_topic) {
         $drinking_water_parameters = [
-            'arsenic' => 'arsenic',
-            'lead' => 'lead',
+            'ph' => 'pH',
+            'color' => 'color',
+            'turbidity' => 'turbidity',
+            'tds' => 'TDS',
+            'total dissolved solids' => 'TDS',
+            'hardness' => 'hardness',
+            'chloride' => 'chloride',
+            'sulfate' => 'sulfate',
+            'sulphate' => 'sulfate',
+            'nitrate' => 'nitrate',
+            'fluoride' => 'fluoride',
             'iron' => 'iron',
+            'manganese' => 'manganese',
+            'copper' => 'copper',
+            'lead' => 'lead',
+            'arsenic' => 'arsenic',
+            'cadmium' => 'cadmium',
             'chromium' => 'chromium',
+            'mercury' => 'mercury',
+            'residual chlorine' => 'residual chlorine',
             'total coliform' => 'total coliform',
             'e coli' => 'E. coli',
+            'alpha emitters' => 'alpha emitters',
+            'beta emitters' => 'beta emitters',
         ];
+        $requested_parameters = [];
         foreach ($drinking_water_parameters as $term => $label) {
             if ($has($term)) {
+                $requested_parameters[$label] = $label;
+            }
+        }
+        if ($requested_parameters) {
+            $labels = array_values($requested_parameters);
+            $listed = count($labels) === 1 ? $labels[0] : implode(', ', array_slice($labels, 0, -1)) . ' and ' . end($labels);
+            return [
+                'answer' => count($labels) === 1
+                    ? sprintf('Yes. Envi Tech AL lists %s as an available drinking-water testing parameter. Confirm the water source and reporting purpose so the correct sampling and method requirements are used.', $listed)
+                    : sprintf('Yes. Envi Tech AL lists %s as available drinking-water testing parameters. Confirm the water source and reporting purpose so the correct sampling and method requirements are used.', $listed),
+                'citations' => ['https://envitechal.com/drinking-water-testing-lab/'],
+            ];
+        }
+        if ($asks_parameters) {
+            if ($topic_has(['ro water', 'ro plant water'])) {
                 return [
-                    'answer' => sprintf('Yes. Envi Tech AL lists %s as an available drinking-water testing parameter. Confirm the water source and reporting purpose so the correct sampling and method requirements are used.', $label),
-                    'citations' => ['https://envitechal.com/drinking-water-testing-lab/'],
+                    'answer' => 'For RO performance, the published scope includes feed, permeate, and reject TDS; conductivity; and recovery indicators. Add health or compliance parameters only when the water use or reporting purpose requires them.',
+                    'citations' => ['https://envitechal.com/services/water-testing-lab-services/'],
                 ];
             }
+            return [
+                'answer' => 'For kitchen, tap, or drinking water, a practical panel can include pH, color, turbidity, TDS, hardness, chloride, sulfate, nitrate, fluoride, iron, manganese, copper, lead, arsenic, residual chlorine, total coliform, and E. coli. The final panel depends on the source and reporting purpose.',
+                'citations' => ['https://envitechal.com/drinking-water-testing-lab/'],
+            ];
         }
         if ($has('bacteria')) {
             return [
-                'answer' => 'Yes. Drinking-water testing can include microbiological indicators. Confirm the water source and reporting purpose so the exact organisms, sampling, and method requirements can be selected.',
+                'answer' => 'For drinking-water microbiological screening, the published parameters are total coliform and E. coli. Confirm the water source and reporting purpose so the correct sterile sampling requirements are used.',
                 'citations' => ['https://envitechal.com/drinking-water-testing-lab/'],
             ];
         }
-        if ($has(['test', 'testing'])) {
+        if ($has(['standard', 'standards', 'guideline', 'guidelines', 'who limit', 'safe limit'])) {
             return [
-                'answer' => 'Yes. Envi Tech AL provides drinking-water testing. Share the water source and reporting purpose so the correct parameters, sampling, and method requirements can be selected.',
+                'answer' => 'The comparison basis may include WHO guideline values, Pakistan drinking-water requirements, or a specific facility, buyer, or project standard. Confirm the required standard before selecting the final panel.',
+                'citations' => ['https://envitechal.com/services/water-testing-lab-services/'],
+            ];
+        }
+        if ($has(['sample', 'sampling', 'bottle', 'container', 'collect', 'collection', 'preserve', 'preservation'])) {
+            return [
+                'answer' => 'Confirm the parameter panel with the laboratory before collecting the water sample. Bottle type, sterilization, preservation, sample volume, and transit time depend on whether chemistry, metals, or microbiology will be tested.',
+                'citations' => ['https://envitechal.com/services/water-testing-lab-services/'],
+            ];
+        }
+        if ($has(['test', 'testing', 'check', 'analyse', 'analyze', 'analysis'])) {
+            return [
+                'answer' => 'Yes. Envi Tech AL provides drinking-water testing for kitchen, tap, bore, groundwater, and RO water. Share the water source and reporting purpose so the correct panel and sampling requirements can be selected.',
                 'citations' => ['https://envitechal.com/drinking-water-testing-lab/'],
             ];
         }
+        return [
+            'answer' => 'Please specify whether the water is from a kitchen tap, bore, storage tank, or RO plant and whether the result is for health screening, operations, an audit, or compliance. I can then identify the relevant published testing scope.',
+            'citations' => ['https://envitechal.com/drinking-water-testing-lab/'],
+        ];
     }
 
-    if ($has(['wastewater', 'waste water', 'effluent', 'etp']) && $has(['test', 'testing', 'cod', 'bod', 'tss', 'tds']) && !$has('seqs')) {
+    $wastewater_terms = ['wastewater', 'waste water', 'effluent', 'etp', 'sewage', 'industrial discharge'];
+    $wastewater_topic = $has($wastewater_terms) || ($asks_parameters && $topic_has($wastewater_terms));
+    if ($wastewater_topic && !$has('seqs')) {
+        $wastewater_parameters = [
+            'temperature' => 'temperature',
+            'ph' => 'pH',
+            'bod' => 'BOD',
+            'biochemical oxygen demand' => 'BOD',
+            'cod' => 'COD',
+            'chemical oxygen demand' => 'COD',
+            'tss' => 'TSS',
+            'total suspended solids' => 'TSS',
+            'tds' => 'TDS',
+            'total dissolved solids' => 'TDS',
+            'oil and grease' => 'oil and grease',
+            'phenolic compounds' => 'phenolic compounds',
+            'phenols' => 'phenolic compounds',
+            'sulfide' => 'sulfide',
+            'sulphide' => 'sulfide',
+            'ammonia' => 'ammonia',
+            'chloride' => 'chloride',
+            'sulfate' => 'sulfate',
+            'sulphate' => 'sulfate',
+            'chromium' => 'chromium',
+            'copper' => 'copper',
+            'zinc' => 'zinc',
+            'nickel' => 'nickel',
+            'lead' => 'lead',
+            'cadmium' => 'cadmium',
+            'mercury' => 'mercury',
+        ];
+        $requested_parameters = [];
+        foreach ($wastewater_parameters as $term => $label) {
+            if ($has($term)) {
+                $requested_parameters[$label] = $label;
+            }
+        }
+        if ($requested_parameters) {
+            $labels = array_values($requested_parameters);
+            $listed = count($labels) === 1 ? $labels[0] : implode(', ', array_slice($labels, 0, -1)) . ' and ' . end($labels);
+            return [
+                'answer' => sprintf('Yes. Envi Tech AL lists %s among its published wastewater testing parameters. Confirm the sample point, discharge route, and reporting standard before finalizing the panel.', $listed),
+                'citations' => ['https://envitechal.com/wastewater-testing-services/'],
+            ];
+        }
+        if ($asks_parameters) {
+            return [
+                'answer' => 'Common wastewater parameters include temperature, pH, BOD, COD, TSS, TDS, oil and grease, phenolic compounds, sulfide, ammonia, chloride, sulfate, and relevant metals. The final panel depends on the discharge route and reporting standard.',
+                'citations' => ['https://envitechal.com/wastewater-testing-services/'],
+            ];
+        }
+        if ($has(['standard', 'standards', 'limit', 'limits', 'compliance'])) {
+            return [
+                'answer' => 'The applicable wastewater comparison may be SEQS, NEQS, PEQS, an approval condition, or a buyer specification. The province, discharge destination, and report purpose must be confirmed before selecting limits and parameters.',
+                'citations' => ['https://envitechal.com/wastewater-testing-services/'],
+            ];
+        }
+        if ($has(['sample', 'sampling', 'bottle', 'container', 'collect', 'collection', 'preserve', 'preservation'])) {
+            return [
+                'answer' => 'Confirm the wastewater panel before sampling. Grab or composite sampling, bottle type, preservation, sample volume, and holding time depend on the discharge point, parameters, and reporting purpose.',
+                'citations' => ['https://envitechal.com/wastewater-testing-services/'],
+            ];
+        }
+        if ($has(['test', 'testing', 'cod', 'bod', 'tss', 'tds', 'check', 'analyse', 'analyze', 'analysis'])) {
+            return [
+                'answer' => 'Yes. Envi Tech AL tests industrial wastewater, effluent, and ETP inlet or outlet samples. The final panel and comparison standard depend on the discharge route and report purpose.',
+                'citations' => ['https://envitechal.com/wastewater-testing-services/'],
+            ];
+        }
         return [
-            'answer' => 'Yes. Envi Tech AL tests industrial wastewater and ETP samples; COD is among the published parameters. The final parameter list and comparison standard depend on the discharge route and report purpose.',
+            'answer' => 'Please specify whether the sample is raw effluent, ETP inlet, ETP outlet, sewage, or another industrial discharge and what the report must support. I can then identify the relevant published testing scope.',
             'citations' => ['https://envitechal.com/wastewater-testing-services/'],
         ];
     }
 
-    if ($has(['water testing', 'wastewater testing', 'drinking water testing'])) {
+    if ($has(['water testing', 'wastewater testing', 'drinking water testing']) && !$has(['ballast water', 'deballast water'])) {
         return [
             'answer' => 'Yes. Envi Tech AL provides drinking-water, groundwater, process-water, and wastewater testing. The correct parameters and reporting basis are selected from the water source and intended use.',
             'citations' => ['https://envitechal.com/services/water-testing-lab-services/'],
         ];
     }
 
-    if ($has(['what services', 'services do you provide', 'services does envi tech al provide', 'services do you offer', 'list your services'])) {
+    if ($has(['industrial hygiene', 'workplace exposure', 'heat stress', 'workplace dust', 'occupational exposure'])) {
+        if ($asks_parameters) {
+            return [
+                'answer' => 'Industrial-hygiene scope can include respirable or inhalable dust where required, noise exposure, temperature and humidity, illumination where applicable, work-area observations, and exposure-group notes. The exact panel depends on the process and worker groups.',
+                'citations' => ['https://envitechal.com/industrial-hygiene-monitoring/'],
+            ];
+        }
         return [
-            'answer' => 'Envi Tech AL provides water and wastewater testing, analytical laboratory services, equipment calibration, air-emissions and noise monitoring, and environmental consultancy including EIA, EMP, and EMR support. Accreditation applies only where the exact premises, matrix, parameter, and method appear in the published scope.',
+            'answer' => 'Yes. Envi Tech AL provides industrial-hygiene monitoring for workplace air, dust, noise, heat stress, and other exposure-related conditions. Share the process, work areas, shifts, and reporting purpose to scope the monitoring.',
+            'citations' => ['https://envitechal.com/industrial-hygiene-monitoring/'],
+        ];
+    }
+
+    if ($has(['ballast water', 'deballast water', 'maritime testing'])) {
+        return [
+            'answer' => 'Yes. Envi Tech AL provides ballast and deballast water testing support, including port-call planning, sampling coordination, pathogen screening where scoped, and reporting support. Vessel schedule and inspection requirements must be confirmed first.',
+            'citations' => ['https://envitechal.com/services/ballast-water-testing-services/'],
+        ];
+    }
+
+    if ($has(['thermal imaging', 'thermography', 'thermal inspection'])) {
+        return [
+            'answer' => 'Yes. Envi Tech AL provides thermal-imaging inspection for electrical, mechanical, and facility equipment to identify abnormal heat patterns that may support preventive-maintenance decisions. It does not replace repair or maintenance work.',
+            'citations' => ['https://envitechal.com/services/thermal-imaging-inspection/'],
+        ];
+    }
+
+    if ($has(['analytical laboratory', 'analytical lab', 'laboratory analysis', 'lab analysis'])) {
+        return [
+            'answer' => 'Envi Tech AL provides analytical support for water, wastewater, air and emissions, soil, waste, and other industrial samples. The laboratory, method, parameter, and any accreditation claim must be confirmed for the exact requested scope.',
+            'citations' => ['https://envitechal.com/services/analytical-lab-services/'],
+        ];
+    }
+
+    if ($has(['iso 9001', 'iso 14001', 'certification advisory']) && $has(['help', 'support', 'consult', 'consultancy', 'advisory', 'prepare', 'preparation'])) {
+        return [
+            'answer' => 'Envi Tech AL provides certification advisory such as gap assessment, document review, and audit-preparation support. It does not issue ISO certification; certification decisions belong to the selected certification body.',
+            'citations' => ['https://envitechal.com/services/certification-advisory/'],
+        ];
+    }
+
+    if ($has(['what services', 'services do you provide', 'services does envi tech al provide', 'services do you offer', 'list your services', 'tell me your services', 'what do you do', 'how can you help'])) {
+        return [
+            'answer' => 'Envi Tech AL provides water and wastewater testing, analytical laboratory services, equipment calibration, air-emissions and noise monitoring, and environmental consultancy including EIA, EMP, and EMR support.',
             'citations' => ['https://envitechal.com/services/'],
-        ];
-    }
-
-    if ($has(['hexavalent chromium', 'chromium vi', 'cr(vi)', 'cr vi']) && $has(['scope', 'accredit'])) {
-        return [
-            'answer' => 'I cannot assert that hexavalent chromium is within the accredited scope. PNAC LAB-347 applies only to the Lahore premises and only to the exact matrix, parameter, and method combinations in the published scope. Check the controlling document at https://www.pnac.gov.pk/index.php/pdfFiles/LAB-347, then confirm the requested matrix and method with the laboratory through https://envitechal.com/contact-us-envi-tech-al/.',
-            'citations' => ['https://envitechal.com/accreditations-certifications/', 'https://envitechal.com/contact-us-envi-tech-al/'],
-        ];
-    }
-
-    if ($has(['turnaround', 'how long', 'completion time', 'reporting time'])) {
-        return [
-            'answer' => 'I cannot state or estimate a turnaround time. Timing depends on the matrix, parameters, methods, sampling, and reporting requirements. Contact info@envitechal.com or WhatsApp +92 310 2288801 for a requirement-specific schedule.',
-            'citations' => ['https://envitechal.com/contact-us-envi-tech-al/'],
         ];
     }
 
     if ($has('seqs') && $has(['cod', 'chemical oxygen demand'])) {
         return [
-            'answer' => 'The SEQS 2016 table lists industrial-effluent COD limits of 150 mg/L for discharge into inland waters, 400 mg/L for discharge into sewage treatment, and 400 mg/L for discharge into the sea. The official SEQS notification and the facility\'s applicable approval conditions control, so verify the current binding text before relying on these figures. See https://envitechal.com/sindh-environmental-quality-standards-seqs/.',
+            'answer' => 'The SEQS 2016 table lists industrial-effluent COD limits of 150 mg/L for discharge into inland waters, 400 mg/L for discharge into sewage treatment, and 400 mg/L for discharge into the sea. The official notification and the facility\'s approval conditions control, so verify the current binding text before relying on these figures.',
             'citations' => ['https://envitechal.com/sindh-environmental-quality-standards-seqs/'],
         ];
     }
 
     if ($has(['eia', 'environmental impact assessment']) && $has(['punjab', 'punjab epa'])) {
         return [
-            'answer' => 'Yes. Envi Tech AL provides environmental consultancy support for EIA work on Punjab projects. Punjab EPA is the relevant provincial authority, and the required study category, submission route, and approval depend on the project and current rules; laboratory accreditation must not be treated as accreditation of consultancy work. See https://envitechal.com/services/environmental-consultancy/ and contact the team through https://envitechal.com/contact-us-envi-tech-al/.',
-            'citations' => ['https://envitechal.com/services/environmental-consultancy/', 'https://envitechal.com/contact-us-envi-tech-al/'],
+            'answer' => 'Yes. Envi Tech AL provides environmental consultancy support for EIA work on Punjab projects. Punjab EPA is the relevant provincial authority, and the study category, submission route, and approval depend on the project and current rules.',
+            'citations' => ['https://envitechal.com/services/environmental-consultancy/'],
+        ];
+    }
+
+    if ($has(['what is eia', 'define eia'])) {
+        return [
+            'answer' => 'An Environmental Impact Assessment is a detailed environmental study used for projects with potentially significant impacts. The required study category, content, submission route, and authority depend on the project and current rules.',
+            'citations' => ['https://envitechal.com/emp-emr-iee-eia-compliance/'],
+        ];
+    }
+
+    if ($has(['what is iee', 'define iee'])) {
+        return [
+            'answer' => 'An Initial Environmental Examination is a project environmental review used in certain approval pathways. Whether an IEE is required depends on the project type, location, and current authority requirements.',
+            'citations' => ['https://envitechal.com/emp-emr-iee-eia-compliance/'],
+        ];
+    }
+
+    if ($has(['what is emp', 'define emp'])) {
+        return [
+            'answer' => 'An Environmental Management Plan defines the controls, monitoring, mitigation measures, responsibilities, and follow-up actions for a project or operating facility.',
+            'citations' => ['https://envitechal.com/emp-emr-iee-eia-compliance/'],
+        ];
+    }
+
+    if ($has(['what is emr', 'define emr'])) {
+        return [
+            'answer' => 'An Environmental Monitoring Report documents monitoring and testing results against required conditions over a reporting period.',
+            'citations' => ['https://envitechal.com/emp-emr-iee-eia-compliance/'],
+        ];
+    }
+
+    if ($has(['eia', 'environmental impact assessment', 'iee', 'initial environmental examination', 'emp', 'environmental management plan', 'emr', 'environmental monitoring report'])) {
+        return [
+            'answer' => 'Yes. Envi Tech AL provides consultancy support for IEE, EIA, EMP, and EMR work, including monitoring evidence and documentation pathways. The project type, province, authority requirement, and deadline must be confirmed before scope.',
+            'citations' => ['https://envitechal.com/emp-emr-iee-eia-compliance/'],
+        ];
+    }
+
+    if ($has(['environmental consultancy', 'environmental consultant', 'sepa compliance', 'epa compliance', 'regulatory consultancy'])) {
+        return [
+            'answer' => 'Envi Tech AL provides environmental consultancy for new projects and operating facilities, including monitoring plans, regulatory submissions, audits, corrective actions, and IEE, EIA, EMP, or EMR support where applicable.',
+            'citations' => ['https://envitechal.com/services/environmental-consultancy/'],
+        ];
+    }
+
+    if ($has(['are you accredited', 'is your lab accredited', 'is the laboratory accredited', 'accreditation status'])) {
+        return [
+            'answer' => 'Envi Tech AL holds PNAC LAB-347 for the Lahore premises only, and only for the exact matrix, parameter, and method combinations in the published scope. It must not be applied to the Karachi laboratory or to unlisted work.',
+            'citations' => ['https://envitechal.com/accreditations-certifications/'],
         ];
     }
 
@@ -453,7 +760,7 @@ function eta_agent_curated_response($message)
 
     if ($has(['iso 17025', 'iso/iec 17025']) && $has(['certified', 'certification', 'accredited', 'accreditation'])) {
         return [
-            'answer' => 'ISO/IEC 17025 is laboratory accreditation, not management-system certification. Envi Tech AL\'s PNAC LAB-347 accreditation applies to the Lahore premises only and only to the matrix, parameter, and method combinations in its published scope; it does not apply to the Karachi laboratory. Verify the scope at https://www.pnac.gov.pk/index.php/pdfFiles/LAB-347 and see https://envitechal.com/accreditations-certifications/.',
+            'answer' => 'ISO/IEC 17025 is laboratory accreditation, not management-system certification. Envi Tech AL\'s PNAC LAB-347 accreditation applies to the Lahore premises only and only to the matrix, parameter, and method combinations in its published scope; it does not apply to the Karachi laboratory.',
             'citations' => ['https://envitechal.com/accreditations-certifications/'],
         ];
     }
@@ -465,9 +772,23 @@ function eta_agent_curated_response($message)
         ];
     }
 
+    if ($has(['report', 'results', 'result']) && $has(['explain', 'interpret', 'understand', 'meaning', 'review'])) {
+        return [
+            'answer' => 'Envi Tech AL can clarify the reported parameters, units, comparison basis, and any stated limits. The interpretation must use the actual report and its intended purpose; the assistant should not invent a compliance, health, or approval conclusion without that evidence.',
+            'citations' => ['https://envitechal.com/report-verification-portal/'],
+        ];
+    }
+
+    if ($has(['sample', 'sampling', 'sample collection', 'collect sample', 'deliver sample', 'send sample', 'sample bottle', 'sample label'])) {
+        return [
+            'answer' => 'Confirm the testing scope before collecting or dispatching a sample. Location, container, preservation, holding time, volume, label, and chain-of-custody requirements depend on the sample type and parameters; critical samples should not be sent without laboratory guidance.',
+            'citations' => ['https://envitechal.com/environmental-testing-faqs-pakistan/'],
+        ];
+    }
+
     if ($has(['guarantee', 'guaranteed', 'ensure i pass', 'ensure we pass']) && $has(['epa', 'inspection', 'approval', 'pass'])) {
         return [
-            'answer' => 'No. Envi Tech AL cannot guarantee that a facility will pass an EPA inspection or receive regulatory approval. The authority decides the outcome based on applicable law, permit conditions, evidence, and inspection findings. Envi Tech AL can provide testing and consultancy support without promising a regulatory result; see https://envitechal.com/services/environmental-consultancy/.',
+            'answer' => 'No. Envi Tech AL cannot guarantee that a facility will pass an EPA inspection or receive regulatory approval. The authority decides the outcome from applicable law, permit conditions, evidence, and inspection findings. Envi Tech AL can provide testing and consultancy support without promising a regulatory result.',
             'citations' => ['https://envitechal.com/services/environmental-consultancy/'],
         ];
     }
@@ -542,16 +863,8 @@ function eta_agent_chat_response(WP_REST_Request $request)
         return new WP_Error('eta_agent_long_message', 'Please shorten the question to 1,200 characters.', ['status' => 400]);
     }
 
-    $curated = eta_agent_curated_response($message);
-    if (is_array($curated)) {
-        return rest_ensure_response($curated);
-    }
-
-    if (!eta_agent_remote_enabled()) {
-        return rest_ensure_response(eta_agent_safe_fallback_response());
-    }
-
     $messages = [];
+    $curated_context = '';
     $history = $request->get_param('history');
     if (is_array($history)) {
         foreach (array_slice($history, -8) as $entry) {
@@ -561,9 +874,22 @@ function eta_agent_chat_response(WP_REST_Request $request)
             $content = sanitize_textarea_field((string) ($entry['content'] ?? ''));
             if ($content !== '') {
                 $messages[] = ['role' => $entry['role'], 'content' => $content];
+                if ($entry['role'] === 'user') {
+                    $curated_context = $content;
+                }
             }
         }
     }
+
+    $curated = eta_agent_curated_response($message, $curated_context);
+    if (is_array($curated)) {
+        return rest_ensure_response($curated);
+    }
+
+    if (!eta_agent_remote_enabled()) {
+        return rest_ensure_response(eta_agent_safe_fallback_response());
+    }
+
     $messages[] = ['role' => 'user', 'content' => eta_agent_policy_prompt($message)];
 
     $result = eta_agent_remote_completion($messages, 15);
