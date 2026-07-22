@@ -308,9 +308,16 @@ function eta_agent_curated_response($message)
         ];
     }
 
-    if ($has(['hazardous waste testing', 'hazardous waste test', 'test hazardous waste', 'sludge testing', 'sludge test', 'test sludge'])) {
+    if ($has(['sludge testing', 'sludge test', 'test sludge'])) {
         return [
-            'answer' => 'Yes. Envi Tech AL provides hazardous-waste and sludge testing support. Share the sample type, target analytes, and intended use of the report so the exact scope can be confirmed.',
+            'answer' => 'Yes. Envi Tech AL provides sludge testing support. Share the sludge type, target analytes, and intended use of the report so the exact scope can be confirmed.',
+            'citations' => ['https://envitechal.com/soil-hazardous-waste-testing/'],
+        ];
+    }
+
+    if ($has(['hazardous waste testing', 'hazardous waste test', 'test hazardous waste'])) {
+        return [
+            'answer' => 'Yes. Envi Tech AL provides hazardous-waste testing support. Share the waste type, target analytes, and intended use of the report so the exact scope can be confirmed.',
             'citations' => ['https://envitechal.com/soil-hazardous-waste-testing/'],
         ];
     }
