@@ -230,10 +230,16 @@ function eta_agent_remote_completion($messages, $timeout = 20)
 
 function eta_agent_curated_response($message)
 {
-    $question = function_exists('mb_strtolower') ? mb_strtolower((string) $message) : strtolower((string) $message);
-    $has = function ($terms) use ($question) {
+    $normalise = static function ($value) {
+        $value = function_exists('mb_strtolower') ? mb_strtolower((string) $value) : strtolower((string) $value);
+        $value = preg_replace('/[^\p{L}\p{N}]+/u', ' ', $value);
+        return trim(preg_replace('/\s+/u', ' ', (string) $value));
+    };
+    $question = $normalise($message);
+    $has = static function ($terms) use ($question, $normalise) {
         foreach ((array) $terms as $term) {
-            if (strpos($question, $term) !== false) {
+            $needle = $normalise($term);
+            if ($needle !== '' && strpos(' ' . $question . ' ', ' ' . $needle . ' ') !== false) {
                 return true;
             }
         }
@@ -256,31 +262,77 @@ function eta_agent_curated_response($message)
 
     if ($has(['price', 'pricing', 'cost', 'rate', 'fee', 'quotation', 'quote'])) {
         return [
-            'answer' => 'I cannot provide or estimate prices. The required parameters, matrix, sampling, method, and reporting purpose must be confirmed by the team before a quotation is issued. Contact info@envitechal.com or WhatsApp +92 310 2288801 via https://envitechal.com/contact-us-envi-tech-al/.',
+            'answer' => 'I cannot provide or estimate prices. The team must confirm the matrix, parameters, sampling, method, and reporting purpose before issuing a quotation. Contact info@envitechal.com or WhatsApp +92 310 2288801.',
             'citations' => ['https://envitechal.com/contact-us-envi-tech-al/'],
         ];
     }
 
-    if (
-        $has([
-            'what services',
-            'services do you provide',
-            'services does envi tech al provide',
-            'services do you offer',
-            'water testing',
-            'wastewater testing',
-            'analytical laboratory',
-            'environmental consultancy',
-            'equipment calibration',
-            'stack emission',
-            'ambient air',
-            'noise monitoring',
-        ])
-        && !$has(['price', 'pricing', 'cost', 'rate', 'fee', 'quotation', 'quote', 'turnaround', 'how long', 'completion time', 'reporting time'])
-    ) {
+    if ($has(['stack emission', 'stack emissions', 'gaseous emission', 'gaseous emissions', 'chimney emission', 'chimney emissions'])) {
         return [
-            'answer' => 'Envi Tech AL provides water and wastewater testing, analytical laboratory services, environmental consultancy, equipment calibration, stack-emissions monitoring, ambient-air monitoring, noise monitoring, and EIA/EMP/EMR documentation support. Accreditation must be confirmed separately for the laboratory premises, matrix, parameter, and method; PNAC LAB-347 applies only to the Lahore premises and its published scope. See https://envitechal.com/services/ and https://envitechal.com/accreditations-certifications/.',
-            'citations' => ['https://envitechal.com/services/', 'https://envitechal.com/accreditations-certifications/'],
+            'answer' => 'Yes. Envi Tech AL provides stack and gaseous-emission monitoring for boilers, generators, chimneys, and process exhausts. The exact parameters, locations, operating conditions, and reporting purpose must be confirmed before fieldwork.',
+            'citations' => ['https://envitechal.com/gaseous-air-emission-testing-lab-near-me/'],
+        ];
+    }
+
+    if ($has(['ambient air', 'air quality monitoring'])) {
+        return [
+            'answer' => 'Yes. Envi Tech AL provides ambient-air monitoring for industrial sites, construction projects, and other compliance-sensitive facilities. The monitoring plan and required indicators are confirmed for each site.',
+            'citations' => ['https://envitechal.com/ambient-air-monitoring-services/'],
+        ];
+    }
+
+    if ($has(['noise monitoring', 'noise survey', 'dosimetry', 'noise dosimetry'])) {
+        return [
+            'answer' => 'Yes. Envi Tech AL provides boundary-noise, workplace-noise, area-monitoring, and personal-exposure dosimetry services. The activity, locations, duration, and reporting purpose must be scoped before monitoring.',
+            'citations' => ['https://envitechal.com/noise-monitoring-dosimetry/'],
+        ];
+    }
+
+    if ($has(['calibrate', 'calibration', 'equipment calibration'])) {
+        if ($has(['ph meter', 'ph meters'])) {
+            return [
+                'answer' => 'Yes. Envi Tech AL lists pH meters among the common instrument categories supported by its equipment-calibration service. Share the instrument range, location, acceptance criteria, and certificate requirement before booking.',
+                'citations' => ['https://envitechal.com/services/equipment-calibration-services/'],
+            ];
+        }
+        return [
+            'answer' => 'Envi Tech AL provides equipment-calibration services. Share the instrument type, range, location, acceptance criteria, and certificate requirement so the team can confirm the exact capability.',
+            'citations' => ['https://envitechal.com/services/equipment-calibration-services/'],
+        ];
+    }
+
+    if ($has(['soil testing', 'soil test', 'hazardous waste testing', 'sludge testing'])) {
+        return [
+            'answer' => 'Yes. Envi Tech AL provides soil, sludge, and hazardous-waste testing support. The sample type, site context, target analytes, and intended use of the report determine the final scope.',
+            'citations' => ['https://envitechal.com/soil-hazardous-waste-testing/'],
+        ];
+    }
+
+    if ($has(['drinking water', 'potable water']) && $has(['arsenic', 'lead', 'iron', 'chromium', 'coliform', 'e coli', 'bacteria', 'test', 'testing'])) {
+        return [
+            'answer' => 'Yes. Drinking-water testing can include arsenic, lead, iron, chromium, total coliform, E. coli, and other selected parameters. Confirm the water source and reporting purpose so the correct scope and sampling requirements are used.',
+            'citations' => ['https://envitechal.com/drinking-water-testing-lab/'],
+        ];
+    }
+
+    if ($has(['wastewater', 'waste water', 'effluent', 'etp']) && $has(['test', 'testing', 'cod', 'bod', 'tss', 'tds']) && !$has('seqs')) {
+        return [
+            'answer' => 'Yes. Envi Tech AL tests industrial wastewater and ETP samples; COD is among the published parameters. The final parameter list and comparison standard depend on the discharge route and report purpose.',
+            'citations' => ['https://envitechal.com/wastewater-testing-services/'],
+        ];
+    }
+
+    if ($has(['water testing', 'wastewater testing', 'drinking water testing'])) {
+        return [
+            'answer' => 'Yes. Envi Tech AL provides drinking-water, groundwater, process-water, and wastewater testing. The correct parameters and reporting basis are selected from the water source and intended use.',
+            'citations' => ['https://envitechal.com/services/water-testing-lab-services/'],
+        ];
+    }
+
+    if ($has(['what services', 'services do you provide', 'services does envi tech al provide', 'services do you offer', 'list your services'])) {
+        return [
+            'answer' => 'Envi Tech AL provides water and wastewater testing, analytical laboratory services, equipment calibration, air-emissions and noise monitoring, and environmental consultancy including EIA, EMP, and EMR support. Accreditation applies only where the exact premises, matrix, parameter, and method appear in the published scope.',
+            'citations' => ['https://envitechal.com/services/'],
         ];
     }
 
@@ -293,7 +345,7 @@ function eta_agent_curated_response($message)
 
     if ($has(['turnaround', 'how long', 'completion time', 'reporting time'])) {
         return [
-            'answer' => 'I cannot state or estimate a turnaround time. Timing depends on the confirmed matrix, parameters, methods, sampling, and reporting requirements. Contact info@envitechal.com or WhatsApp +92 310 2288801 through https://envitechal.com/contact-us-envi-tech-al/ for a requirement-specific schedule.',
+            'answer' => 'I cannot state or estimate a turnaround time. Timing depends on the matrix, parameters, methods, sampling, and reporting requirements. Contact info@envitechal.com or WhatsApp +92 310 2288801 for a requirement-specific schedule.',
             'citations' => ['https://envitechal.com/contact-us-envi-tech-al/'],
         ];
     }
@@ -312,16 +364,51 @@ function eta_agent_curated_response($message)
         ];
     }
 
-    if ($has(['office', 'offices', 'address', 'addresses', 'where are you', 'location'])) {
+    if ($has('karachi') && $has(['office', 'address', 'where are you', 'location'])) {
         return [
-            'answer' => 'Envi Tech AL has two published offices. Karachi head office: First Floor, 345, Street 15, Bahadurabad Block 3, Bahadur Yar Jang CHS, Karachi, Sindh 75900, Pakistan. Lahore regional office: 87-E Madina Heights, Office A/30-31, 8th Floor, Maulana Shaukat Ali Road, Johar Town, Lahore, Punjab, Pakistan. See https://envitechal.com/contact-us-envi-tech-al/.',
+            'answer' => 'Karachi head office: First Floor, 345, Street 15, Bahadurabad Block 3, Bahadur Yar Jang CHS, Karachi, Sindh 75900, Pakistan.',
             'citations' => ['https://envitechal.com/contact-us-envi-tech-al/'],
         ];
     }
 
-    if ($has(['contact', 'email', 'phone', 'telephone', 'whatsapp', 'working hour', 'opening hour'])) {
+    if ($has('lahore') && $has(['office', 'address', 'where are you', 'location'])) {
         return [
-            'answer' => 'For requirement-specific guidance, contact Envi Tech AL at info@envitechal.com or WhatsApp +92 310 2288801. Published office details and the enquiry form are available at https://envitechal.com/contact-us-envi-tech-al/. Please confirm current working hours directly with the team.',
+            'answer' => 'Lahore regional office: 87-E Madina Heights, Office A/30-31, 8th Floor, Maulana Shaukat Ali Road, Johar Town, Lahore, Punjab, Pakistan.',
+            'citations' => ['https://envitechal.com/contact-us-envi-tech-al/'],
+        ];
+    }
+
+    if ($has(['office', 'offices', 'address', 'addresses', 'where are you', 'location', 'locations'])) {
+        return [
+            'answer' => 'Envi Tech AL has published offices in Karachi and Lahore. Karachi: First Floor, 345, Street 15, Bahadurabad Block 3, Bahadur Yar Jang CHS. Lahore: 87-E Madina Heights, Office A/30-31, 8th Floor, Maulana Shaukat Ali Road, Johar Town.',
+            'citations' => ['https://envitechal.com/contact-us-envi-tech-al/'],
+        ];
+    }
+
+    if ($has(['whatsapp', 'phone', 'telephone']) && !$has('email')) {
+        return [
+            'answer' => 'Envi Tech AL\'s published WhatsApp number is +92 310 2288801.',
+            'citations' => ['https://envitechal.com/contact-us-envi-tech-al/'],
+        ];
+    }
+
+    if ($has('email') && !$has(['whatsapp', 'phone', 'telephone'])) {
+        return [
+            'answer' => 'Envi Tech AL\'s published email address is info@envitechal.com.',
+            'citations' => ['https://envitechal.com/contact-us-envi-tech-al/'],
+        ];
+    }
+
+    if ($has(['working hour', 'working hours', 'opening hour', 'opening hours'])) {
+        return [
+            'answer' => 'Current working hours are not confirmed in the published source. Please verify them on WhatsApp at +92 310 2288801 before visiting.',
+            'citations' => ['https://envitechal.com/contact-us-envi-tech-al/'],
+        ];
+    }
+
+    if ($has(['contact', 'email', 'phone', 'telephone', 'whatsapp'])) {
+        return [
+            'answer' => 'Contact Envi Tech AL at info@envitechal.com or on WhatsApp at +92 310 2288801.',
             'citations' => ['https://envitechal.com/contact-us-envi-tech-al/'],
         ];
     }
@@ -335,7 +422,7 @@ function eta_agent_curated_response($message)
 
     if ($has('report') && $has(['verify', 'verification', 'authenticate', 'authentic'])) {
         return [
-            'answer' => 'Use Envi Tech AL\'s Report Verification Portal at https://envitechal.com/report-verification-portal/. Enter the verification details printed on the issued report; if they do not validate, contact info@envitechal.com before relying on the document.',
+            'answer' => 'Use Envi Tech AL\'s Report Verification Portal and enter the verification details printed on the report. If they do not validate, contact info@envitechal.com before relying on the document.',
             'citations' => ['https://envitechal.com/report-verification-portal/'],
         ];
     }
@@ -358,9 +445,8 @@ function eta_agent_curated_response($message)
 function eta_agent_safe_fallback_response()
 {
     return [
-        'answer' => 'I could not match that question to a source-verified Envi Tech AL answer. I can help with services, laboratory locations, accreditation scope, compliance references, contact details, or report verification. For a requirement-specific answer, contact info@envitechal.com or WhatsApp +92 310 2288801 through https://envitechal.com/contact-us-envi-tech-al/.',
+        'answer' => 'I cannot verify that from Envi Tech AL\'s published sources. Please send the exact requirement to info@envitechal.com or WhatsApp +92 310 2288801.',
         'citations' => [
-            'https://envitechal.com/services/',
             'https://envitechal.com/contact-us-envi-tech-al/',
         ],
     ];
@@ -371,7 +457,7 @@ function eta_agent_verified_catalogue_ready()
     $probe = eta_agent_curated_response('How do I verify a report you issued?');
     return is_array($probe)
         && is_string($probe['answer'] ?? null)
-        && strpos($probe['answer'], 'https://envitechal.com/report-verification-portal/') !== false
+        && strpos($probe['answer'], 'Report Verification Portal') !== false
         && ($probe['citations'] ?? null) === ['https://envitechal.com/report-verification-portal/'];
 }
 

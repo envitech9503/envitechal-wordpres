@@ -47,6 +47,11 @@
         var send = root.querySelector('.eta-chatbot-send');
         var history = [];
 
+        function setBusy(isBusy) {
+            root.dataset.etaBusy = isBusy ? 'true' : 'false';
+            messages.setAttribute('aria-busy', isBusy ? 'true' : 'false');
+        }
+
         function setState(state, message) {
             root.dataset.etaState = state;
             status.textContent = message;
@@ -55,6 +60,31 @@
             input.disabled = state !== 'ready';
             send.disabled = state !== 'ready';
             root.classList.toggle('has-live-chat', state === 'ready');
+            setBusy(false);
+        }
+
+        function sourceLabel(url) {
+            var labels = {
+                '/services/': 'Service overview',
+                '/contact-us-envi-tech-al/': 'Contact details',
+                '/report-verification-portal/': 'Report verification',
+                '/accreditations-certifications/': 'Accreditation details',
+                '/gaseous-air-emission-testing-lab-near-me/': 'Stack-emission service',
+                '/ambient-air-monitoring-services/': 'Ambient-air service',
+                '/noise-monitoring-dosimetry/': 'Noise-monitoring service',
+                '/services/equipment-calibration-services/': 'Calibration service',
+                '/soil-hazardous-waste-testing/': 'Soil-testing service',
+                '/drinking-water-testing-lab/': 'Drinking-water service',
+                '/wastewater-testing-services/': 'Wastewater service',
+                '/services/water-testing-lab-services/': 'Water-testing service',
+                '/services/environmental-consultancy/': 'Consultancy service',
+                '/sindh-environmental-quality-standards-seqs/': 'SEQS reference'
+            };
+            try {
+                return labels[new URL(url).pathname] || 'Published source';
+            } catch (error) {
+                return 'Published source';
+            }
         }
 
         function addMessage(role, text, citations) {
@@ -67,16 +97,18 @@
             if (Array.isArray(citations) && citations.length) {
                 var list = document.createElement('ul');
                 list.className = 'eta-chatbot-citations';
+                var seen = {};
                 citations.forEach(function (url) {
-                    if (typeof url !== 'string' || url.indexOf('https://envitechal.com/') !== 0 || text.indexOf(url) !== -1) {
+                    if (typeof url !== 'string' || url.indexOf('https://envitechal.com/') !== 0 || text.indexOf(url) !== -1 || seen[url]) {
                         return;
                     }
+                    seen[url] = true;
                     var entry = document.createElement('li');
                     var link = document.createElement('a');
                     link.href = url;
                     link.target = '_blank';
                     link.rel = 'noopener noreferrer';
-                    link.textContent = url;
+                    link.textContent = 'Source: ' + sourceLabel(url);
                     entry.appendChild(link);
                     list.appendChild(entry);
                 });
@@ -112,7 +144,8 @@
             input.value = '';
             input.disabled = true;
             send.disabled = true;
-            status.textContent = 'Preparing a source-checked answer…';
+            setBusy(true);
+            status.textContent = 'Checking verified sources...';
 
             sendQuestion(question).then(function (data) {
                 var answer = typeof data.answer === 'string' ? data.answer.trim() : '';
@@ -123,13 +156,26 @@
                 history.push({ role: 'assistant', content: answer });
                 history = history.slice(-8);
                 addMessage('assistant', answer, data.citations || []);
-                status.textContent = 'Ready — verify compliance-critical details against the cited source.';
+                setBusy(false);
+                status.textContent = 'Source checked - open the cited page for details.';
                 input.disabled = false;
                 send.disabled = false;
                 input.focus();
             }).catch(function () {
-                setState('unavailable', 'Assistant unavailable — WhatsApp support is ready.');
+                setState('unavailable', 'Assistant unavailable - WhatsApp support is ready.');
             });
+        });
+
+        input.addEventListener('keydown', function (event) {
+            if (event.key !== 'Enter' || event.shiftKey || event.isComposing) {
+                return;
+            }
+            event.preventDefault();
+            if (typeof form.requestSubmit === 'function') {
+                form.requestSubmit();
+            } else {
+                send.click();
+            }
         });
 
         panel.addEventListener('keydown', function (event) {
@@ -153,9 +199,9 @@
             }
         });
 
-        setState('ready', 'Ready — answers include source links and avoid unsupported claims.');
+        setState('ready', 'Source-checked answers with links to published pages.');
         if (!messages.childNodes.length) {
-            addMessage('assistant', 'Hello. Ask about services, laboratory locations, credential scope, compliance references, or report verification.');
+            addMessage('assistant', 'Hello. Ask a specific question about services, locations, accreditation, or report verification.');
         }
         launcher.setAttribute('aria-expanded', 'true');
         input.focus();

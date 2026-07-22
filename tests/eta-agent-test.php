@@ -151,10 +151,31 @@ eta_agent_test_true(strpos($pricing['answer'], 'cannot provide or estimate price
 eta_agent_test_true(!preg_match('/(?:PKR|Rs\.?|\$)\s*\d/i', $pricing['answer']), 'pricing fallback contains no quoted price');
 
 $services = eta_agent_curated_response('What services does Envi Tech AL provide?');
-eta_agent_test_true(strpos($services['answer'], 'PNAC LAB-347 applies only to the Lahore premises') !== false, 'service summary cannot generalise accreditation');
+eta_agent_test_true(strpos($services['answer'], 'exact premises, matrix, parameter, and method') !== false, 'service summary cannot generalise accreditation');
 
 $specific_service = eta_agent_curated_response('Do you provide stack emission monitoring?');
-eta_agent_test_true(strpos($specific_service['answer'], 'stack-emissions monitoring') !== false, 'specific service questions receive the verified service summary');
+eta_agent_test_true(strpos($specific_service['answer'], 'stack and gaseous-emission monitoring') !== false, 'specific service questions receive a focused verified answer');
+eta_agent_test_true(strpos($specific_service['answer'], 'water and wastewater') === false && strpos($specific_service['answer'], 'equipment calibration') === false, 'stack-emission answer omits unrelated services');
+eta_agent_test_true($specific_service['citations'] === ['https://envitechal.com/gaseous-air-emission-testing-lab-near-me/'], 'stack-emission answer cites only its service page');
+
+$hyphenated_service = eta_agent_curated_response('Do you provide stack-emission monitoring?');
+eta_agent_test_true($hyphenated_service === $specific_service, 'punctuation variants route to the same focused answer');
+
+$ambient = eta_agent_curated_response('Do you provide ambient air monitoring?');
+eta_agent_test_true(strpos($ambient['answer'], 'ambient-air monitoring') !== false && count($ambient['citations']) === 1, 'ambient-air question receives only the relevant capability');
+
+$calibration = eta_agent_curated_response('Can you calibrate a pH meter?');
+eta_agent_test_true(strpos($calibration['answer'], 'pH meters') !== false, 'calibration is not misclassified by the word fragment rate');
+eta_agent_test_true(strpos($calibration['answer'], 'estimate prices') === false, 'pH-meter question does not receive pricing prose');
+
+$arsenic = eta_agent_curated_response('Can you test drinking water for arsenic?');
+eta_agent_test_true(strpos($arsenic['answer'], 'arsenic') !== false && $arsenic['citations'] === ['https://envitechal.com/drinking-water-testing-lab/'], 'drinking-water parameter question receives a focused sourced answer');
+
+$soil = eta_agent_curated_response('Do you perform soil testing?');
+eta_agent_test_true(strpos($soil['answer'], 'soil') !== false && $soil['citations'] === ['https://envitechal.com/soil-hazardous-waste-testing/'], 'soil question receives a focused sourced answer');
+
+$wastewater = eta_agent_curated_response('Can you test textile wastewater COD?');
+eta_agent_test_true(strpos($wastewater['answer'], 'COD') !== false && $wastewater['citations'] === ['https://envitechal.com/wastewater-testing-services/'], 'wastewater COD question receives a focused sourced answer');
 
 $seqs = eta_agent_curated_response('What are SEQS limits for industrial effluent COD?');
 eta_agent_test_true(strpos($seqs['answer'], '150 mg/L') !== false && strpos($seqs['answer'], '400 mg/L') !== false, 'SEQS COD response uses the published table values');
@@ -171,6 +192,12 @@ eta_agent_test_true($report['citations'] === ['https://envitechal.com/report-ver
 $contact = eta_agent_curated_response('What is your email and WhatsApp number?');
 eta_agent_test_true(strpos($contact['answer'], 'info@envitechal.com') !== false && strpos($contact['answer'], '+92 310 2288801') !== false, 'contact questions use only the published contact route');
 
+$karachi_address = eta_agent_curated_response('What is your Karachi address?');
+eta_agent_test_true(strpos($karachi_address['answer'], 'Karachi head office') !== false && strpos($karachi_address['answer'], 'Lahore') === false, 'city-specific address omits the other office');
+
+$whatsapp = eta_agent_curated_response('What is your WhatsApp number?');
+eta_agent_test_true(strpos($whatsapp['answer'], '+92 310 2288801') !== false && strpos($whatsapp['answer'], 'info@') === false && strpos($whatsapp['answer'], 'working hours') === false, 'WhatsApp question returns only the requested channel');
+
 $guarantee = eta_agent_curated_response('Can you guarantee my facility passes the EPA inspection?');
 eta_agent_test_true(strpos($guarantee['answer'], 'cannot guarantee') !== false, 'EPA outcome guarantee is explicitly declined');
 
@@ -185,10 +212,10 @@ eta_agent_test_true(
 );
 
 $safe_fallback = eta_agent_safe_fallback_response();
-eta_agent_test_true(strpos($safe_fallback['answer'], 'source-verified') !== false, 'unmatched questions decline unsupported answers');
+eta_agent_test_true(strpos($safe_fallback['answer'], 'cannot verify') !== false, 'unmatched questions decline unsupported answers');
 eta_agent_test_true(
-    $safe_fallback['citations'] === ['https://envitechal.com/services/', 'https://envitechal.com/contact-us-envi-tech-al/'],
-    'the deterministic fallback supplies only canonical next-step sources'
+    $safe_fallback['citations'] === ['https://envitechal.com/contact-us-envi-tech-al/'],
+    'the deterministic fallback supplies only the canonical contact source'
 );
 eta_agent_test_true(eta_agent_verified_catalogue_ready(), 'the local verified catalogue passes its readiness contract');
 eta_agent_test_true(!eta_agent_remote_enabled(), 'generative answers are fail-closed by default');
@@ -197,7 +224,7 @@ $GLOBALS['eta_agent_test_remote_calls'] = [];
 $verified_message = eta_agent_chat_response(new WP_REST_Request(['message' => 'How do I verify my report?']));
 eta_agent_test_true($verified_message['citations'] === ['https://envitechal.com/report-verification-portal/'], 'the public message route serves verified catalogue answers without an upstream call');
 $unmatched_message = eta_agent_chat_response(new WP_REST_Request(['message' => 'Tell me something completely unrelated.']));
-eta_agent_test_true(strpos($unmatched_message['answer'], 'source-verified') !== false, 'the public message route declines unmatched questions immediately');
+eta_agent_test_true(strpos($unmatched_message['answer'], 'cannot verify') !== false, 'the public message route declines unmatched questions immediately');
 eta_agent_test_true(count($GLOBALS['eta_agent_test_remote_calls']) === 0, 'verified and unmatched public messages make no external request while generation is disabled');
 
 putenv('ETA_AGENT_ENDPOINT=https://example.agents.do-ai.run');
