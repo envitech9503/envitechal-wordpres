@@ -301,18 +301,43 @@ function eta_agent_curated_response($message)
         ];
     }
 
-    if ($has(['soil testing', 'soil test', 'hazardous waste testing', 'sludge testing'])) {
+    if ($has(['soil testing', 'soil test'])) {
         return [
-            'answer' => 'Yes. Envi Tech AL provides soil, sludge, and hazardous-waste testing support. The sample type, site context, target analytes, and intended use of the report determine the final scope.',
+            'answer' => 'Yes. Envi Tech AL provides soil testing. Share the site context, target analytes, and intended use of the report so the correct sampling and testing scope can be confirmed.',
             'citations' => ['https://envitechal.com/soil-hazardous-waste-testing/'],
         ];
     }
 
-    if ($has(['drinking water', 'potable water']) && $has(['arsenic', 'lead', 'iron', 'chromium', 'coliform', 'e coli', 'bacteria', 'test', 'testing'])) {
+    if ($has(['hazardous waste testing', 'sludge testing'])) {
         return [
-            'answer' => 'Yes. Drinking-water testing can include arsenic, lead, iron, chromium, total coliform, E. coli, and other selected parameters. Confirm the water source and reporting purpose so the correct scope and sampling requirements are used.',
-            'citations' => ['https://envitechal.com/drinking-water-testing-lab/'],
+            'answer' => 'Yes. Envi Tech AL provides hazardous-waste and sludge testing support. Share the sample type, target analytes, and intended use of the report so the exact scope can be confirmed.',
+            'citations' => ['https://envitechal.com/soil-hazardous-waste-testing/'],
         ];
+    }
+
+    if ($has(['drinking water', 'potable water'])) {
+        $drinking_water_parameters = [
+            'arsenic' => 'arsenic',
+            'lead' => 'lead',
+            'iron' => 'iron',
+            'chromium' => 'chromium',
+            'total coliform' => 'total coliform',
+            'e coli' => 'E. coli',
+        ];
+        foreach ($drinking_water_parameters as $term => $label) {
+            if ($has($term)) {
+                return [
+                    'answer' => sprintf('Yes. Envi Tech AL lists %s as an available drinking-water testing parameter. Confirm the water source and reporting purpose so the correct sampling and method requirements are used.', $label),
+                    'citations' => ['https://envitechal.com/drinking-water-testing-lab/'],
+                ];
+            }
+        }
+        if ($has('bacteria')) {
+            return [
+                'answer' => 'Yes. Drinking-water testing can include microbiological indicators. Confirm the water source and reporting purpose so the exact organisms, sampling, and method requirements can be selected.',
+                'citations' => ['https://envitechal.com/drinking-water-testing-lab/'],
+            ];
+        }
     }
 
     if ($has(['wastewater', 'waste water', 'effluent', 'etp']) && $has(['test', 'testing', 'cod', 'bod', 'tss', 'tds']) && !$has('seqs')) {

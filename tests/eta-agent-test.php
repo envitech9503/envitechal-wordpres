@@ -170,9 +170,11 @@ eta_agent_test_true(strpos($calibration['answer'], 'estimate prices') === false,
 
 $arsenic = eta_agent_curated_response('Can you test drinking water for arsenic?');
 eta_agent_test_true(strpos($arsenic['answer'], 'arsenic') !== false && $arsenic['citations'] === ['https://envitechal.com/drinking-water-testing-lab/'], 'drinking-water parameter question receives a focused sourced answer');
+eta_agent_test_true(strpos($arsenic['answer'], 'lead') === false && strpos($arsenic['answer'], 'coliform') === false, 'arsenic question omits unrelated drinking-water parameters');
 
 $soil = eta_agent_curated_response('Do you perform soil testing?');
 eta_agent_test_true(strpos($soil['answer'], 'soil') !== false && $soil['citations'] === ['https://envitechal.com/soil-hazardous-waste-testing/'], 'soil question receives a focused sourced answer');
+eta_agent_test_true(strpos($soil['answer'], 'sludge') === false && strpos($soil['answer'], 'hazardous') === false, 'soil question omits adjacent sample types');
 
 $wastewater = eta_agent_curated_response('Can you test textile wastewater COD?');
 eta_agent_test_true(strpos($wastewater['answer'], 'COD') !== false && $wastewater['citations'] === ['https://envitechal.com/wastewater-testing-services/'], 'wastewater COD question receives a focused sourced answer');
