@@ -34,6 +34,15 @@ add_action('wp_enqueue_scripts', function () {
         'eta-modern',
         ':root{--eta-green-2:#1f6f52}.single-post .eta-post-side-panel{display:none!important}:where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{outline:3px solid #ffcc4d!important;outline-offset:3px!important}.eta-chatbot-launcher:focus-visible{box-shadow:0 0 0 2px #102229,0 0 0 6px #ffcc4d!important}'
     );
+
+    /* Dynamic assistant states must survive LiteSpeed critical/unused-CSS extraction. */
+    wp_add_inline_style(
+        'eta-modern',
+        <<<'CSS'
+.eta-chatbot-root{position:fixed;right:24px;bottom:24px;z-index:9999;color:#102229;font-family:inherit}.eta-chatbot-root[hidden],.eta-chatbot-panel[hidden],.eta-chatbot-frame-wrap[hidden],.eta-chatbot-fallback[hidden]{display:none!important}.eta-chatbot-panel{position:absolute;right:0;bottom:calc(100% + 18px);display:flex;flex-direction:column;width:min(420px,calc(100vw - 32px));height:min(650px,calc(100dvh - 126px));max-height:min(650px,calc(100dvh - 126px));border:1px solid rgba(16,34,41,.12);border-radius:18px;background:#fff;box-shadow:0 24px 64px rgba(16,34,41,.28);overflow:hidden}.eta-chatbot-panel-header{display:flex;flex:0 0 auto;align-items:center;justify-content:space-between;gap:16px;padding:13px 14px;background:linear-gradient(135deg,#102229,#184e44 58%,#006633);color:#fff}.eta-chatbot-panel-copy{min-width:0}.eta-chatbot-panel-kicker,.eta-chatbot-panel-summary{display:none}.eta-chatbot-panel-title{margin:0;color:#fff;font-size:1.05rem;font-weight:800;line-height:1.25}.eta-chatbot-close{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;flex:0 0 auto;border:1px solid rgba(255,255,255,.25);border-radius:999px;background:rgba(255,255,255,.09);color:#fff;font-size:1.6rem;line-height:1;cursor:pointer}.eta-chatbot-close:hover,.eta-chatbot-close:focus-visible{background:rgba(255,255,255,.18)}.eta-chatbot-panel-body{display:flex;flex:1 1 auto;min-height:0;flex-direction:column;overflow:hidden;padding:10px 11px;background:#fff}.eta-chatbot-status{flex:0 0 auto;margin:0 0 8px;padding:8px 10px;border:1px solid rgba(29,107,79,.16);border-radius:10px;background:linear-gradient(135deg,rgba(29,107,79,.08),rgba(200,155,60,.08));color:#102229;font-size:.8rem;font-weight:700;line-height:1.35}.eta-chatbot-frame-wrap{display:flex;flex:1 1 auto;min-height:0;flex-direction:column;border:1px solid rgba(16,34,41,.1);border-radius:13px;overflow:hidden;background:#f7fbf8}.eta-chatbot-messages{display:flex;flex:1 1 auto;min-height:0;max-height:none;flex-direction:column;gap:10px;padding:12px;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable}.eta-chatbot-message{max-width:88%;padding:10px 12px;border-radius:14px;color:#183038;font-size:.9rem;line-height:1.5;overflow-wrap:anywhere}.eta-chatbot-message p{margin:0;white-space:pre-wrap}.eta-chatbot-message-assistant{align-self:flex-start;border:1px solid rgba(29,107,79,.16);border-bottom-left-radius:5px;background:#eef7f2}.eta-chatbot-message-user{align-self:flex-end;border-bottom-right-radius:5px;background:#102229;color:#fff}.eta-chatbot-citations{display:flex;flex-wrap:wrap;gap:6px;margin:9px 0 0;padding:0;list-style:none}.eta-chatbot-citations a{display:inline-flex;min-height:28px;align-items:center;padding:4px 9px;border:1px solid rgba(0,102,51,.2);border-radius:999px;background:#fff;color:#006633;font-size:.76rem;font-weight:750;line-height:1.2;text-decoration:none}.eta-chatbot-citations a:hover,.eta-chatbot-citations a:focus-visible{border-color:#006633;background:#f1faf5}.eta-chatbot-form{display:grid;flex:0 0 auto;grid-template-columns:minmax(0,1fr) auto;gap:8px;padding:10px;border-top:1px solid rgba(16,34,41,.09);background:#fff}.eta-chatbot-form textarea{box-sizing:border-box;width:100%;min-height:44px;max-height:108px;resize:none;border:1px solid rgba(16,34,41,.24);border-radius:11px;padding:10px 11px;background:#fff;color:#102229;font:inherit;font-size:16px;line-height:1.35}.eta-chatbot-form textarea:focus{border-color:#006633;box-shadow:0 0 0 3px rgba(0,102,51,.1);outline:0}.eta-chatbot-send{align-self:end;min-width:68px;min-height:44px;padding:8px 14px;border:0;border-radius:11px;background:#006633;color:#fff;font:inherit;font-weight:800;cursor:pointer}.eta-chatbot-send:hover,.eta-chatbot-send:focus-visible{background:#004d26}.eta-chatbot-send:disabled,.eta-chatbot-form textarea:disabled{cursor:not-allowed;opacity:.62}.eta-chatbot-fallback{margin-top:8px;padding:10px 12px;border:1px solid rgba(200,155,60,.34);border-radius:12px;background:linear-gradient(135deg,rgba(200,155,60,.12),rgba(29,107,79,.08))}.eta-chatbot-fallback p{margin:0 0 8px;color:#102229;font-size:.86rem;line-height:1.42}.eta-chatbot-actions{display:flex;flex-wrap:wrap;gap:8px}.eta-chatbot-action{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:6px 12px;border:1px solid #006633;border-radius:999px;color:#006633;font-size:.84rem;font-weight:800;text-decoration:none}.eta-chatbot-action-primary{background:#006633;color:#fff}.eta-chatbot-panel-footer{flex:0 0 auto;padding:10px 14px 12px;border-top:1px solid rgba(16,34,41,.07);background:#fff}.eta-chatbot-footer-link{color:#006633;font-size:.82rem;font-weight:750;text-decoration:none}.eta-chatbot-root[data-eta-busy="true"] .eta-chatbot-status:before{content:"";display:inline-block;width:8px;height:8px;margin-right:7px;border-radius:50%;background:#c89b3c;animation:eta-chatbot-pulse 1s ease-in-out infinite}.eta-chatbot-root.is-open .eta-chatbot-launcher{visibility:hidden;pointer-events:none}@keyframes eta-chatbot-pulse{50%{opacity:.32}}@media(max-width:640px){body.eta-chatbot-open{overflow:hidden}.eta-chatbot-root{right:10px;bottom:max(16px,env(safe-area-inset-bottom))}.eta-chatbot-launcher{width:58px;height:58px}.eta-chatbot-panel{right:-2px;bottom:calc(100% + 10px);width:calc(100vw - 16px);height:min(700px,calc(100dvh - 96px));max-height:calc(100dvh - 96px);border-radius:16px}.eta-chatbot-panel-body{padding:8px}.eta-chatbot-status{margin-bottom:7px}.eta-chatbot-messages{padding:10px}.eta-chatbot-message{max-width:92%;font-size:.88rem}.eta-chatbot-form{padding:8px}.eta-chatbot-panel-footer{padding:9px 12px 10px}}@media(prefers-reduced-motion:reduce){.eta-chatbot-root[data-eta-busy="true"] .eta-chatbot-status:before{animation:none}}
+.eta-chatbot-root.has-live-chat .eta-chatbot-panel{height:min(650px,calc(100dvh - 126px));max-height:min(650px,calc(100dvh - 126px))}.eta-chatbot-root.has-live-chat .eta-chatbot-frame-wrap{min-height:0}.eta-chatbot-root.has-live-chat .eta-chatbot-panel-body{display:flex;min-height:0;overflow:hidden;padding:10px 11px}@media(max-width:640px){.eta-chatbot-root.has-live-chat .eta-chatbot-panel{height:min(700px,calc(100dvh - 96px));max-height:calc(100dvh - 96px)}.eta-chatbot-root.has-live-chat .eta-chatbot-panel-body{padding:8px}}
+CSS
+    );
 }, 20);
 
 add_action('wp_enqueue_scripts', function () {
@@ -1628,11 +1637,13 @@ add_action('wp_footer', function () {
     if (is_admin()) {
         return;
     }
+    $chatbot_bundle = get_stylesheet_directory() . '/assets/js/eta-chatbot.js';
+    $chatbot_bundle_version = file_exists($chatbot_bundle) ? (string) filemtime($chatbot_bundle) : wp_get_theme()->get('Version');
     ?>
     <div
         class="eta-chatbot-root"
         hidden
-        data-bundle-url="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/js/eta-chatbot.js'); ?>"
+        data-bundle-url="<?php echo esc_url(add_query_arg('ver', $chatbot_bundle_version, get_stylesheet_directory_uri() . '/assets/js/eta-chatbot.js')); ?>"
         data-health-url="<?php echo esc_url(rest_url('eta/v1/agent/health')); ?>"
         data-message-url="<?php echo esc_url(rest_url('eta/v1/agent/message')); ?>"
         data-rest-nonce="<?php echo esc_attr(wp_create_nonce('wp_rest')); ?>">
@@ -1649,12 +1660,12 @@ add_action('wp_footer', function () {
                 <button class="eta-chatbot-close" type="button" aria-label="<?php esc_attr_e('Close assistant', 'envi-tech-al-modern'); ?>">&times;</button>
             </header>
             <div class="eta-chatbot-panel-body">
-                <p class="eta-chatbot-status" role="status" aria-live="polite"><?php esc_html_e('Connecting to the assistant…', 'envi-tech-al-modern'); ?></p>
+                <p class="eta-chatbot-status" role="status" aria-live="polite"><?php esc_html_e('Connecting to the assistant...', 'envi-tech-al-modern'); ?></p>
                 <div class="eta-chatbot-frame-wrap">
                     <div class="eta-chatbot-messages" role="log" aria-live="polite" aria-relevant="additions text"></div>
                     <form class="eta-chatbot-form">
                         <label class="screen-reader-text" for="eta-chatbot-question"><?php esc_html_e('Your question', 'envi-tech-al-modern'); ?></label>
-                        <textarea id="eta-chatbot-question" name="message" rows="2" maxlength="1200" placeholder="<?php esc_attr_e('Ask about services, scope, locations, or report verification', 'envi-tech-al-modern'); ?>" required></textarea>
+                        <textarea id="eta-chatbot-question" name="message" rows="1" maxlength="1200" placeholder="<?php esc_attr_e('Ask one specific question', 'envi-tech-al-modern'); ?>" required></textarea>
                         <button class="eta-chatbot-send" type="submit"><?php esc_html_e('Send', 'envi-tech-al-modern'); ?></button>
                     </form>
                 </div>
@@ -1683,6 +1694,7 @@ add_action('wp_footer', function () {
             function closePanel() {
                 panel.hidden = true;
                 root.classList.remove('is-open');
+                document.body.classList.remove('eta-chatbot-open');
                 launcher.setAttribute('aria-expanded', 'false');
                 launcher.focus();
             }
@@ -1692,6 +1704,7 @@ add_action('wp_footer', function () {
                 root.dataset.etaPreflight = 'failed';
                 panel.hidden = true;
                 root.classList.remove('is-open');
+                document.body.classList.remove('eta-chatbot-open');
                 launcher.setAttribute('aria-expanded', 'false');
                 launcher.blur();
                 root.hidden = true;
@@ -1752,6 +1765,7 @@ add_action('wp_footer', function () {
             launcher.addEventListener('click', function () {
                 panel.hidden = false;
                 root.classList.add('is-open');
+                document.body.classList.add('eta-chatbot-open');
                 launcher.setAttribute('aria-expanded', 'true');
                 panel.focus();
                 loadBundle();

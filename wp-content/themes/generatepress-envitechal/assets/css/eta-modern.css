@@ -8082,8 +8082,10 @@ h3 {
     display: flex;
     flex-direction: column;
     width: min(420px, calc(100vw - 32px));
-    max-height: min(760px, calc(100vh - 96px));
-    max-height: min(760px, calc(100dvh - 96px));
+    height: min(650px, calc(100vh - 126px));
+    height: min(650px, calc(100dvh - 126px));
+    max-height: min(650px, calc(100vh - 126px));
+    max-height: min(650px, calc(100dvh - 126px));
     border: 1px solid rgba(16, 34, 41, 0.1);
     border-radius: 16px;
     background: #fff;
@@ -8092,7 +8094,8 @@ h3 {
 }
 
 .eta-chatbot-root.has-live-chat .eta-chatbot-panel {
-    height: auto;
+    height: min(650px, calc(100vh - 126px));
+    height: min(650px, calc(100dvh - 126px));
 }
 
 .eta-chatbot-panel[hidden] {
@@ -8170,9 +8173,11 @@ h3 {
 }
 
 .eta-chatbot-panel-body {
+    display: flex;
+    flex-direction: column;
     flex: 1 1 auto;
     min-height: 0;
-    overflow-y: auto;
+    overflow: hidden;
     padding: 14px;
     background: #fff;
 }
@@ -8195,7 +8200,10 @@ h3 {
 }
 
 .eta-chatbot-frame-wrap {
-    min-height: 420px;
+    display: flex;
+    flex: 1 1 auto;
+    min-height: 0;
+    flex-direction: column;
     border: 1px solid rgba(16, 34, 41, 0.08);
     border-radius: 12px;
     overflow: hidden;
@@ -8203,7 +8211,7 @@ h3 {
 }
 
 .eta-chatbot-root.has-live-chat .eta-chatbot-frame-wrap {
-    min-height: 380px;
+    min-height: 0;
 }
 
 .eta-chatbot-frame-wrap[hidden] {
@@ -8212,10 +8220,11 @@ h3 {
 
 .eta-chatbot-messages {
     display: flex;
+    flex: 1 1 auto;
     flex-direction: column;
     gap: 10px;
-    min-height: 280px;
-    max-height: min(48vh, 430px);
+    min-height: 0;
+    max-height: none;
     padding: 12px;
     overflow-y: auto;
 }
@@ -8388,6 +8397,12 @@ h3 {
         width: min(420px, calc(100vw - 20px));
         right: -2px;
         bottom: calc(100% + 14px);
+        height: min(700px, calc(100dvh - 102px));
+        max-height: calc(100dvh - 102px);
+    }
+
+    .eta-chatbot-root.has-live-chat .eta-chatbot-panel {
+        height: min(700px, calc(100dvh - 102px));
     }
 
     .eta-chatbot-panel-header,
