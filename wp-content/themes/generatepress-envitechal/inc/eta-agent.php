@@ -301,14 +301,14 @@ function eta_agent_curated_response($message)
         ];
     }
 
-    if ($has(['soil testing', 'soil test'])) {
+    if ($has(['soil testing', 'soil test', 'test soil', 'testing soil'])) {
         return [
             'answer' => 'Yes. Envi Tech AL provides soil testing. Share the site context, target analytes, and intended use of the report so the correct sampling and testing scope can be confirmed.',
             'citations' => ['https://envitechal.com/soil-hazardous-waste-testing/'],
         ];
     }
 
-    if ($has(['hazardous waste testing', 'sludge testing'])) {
+    if ($has(['hazardous waste testing', 'hazardous waste test', 'test hazardous waste', 'sludge testing', 'sludge test', 'test sludge'])) {
         return [
             'answer' => 'Yes. Envi Tech AL provides hazardous-waste and sludge testing support. Share the sample type, target analytes, and intended use of the report so the exact scope can be confirmed.',
             'citations' => ['https://envitechal.com/soil-hazardous-waste-testing/'],
@@ -335,6 +335,12 @@ function eta_agent_curated_response($message)
         if ($has('bacteria')) {
             return [
                 'answer' => 'Yes. Drinking-water testing can include microbiological indicators. Confirm the water source and reporting purpose so the exact organisms, sampling, and method requirements can be selected.',
+                'citations' => ['https://envitechal.com/drinking-water-testing-lab/'],
+            ];
+        }
+        if ($has(['test', 'testing'])) {
+            return [
+                'answer' => 'Yes. Envi Tech AL provides drinking-water testing. Share the water source and reporting purpose so the correct parameters, sampling, and method requirements can be selected.',
                 'citations' => ['https://envitechal.com/drinking-water-testing-lab/'],
             ];
         }
