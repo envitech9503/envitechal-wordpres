@@ -178,7 +178,10 @@ eta_agent_test_true(strpos($soil['answer'], 'sludge') === false && strpos($soil[
 eta_agent_test_true(eta_agent_curated_response('Can you test soil?') === $soil, 'verb-first soil wording routes to the same focused answer');
 
 $sludge = eta_agent_curated_response('Can you test sludge?');
-eta_agent_test_true(strpos($sludge['answer'], 'hazardous-waste and sludge testing') !== false, 'verb-first sludge wording receives the verified waste-testing answer');
+eta_agent_test_true(strpos($sludge['answer'], 'sludge testing') !== false && strpos($sludge['answer'], 'hazardous') === false, 'sludge question omits the adjacent hazardous-waste subject');
+
+$hazardous_waste = eta_agent_curated_response('Can you test hazardous waste?');
+eta_agent_test_true(strpos($hazardous_waste['answer'], 'hazardous-waste testing') !== false && strpos($hazardous_waste['answer'], 'sludge') === false, 'hazardous-waste question omits the adjacent sludge subject');
 
 $general_drinking_water = eta_agent_curated_response('Can you test drinking water?');
 eta_agent_test_true(strpos($general_drinking_water['answer'], 'provides drinking-water testing') !== false, 'verb-first drinking-water wording receives the verified service answer');
