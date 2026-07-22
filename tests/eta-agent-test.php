@@ -151,7 +151,7 @@ eta_agent_test_true(strpos($pricing['answer'], 'cannot provide or estimate price
 eta_agent_test_true(!preg_match('/(?:PKR|Rs\.?|\$)\s*\d/i', $pricing['answer']), 'pricing fallback contains no quoted price');
 
 $services = eta_agent_curated_response('What services does Envi Tech AL provide?');
-eta_agent_test_true(strpos($services['answer'], 'exact premises, matrix, parameter, and method') !== false, 'service summary cannot generalise accreditation');
+eta_agent_test_true(strpos($services['answer'], 'water and wastewater testing') !== false && strpos($services['answer'], 'PNAC') === false, 'service summary answers only the requested portfolio question');
 
 $specific_service = eta_agent_curated_response('Do you provide stack emission monitoring?');
 eta_agent_test_true(strpos($specific_service['answer'], 'stack and gaseous-emission monitoring') !== false, 'specific service questions receive a focused verified answer');
@@ -210,6 +210,45 @@ eta_agent_test_true(strpos($karachi_address['answer'], 'Karachi head office') !=
 $whatsapp = eta_agent_curated_response('What is your WhatsApp number?');
 eta_agent_test_true(strpos($whatsapp['answer'], '+92 310 2288801') !== false && strpos($whatsapp['answer'], 'info@') === false && strpos($whatsapp['answer'], 'working hours') === false, 'WhatsApp question returns only the requested channel');
 
+$customer_scenarios = [
+    ['Hello', 'Hello.', []],
+    ['What services do you provide?', 'water and wastewater testing', []],
+    ['What are the parameters to be tested for kitchen water?', 'For kitchen, tap, or drinking water', ['cannot verify']],
+    ['Which bacteria should be tested in kitchen water?', 'total coliform and E. coli', ['cannot verify']],
+    ['How should I collect a kitchen water sample?', 'Bottle type, sterilization, preservation', ['cannot verify']],
+    ['Can you test kitchen water for arsenic?', 'arsenic as an available drinking-water testing parameter', ['lead', 'coliform']],
+    ['Which parameters are commonly tested in wastewater?', 'Common wastewater parameters include', ['drinking-water testing']],
+    ['What parameters are checked during stack emission testing?', 'gases, particulates, and combustion-related parameters', ['water testing']],
+    ['Which parameters are monitored in ambient air?', 'PM10, PM2.5, SO2, NOx, CO, CO2', ['wastewater']],
+    ['Which parameters are measured during noise monitoring?', 'Leq, Lmax, Lmin', ['ambient-air']],
+    ['Can you calibrate a pH meter?', 'pH meters', ['estimate prices']],
+    ['Which instruments can you calibrate?', 'balances, thermometers, pH meters', ['water testing']],
+    ['Which parameters can be tested in soil?', 'pH, moisture, heavy metals', ['sludge testing']],
+    ['Which parameters are covered in industrial hygiene monitoring?', 'respirable or inhalable dust', ['water testing']],
+    ['Do you provide ballast water testing?', 'ballast and deballast water testing', ['soil testing']],
+    ['Do you provide thermal imaging inspections?', 'thermal-imaging inspection', ['water testing']],
+    ['Do you do EIA reports for Punjab?', 'Punjab EPA', ['Sindh']],
+    ['Are you accredited?', 'PNAC LAB-347 for the Lahore premises only', ['Karachi laboratory is accredited']],
+    ['What is the price of kitchen water testing?', 'cannot provide or estimate prices', ['PKR', 'Rs.']],
+    ['How can I verify an Envi Tech AL report?', 'Report Verification Portal', ['cannot verify']],
+];
+
+foreach ($customer_scenarios as $index => $scenario) {
+    [$question, $required, $forbidden] = $scenario;
+    $response = eta_agent_curated_response($question);
+    eta_agent_test_true(is_array($response), sprintf('customer scenario %d returns a curated response', $index + 1));
+    eta_agent_test_true(strpos($response['answer'], $required) !== false, sprintf('customer scenario %d answers the requested subject', $index + 1));
+    foreach ($forbidden as $term) {
+        eta_agent_test_true(strpos($response['answer'], $term) === false, sprintf('customer scenario %d omits forbidden unrelated or fabricated content', $index + 1));
+    }
+    eta_agent_test_true(!empty($response['citations']), sprintf('customer scenario %d includes a published source', $index + 1));
+    eta_agent_test_true(strpos($response['answer'], 'http') === false, sprintf('customer scenario %d keeps raw links out of answer prose', $index + 1));
+    eta_agent_test_true(str_word_count($response['answer']) <= 65, sprintf('customer scenario %d remains concise', $index + 1));
+}
+
+$contextual_parameters = eta_agent_curated_response('Which parameters should we test?', 'We need kitchen water testing.');
+eta_agent_test_true(strpos($contextual_parameters['answer'], 'For kitchen, tap, or drinking water') !== false, 'parameter follow-up uses the previous customer topic');
+
 $guarantee = eta_agent_curated_response('Can you guarantee my facility passes the EPA inspection?');
 eta_agent_test_true(strpos($guarantee['answer'], 'cannot guarantee') !== false, 'EPA outcome guarantee is explicitly declined');
 
@@ -235,6 +274,14 @@ eta_agent_test_true(!eta_agent_remote_enabled(), 'generative answers are fail-cl
 $GLOBALS['eta_agent_test_remote_calls'] = [];
 $verified_message = eta_agent_chat_response(new WP_REST_Request(['message' => 'How do I verify my report?']));
 eta_agent_test_true($verified_message['citations'] === ['https://envitechal.com/report-verification-portal/'], 'the public message route serves verified catalogue answers without an upstream call');
+$contextual_message = eta_agent_chat_response(new WP_REST_Request([
+    'message' => 'Which parameters should we test?',
+    'history' => [
+        ['role' => 'user', 'content' => 'We need kitchen water testing.'],
+        ['role' => 'assistant', 'content' => 'Please share the intended use.'],
+    ],
+]));
+eta_agent_test_true(strpos($contextual_message['answer'], 'For kitchen, tap, or drinking water') !== false, 'the public message route preserves topic context for a focused follow-up');
 $unmatched_message = eta_agent_chat_response(new WP_REST_Request(['message' => 'Tell me something completely unrelated.']));
 eta_agent_test_true(strpos($unmatched_message['answer'], 'cannot verify') !== false, 'the public message route declines unmatched questions immediately');
 eta_agent_test_true(count($GLOBALS['eta_agent_test_remote_calls']) === 0, 'verified and unmatched public messages make no external request while generation is disabled');
