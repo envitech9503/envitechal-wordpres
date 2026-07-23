@@ -217,6 +217,7 @@ $customer_scenarios = [
     ['Which bacteria should be tested in kitchen water?', 'total coliform and E. coli', ['cannot verify']],
     ['How should I collect a kitchen water sample?', 'Bottle type, sterilization, preservation', ['cannot verify']],
     ['Can you test kitchen water for arsenic?', 'arsenic as an available drinking-water testing parameter', ['lead', 'coliform']],
+    ['Can you test arsenic in water?', 'arsenic as an available drinking-water testing parameter', ['lead', 'coliform']],
     ['Which parameters are commonly tested in wastewater?', 'Common wastewater parameters include', ['drinking-water testing']],
     ['What parameters are checked during stack emission testing?', 'gases, particulates, and combustion-related parameters', ['water testing']],
     ['Which parameters are monitored in ambient air?', 'PM10, PM2.5, SO2, NOx, CO, CO2', ['wastewater']],
@@ -227,8 +228,10 @@ $customer_scenarios = [
     ['Which parameters are covered in industrial hygiene monitoring?', 'respirable or inhalable dust', ['water testing']],
     ['Do you provide ballast water testing?', 'ballast and deballast water testing', ['soil testing']],
     ['Do you provide thermal imaging inspections?', 'thermal-imaging inspection', ['water testing']],
+    ['Do you test thermal power plant water?', 'process and utility-water analysis', ['thermal-imaging']],
     ['Do you do EIA reports for Punjab?', 'Punjab EPA', ['Sindh']],
     ['Are you accredited?', 'PNAC LAB-347 for the Lahore premises only', ['Karachi laboratory is accredited']],
+    ['Is your laboratory accredited?', 'PNAC LAB-347 for the Lahore premises only', ['Karachi laboratory is accredited']],
     ['What is the price of kitchen water testing?', 'cannot provide or estimate prices', ['PKR', 'Rs.']],
     ['How can I verify an Envi Tech AL report?', 'Report Verification Portal', ['cannot verify']],
 ];
