@@ -656,6 +656,8 @@ function eta_agent_curated_response($message, $context = '')
     $process_water_terms = [
         'process water',
         'utility water',
+        'thermal power plant water',
+        'power plant water',
         'boiler water',
         'boiler feed water',
         'boiler feed',
@@ -684,7 +686,20 @@ function eta_agent_curated_response($message, $context = '')
         ];
     }
 
-    $drinking_water_topic = $has($drinking_water_terms) || ($contextual_follow_up && $topic_has($drinking_water_terms));
+    $drinking_water_analytes = [
+        'arsenic',
+        'lead',
+        'cadmium',
+        'chromium',
+        'mercury',
+        'fluoride',
+        'nitrate',
+        'e coli',
+        'total coliform',
+    ];
+    $drinking_water_topic = $has($drinking_water_terms)
+        || ($has('water') && $has($drinking_water_analytes))
+        || ($contextual_follow_up && $topic_has($drinking_water_terms));
     if ($drinking_water_topic) {
         $drinking_water_parameters = [
             'ph' => 'pH',
@@ -1018,7 +1033,7 @@ function eta_agent_curated_response($message, $context = '')
         ];
     }
 
-    if ($has(['are you accredited', 'is your lab accredited', 'is the laboratory accredited', 'accreditation status'])) {
+    if ($has(['are you accredited', 'is your lab accredited', 'is your laboratory accredited', 'is the lab accredited', 'is the laboratory accredited', 'accreditation status'])) {
         return [
             'answer' => 'Envi Tech AL holds PNAC LAB-347 for the Lahore premises only, and only for the exact matrix, parameter, and method combinations in the published scope. It must not be applied to the Karachi laboratory or to unlisted work.',
             'citations' => ['https://envitechal.com/services/water-testing-lab-services/', 'https://envitechal.com/accreditations-certifications/'],
