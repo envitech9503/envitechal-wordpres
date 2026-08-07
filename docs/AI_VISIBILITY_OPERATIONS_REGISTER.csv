@@ -8,7 +8,7 @@ Technical case studies,P1,BLOCKED_EXTERNAL_EVIDENCE,Business owner and source-re
 Original datasets or research,P1,BLOCKED_EXTERNAL_EVIDENCE,Dataset owner,"De-identified source data, protocol, aggregation threshold, licence, owner and reproducibility review","Select one dataset and complete privacy plus reproducibility review",NO
 Third-party descriptions,P1,READY_ACCOUNT_ACTION,Platform account owners,"Authorized login and before/after evidence","Apply approved description per platform and record timestamp plus evidence",NO
 Crawler directives,P2,COMPLETE,Repository and verified provider identity,None,"Continue monthly monitor; never allow by User-Agent alone",NO
-Sitemap canonical indexation,P2,COMPLETE,Repository,None,"Continue full crawl and search-console review when account access exists",NO
+Sitemap canonical indexation,P2,COMPLETE_REFRESH_SUBMITTED,Repository and Google Search Console,None,"Recheck priority-crawl, sitemap and coverage validations after 2026-08-15; never promise a recrawl date",NO
 Lahore local reputation,P2,READY_ACCOUNT_ACTION,Lahore profile owner,"Claimed profile, accurate NAP, real photos and authentic customer interactions","Verify ownership and run policy-safe review workflow",NO
 Technical visuals,P2,BLOCKED_EXTERNAL_EVIDENCE,Creator and rights owner,"Original asset, provenance, rights, confidentiality review, accurate data, alt text and approval","Complete private visual provenance pack; request frontend permission before placement",YES_PERMISSION_REQUIRED
 AI assistant,P2,COMPLETE,Repository and DigitalOcean agent,None,"Continue scenario and readiness monitoring",NO
