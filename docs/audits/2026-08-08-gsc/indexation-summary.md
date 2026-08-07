@@ -1,7 +1,7 @@
 # Google Search Console Indexation Snapshot
 
-Captured: 8 August 2026  
-Property: `https://envitechal.com/`  
+Captured: 8 August 2026
+Property: `https://envitechal.com/`
 Search Console data last updated: 5 August 2026
 
 This is an operations record, not a claim that Google will rank, recrawl or
