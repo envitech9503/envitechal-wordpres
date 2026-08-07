@@ -11,6 +11,8 @@ $required = [
     "['https://envitechal.com', 'https://staging.envitechal.com']",
     "eta_discovery_fetch_url(\$url)",
     "\$canonical_url = home_url(\$parts['path']",
+    "eta_discovery_canonicalize_markdown(\$extracted['content'])",
+    "stripos(\$canonical, 'staging.envitechal.com')",
 ];
 foreach ($required as $needle) {
     if (strpos($script, $needle) === false) {
