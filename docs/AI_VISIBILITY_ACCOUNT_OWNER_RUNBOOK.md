@@ -1,6 +1,6 @@
 # Account-owner AI Visibility Runbook
 
-Prepared: 8 August 2026  
+Prepared: 8 August 2026
 Boundary: third-party accounts and private operations only; no WordPress frontend change.
 
 ## External profile transaction
