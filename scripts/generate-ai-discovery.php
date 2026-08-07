@@ -79,6 +79,19 @@ function eta_discovery_fetch(string $url): string
     return $body;
 }
 
+function eta_discovery_canonicalize_markdown(string $markdown): string
+{
+    $canonical = str_replace(
+        'https://staging.envitechal.com',
+        'https://envitechal.com',
+        $markdown
+    );
+    if (stripos($canonical, 'staging.envitechal.com') !== false) {
+        throw new RuntimeException('A staging hostname remained in generated discovery content.');
+    }
+    return $canonical;
+}
+
 function eta_discovery_last_modified_map(): array
 {
     $map = [];
@@ -146,7 +159,7 @@ foreach ($urls as $url) {
     $sections[] = '';
     $sections[] = 'Last updated: ' . $last_modified[$url];
     $sections[] = '';
-    $sections[] = $extracted['content'];
+    $sections[] = eta_discovery_canonicalize_markdown($extracted['content']);
 }
 
 $corpus = implode("\n", $sections) . "\n";
