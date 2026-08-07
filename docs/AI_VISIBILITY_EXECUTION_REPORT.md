@@ -40,6 +40,15 @@ responsive behaviour. The production release uses pinned payload commit
 - A single operations register distinguishes `COMPLETE`, `READY_ACCOUNT_ACTION`
   and `BLOCKED_EXTERNAL_EVIDENCE`, with an exact authority, evidence set and next
   action for every original priority-list item.
+- Google Search Console confirmed the homepage, credentials authority page and
+  Karachi branch authority as indexed. The homepage and credentials URL were
+  submitted once to the priority crawl queue, the canonical sitemap was
+  resubmitted successfully, and validation began for two historical 5xx URLs
+  now resolved by one-hop redirects plus three obsolete canonical-difference
+  archive records now intentionally noindex.
+- The schema contract now explicitly fails if theme code emits a `Person` type
+  before a real approved expert evidence record exists; article authorship remains
+  attached to the Organization until that evidence is supplied.
 
 ## Release evidence
 
