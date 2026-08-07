@@ -656,15 +656,27 @@ function eta_modern_schema_decode_entities($value)
 function eta_modern_schema_credentials()
 {
     return [
+        'pnac-karachi' => [
+            '@type' => 'EducationalOccupationalCredential',
+            'name' => 'ISO/IEC 17025:2017 accreditation - Karachi laboratory',
+            'credentialCategory' => 'Accreditation',
+            'identifier' => 'LAB-285',
+            'recognizedBy' => [
+                '@type' => 'Organization',
+                'name' => 'Pakistan National Accreditation Council',
+                'url' => 'https://pnac.gov.pk/pdfFiles/LAB-285',
+            ],
+            'validThrough' => '2029-05-04',
+        ],
         'pnac-lahore' => [
             '@type' => 'EducationalOccupationalCredential',
-            'name' => 'ISO/IEC 17025:2017 accreditation',
+            'name' => 'ISO/IEC 17025:2017 accreditation - Lahore laboratory',
             'credentialCategory' => 'Accreditation',
             'identifier' => 'LAB-347',
             'recognizedBy' => [
                 '@type' => 'Organization',
                 'name' => 'Pakistan National Accreditation Council',
-                'url' => 'https://www.pnac.gov.pk/index.php/pdfFiles/LAB-347',
+                'url' => 'https://pnac.gov.pk/pdfFiles/LAB-347',
             ],
             'validThrough' => '2028-09-21',
         ],
@@ -782,6 +794,7 @@ function eta_modern_schema_organization()
             'availableLanguage' => ['en', 'ur'],
         ],
         'hasCredential' => [
+            $credentials['pnac-karachi'],
             $credentials['pnac-lahore'],
             $credentials['punjab-epa-lahore'],
             $credentials['sindh-epa-karachi'],
@@ -811,7 +824,7 @@ function eta_modern_schema_local_business($location, $description = '')
             'name' => 'Envi Tech AL Karachi Environmental Laboratory',
             'url' => home_url('/karachi-environmental-lab/'),
             'telephone' => '+923102288801',
-            'description' => 'Environmental testing, field monitoring, and consultancy coordination for Karachi and Sindh. Confirm the laboratory location, parameter, method, and current credential before relying on an accreditation claim.',
+            'description' => 'Environmental testing, field monitoring, and consultancy coordination for Karachi and Sindh. PNAC LAB-285 applies only to the Karachi permanent laboratory premises and the matrices, parameters, methods, and ranges listed in its current scope.',
             'areaServed' => ['Karachi', 'Sindh', 'Pakistan'],
             'geo' => [
                 '@type' => 'GeoCoordinates',
@@ -819,6 +832,7 @@ function eta_modern_schema_local_business($location, $description = '')
                 'longitude' => 67.06932881033588,
             ],
             'hasCredential' => [
+                $credentials['pnac-karachi'],
                 $credentials['sindh-epa-karachi'],
             ],
             'address' => [
@@ -1392,7 +1406,7 @@ add_action('wp_head', function () {
                 '@type' => 'ItemList',
                 'name' => 'Envi Tech AL credentials',
                 'itemListElement' => [
-                    ['@type' => 'ListItem', 'position' => 1, 'name' => 'PNAC LAB-347 Lahore laboratory accreditation scope'],
+                    ['@type' => 'ListItem', 'position' => 1, 'name' => 'PNAC LAB-285 Karachi and LAB-347 Lahore laboratory accreditation scopes'],
                     ['@type' => 'ListItem', 'position' => 2, 'name' => 'Sindh EPA environmental laboratory certification for the Karachi laboratory'],
                     ['@type' => 'ListItem', 'position' => 3, 'name' => 'Punjab EPA approval information'],
                     ['@type' => 'ListItem', 'position' => 4, 'name' => 'ISO 9001:2015 and ISO 14001:2015 system certificates'],
@@ -1452,7 +1466,7 @@ add_action('wp_head', function () {
                 '@type' => 'Service',
                 'serviceType' => 'Water Testing Laboratory Services',
                 'name' => 'Water Testing Laboratory Services',
-                'description' => 'Water and wastewater testing with scope-confirmed methods and verifiable reports. PNAC LAB-347 applies only to the Lahore location and its listed methods.',
+                'description' => 'Water and wastewater testing with scope-confirmed methods and verifiable reports. PNAC LAB-285 applies only to the Karachi scope and PNAC LAB-347 only to the Lahore scope; each is limited to its listed matrices, parameters, methods, and ranges.',
                 'provider' => [
                     '@type' => 'Organization',
                     'name' => 'Envi Tech AL',
@@ -2401,6 +2415,10 @@ function eta_modern_normalize_legacy_copy($content)
         'E-coli' => 'E. coli',
         'An-ionic' => 'Anionic',
         'An-ionic detergents' => 'Anionic detergents',
+        'PNAC-accredited environmental laboratory in Pakistan' => 'environmental laboratory operating location-specific PNAC scopes in Karachi (LAB-285) and Lahore (LAB-347)',
+        'The lab has achieved ISO/IEC 17025:2017 accreditation from PNAC.' => 'The Karachi permanent laboratory holds PNAC LAB-285 and the Lahore permanent laboratory holds PNAC LAB-347 under ISO/IEC 17025:2017; each is limited to its applicable current published scope.',
+        'Envi Tech AL is Sindh EPA approved lab having Green Lab certification (Gold), ISO 9001:2015, ISO 14001:2015 certification and ISO 17025:2017 accreditation from PNAC .' => 'Envi Tech AL publishes separate regulatory, management-system, and laboratory credentials. PNAC LAB-285 applies only to the Karachi permanent laboratory and PNAC LAB-347 only to the Lahore permanent laboratory; each is limited to its applicable current published scope.',
+        'Envi Tech AL is Sindh EPA approved lab having Green Lab certification (Gold), ISO 9001:2015 & ISO 14001:2015 certification and ISO 17025:2017 accreditation from PNAC .' => 'Envi Tech AL publishes separate regulatory, management-system, and laboratory credentials. PNAC LAB-285 applies only to the Karachi permanent laboratory and PNAC LAB-347 only to the Lahore permanent laboratory; each is limited to its applicable current published scope.',
         'Our head office is in Bahadurabad, Karachi, and we have a regional office in Lahore.' => 'Our Karachi head office is in Bahadurabad Block 3, with a regional office in Lahore for Punjab coordination.',
         'Address: 345, First Floor, Street-15, Block-3, Bahadurabad, Karachi. 75900, Pakistan.' => 'Address: First Floor, 345, Street 15, Bahadurabad Block 3, Bahadur Yar Jang CHS, Karachi, Sindh 75900, Pakistan.',
         '345, First Floor, Street-15, Block-3, Bahadurabad, Karachi. 75900, Pakistan.' => 'First Floor, 345, Street 15, Bahadurabad Block 3, Bahadur Yar Jang CHS, Karachi, Sindh 75900, Pakistan.',
@@ -2953,7 +2971,7 @@ function eta_modern_render_water_testing_flagship_page()
             <div>
                 <p class="eta-eyebrow"><?php esc_html_e('Water & Wastewater Analysis', 'envi-tech-al-modern'); ?></p>
                 <h1 id="eta-water-title"><?php esc_html_e('Water Testing Laboratory for Drinking, Process and Wastewater Compliance', 'envi-tech-al-modern'); ?></h1>
-                <p><?php esc_html_e('Envi Tech AL coordinates water and wastewater testing for industries, hospitals, hotels, exporters, housing societies, and maritime operators. Published ISO/IEC 17025:2017 accreditation applies only to the Lahore laboratory and the water/wastewater methods listed in PNAC LAB-347. Every other location, matrix, parameter, and method requires separate scope confirmation before it may be described as accredited.', 'envi-tech-al-modern'); ?></p>
+                <p><?php esc_html_e('Envi Tech AL coordinates water and wastewater testing for industries, hospitals, hotels, exporters, housing societies, and maritime operators. PNAC LAB-285 applies only to the Karachi permanent laboratory and its published scope; PNAC LAB-347 applies only to the Lahore permanent laboratory and its published scope. Every location, matrix, parameter, method, and range must match the applicable current PNAC scope before work is described as accredited.', 'envi-tech-al-modern'); ?></p>
                 <div class="eta-actions">
                     <a class="eta-button" href="<?php echo esc_url(home_url('/contact-us-envi-tech-al/')); ?>"><?php esc_html_e('Request a quotation', 'envi-tech-al-modern'); ?></a>
                     <a class="eta-button eta-button-secondary" href="<?php echo esc_url('https://wa.me/923102288801'); ?>" target="_blank" rel="noopener"><?php esc_html_e('WhatsApp consultation', 'envi-tech-al-modern'); ?></a>
@@ -2961,8 +2979,8 @@ function eta_modern_render_water_testing_flagship_page()
             </div>
             <aside class="eta-service-hero-panel">
                 <span><?php esc_html_e('Laboratory trust', 'envi-tech-al-modern'); ?></span>
-                <strong><?php esc_html_e('PNAC LAB-347 — Lahore', 'envi-tech-al-modern'); ?></strong>
-                <strong><?php esc_html_e('PNAC document states validity through 21 September 2028', 'envi-tech-al-modern'); ?></strong>
+                <strong><?php esc_html_e('PNAC LAB-285 - Karachi', 'envi-tech-al-modern'); ?></strong>
+                <strong><?php esc_html_e('PNAC LAB-347 - Lahore', 'envi-tech-al-modern'); ?></strong>
                 <strong><?php esc_html_e('Punjab EPA listed laboratory', 'envi-tech-al-modern'); ?></strong>
                 <strong><?php esc_html_e('Method and location scope verification required', 'envi-tech-al-modern'); ?></strong>
             </aside>
@@ -3049,7 +3067,7 @@ function eta_modern_render_water_testing_flagship_page()
             <ol class="eta-service-method-list">
                 <li><span>01</span><strong><?php esc_html_e('Define the requirement', 'envi-tech-al-modern'); ?></strong><p><?php esc_html_e('Tell us the purpose: EPA submission, buyer audit, internal QA or troubleshooting. We match parameters, methods and report format to it.', 'envi-tech-al-modern'); ?></p></li>
                 <li><span>02</span><strong><?php esc_html_e('Sampling', 'envi-tech-al-modern'); ?></strong><p><?php esc_html_e('Our field teams collect samples across Karachi and Lahore using correct containers, preservation and chain-of-custody documentation. For other cities, contact the laboratory before dispatch so sample acceptance and transit conditions can be confirmed.', 'envi-tech-al-modern'); ?></p></li>
-                <li><span>03</span><strong><?php esc_html_e('Scope-confirmed analysis', 'envi-tech-al-modern'); ?></strong><p><?php esc_html_e('The laboratory confirms the location, matrix, parameter, method, and credential status before work begins. Lahore PNAC LAB-347 covers only its published water and wastewater methods.', 'envi-tech-al-modern'); ?></p></li>
+                <li><span>03</span><strong><?php esc_html_e('Scope-confirmed analysis', 'envi-tech-al-modern'); ?></strong><p><?php esc_html_e('The laboratory confirms the location, matrix, parameter, method, range, and credential status before work begins. Karachi PNAC LAB-285 and Lahore PNAC LAB-347 each cover only the combinations listed in their applicable published scopes.', 'envi-tech-al-modern'); ?></p></li>
                 <li><span>04</span><strong><?php esc_html_e('Verifiable reporting', 'envi-tech-al-modern'); ?></strong><p><?php esc_html_e('Results are issued in the agreed reporting format. Reports carrying supported verification details can be checked through the online report verification portal.', 'envi-tech-al-modern'); ?></p></li>
             </ol>
         </div>
@@ -3074,7 +3092,7 @@ function eta_modern_render_water_testing_flagship_page()
             <div>
                 <?php eta_modern_section_title('Why facilities choose our water testing laboratory', 'Scope-confirmed analysis, coordinated sampling and verifiable reporting'); ?>
                 <div class="eta-check-grid">
-                    <span><?php esc_html_e('Evidence that can be checked: PNAC LAB-347 for the Lahore location and listed methods, plus the official Punjab EPA laboratory record.', 'envi-tech-al-modern'); ?></span>
+                    <span><?php esc_html_e('Evidence that can be checked: PNAC LAB-285 for the Karachi scope, PNAC LAB-347 for the Lahore scope, and the applicable EPA records.', 'envi-tech-al-modern'); ?></span>
                     <span><?php esc_html_e('One coordinated workflow: sampling, laboratory analysis, monitoring and consultancy delivered by one team.', 'envi-tech-al-modern'); ?></span>
                     <span><?php esc_html_e('Verifiable reports: each report carries verification details your regulator or buyer can check independently.', 'envi-tech-al-modern'); ?></span>
                     <span><?php esc_html_e('Two laboratories: Karachi and Lahore, giving responsive coverage to Pakistan\'s main industrial corridors.', 'envi-tech-al-modern'); ?></span>
@@ -3399,7 +3417,7 @@ function eta_modern_download_groups()
             ['ISO 14001:2015 Certificate', 'https://envitechal.com/wp-content/uploads/2026/01/ISO-14001-Certificate.pdf'],
             ['Sindh EPA published document — confirm current status', 'https://envitechal.com/wp-content/uploads/2026/01/SEPA-NOC.pdf'],
             ['Punjab EPA Certificate 2025–2028 (official source)', 'https://epd.punjab.gov.pk/system/files/EnviTech_%202025-2028_merged.pdf'],
-            ['PNAC LAB-347 Lahore scope (official source)', 'https://www.pnac.gov.pk/index.php/pdfFiles/LAB-347'],
+            ['PNAC active testing-laboratory register — LAB-285 Karachi and LAB-347 Lahore', 'https://pnac.gov.pk/Accredited-Cabs-serve/Testing-and-Calibration-Laboratories/Active'],
         ],
         'Sindh environmental laws' => [
             ['SEQS compliance guide', home_url('/sindh-environmental-quality-standards-seqs/')],
@@ -4870,13 +4888,13 @@ function eta_modern_render_certificates_page()
             'link_label' => 'Open ISO 14001 certificate',
         ],
         [
-            'name' => 'ISO/IEC 17025:2017 accreditation — Lahore laboratory (LAB-347)',
+            'name' => 'ISO/IEC 17025:2017 accreditation — Karachi LAB-285 and Lahore LAB-347',
             'issuer' => 'Pakistan National Accreditation Council (PNAC)',
-            'scope' => 'Lahore only, and only the water/wastewater parameters and methods listed in the published LAB-347 scope.',
-            'status' => 'First granted 22 September 2025; PNAC document states validity through 21 September 2028, subject to surveillance and current status.',
-            'verification' => 'Do not infer accreditation for Karachi or for any method not listed in LAB-347. Confirm location, matrix, parameter, and method before booking.',
-            'link' => 'https://www.pnac.gov.pk/index.php/pdfFiles/LAB-347',
-            'link_label' => 'Open official PNAC LAB-347 scope',
+            'scope' => 'Karachi LAB-285: only the listed water/wastewater parameters and methods, with hardness, calcium, and magnesium limited to water where stated. Lahore LAB-347: only the listed water/wastewater parameters and methods. Neither scope extends to unlisted work.',
+            'status' => 'Karachi LAB-285: first granted 5 May 2023 and document dated 1 June 2026 states validity through 4 May 2029. Lahore LAB-347: first granted 22 September 2025 and document states validity through 21 September 2028. Both remain subject to surveillance and current PNAC status.',
+            'verification' => 'Confirm the laboratory location, matrix, parameter, method, range where stated, and current PNAC status before booking or describing work as accredited.',
+            'link' => 'https://pnac.gov.pk/Accredited-Cabs-serve/Testing-and-Calibration-Laboratories/Active',
+            'link_label' => 'Open official PNAC active laboratory register',
         ],
     ];
     ?>
@@ -4906,7 +4924,7 @@ function eta_modern_render_certificates_page()
             eta_modern_render_ai_summary_block(
                 'Certification and approval summary',
                 'Envi Tech AL publishes evidence relating to laboratory, quality-management, environmental-management, and EPA-related credentials. The records below separate verified issuer evidence from documents whose current status still requires confirmation; scope, validity, conditions, location, matrix, parameter, and method must be checked before reliance.',
-                ['Sindh EPA document with current confirmation required', 'Punjab EPA 2025–2028 official record', 'PNAC LAB-347 for the Lahore location and listed methods', 'ISO 9001:2015 and ISO 14001:2015 certificates']
+                ['Sindh EPA document with current confirmation required', 'Punjab EPA 2025–2028 official record', 'PNAC LAB-285 for Karachi and LAB-347 for Lahore, each limited to its published scope', 'ISO 9001:2015 and ISO 14001:2015 certificates']
             );
             eta_modern_section_title('Credential cards', 'Laboratory and compliance trust signals customers commonly verify', 'The information below is intentionally careful: it explains credential categories without inventing unsupported certificate numbers, ratings, or claims.');
             ?>

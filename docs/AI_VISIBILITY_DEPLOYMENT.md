@@ -114,7 +114,7 @@ CONFIRM_PRODUCTION_DISCOVERY_CACHE=envitechal.com \
   bash "$REPO/scripts/remediate-discovery-cache-headers.sh"
 ```
 
-On production only, the transaction removes either all nine reviewed duplicate `.htaccess` redirect lines or none; partial, altered, duplicate, or `RewriteCond`-governed rules stop the run. All 27 legacy sources must then return GET and HEAD 301 responses with `X-Redirect-By: Envi Tech AL`, and every unique canonical target must return a direct 200. Any failure automatically restores the exact previous `.htaccess`, purges again, and leaves the private recovery set for inspection. The firewall/WAF is never disabled or weakened.
+On production only, the transaction removes either all nine reviewed duplicate `.htaccess` redirect lines or none; partial, altered, duplicate, or `RewriteCond`-governed rules stop the run. All 32 legacy sources must then return GET and HEAD 301 responses with `X-Redirect-By: Envi Tech AL`, and every unique canonical target must return a direct 200. Any failure automatically restores the exact previous `.htaccess`, purges again, and leaves the private recovery set for inspection. The firewall/WAF is never disabled or weakened.
 
 For a deliberate rollback after a committed run, copy the exact `Recovery set:` path printed by that run:
 
@@ -173,6 +173,7 @@ curl -fsSI https://envitechal.com/llms.txt
 curl -fsSI https://envitechal.com/llms-full.txt
 curl -fsSI https://envitechal.com/certificates-approvals/
 curl -fsS https://envitechal.com/accreditations-certifications/ | grep -F '<h1'
+curl -fsS https://envitechal.com/services/analytical-lab-services/ | grep -F 'PNAC LAB-285'
 curl -fsS https://envitechal.com/services/analytical-lab-services/ | grep -F 'PNAC LAB-347'
 ```
 
@@ -194,8 +195,9 @@ If the staging database is missing the theme-rendered credentials, Karachi labor
 
 ## Evidence limits that remain intentional
 
-- PNAC LAB-347 is for the Lahore laboratory and only the water/wastewater methods listed in the official scope.
-- No current Karachi PNAC claim should be published until a current issuer document is supplied.
+- PNAC LAB-285 is for the Karachi permanent laboratory only, and only the location, matrix, parameter, method, and range combinations listed in its current official scope.
+- PNAC LAB-347 is for the Lahore permanent laboratory only, and only the location, matrix, parameter, and method combinations listed in its current official scope.
+- The supplied Karachi LAB-285 scope supports the location-specific claim and states validity through 4 May 2029, subject to surveillance and current PNAC status; it does not support accreditation for unlisted work.
 - The published Sindh EPA document remains labelled for current-status confirmation.
 - No named expert or Person schema should be invented. Add one only after the business supplies the person's name, role, credentials, biography, profile photo, and approval to publish.
 - WordPress database articles with contradictory regulatory timelines need a reviewed content migration or admin edit; theme code alone cannot safely decide the authoritative replacement text.

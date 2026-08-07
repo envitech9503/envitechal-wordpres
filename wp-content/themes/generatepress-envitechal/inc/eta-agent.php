@@ -100,13 +100,13 @@ function eta_agent_system_instruction()
     return implode(' ', [
         'You are the Envi Tech AL environmental laboratory information assistant.',
         'Use only Envi Tech AL canonical pages and the supplied knowledge base.',
-        'PNAC LAB-347 applies to the Lahore premises only and only to the matrix, parameter, and method combinations in the published scope; never state or imply that the Karachi laboratory is PNAC accredited.',
+        'PNAC LAB-285 applies only to the Karachi permanent laboratory and PNAC LAB-347 applies only to the Lahore permanent laboratory; each accreditation is limited to the exact location, matrix, parameter, method, and range combinations in its current published scope.',
         'Distinguish ISO/IEC 17025 accreditation from ISO management-system certification.',
         'Never invent or extrapolate a credential number, validity date, method reference, accredited parameter, price, package price, turnaround time, address, operating hour, regulatory outcome, or guarantee.',
         'Do not provide any price. For pricing, uncertain scope, turnaround, or facts not supported by a canonical source, direct the user to info@envitechal.com or https://wa.me/923102288801.',
         'Do not guarantee that a facility will pass an EPA inspection or receive an approval.',
         'Every substantive answer must cite the exact https://envitechal.com/ canonical page URL used.',
-        'For accreditation-scope questions, defer to https://www.pnac.gov.pk/index.php/pdfFiles/LAB-347 and state that the published scope controls.',
+        'For Karachi accreditation-scope questions, defer to https://pnac.gov.pk/pdfFiles/LAB-285. For Lahore accreditation-scope questions, defer to https://pnac.gov.pk/pdfFiles/LAB-347. State that the applicable current published scope controls.',
         'For report verification, direct users to https://envitechal.com/report-verification-portal/.',
     ]);
 }
@@ -347,6 +347,25 @@ function eta_agent_curated_response($message, $context = '')
         ];
     }
 
+    if ($has(['پی این اے سی', 'ایکریڈیٹڈ', 'ایکریڈیٹیشن']) && $has(['کراچی', 'لاہور', 'لیب', 'لیبارٹری'])) {
+        if ($has('کراچی')) {
+            return [
+                'answer' => 'کراچی کی مستقل لیبارٹری PNAC LAB-285 کے تحت ISO/IEC 17025:2017 accredited ہے۔ دستاویز میں میعاد 04-05-2029 تک درج ہے، مگر صرف اسی مقام، matrix، parameter، method اور range کے لیے جو موجودہ شائع شدہ scope میں درج ہو۔',
+                'citations' => ['https://envitechal.com/accreditations-certifications/'],
+            ];
+        }
+        if ($has('لاہور')) {
+            return [
+                'answer' => 'لاہور کی مستقل لیبارٹری PNAC LAB-347 کے تحت ISO/IEC 17025:2017 accredited ہے۔ دستاویز میں میعاد 21-09-2028 تک درج ہے، مگر صرف اسی مقام، matrix، parameter اور method کے لیے جو موجودہ شائع شدہ scope میں درج ہو۔',
+                'citations' => ['https://envitechal.com/accreditations-certifications/'],
+            ];
+        }
+        return [
+            'answer' => 'Envi Tech AL کی کراچی مستقل لیبارٹری PNAC LAB-285 اور لاہور مستقل لیبارٹری PNAC LAB-347 کے تحت accredited ہیں۔ ہر دعویٰ صرف متعلقہ موجودہ scope میں درج location، matrix، parameter، method اور range تک محدود ہے۔',
+            'citations' => ['https://envitechal.com/accreditations-certifications/'],
+        ];
+    }
+
     $urdu_water = $has(['پانی', 'پانی کا ٹیسٹ', 'پانی کی جانچ', 'واٹر ٹیسٹ']);
     if ($urdu_water) {
         if ($has(['قیمت', 'ریٹ', 'کتنے پیسے', 'خرچہ'])) {
@@ -403,6 +422,65 @@ function eta_agent_curated_response($message, $context = '')
         ];
     }
 
+    if ($has(['pnac', 'accredited', 'accreditation', 'iso 17025']) && $has(['hai', 'he', 'kya']) && $has(['karachi', 'lahore', 'lab', 'laboratory'])) {
+        if ($has('karachi')) {
+            return [
+                'answer' => 'Ji. Karachi ki permanent laboratory PNAC LAB-285 ke tehat ISO/IEC 17025:2017 accredited hai. Published document mein validity 04-05-2029 tak hai, lekin claim sirf current scope mein listed location, matrix, parameter, method aur range tak limited hai.',
+                'citations' => ['https://envitechal.com/accreditations-certifications/'],
+            ];
+        }
+        if ($has('lahore')) {
+            return [
+                'answer' => 'Ji. Lahore ki permanent laboratory PNAC LAB-347 ke tehat ISO/IEC 17025:2017 accredited hai. Published document mein validity 21-09-2028 tak hai, lekin claim sirf current scope mein listed location, matrix, parameter aur method tak limited hai.',
+                'citations' => ['https://envitechal.com/accreditations-certifications/'],
+            ];
+        }
+        return [
+            'answer' => 'Ji. Karachi permanent laboratory ka PNAC number LAB-285 aur Lahore permanent laboratory ka LAB-347 hai. Har accreditation sirf apne current published scope ke exact combinations tak limited hai.',
+            'citations' => ['https://envitechal.com/accreditations-certifications/'],
+        ];
+    }
+
+    $credential_parameter_aliases = [
+        'pH' => ['ph'], 'sulphate' => ['sulphate', 'sulfate'], 'nitrate' => ['nitrate'],
+        'fluoride' => ['fluoride'], 'COD' => ['cod', 'chemical oxygen demand'],
+        'hardness' => ['hardness', 'total hardness'], 'chloride' => ['chloride', 'chlorides'],
+        'alkalinity' => ['alkalinity'], 'TDS' => ['tds', 'total dissolved solids'],
+        'calcium' => ['calcium'], 'magnesium' => ['magnesium'], 'sodium' => ['sodium'],
+        'nickel' => ['nickel'], 'iron' => ['iron'], 'zinc' => ['zinc'],
+        'cadmium' => ['cadmium'], 'lead' => ['lead'], 'copper' => ['copper'],
+        'manganese' => ['manganese'], 'turbidity' => ['turbidity'],
+        'arsenic' => ['arsenic'], 'mercury' => ['mercury'],
+        'chromium' => ['chromium', 'hexavalent chromium', 'chromium vi', 'cr vi'],
+        'microbiology' => ['microbiology', 'microbiological', 'coliform', 'e coli', 'bacteria'],
+    ];
+    $requested_credential_parameter = '';
+    foreach ($credential_parameter_aliases as $parameter_name => $aliases) {
+        if ($has($aliases)) {
+            $requested_credential_parameter = $parameter_name;
+            break;
+        }
+    }
+
+    $karachi_scope_methods = [
+        'pH' => 'APHA 4500 H-B (24th Edition, 2023)', 'sulphate' => 'APHA 4500 SO4-E / HACH 8051',
+        'nitrate' => 'APHA 4500 NO3-B / HACH 8039', 'fluoride' => 'APHA 4500 F-D / HACH 8029',
+        'COD' => 'APHA 5220-D / HACH 8000', 'hardness' => 'APHA 2340-C / ASTM D-1126-17 (water only)',
+        'chloride' => 'APHA 4500 Cl-B', 'alkalinity' => 'ASTM D-1067-16', 'TDS' => 'APHA 2540-C',
+        'calcium' => 'APHA 3500-Ca-B (water only)', 'magnesium' => 'APHA 3111-B (water only)',
+        'sodium' => 'APHA 3111-B', 'nickel' => 'APHA 3111-B', 'iron' => 'APHA 3111-B',
+        'zinc' => 'APHA 3111-B', 'cadmium' => 'APHA 3111-B', 'lead' => 'APHA 3111-B',
+        'copper' => 'APHA 3111-B', 'manganese' => 'APHA 3111-B',
+    ];
+    $lahore_scope_methods = [
+        'pH' => 'APHA 4500-H B / digital pH meter', 'TDS' => 'APHA 2540-C / gravimetric',
+        'hardness' => 'ASTM D1126-17 / titrimetric', 'sulphate' => 'APHA 4500-SO4 E / DR-3900',
+        'alkalinity' => 'APHA 2320-B / titrimetric', 'calcium' => 'ASTM D-1126 / APHA 3500-Ca B / titrimetric',
+        'turbidity' => 'USEPA 180.1 / APHA 2130 B / DR-3900',
+        'chloride' => 'APHA 4500 Cl-B / titrimetric',
+        'nitrate' => 'APHA 4500 NO3-E / DR-3900 / cadmium reduction column',
+    ];
+
     if ($has(['who are you', 'what are you'])) {
         return [
             'answer' => 'I am Envi Tech AL\'s source-checked information assistant. I answer from the company\'s published service, location, accreditation, compliance, and report-verification information.',
@@ -410,42 +488,100 @@ function eta_agent_curated_response($message, $context = '')
         ];
     }
 
-    if ($has('karachi') && $has(['pnac', 'accredit', 'iso 17025', 'iso/iec 17025'])) {
+    if ($has('karachi') && $has(['pnac', 'accredit', 'accredited', 'accreditation', 'iso 17025', 'iso/iec 17025'])) {
+        if ($requested_credential_parameter !== '') {
+            if (isset($karachi_scope_methods[$requested_credential_parameter])) {
+                return [
+                    'answer' => $requested_credential_parameter . ' is listed in Karachi PNAC LAB-285 using ' . $karachi_scope_methods[$requested_credential_parameter] . '. Accreditation applies only when the exact matrix, method, and any stated range match the current published scope.',
+                    'citations' => ['https://envitechal.com/accreditations-certifications/'],
+                ];
+            }
+            return [
+                'answer' => $requested_credential_parameter . ' is not listed in the published Karachi PNAC LAB-285 scope, so I cannot describe it as accredited there.',
+                'citations' => ['https://envitechal.com/accreditations-certifications/'],
+            ];
+        }
+        if ($has(['scope', 'parameter', 'parameters', 'what tests', 'which tests', 'water', 'wastewater'])) {
+            return [
+                'answer' => 'Karachi PNAC LAB-285 lists pH, sulphate, nitrate, fluoride, COD, chloride, alkalinity, TDS, sodium, nickel, iron, zinc, cadmium, lead, copper, and manganese for the stated water/wastewater matrices and methods. Hardness, calcium, and magnesium are listed for water only. Accreditation applies only when the exact matrix, parameter, method, and any stated range match the current scope.',
+                'citations' => ['https://envitechal.com/services/water-testing-lab-services/', 'https://envitechal.com/accreditations-certifications/'],
+            ];
+        }
         return [
-            'answer' => 'No. PNAC LAB-347 applies to Envi Tech AL\'s Lahore premises only, and only to the matrix, parameter, and method combinations listed in the published scope. It must not be applied to the Karachi laboratory. Verify the current published scope before relying on an accreditation claim.',
-            'citations' => ['https://envitechal.com/services/water-testing-lab-services/', 'https://envitechal.com/accreditations-certifications/'],
+            'answer' => 'Yes. Envi Tech AL\'s Karachi permanent laboratory holds PNAC LAB-285 under ISO/IEC 17025:2017. The published document states validity through 04-05-2029, subject to surveillance and current PNAC status. It covers only the exact location, matrix, parameter, method, and range combinations in the current scope.',
+            'citations' => ['https://envitechal.com/accreditations-certifications/'],
         ];
     }
 
-    if ($has('lahore') && $has(['accredit', 'accredited', 'accreditation']) && $has([
-        'arsenic',
-        'lead',
-        'mercury',
-        'chromium',
-        'cadmium',
-        'coliform',
-        'e coli',
-        'water',
-        'wastewater',
-        'parameter',
-        'method',
-    ])) {
+    if ($has('lahore') && $has(['pnac', 'accredit', 'accredited', 'accreditation', 'iso 17025', 'iso/iec 17025'])) {
+        if ($requested_credential_parameter !== '') {
+            if (isset($lahore_scope_methods[$requested_credential_parameter])) {
+                return [
+                    'answer' => $requested_credential_parameter . ' is listed in Lahore PNAC LAB-347 using ' . $lahore_scope_methods[$requested_credential_parameter] . '. Accreditation applies only when the exact matrix and method match the current published scope.',
+                    'citations' => ['https://envitechal.com/accreditations-certifications/'],
+                ];
+            }
+            return [
+                'answer' => $requested_credential_parameter . ' is not listed in the published Lahore PNAC LAB-347 scope, so I cannot describe it as accredited there.',
+                'citations' => ['https://envitechal.com/accreditations-certifications/'],
+            ];
+        }
+        if ($has(['scope', 'parameter', 'parameters', 'what tests', 'which tests', 'water', 'wastewater'])) {
+            return [
+                'answer' => 'Lahore PNAC LAB-347 lists pH, TDS, total hardness as CaCO3, sulphate, alkalinity, calcium, turbidity, chlorides, and nitrate for the stated water/wastewater matrices and methods. It does not establish accreditation for unlisted parameters. Accreditation applies only when the exact matrix, parameter, and method match the current scope.',
+                'citations' => ['https://envitechal.com/services/water-testing-lab-services/', 'https://envitechal.com/accreditations-certifications/'],
+            ];
+        }
         return [
-            'answer' => 'Do not infer accreditation from the Lahore location alone. PNAC LAB-347 applies only to the exact water or wastewater parameter and method combinations in its published scope. I cannot confirm the requested item as accredited unless that exact combination appears in the controlling document.',
-            'citations' => ['https://envitechal.com/services/water-testing-lab-services/', 'https://envitechal.com/accreditations-certifications/'],
+            'answer' => 'Yes. Envi Tech AL\'s Lahore permanent laboratory holds PNAC LAB-347 under ISO/IEC 17025:2017. The published document states validity through 21-09-2028, subject to surveillance and current PNAC status. It covers only the exact location, matrix, parameter, and method combinations in the current scope.',
+            'citations' => ['https://envitechal.com/accreditations-certifications/'],
         ];
     }
 
     if ($has('pnac') && $has(['number', 'identifier', 'valid', 'expiry', 'expire', 'accreditation'])) {
         return [
-            'answer' => 'The PNAC accreditation identifier is LAB-347. It applies to the Lahore premises only and only to the matrix, parameter, and method combinations in the published scope. The published document states validity through 21-09-2028, subject to surveillance and current status.',
+            'answer' => 'Envi Tech AL has two location-specific PNAC accreditations: LAB-285 for the Karachi permanent laboratory, with the published document stating validity through 04-05-2029, and LAB-347 for the Lahore permanent laboratory, with the published document stating validity through 21-09-2028. Both are subject to surveillance and current PNAC status and apply only to the exact combinations in their respective published scopes.',
             'citations' => ['https://envitechal.com/services/water-testing-lab-services/', 'https://envitechal.com/accreditations-certifications/'],
+        ];
+    }
+
+    if ($has(['lab 284', 'lab-284'])) {
+        return [
+            'answer' => 'No. LAB-284 must not be attributed to Envi Tech AL. The verified Envi Tech AL PNAC identifiers are LAB-285 for the Karachi permanent laboratory and LAB-347 for the Lahore permanent laboratory, each limited to its current published scope.',
+            'citations' => ['https://envitechal.com/accreditations-certifications/'],
+        ];
+    }
+
+    if ($requested_credential_parameter !== '' && $has(['pnac', 'scope', 'accredit', 'accredited', 'accreditation', 'iso 17025', 'iso/iec 17025'])) {
+        $listed_locations = [];
+        if (isset($karachi_scope_methods[$requested_credential_parameter])) {
+            $listed_locations[] = 'Karachi LAB-285';
+        }
+        if (isset($lahore_scope_methods[$requested_credential_parameter])) {
+            $listed_locations[] = 'Lahore LAB-347';
+        }
+        if ($listed_locations === []) {
+            return [
+                'answer' => $requested_credential_parameter . ' is not listed in either published Envi Tech AL PNAC scope, so I cannot describe it as accredited under Karachi LAB-285 or Lahore LAB-347.',
+                'citations' => ['https://envitechal.com/accreditations-certifications/'],
+            ];
+        }
+        return [
+            'answer' => $requested_credential_parameter . ' is listed in ' . implode(' and ', $listed_locations) . '. Accreditation still depends on the exact laboratory location, matrix, method, and any stated range in the applicable current published scope.',
+            'citations' => ['https://envitechal.com/accreditations-certifications/'],
+        ];
+    }
+
+    if ($has(['calibration', 'air testing', 'stack emission', 'noise', 'soil', 'ballast', 'consultancy']) && $has(['pnac', 'scope', 'accredit', 'accredited', 'accreditation', 'iso 17025', 'iso/iec 17025'])) {
+        return [
+            'answer' => 'The published LAB-285 and LAB-347 scopes do not establish PNAC accreditation for that service. Do not treat a general service capability as an accredited activity unless the exact location, matrix, parameter, method, and range appear in the applicable current PNAC scope.',
+            'citations' => ['https://envitechal.com/accreditations-certifications/'],
         ];
     }
 
     if ($has(['hexavalent chromium', 'chromium vi', 'cr(vi)', 'cr vi']) && $has(['scope', 'accredit', 'accredited', 'accreditation'])) {
         return [
-            'answer' => 'I cannot assert that hexavalent chromium is within the accredited scope. PNAC LAB-347 applies only to the Lahore premises and only to exact matrix, parameter, and method combinations in the published scope. Confirm the requested matrix and method with the laboratory.',
+            'answer' => 'I cannot describe hexavalent chromium as accredited under either published scope: it is not listed in Karachi LAB-285 or Lahore LAB-347. Confirm the required matrix and method with the laboratory before booking.',
             'citations' => ['https://envitechal.com/services/water-testing-lab-services/', 'https://envitechal.com/accreditations-certifications/'],
         ];
     }
@@ -1035,7 +1171,7 @@ function eta_agent_curated_response($message, $context = '')
 
     if ($has(['are you accredited', 'is your lab accredited', 'is your laboratory accredited', 'is the lab accredited', 'is the laboratory accredited', 'accreditation status'])) {
         return [
-            'answer' => 'Envi Tech AL holds PNAC LAB-347 for the Lahore premises only, and only for the exact matrix, parameter, and method combinations in the published scope. It must not be applied to the Karachi laboratory or to unlisted work.',
+            'answer' => 'Yes, at two location-specific permanent laboratories: PNAC LAB-285 for Karachi and PNAC LAB-347 for Lahore. Each accreditation applies only to the exact location, matrix, parameter, method, and range combinations in its applicable current published scope; it does not extend to unlisted work.',
             'citations' => ['https://envitechal.com/services/water-testing-lab-services/', 'https://envitechal.com/accreditations-certifications/'],
         ];
     }
@@ -1098,7 +1234,7 @@ function eta_agent_curated_response($message, $context = '')
 
     if ($has(['iso 17025', 'iso/iec 17025']) && $has(['certified', 'certification', 'accredited', 'accreditation'])) {
         return [
-            'answer' => 'ISO/IEC 17025 is laboratory accreditation, not management-system certification. Envi Tech AL\'s PNAC LAB-347 accreditation applies to the Lahore premises only and only to the matrix, parameter, and method combinations in its published scope; it does not apply to the Karachi laboratory.',
+            'answer' => 'ISO/IEC 17025 is laboratory accreditation, not management-system certification. Envi Tech AL holds PNAC LAB-285 for the Karachi permanent laboratory and PNAC LAB-347 for the Lahore permanent laboratory. Each applies only to the exact combinations in its applicable current published scope.',
             'citations' => ['https://envitechal.com/accreditations-certifications/'],
         ];
     }

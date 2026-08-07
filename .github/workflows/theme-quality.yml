@@ -69,6 +69,7 @@ jobs:
           test -s deploy/public_html/llms.txt
           test -s deploy/public_html/llms-full.txt
           grep -q 'inc/ai-visibility.php' wp-content/themes/generatepress-envitechal/functions.php
+          grep -q 'PNAC LAB-285' deploy/public_html/llms.txt
           grep -q 'PNAC LAB-347' deploy/public_html/llms.txt
           grep -q "'/llms.txt'" "$ai_visibility"
           grep -q "'/llms-full.txt'" "$ai_visibility"

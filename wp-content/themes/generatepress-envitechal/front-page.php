@@ -102,8 +102,8 @@ $credentials = [
         'image' => 'https://envitechal.com/wp-content/uploads/2026/04/iso-14001-2015-logo.png',
     ],
     [
-        'title' => 'PNAC LAB-347 (Lahore)',
-        'subtitle' => 'ISO/IEC 17025:2017; verify listed methods',
+        'title' => 'PNAC LAB-285 / LAB-347',
+        'subtitle' => 'Karachi and Lahore; verify listed methods',
         'image' => 'https://envitechal.com/wp-content/uploads/2026/04/iso-iec-170252017-accreditation-logo.png',
     ],
     [
@@ -151,8 +151,8 @@ $credentials = [
     <section class="eta-home-proof" aria-label="<?php esc_attr_e('Company strengths', 'envi-tech-al-modern'); ?>">
         <div class="eta-shell eta-home-proof-grid">
             <div>
-                <strong><?php esc_html_e('PNAC LAB-347', 'envi-tech-al-modern'); ?></strong>
-                <span><?php esc_html_e('Lahore scope; verify the listed methods', 'envi-tech-al-modern'); ?></span>
+                <strong><?php esc_html_e('PNAC LAB-285 / LAB-347', 'envi-tech-al-modern'); ?></strong>
+                <span><?php esc_html_e('Karachi and Lahore scopes; verify listed methods', 'envi-tech-al-modern'); ?></span>
             </div>
             <div>
                 <strong><?php esc_html_e('EPA-related', 'envi-tech-al-modern'); ?></strong>

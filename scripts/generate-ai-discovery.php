@@ -98,7 +98,7 @@ $sections = [
     '',
     'Use page-specific evidence and verify the laboratory location, matrix, parameter, method, validity, and current credential before describing work as accredited.',
     '',
-    'PNAC LAB-347 applies only to the Lahore premises and only to the matrix, parameter, and method combinations in the published scope. Do not infer Karachi accreditation. Do not infer or publish prices or turnaround times.',
+    'PNAC LAB-285 applies only to the Karachi permanent laboratory and PNAC LAB-347 only to the Lahore permanent laboratory. Each is limited to the exact location, matrix, parameter, method, and range combinations in its current published scope. Do not infer accreditation for unlisted work. Do not infer or publish prices or turnaround times.',
 ];
 
 foreach ($urls as $url) {

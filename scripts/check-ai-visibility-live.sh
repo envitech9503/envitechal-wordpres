@@ -222,6 +222,7 @@ if [[ "${FETCH_TYPE,,}" == *'text/html'* ]]; then
 elif [[ "${FETCH_TYPE,,}" == *'text/markdown'* ]]; then
     pass 'Markdown Accept returned the controlled Markdown representation'
     assert_body_contains 'homepage with Markdown Accept' 'Environmental testing and compliance support for teams that need clear, defensible reports.'
+    assert_body_contains 'homepage with Markdown Accept' 'PNAC LAB-285'
     assert_body_contains 'homepage with Markdown Accept' 'PNAC LAB-347'
     if grep -Eiq '^vary:.*accept' "$FETCH_HEADERS"; then
         pass 'Markdown representation varies on Accept'
@@ -327,6 +328,11 @@ for legacy_sitemap_path in \
     '/whats-new-focused-insightful-of-environmental-lab/' \
     '/environmental-testing-lab-in-lahore/' \
     '/environmental-testing-lab-in-karachi-lahore/' \
+    '/accredited-water-testing-lab-in-karachi/' \
+    '/envi-tech-al-achieves-best-iso-iec-170252017-certificate/' \
+    '/calibration-of-equipment-in-karachi/' \
+    '/ballast-water-testing-services-karachi/' \
+    '/environmental-consultancy-services-in-karachi-envi-tech-al/' \
     '/sindh-epa-noc-guide/' \
     '/frequently-asked-questions-water-testing-in-karachi/' \
     '/consulting-services-for-ginners-gots-ocs-regenagri-certification/' \
@@ -421,6 +427,11 @@ legacy_redirect_pairs=(
     '/whats-new-focused-insightful-of-environmental-lab/|/services/analytical-lab-services/'
     '/environmental-testing-lab-in-lahore/|/lahore-environmental-lab/'
     '/environmental-testing-lab-in-karachi-lahore/|/services/analytical-lab-services/'
+    '/accredited-water-testing-lab-in-karachi/|/karachi-environmental-lab/'
+    '/envi-tech-al-achieves-best-iso-iec-170252017-certificate/|/accreditations-certifications/'
+    '/calibration-of-equipment-in-karachi/|/services/equipment-calibration-services/'
+    '/ballast-water-testing-services-karachi/|/services/ballast-water-testing-services/'
+    '/environmental-consultancy-services-in-karachi-envi-tech-al/|/services/environmental-consultancy/'
     '/frequently-asked-questions-water-testing-in-karachi/|/environmental-testing-faqs-pakistan/'
     '/sindh-epa-noc-guide/|/services/environmental-consultancy/'
     '/consulting-services-for-ginners-gots-ocs-regenagri-certification/|/services/certification-advisory/'

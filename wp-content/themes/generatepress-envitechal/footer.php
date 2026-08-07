@@ -38,7 +38,7 @@ if (!defined('ABSPATH')) {
             </a>
             <p><?php esc_html_e('Environmental testing laboratory and consultancy support for industrial, commercial, maritime, healthcare, hospitality, and compliance teams in Pakistan.', 'envi-tech-al-modern'); ?></p>
             <div class="eta-footer-trust" aria-label="<?php esc_attr_e('Verified credentials and service strengths', 'envi-tech-al-modern'); ?>">
-                <span><?php esc_html_e('PNAC LAB-347 — Lahore scope', 'envi-tech-al-modern'); ?></span>
+                <span><?php esc_html_e('PNAC LAB-285 Karachi | LAB-347 Lahore', 'envi-tech-al-modern'); ?></span>
                 <span><?php esc_html_e('ISO 9001', 'envi-tech-al-modern'); ?></span>
                 <span><?php esc_html_e('ISO 14001', 'envi-tech-al-modern'); ?></span>
             </div>
