@@ -23,12 +23,14 @@ rows, summary = MODULE.aggregate(
         line("/services/?email=secret@example.com", "https://chatgpt.com/citation/private", "Mozilla/5.0"),
         line("/llms.txt?cache=private", "-", "OAI-SearchBot/1.0"),
         line("/private?id=44", "-", "Googlebot/2.1"),
+        line("/ordinary/?private=value", "https://example.com/private", "Mozilla/5.0"),
         "not a log line",
     ],
     minimum=1,
 )
 
 assert summary["included_requests"] == 3
+assert summary["excluded_other_requests"] == 1
 assert summary["rejected_lines"] == 1
 assert {row["traffic_class"] for row in rows} == {
     "HUMAN_AI_REFERRAL",

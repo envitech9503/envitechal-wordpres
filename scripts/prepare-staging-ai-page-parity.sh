@@ -148,6 +148,8 @@ PAGE_SPECS=(
     "accreditations-certifications|Accreditations & Certifications"
     "karachi-environmental-lab|Karachi Environmental Laboratory"
     "environmental-testing-faqs-pakistan|Environmental Testing FAQs Pakistan"
+    "drinking-water-testing-lab|Drinking Water Testing Laboratory"
+    "wastewater-testing-services|Wastewater Testing Services"
 )
 
 declare -A PAGE_IDS=()

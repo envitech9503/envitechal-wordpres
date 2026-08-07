@@ -110,6 +110,7 @@ def aggregate(lines: list[str], minimum: int) -> tuple[list[dict[str, object]], 
     counts: Counter[tuple[str, str, str, str, int, bool]] = Counter()
     byte_counts: Counter[tuple[str, str, str, str, int, bool]] = Counter()
     rejected = 0
+    excluded_other = 0
 
     for line in lines:
         match = LOG_RE.match(line.rstrip("\r\n"))
@@ -124,6 +125,7 @@ def aggregate(lines: list[str], minimum: int) -> tuple[list[dict[str, object]], 
             continue
         traffic_class, family = classify(match.group("agent"), match.group("referer"))
         if traffic_class == "OTHER":
+            excluded_other += 1
             continue
         path = normalize_path(match.group("target"))
         key = (date, traffic_class, family, path, status, is_discovery(path))
@@ -180,7 +182,7 @@ def aggregate(lines: list[str], minimum: int) -> tuple[list[dict[str, object]], 
         "timezone": "Asia/Karachi (date preserved from log offset)",
         "minimum_path_count": minimum,
         "included_requests": sum(counts.values()),
-        "excluded_other_requests": None,
+        "excluded_other_requests": excluded_other,
         "rejected_lines": rejected,
         "privacy": "Aggregate only; IP, query, referrer path and full User-Agent are discarded.",
         "identity_note": "Declared crawler classes are not verified identities without provider verification.",
