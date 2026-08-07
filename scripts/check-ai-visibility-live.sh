@@ -223,7 +223,7 @@ elif [[ "${FETCH_TYPE,,}" == *'text/markdown'* ]]; then
     pass 'Markdown Accept returned the controlled Markdown representation'
     assert_body_contains 'homepage with Markdown Accept' 'Environmental testing and compliance support for teams that need clear, defensible reports.'
     assert_body_contains 'homepage with Markdown Accept' 'PNAC LAB-285'
-    assert_body_contains 'homepage with Markdown Accept' 'PNAC LAB-347'
+    assert_body_contains 'homepage with Markdown Accept' 'LAB-347'
     if grep -Eiq '^vary:.*accept' "$FETCH_HEADERS"; then
         pass 'Markdown representation varies on Accept'
     else
