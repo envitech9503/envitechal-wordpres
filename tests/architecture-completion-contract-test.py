@@ -13,6 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).absolute().parents[1]
 AUDIT = ROOT / "docs" / "audits" / "2026-08-08"
 POST_AUDIT = ROOT / "docs" / "audits" / "2026-08-08-post-release"
+FINAL_AUDIT = ROOT / "docs" / "audits" / "2026-08-08-final"
 
 required = [
     ROOT / "docs" / "CREDENTIAL_CLAIM_LEDGER.md",
@@ -35,6 +36,12 @@ required = [
     POST_AUDIT / "legacy-url-disposition-register.csv",
     POST_AUDIT / "canonical-intent-map.csv",
     POST_AUDIT / "summary.json",
+    FINAL_AUDIT / "url-inventory.csv",
+    FINAL_AUDIT / "claim-occurrence-register.csv",
+    FINAL_AUDIT / "frontend-freeze-hashes.csv",
+    FINAL_AUDIT / "legacy-url-disposition-register.csv",
+    FINAL_AUDIT / "canonical-intent-map.csv",
+    FINAL_AUDIT / "summary.json",
 ]
 missing = [str(path.relative_to(ROOT)) for path in required if not path.is_file()]
 assert not missing, f"Missing architecture deliverables: {missing}"
@@ -51,6 +58,12 @@ assert post_summary["url_count"] == 46
 assert post_summary["non_200_or_non_self_canonical"] == []
 assert post_summary["sitemap_noindex_urls"] == []
 assert post_summary["schema_contract_failures"] == []
+
+final_summary = json.loads((FINAL_AUDIT / "summary.json").read_text(encoding="utf-8"))
+assert final_summary["url_count"] == 46
+assert final_summary["non_200_or_non_self_canonical"] == []
+assert final_summary["sitemap_noindex_urls"] == []
+assert final_summary["schema_contract_failures"] == []
 
 with (AUDIT / "legacy-url-disposition-register.csv").open(encoding="utf-8", newline="") as handle:
     dispositions = list(csv.DictReader(handle))

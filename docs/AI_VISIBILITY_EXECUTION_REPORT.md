@@ -7,7 +7,7 @@ Completed: 8 August 2026
 The approved AI visibility programme was implemented without changing CSS,
 JavaScript, images, fonts, layout, navigation, forms, visual components or
 responsive behaviour. The production release uses pinned payload commit
-`3bfe31cd8f0bb3af4f70181cac4df952c713a5d3`.
+`efe6c14e3cb80c47872516ec27e837a3081d4fe0`.
 
 ## Delivered controls
 
@@ -34,8 +34,9 @@ responsive behaviour. The production release uses pinned payload commit
 
 ## Release evidence
 
-- Pull requests #48, #49, #50 and #51 passed GitHub `php-and-safety` checks and
-  were merged.
+- Pull requests #48 through #53 passed GitHub `php-and-safety` checks and were
+  merged. PR #52 records the first post-release audit; PR #53 contains the final
+  assistant precision payload.
 - The complete repository-local validation suite passed after each implementation
   tranche.
 - The guarded staging transaction created verified private recovery archives,
@@ -45,7 +46,7 @@ responsive behaviour. The production release uses pinned payload commit
 - The guarded production transaction verified the recovery manifest and atomically
   activated the pinned theme plus `robots.txt`, `llms.txt` and `llms-full.txt`.
 - Production theme digest:
-  `1ef19093704307e33d5a3db619aa8ef815256c65f73b49e7c9808be689c9beac`.
+  `3dac02a28b7848d246f0fd2410eada4c193723b3683c4410e3a7d13c0b421275`.
 - Production discovery digests:
   `cff0d0101534e50fbade9f0749c8bb7dc90081a399b3b0555db41bfe0206aea0`
   (`robots.txt`),
@@ -57,6 +58,13 @@ responsive behaviour. The production release uses pinned payload commit
   edge repopulated. The unchanged second run passed byte-identical HTML/Markdown
   cache isolation and the complete live suite with no 403, 415, 429, 5xx or
   challenge response.
+- The final assistant release passed 20 live customer scenarios with 19 unique
+  answers in verified mode. It passed English, Urdu, Roman Urdu, LAB-284 and
+  ballast-water scope traps, price/turnaround refusal, report verification,
+  safety/off-topic handling and explicit prompt-injection refusal.
+- The final immutable crawl is in `docs/audits/2026-08-08-final/`: 46 direct
+  200/self-canonical sitemap URLs, zero sitemap noindex leaks, zero rendered
+  schema failures and 190 claim occurrences.
 
 ## Measurement snapshot
 
