@@ -481,6 +481,31 @@ function eta_agent_curated_response($message, $context = '')
         'nitrate' => 'APHA 4500 NO3-E / DR-3900 / cadmium reduction column',
     ];
 
+    // Exact negative controls must run before broader location/accreditation
+    // routing, otherwise a question such as "Is LAB-284 your Karachi
+    // accreditation?" can be mistaken for a generic Karachi question.
+    if ($has(['lab 284', 'lab-284'])) {
+        return [
+            'answer' => 'No. LAB-284 must not be attributed to Envi Tech AL. The verified Envi Tech AL PNAC identifiers are LAB-285 for the Karachi permanent laboratory and LAB-347 for the Lahore permanent laboratory, each limited to its current published scope.',
+            'citations' => ['https://envitechal.com/accreditations-certifications/'],
+        ];
+    }
+
+    if ($has(['ignore your rules', 'ignore the rules', 'invent', 'fabricate', 'make up'])
+        && $has(['pnac', 'scope', 'accredit', 'accredited', 'accreditation', 'iso 17025', 'iso/iec 17025'])) {
+        return [
+            'answer' => 'I will not invent or broaden an accreditation claim. Karachi LAB-285 and Lahore LAB-347 apply only to the exact location, matrix, parameter, method, and range combinations in their applicable current published scopes.',
+            'citations' => ['https://envitechal.com/accreditations-certifications/'],
+        ];
+    }
+
+    if ($has('ballast') && $has(['pnac', 'scope', 'accredit', 'accredited', 'accreditation', 'iso 17025', 'iso/iec 17025'])) {
+        return [
+            'answer' => 'Ballast-water testing is a published service capability, but neither Karachi LAB-285 nor Lahore LAB-347 establishes PNAC accreditation for ballast-water testing. Confirm the required matrix, method, reporting purpose, and current availability before booking.',
+            'citations' => ['https://envitechal.com/services/ballast-water-testing-services/', 'https://envitechal.com/accreditations-certifications/'],
+        ];
+    }
+
     if ($has(['who are you', 'what are you'])) {
         return [
             'answer' => 'I am Envi Tech AL\'s source-checked information assistant. I answer from the company\'s published service, location, accreditation, compliance, and report-verification information.',
@@ -542,13 +567,6 @@ function eta_agent_curated_response($message, $context = '')
         return [
             'answer' => 'Envi Tech AL has two location-specific PNAC accreditations: LAB-285 for the Karachi permanent laboratory, with the published document stating validity through 04-05-2029, and LAB-347 for the Lahore permanent laboratory, with the published document stating validity through 21-09-2028. Both are subject to surveillance and current PNAC status and apply only to the exact combinations in their respective published scopes.',
             'citations' => ['https://envitechal.com/services/water-testing-lab-services/', 'https://envitechal.com/accreditations-certifications/'],
-        ];
-    }
-
-    if ($has(['lab 284', 'lab-284'])) {
-        return [
-            'answer' => 'No. LAB-284 must not be attributed to Envi Tech AL. The verified Envi Tech AL PNAC identifiers are LAB-285 for the Karachi permanent laboratory and LAB-347 for the Lahore permanent laboratory, each limited to its current published scope.',
-            'citations' => ['https://envitechal.com/accreditations-certifications/'],
         ];
     }
 
