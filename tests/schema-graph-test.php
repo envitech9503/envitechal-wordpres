@@ -41,13 +41,18 @@ $karachi_json = json_encode($karachi, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UN
 $lahore_json = json_encode($lahore, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
 eta_schema_test_true($organization['legalName'] === 'Envi Tech AL (Pvt.) Ltd.', 'legal name is present');
-eta_schema_test_true(count($organization['hasCredential']) === 5, 'organization carries the five verified credentials');
+eta_schema_test_true(count($organization['hasCredential']) === 6, 'organization carries the six verified credentials');
+eta_schema_test_true(strpos($organization_json, 'LAB-285') !== false, 'organization carries LAB-285');
 eta_schema_test_true(strpos($organization_json, 'LAB-347') !== false, 'organization carries LAB-347');
 eta_schema_test_true(strpos($organization_json, 'EPA/Lab/L.C/ENVI TECH AL AL-2/20/2020') !== false, 'organization carries the verified Sindh EPA credential');
-eta_schema_test_true(strpos($karachi_json, 'LAB-347') === false, 'Karachi never carries LAB-347');
+eta_schema_test_true(strpos($karachi_json, 'LAB-285') !== false, 'Karachi carries LAB-285');
+eta_schema_test_true(strpos($karachi_json, '2029-05-04') !== false, 'Karachi LAB-285 has the verified expiry date');
+eta_schema_test_true(strpos($karachi_json, 'LAB-347') === false, 'Karachi does not carry Lahore LAB-347');
 eta_schema_test_true(strpos($karachi_json, 'EPA/Lab/L.C/ENVI TECH AL AL-2/20/2020') !== false, 'Karachi carries the verified Sindh EPA credential');
 eta_schema_test_true(strpos($karachi_json, '2028-06-09') !== false, 'Karachi Sindh EPA credential has the verified expiry date');
 eta_schema_test_true(strpos($lahore_json, 'LAB-347') !== false, 'Lahore carries LAB-347');
+eta_schema_test_true(strpos($lahore_json, '2028-09-21') !== false, 'Lahore LAB-347 has the verified expiry date');
+eta_schema_test_true(strpos($lahore_json, 'LAB-285') === false, 'Lahore does not carry Karachi LAB-285');
 eta_schema_test_true(strpos($lahore_json, 'EPA/Lab/L.C/ENVI TECH AL AL-2/20/2020') === false, 'Lahore does not carry the Karachi Sindh EPA credential');
 eta_schema_test_true($karachi['geo']['latitude'] === 24.883882777821796, 'Karachi latitude matches the published map embed');
 eta_schema_test_true($lahore['geo']['longitude'] === 74.29714724390335, 'Lahore longitude matches the published map embed');

@@ -4,7 +4,7 @@
 
 Use page-specific evidence and verify the laboratory location, matrix, parameter, method, validity, and current credential before describing work as accredited.
 
-PNAC LAB-347 applies only to the Lahore premises and only to the matrix, parameter, and method combinations in the published scope. Do not infer Karachi accreditation. Do not infer or publish prices or turnaround times.
+PNAC LAB-285 applies only to the Karachi permanent laboratory and PNAC LAB-347 only to the Lahore permanent laboratory. Each is limited to the exact location, matrix, parameter, method, and range combinations in its current published scope. Do not infer accreditation for unlisted work. Do not infer or publish prices or turnaround times.
 
 ---
 
@@ -32,9 +32,9 @@ EMP / EMR
 
 Calibration
 
-**PNAC LAB-347**
+**PNAC LAB-285 / LAB-347**
 
-Lahore scope; verify the listed methods
+Karachi and Lahore scopes; verify listed methods
 
 **EPA-related**
 
@@ -162,9 +162,9 @@ Quality management systems
 
 Environmental management systems
 
-### PNAC LAB-347 (Lahore)
+### PNAC LAB-285 / LAB-347
 
-ISO/IEC 17025:2017; verify listed methods
+Karachi and Lahore; verify listed methods
 
 ### Punjab EPA certification
 
@@ -548,7 +548,7 @@ Envi Tech AL publishes evidence relating to laboratory, quality-management, envi
 
 - Sindh EPA document with current confirmation required
 - Punjab EPA 2025–2028 official record
-- PNAC LAB-347 for the Lahore location and listed methods
+- PNAC LAB-285 for Karachi and LAB-347 for Lahore, each limited to its published scope
 - ISO 9001:2015 and ISO 14001:2015 certificates
 
 Credential cards
@@ -605,17 +605,17 @@ The information below is intentionally careful: it explains credential categorie
 
 [Open ISO 14001 certificate](https://envitechal.com/wp-content/uploads/2026/01/ISO-14001-Certificate.pdf)
 
-## ISO/IEC 17025:2017 accreditation — Lahore laboratory (LAB-347)
+## ISO/IEC 17025:2017 accreditation — Karachi LAB-285 and Lahore LAB-347
 
 **Issuing body:** Pakistan National Accreditation Council (PNAC)
 
-**Scope summary:** Lahore only, and only the water/wastewater parameters and methods listed in the published LAB-347 scope.
+**Scope summary:** Karachi LAB-285 covers only its listed water/wastewater parameters and methods, with hardness, calcium, and magnesium limited to water where stated. Lahore LAB-347 covers only its listed water/wastewater parameters and methods. Neither scope extends to unlisted work.
 
-**Validity/status:** First granted 22 September 2025; PNAC document states validity through 21 September 2028, subject to surveillance and current status.
+**Validity/status:** Karachi LAB-285 was first granted 5 May 2023; its document dated 1 June 2026 states validity through 4 May 2029. Lahore LAB-347 was first granted 22 September 2025; its document states validity through 21 September 2028. Both remain subject to surveillance and current PNAC status.
 
-**Verification note:** Do not infer accreditation for Karachi or for any method not listed in LAB-347. Confirm location, matrix, parameter, and method before booking.
+**Verification note:** Confirm the laboratory location, matrix, parameter, method, range where stated, and current PNAC status before booking or describing work as accredited.
 
-[Open official PNAC LAB-347 scope](https://www.pnac.gov.pk/index.php/pdfFiles/LAB-347)
+[Open official PNAC active laboratory register](https://pnac.gov.pk/Accredited-Cabs-serve/Testing-and-Calibration-Laboratories/Active)
 
 Verification pathways
 
@@ -1294,7 +1294,7 @@ Water & Wastewater Analysis
 
 # Water Testing Laboratory for Drinking, Process and Wastewater Compliance
 
-Envi Tech AL coordinates water and wastewater testing for industries, hospitals, hotels, exporters, housing societies, and maritime operators. Published ISO/IEC 17025:2017 accreditation applies only to the Lahore laboratory and the water/wastewater methods listed in PNAC LAB-347. Every other location, matrix, parameter, and method requires separate scope confirmation before it may be described as accredited.
+Envi Tech AL coordinates water and wastewater testing for industries, hospitals, hotels, exporters, housing societies, and maritime operators. PNAC LAB-285 applies only to the Karachi permanent laboratory and its published scope; PNAC LAB-347 applies only to the Lahore permanent laboratory and its published scope. Every location, matrix, parameter, method, and range must match the applicable current PNAC scope before work is described as accredited.
 
 [Request a quotation](https://envitechal.com/contact-us-envi-tech-al/)
 
@@ -1302,9 +1302,9 @@ Envi Tech AL coordinates water and wastewater testing for industries, hospitals,
 
 Laboratory trust
 
-**PNAC LAB-347 — Lahore**
+**PNAC LAB-285 - Karachi**
 
-**PNAC document states validity through 21 September 2028**
+**PNAC LAB-347 - Lahore**
 
 **Punjab EPA listed laboratory**
 
@@ -1365,7 +1365,7 @@ Good scoping protects cost, turnaround planning, sample validity and report usef
 
 1. 01 **Define the requirement** Tell us the purpose: EPA submission, buyer audit, internal QA or troubleshooting. We match parameters, methods and report format to it.
 2. 02 **Sampling** Our field teams collect samples across Karachi and Lahore using correct containers, preservation and chain-of-custody documentation. For other cities, contact the laboratory before dispatch so sample acceptance and transit conditions can be confirmed.
-3. 03 **Scope-confirmed analysis** The laboratory confirms the location, matrix, parameter, method, and credential status before work begins. Lahore PNAC LAB-347 covers only its published water and wastewater methods.
+3. 03 **Scope-confirmed analysis** The laboratory confirms the location, matrix, parameter, method, range, and credential status before work begins. Karachi PNAC LAB-285 and Lahore PNAC LAB-347 each cover only the combinations listed in their applicable published scopes.
 4. 04 **Verifiable reporting** Results are issued in the agreed reporting format. Reports carrying supported verification details can be checked through the online report verification portal.
 
 Frequently asked questions
@@ -1396,7 +1396,7 @@ Why facilities choose our water testing laboratory
 
 ## Scope-confirmed analysis, coordinated sampling and verifiable reporting
 
-Evidence that can be checked: PNAC LAB-347 for the Lahore location and listed methods, plus the official Punjab EPA laboratory record.
+Evidence that can be checked: PNAC LAB-285 for the Karachi scope, PNAC LAB-347 for the Lahore scope, and the applicable EPA records.
 
 One coordinated workflow: sampling, laboratory analysis, monitoring and consultancy delivered by one team.
 
@@ -2626,7 +2626,7 @@ Water testing is not one fixed product. A basic screen for a building tap, a dri
 
 For facility managers, schools, hospitals, hotels, factories, apartment buildings and RO plant operators, the cost question is really a risk question. If the water is used for drinking, food preparation, patient care or production, the panel should be chosen around that decision. A cheap report that cannot answer the buyer's question creates delay, repeat sampling and false confidence.
 
-Envi Tech AL works from Karachi and Lahore with the positioning Precision. Compliance. Trust. The company facts confirm ISO/IEC 17025:2017 accreditation, TUV certification, and Sindh EPA and Punjab EPA certification. Those facts support the service position, but each project still needs a clear scope, sample identity and reporting basis before work starts.
+Envi Tech AL works from Karachi and Lahore with the positioning Precision. Compliance. Trust. ISO/IEC 17025:2017 accreditation is location-specific: PNAC LAB-285 for Karachi and PNAC LAB-347 for Lahore, each limited to its applicable current published scope. Management-system and EPA credentials are separate categories. Every project still needs a clear scope, sample identity, method, and reporting basis before work starts.
 
 ## What changes the quotation
 
