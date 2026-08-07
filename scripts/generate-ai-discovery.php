@@ -22,20 +22,43 @@ function home_url($path = '')
 
 require dirname(__DIR__) . '/wp-content/themes/generatepress-envitechal/inc/ai-visibility.php';
 
+function eta_discovery_fetch_url(string $canonical_url): string
+{
+    $fetch_base = rtrim((string) (getenv('ETA_DISCOVERY_FETCH_BASE_URL') ?: 'https://envitechal.com'), '/');
+    if (!in_array($fetch_base, ['https://envitechal.com', 'https://staging.envitechal.com'], true)) {
+        throw new RuntimeException('ETA_DISCOVERY_FETCH_BASE_URL must be the approved production or staging HTTPS origin.');
+    }
+
+    $parts = parse_url($canonical_url);
+    if (!is_array($parts)
+        || ($parts['scheme'] ?? '') !== 'https'
+        || ($parts['host'] ?? '') !== 'envitechal.com'
+        || isset($parts['user'])
+        || isset($parts['pass'])
+        || isset($parts['port'])) {
+        throw new RuntimeException('Discovery input must be a canonical Envi Tech AL HTTPS URL.');
+    }
+
+    return $fetch_base
+        . ($parts['path'] ?? '/')
+        . (isset($parts['query']) ? '?' . $parts['query'] : '');
+}
+
 function eta_discovery_fetch(string $url): string
 {
+    $fetch_url = eta_discovery_fetch_url($url);
     $marker = "\n__ETA_STATUS__:";
     $command = [
         'curl', '-sS', '-L', '--max-time', '30',
         '-A', 'EnviTechAL-Discovery-Generator/1.0',
         '-H', 'Accept: text/html',
         '--write-out', $marker . '%{http_code}',
-        $url,
+        $fetch_url,
     ];
     $pipes = [];
     $process = proc_open($command, [1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);
     if (!is_resource($process)) {
-        throw new RuntimeException('Unable to start curl for ' . $url);
+        throw new RuntimeException('Unable to start curl for ' . $fetch_url);
     }
     $response = stream_get_contents($pipes[1]);
     $error = stream_get_contents($pipes[2]);
@@ -44,13 +67,13 @@ function eta_discovery_fetch(string $url): string
     $exit_code = proc_close($process);
     $marker_position = strrpos((string) $response, $marker);
     if ($exit_code !== 0 || $marker_position === false) {
-        throw new RuntimeException('Unable to fetch ' . $url . ': ' . trim((string) $error));
+        throw new RuntimeException('Unable to fetch ' . $fetch_url . ': ' . trim((string) $error));
     }
 
     $body = substr((string) $response, 0, $marker_position);
     $status = (int) substr((string) $response, $marker_position + strlen($marker));
     if ($status !== 200) {
-        throw new RuntimeException(sprintf('Expected HTTP 200 for %s; received %d', $url, $status));
+        throw new RuntimeException(sprintf('Expected HTTP 200 for %s; received %d', $fetch_url, $status));
     }
 
     return $body;
@@ -65,7 +88,13 @@ function eta_discovery_last_modified_map(): array
             throw new RuntimeException('No dated URLs found in ' . $sitemap);
         }
         foreach ($matches as $match) {
-            $map[html_entity_decode(trim($match[1]), ENT_QUOTES | ENT_HTML5, 'UTF-8')] = date('d-m-Y', strtotime(trim($match[2])));
+            $published_url = html_entity_decode(trim($match[1]), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            $parts = parse_url($published_url);
+            if (!is_array($parts) || !isset($parts['path'])) {
+                throw new RuntimeException('Invalid sitemap URL in ' . $sitemap);
+            }
+            $canonical_url = home_url($parts['path'] . (isset($parts['query']) ? '?' . $parts['query'] : ''));
+            $map[$canonical_url] = date('d-m-Y', strtotime(trim($match[2])));
         }
     }
     return $map;

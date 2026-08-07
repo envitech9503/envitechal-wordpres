@@ -12,7 +12,7 @@ LLMS_FULL_REL="deploy/public_html/llms-full.txt"
 
 # SECURITY PIN: change this only to a commit whose theme and discovery files
 # have passed staging validation and review. The script archives this exact tree.
-VALIDATED_PRODUCTION_COMMIT="b48b93ad09896a72c037e49b05e08641d2b4dd9f"
+VALIDATED_PRODUCTION_COMMIT="3bfe31cd8f0bb3af4f70181cac4df952c713a5d3"
 
 BACKUP_DIR="${HOME}/backups/envitechal-ai-visibility"
 BACKUP_MARKER="${BACKUP_DIR}/LAST_PRODUCTION_BACKUP"
