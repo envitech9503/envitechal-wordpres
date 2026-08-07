@@ -50,6 +50,21 @@ lower-volume rows remain in the restricted operational output or roll up to
 
 ## Dashboard
 
+The private dashboard is generated only after the aggregate analyzer completes:
+
+```bash
+python3 scripts/build-ai-visibility-dashboard.py \
+  --aggregate-csv "$PRIVATE_OUTPUT/ai-visibility-traffic.csv" \
+  --run-summary "$PRIVATE_OUTPUT/summary.json" \
+  --output-dir "$PRIVATE_OUTPUT/dashboard"
+```
+
+The output is a self-contained static HTML report plus a machine-readable summary.
+On POSIX hosting both are mode `0600`. Keep the output under the restricted backup
+area; do not copy it to the WordPress document root, uploads, Git or a public URL.
+The builder rejects unknown columns, query strings, fragments, email-like paths and
+long token/UUID-like path segments.
+
 Weekly operational panels:
 
 1. verified versus declared/suspected crawler requests;

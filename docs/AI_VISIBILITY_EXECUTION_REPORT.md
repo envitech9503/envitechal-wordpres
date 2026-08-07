@@ -31,6 +31,15 @@ responsive behaviour. The production release uses pinned payload commit
   for authorized account owners. No unauthorized third-party mutation was made.
 - A privacy-minimized cPanel log pipeline produced aggregate-only measurement with
   IPs, query strings, referrer paths and full user agents discarded.
+- A private static dashboard generator now turns only that aggregate output into
+  status, source, path, discovery-resource and anomaly panels. It rejects unknown
+  columns and non-minimized paths and never installs a browser tag or public page.
+- A machine-readable credential review schedule now monitors all six controlled
+  credentials, including accelerated issuer-confirmation checks for SEPA, QMS and
+  EMS. A deterministic checker fails closed on expired records.
+- A single operations register distinguishes `COMPLETE`, `READY_ACCOUNT_ACTION`
+  and `BLOCKED_EXTERNAL_EVIDENCE`, with an exact authority, evidence set and next
+  action for every original priority-list item.
 
 ## Release evidence
 
@@ -82,3 +91,9 @@ visuals require real source records, consent and item-specific approval. Google
 Business, Bing Places and social-profile edits require the relevant account owner;
 approved text and a correction queue are prepared. These are evidence/authority
 constraints, not unfinished code or permission to fabricate content.
+
+The external-profile and Lahore work is now owner-ready under
+`AI_VISIBILITY_ACCOUNT_OWNER_RUNBOOK.md`; execution still requires the genuine
+platform owner. Evidence-dependent publishing remains blocked until real evidence
+is supplied. The only item that may require a frontend decision is placement of a
+future approved technical visual, and that remains explicitly permission-gated.
