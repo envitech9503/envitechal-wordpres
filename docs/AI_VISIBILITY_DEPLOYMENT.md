@@ -114,7 +114,7 @@ CONFIRM_PRODUCTION_DISCOVERY_CACHE=envitechal.com \
   bash "$REPO/scripts/remediate-discovery-cache-headers.sh"
 ```
 
-On production only, the transaction removes either all nine reviewed duplicate `.htaccess` redirect lines or none; partial, altered, duplicate, or `RewriteCond`-governed rules stop the run. All 27 legacy sources must then return GET and HEAD 301 responses with `X-Redirect-By: Envi Tech AL`, and every unique canonical target must return a direct 200. Any failure automatically restores the exact previous `.htaccess`, purges again, and leaves the private recovery set for inspection. The firewall/WAF is never disabled or weakened.
+On production only, the transaction removes either all nine reviewed duplicate `.htaccess` redirect lines or none; partial, altered, duplicate, or `RewriteCond`-governed rules stop the run. All 32 legacy sources must then return GET and HEAD 301 responses with `X-Redirect-By: Envi Tech AL`, and every unique canonical target must return a direct 200. Any failure automatically restores the exact previous `.htaccess`, purges again, and leaves the private recovery set for inspection. The firewall/WAF is never disabled or weakened.
 
 For a deliberate rollback after a committed run, copy the exact `Recovery set:` path printed by that run:
 
