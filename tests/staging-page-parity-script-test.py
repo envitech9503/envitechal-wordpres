@@ -14,6 +14,8 @@ expected_specs = [
     "environmental-testing-faqs-pakistan|Environmental Testing FAQs Pakistan",
     "drinking-water-testing-lab|Drinking Water Testing Laboratory",
     "wastewater-testing-services|Wastewater Testing Services",
+    "water-testing-cost-karachi|Water Testing Cost in Karachi",
+    "environmental-monitoring-report-emr-emp-sindh-epa|Environmental Monitoring Report EMR EMP Sindh EPA",
 ]
 
 matches = list(re.finditer(r"^PAGE_SPECS=\(\n(?P<body>.*?)^\)$", script, re.MULTILINE | re.DOTALL))
