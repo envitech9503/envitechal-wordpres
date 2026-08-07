@@ -2401,6 +2401,7 @@ function eta_modern_fallback_post_content($post = null)
 function eta_modern_normalize_legacy_copy($content)
 {
     $content = (string) $content;
+    $verified_pnac_summary = 'Envi Tech AL operates location-specific PNAC-accredited permanent laboratories: Karachi LAB-285 and Lahore LAB-347. Each accreditation applies only to the exact location, matrix, parameter, method, and range combinations in its applicable current published scope.';
     $replacements = [
         home_url('/contact/') => home_url('/contact-us-envi-tech-al/'),
         'https://envitechal.com/contact/' => home_url('/contact-us-envi-tech-al/'),
@@ -2416,9 +2417,14 @@ function eta_modern_normalize_legacy_copy($content)
         'An-ionic' => 'Anionic',
         'An-ionic detergents' => 'Anionic detergents',
         'PNAC-accredited environmental laboratory in Pakistan' => 'environmental laboratory operating location-specific PNAC scopes in Karachi (LAB-285) and Lahore (LAB-347)',
-        'The lab has achieved ISO/IEC 17025:2017 accreditation from PNAC.' => 'The Karachi permanent laboratory holds PNAC LAB-285 and the Lahore permanent laboratory holds PNAC LAB-347 under ISO/IEC 17025:2017; each is limited to its applicable current published scope.',
         'Envi Tech AL is Sindh EPA approved lab having Green Lab certification (Gold), ISO 9001:2015, ISO 14001:2015 certification and ISO 17025:2017 accreditation from PNAC .' => 'Envi Tech AL publishes separate regulatory, management-system, and laboratory credentials. PNAC LAB-285 applies only to the Karachi permanent laboratory and PNAC LAB-347 only to the Lahore permanent laboratory; each is limited to its applicable current published scope.',
         'Envi Tech AL is Sindh EPA approved lab having Green Lab certification (Gold), ISO 9001:2015 & ISO 14001:2015 certification and ISO 17025:2017 accreditation from PNAC .' => 'Envi Tech AL publishes separate regulatory, management-system, and laboratory credentials. PNAC LAB-285 applies only to the Karachi permanent laboratory and PNAC LAB-347 only to the Lahore permanent laboratory; each is limited to its applicable current published scope.',
+        'The company facts confirm ISO/IEC 17025:2017 accreditation, TUV certification, and Sindh EPA and Punjab EPA certification.' => $verified_pnac_summary . ' Management-system and EPA credentials are separate and must be verified against their current issuer documents.',
+        'Envi Tech AL supports environmental monitoring, accredited laboratory testing, field sampling coordination, compliance reporting, water and wastewater testing, ambient air monitoring, noise monitoring, emissions testing, calibration coordination, and environmental consultancy for industrial and commercial facilities in Pakistan.' => 'Envi Tech AL supports environmental monitoring, laboratory testing, field sampling coordination, compliance reporting, water and wastewater testing, ambient air monitoring, noise monitoring, emissions testing, calibration coordination, and environmental consultancy for industrial and commercial facilities in Pakistan. Accreditation applies only where the exact work matches Karachi LAB-285 or Lahore LAB-347.',
+        'Seek out laboratories that have earned accreditation from reputable agencies like the National Environmental Laboratory Accreditation Program (NELAP) or the International Organization for Standardization (ISO).' => 'For Pakistan work, verify the laboratory directly in the current PNAC register and compare the requested location, matrix, parameter, method, and range with the applicable published scope.',
+        'The lab has achieved ISO/IEC 17025:2017 accreditation from PNAC.' => $verified_pnac_summary,
+        'Our lab is ISO/IEC 17025:2017 accreditation from PNAC.' => $verified_pnac_summary,
+        'Envi Tech AL is proud to be ISO/IEC 17025:2017 accreditated and is committed to continuing to provide exceptional service to our clients.' => $verified_pnac_summary,
         'Our head office is in Bahadurabad, Karachi, and we have a regional office in Lahore.' => 'Our Karachi head office is in Bahadurabad Block 3, with a regional office in Lahore for Punjab coordination.',
         'Address: 345, First Floor, Street-15, Block-3, Bahadurabad, Karachi. 75900, Pakistan.' => 'Address: First Floor, 345, Street 15, Bahadurabad Block 3, Bahadur Yar Jang CHS, Karachi, Sindh 75900, Pakistan.',
         '345, First Floor, Street-15, Block-3, Bahadurabad, Karachi. 75900, Pakistan.' => 'First Floor, 345, Street 15, Bahadurabad Block 3, Bahadur Yar Jang CHS, Karachi, Sindh 75900, Pakistan.',
@@ -2430,6 +2436,16 @@ function eta_modern_normalize_legacy_copy($content)
     $content = eta_modern_preg_replace('/\bJTND(?:c3R5bGU|L3N0eWxl|c2NyaXB0|L3NjcmlwdA)[A-Za-z0-9+\/=]{40,}/i', '', $content);
     $content = eta_modern_preg_replace('/%3C(?:style|script)\b[\s\S]*?%3C\/(?:style|script)%3E/i', '', $content);
     $content = eta_modern_preg_replace('#<img\b[^>]+src=["\'][^"\']*/wp-content/uploads/2023/08/1\.jpg[^"\']*["\'][^>]*>\s*#i', '', $content);
+    $content = eta_modern_preg_replace(
+        '#Our(?:\s|&nbsp;|\x{00A0}|<[^>]+>)*ISO/IEC\s*17025:2017(?:\s|&nbsp;|\x{00A0}|<[^>]+>)*accredited laboratory(?:\s|&nbsp;|\x{00A0}|<[^>]+>)*is equipped with cutting-edge technology to deliver accurate and reliable ballast water analysis, helping marine vessels meet the stringent environmental regulations set by the(?:\s|&nbsp;|\x{00A0}|<[^>]+>)*International Maritime Organization \(IMO\)(?:\s|&nbsp;|\x{00A0}|<[^>]+>)*\.#iu',
+        'Ballast-water testing is a published service capability. Neither Karachi LAB-285 nor Lahore LAB-347 establishes PNAC accreditation for ballast-water testing; confirm the required matrix, method, reporting purpose, and current availability before booking.',
+        $content
+    );
+    $content = eta_modern_preg_replace(
+        '#(?:The lab is|We are)\s+Envi Tech AL provides laboratory testing and environmental compliance support backed by ISO/IEC 17025:2017 accredited laboratory systems, EPA approvals, controlled sampling, documented methods, and report verification support\.:2017 accreditation from PNAC\.#iu',
+        $verified_pnac_summary,
+        $content
+    );
 
     return $content;
 }

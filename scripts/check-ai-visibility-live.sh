@@ -333,6 +333,40 @@ for legacy_sitemap_path in \
     '/calibration-of-equipment-in-karachi/' \
     '/ballast-water-testing-services-karachi/' \
     '/environmental-consultancy-services-in-karachi-envi-tech-al/' \
+    '/3-qualities-of-a-great-water-testing-lab/' \
+    '/5-ways-environmental-consultancy-karachi/' \
+    '/9-services-provided-by-an-environmental-lab-and-consultancy/' \
+    '/ballast-water-testing-imo-karachi-port/' \
+    '/calibration-at-artistic-denim-mill-on-19march20/' \
+    '/ce-marking-certification-in-pakistan/' \
+    '/choosing-a-reliable-water-testing-company/' \
+    '/common-benefits-of-environmental-certification/' \
+    '/complete-environmental-testing-solutions-at-envi-tech-al/' \
+    '/confidential-questions-of-the-hiring-environmental-firm/' \
+    '/consultancy-of-modern-certification-in-pakistan/' \
+    '/consultancy-of-modern-certification-karachi-envi-tech-al/' \
+    '/envi-tech-al-water-testing-lab-solutions-karachi/' \
+    '/environmental-lab-calibration-services-by-envi-tech-al/' \
+    '/environmental-monitoring-services-aga-khan-hospital-karachi-pakistan/' \
+    '/essential-of-insider-environmental-lab-consultancy-results/' \
+    '/everything-you-need-to-know-about-gots-certification/' \
+    '/fuel-saving-through-engine-performance-testing/' \
+    '/gots-certification-consultancy-of-ginning-factory-in-uthal/' \
+    '/high-tech-equipment-water-testing/' \
+    '/lab-equipment-calibration-inspection-gwadar-hospital-project-cpec/' \
+    '/new-insightful-guide-as-to-reveal-water-testing/' \
+    '/protection-kit-testing-services/' \
+    '/proven-environmental-consultancy-secrets-here/' \
+    '/remarkable-water-testing-offered-by-awesome-companies/' \
+    '/revealing-the-hidden-link-drinking-water-and-kidney-failure-risks/' \
+    '/successful-start-up-of-wastewater-treatment-plant-at-mr-industries/' \
+    '/unveiling-water-testing-understanding-its-quality-and-procedures/' \
+    '/water-testing-challenges-expert-solutions-and-strategies/' \
+    '/water-testing-laboratory-for-drinking-water/' \
+    '/what-are-the-benefits-of-environmental-lab-consultancy/' \
+    '/what-is-tdap-registered-lab-essential-information/' \
+    '/what-services-does-envi-tech-al-provide/' \
+    '/why-you-should-consult-with-an-environmental-lab/' \
     '/sindh-epa-noc-guide/' \
     '/frequently-asked-questions-water-testing-in-karachi/' \
     '/consulting-services-for-ginners-gots-ocs-regenagri-certification/' \
@@ -432,6 +466,40 @@ legacy_redirect_pairs=(
     '/calibration-of-equipment-in-karachi/|/services/equipment-calibration-services/'
     '/ballast-water-testing-services-karachi/|/services/ballast-water-testing-services/'
     '/environmental-consultancy-services-in-karachi-envi-tech-al/|/services/environmental-consultancy/'
+    '/3-qualities-of-a-great-water-testing-lab/|/how-to-choose-the-suitable-environmental-lab/'
+    '/5-ways-environmental-consultancy-karachi/|/services/environmental-consultancy/'
+    '/9-services-provided-by-an-environmental-lab-and-consultancy/|/services/'
+    '/ballast-water-testing-imo-karachi-port/|/services/ballast-water-testing-services/'
+    '/calibration-at-artistic-denim-mill-on-19march20/|/services/equipment-calibration-services/'
+    '/ce-marking-certification-in-pakistan/|/services/certification-advisory/'
+    '/choosing-a-reliable-water-testing-company/|/how-to-choose-the-suitable-environmental-lab/'
+    '/common-benefits-of-environmental-certification/|/services/certification-advisory/'
+    '/complete-environmental-testing-solutions-at-envi-tech-al/|/services/analytical-lab-services/'
+    '/confidential-questions-of-the-hiring-environmental-firm/|/how-to-choose-the-suitable-environmental-lab/'
+    '/consultancy-of-modern-certification-in-pakistan/|/services/certification-advisory/'
+    '/consultancy-of-modern-certification-karachi-envi-tech-al/|/services/certification-advisory/'
+    '/envi-tech-al-water-testing-lab-solutions-karachi/|/services/water-testing-lab-services/'
+    '/environmental-lab-calibration-services-by-envi-tech-al/|/services/equipment-calibration-services/'
+    '/environmental-monitoring-services-aga-khan-hospital-karachi-pakistan/|/services/analytical-lab-services/'
+    '/essential-of-insider-environmental-lab-consultancy-results/|/how-to-choose-the-suitable-environmental-lab/'
+    '/everything-you-need-to-know-about-gots-certification/|/services/certification-advisory/'
+    '/fuel-saving-through-engine-performance-testing/|/services/technical-advisory-2/'
+    '/gots-certification-consultancy-of-ginning-factory-in-uthal/|/services/certification-advisory/'
+    '/high-tech-equipment-water-testing/|/services/water-testing-lab-services/'
+    '/lab-equipment-calibration-inspection-gwadar-hospital-project-cpec/|/services/equipment-calibration-services/'
+    '/new-insightful-guide-as-to-reveal-water-testing/|/drinking-water-testing-lab/'
+    '/protection-kit-testing-services/|/services/analytical-lab-services/'
+    '/proven-environmental-consultancy-secrets-here/|/services/environmental-consultancy/'
+    '/remarkable-water-testing-offered-by-awesome-companies/|/services/water-testing-lab-services/'
+    '/revealing-the-hidden-link-drinking-water-and-kidney-failure-risks/|/drinking-water-testing-lab/'
+    '/successful-start-up-of-wastewater-treatment-plant-at-mr-industries/|/wastewater-testing-services/'
+    '/unveiling-water-testing-understanding-its-quality-and-procedures/|/drinking-water-testing-lab/'
+    '/water-testing-challenges-expert-solutions-and-strategies/|/services/water-testing-lab-services/'
+    '/water-testing-laboratory-for-drinking-water/|/drinking-water-testing-lab/'
+    '/what-are-the-benefits-of-environmental-lab-consultancy/|/services/environmental-consultancy/'
+    '/what-is-tdap-registered-lab-essential-information/|/tdap-registered-lab-in-karachi-pakistan/'
+    '/what-services-does-envi-tech-al-provide/|/services/'
+    '/why-you-should-consult-with-an-environmental-lab/|/services/environmental-consultancy/'
     '/frequently-asked-questions-water-testing-in-karachi/|/environmental-testing-faqs-pakistan/'
     '/sindh-epa-noc-guide/|/services/environmental-consultancy/'
     '/consulting-services-for-ginners-gots-ocs-regenagri-certification/|/services/certification-advisory/'

@@ -2830,7 +2830,7 @@ Share your approval condition, site location, monitoring deadline, and previous 
 
 ## Where Envi Tech AL fits in the workflow
 
-Envi Tech AL supports environmental monitoring, accredited laboratory testing, field sampling coordination, compliance reporting, water and wastewater testing, ambient air monitoring, noise monitoring, emissions testing, calibration coordination, and environmental consultancy for industrial and commercial facilities in Pakistan.
+Envi Tech AL supports environmental monitoring, laboratory testing, field sampling coordination, compliance reporting, water and wastewater testing, ambient air monitoring, noise monitoring, emissions testing, calibration coordination, and environmental consultancy for industrial and commercial facilities in Pakistan. Accreditation applies only where the exact work matches Karachi LAB-285 or Lahore LAB-347.
 
 ### Technical execution
 
