@@ -14,15 +14,23 @@ require_once get_stylesheet_directory() . '/inc/ai-visibility.php';
 require_once get_stylesheet_directory() . '/inc/eta-agent.php';
 require_once get_stylesheet_directory() . '/inc/legal-pages.php';
 
+/*
+ * Own the site-icon output. A WordPress Site Icon is configured, but its
+ * core wp_head output does not reach the final HTML on this stack, so the
+ * theme prints the icon links itself — preferring the configured Site Icon
+ * and falling back to the bundled theme assets.
+ */
 add_action('wp_head', function () {
-    if (function_exists('has_site_icon') && has_site_icon()) {
-        return;
-    }
+    remove_action('wp_head', 'wp_site_icon', 99);
 
     $base = get_stylesheet_directory_uri() . '/assets/images';
-    printf('<link rel="icon" type="image/png" sizes="32x32" href="%s">' . "\n", esc_url($base . '/favicon-32.png'));
-    printf('<link rel="icon" type="image/png" sizes="192x192" href="%s">' . "\n", esc_url($base . '/favicon-192.png'));
-    printf('<link rel="apple-touch-icon" sizes="192x192" href="%s">' . "\n", esc_url($base . '/favicon-192.png'));
+    $icon_32 = function_exists('get_site_icon_url') ? get_site_icon_url(32) : '';
+    $icon_192 = function_exists('get_site_icon_url') ? get_site_icon_url(192) : '';
+    $icon_180 = function_exists('get_site_icon_url') ? get_site_icon_url(180) : '';
+
+    printf('<link rel="icon" type="image/png" sizes="32x32" href="%s">' . "\n", esc_url($icon_32 ?: $base . '/favicon-32.png'));
+    printf('<link rel="icon" type="image/png" sizes="192x192" href="%s">' . "\n", esc_url($icon_192 ?: $base . '/favicon-192.png'));
+    printf('<link rel="apple-touch-icon" sizes="180x180" href="%s">' . "\n", esc_url($icon_180 ?: $base . '/favicon-192.png'));
 }, 4);
 
 add_action('wp_enqueue_scripts', function () {
