@@ -167,6 +167,14 @@ html:not(.ets-gsap) .ets-gl { display: none; }
   align-items: center; gap: 9px; font-size: 10.5px; letter-spacing: .34em; text-transform: uppercase; color: #7FA391; }
 html:not(.ets-gsap) .ets-cue { display: none; }
 .ets-cueline { width: 1px; height: 40px; background: linear-gradient(#7FA391, transparent); animation: etsCueDrop 2.2s ease-in-out infinite; }
+.ets-skip { position: absolute; bottom: 18px; right: 22px; z-index: 6; appearance: none; cursor: pointer;
+  background: rgba(6,9,11,.4); color: #7FA391; border: 1px solid rgba(127,163,145,.4); border-radius: 999px;
+  padding: 8px 18px; font-size: 10.5px; letter-spacing: .28em; text-transform: uppercase;
+  transition: color .25s ease, border-color .25s ease; }
+.ets-skip:hover { color: #CDE8DB; border-color: rgba(205,232,219,.7); }
+.ets-skip:focus-visible { outline: 2px solid #7DE8CD; outline-offset: 3px; color: #CDE8DB; }
+html:not(.ets-gsap) .ets-skip { display: none; }
+@media (max-width: 640px) { .ets-skip { bottom: 74px; right: 14px; } }
 @keyframes etsCueDrop { 0% { transform: scaleY(0); transform-origin: top; } 55% { transform: scaleY(1); transform-origin: top; } 100% { transform: scaleY(1) translateY(8px); opacity: 0; } }
 
 /* intro entrance — editorial masked reveal (CSS so LCP is immediate) */
@@ -321,6 +329,7 @@ html:not(.ets-gsap) .ets-final { display: none; }
     </div>
 
     <div class="ets-cue"><span>Scroll &mdash; enter the site</span><span class="ets-cueline"></span></div>
+    <button type="button" class="ets-skip" data-ets-skip aria-label="Skip the introduction and go to the services overview">Skip intro</button>
   </div>
 </section>
 <script type="module" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/eta-hero-twin.js?v=9" data-no-optimize="1" data-no-defer="1" data-litespeed-noopt="1"></script>

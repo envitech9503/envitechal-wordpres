@@ -427,9 +427,28 @@ import { gsap } from 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/+esm';
   state.b = bounds;
   window.addEventListener('load', measure, { passive: true });
 
+  /* skip affordance — jump past the pinned intro in one step */
+  var skipBtn = sec.querySelector('[data-ets-skip]');
+  if (skipBtn) {
+    skipBtn.addEventListener('click', function () {
+      measure();
+      window.scrollTo(0, bounds.end + 2);
+      state.p = 1; state.tp = 1; state.sp = 1;   // land resolved, no catch-up lerp
+      tl.progress(1);
+      var next = sec.nextElementSibling;
+      while (next && (next.tagName === 'SCRIPT' || next.tagName === 'STYLE')) next = next.nextElementSibling;
+      if (next) {
+        if (!next.hasAttribute('tabindex')) next.setAttribute('tabindex', '-1');
+        next.focus({ preventScroll: true });
+      }
+    });
+  }
+
   /* Scene 1 exit — editorial rise, no large travel */
   tl.fromTo('.ets-l1', { opacity: 1, y: 0 }, { opacity: 0, y: -26, duration: 0.05, ease: 'power2.in', immediateRender: false }, 0.085);
   tl.fromTo('.ets-cue', { opacity: 1 }, { opacity: 0, duration: 0.025, immediateRender: false }, 0.04);
+  tl.fromTo('.ets-skip', { opacity: 1 }, { opacity: 0, duration: 0.04, ease: 'none', immediateRender: false }, 0.9);
+  tl.set('.ets-skip', { pointerEvents: 'none' }, 0.94);
   tl.set('.ets-l1', { pointerEvents: 'none' }, 0.13);
 
   /* editorial notes: masked line reveals in/out */
