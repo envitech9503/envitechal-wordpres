@@ -28,9 +28,9 @@ add_action('wp_head', function () {
     $icon_192 = function_exists('get_site_icon_url') ? get_site_icon_url(192) : '';
     $icon_180 = function_exists('get_site_icon_url') ? get_site_icon_url(180) : '';
 
-    printf('<link rel="icon" type="image/png" sizes="32x32" href="%s">' . "\n", esc_url($icon_32 ?: $base . '/favicon-32.png'));
-    printf('<link rel="icon" type="image/png" sizes="192x192" href="%s">' . "\n", esc_url($icon_192 ?: $base . '/favicon-192.png'));
-    printf('<link rel="apple-touch-icon" sizes="180x180" href="%s">' . "\n", esc_url($icon_180 ?: $base . '/favicon-192.png'));
+    printf('<link rel="icon" type="image/png" sizes="32x32" data-spai-excluded="true" href="%s">' . "\n", esc_url($icon_32 ?: $base . '/favicon-32.png'));
+    printf('<link rel="icon" type="image/png" sizes="192x192" data-spai-excluded="true" href="%s">' . "\n", esc_url($icon_192 ?: $base . '/favicon-192.png'));
+    printf('<link rel="apple-touch-icon" sizes="180x180" data-spai-excluded="true" href="%s">' . "\n", esc_url($icon_180 ?: $base . '/favicon-192.png'));
 }, 4);
 
 add_action('wp_enqueue_scripts', function () {
@@ -1976,7 +1976,7 @@ add_action('init', function () {
         );
 
         $html = eta_modern_preg_replace(
-            '#<link\b[^>]+href=["\'](?:https?:)?//(?:fonts\.googleapis\.com|fonts\.gstatic\.com|ajax\.googleapis\.com|cdn\.shortpixel\.ai)[^"\']*["\'][^>]*>\s*#i',
+            '#<link\b(?![^>]*\brel=["\'](?:icon|apple-touch-icon)["\'])[^>]+href=["\'](?:https?:)?//(?:fonts\.googleapis\.com|fonts\.gstatic\.com|ajax\.googleapis\.com|cdn\.shortpixel\.ai)[^"\']*["\'][^>]*>\s*#i',
             '',
             $html
         );
