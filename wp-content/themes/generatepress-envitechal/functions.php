@@ -1238,17 +1238,6 @@ add_action('wp_head', function () {
         return;
     }
 
-    if (is_front_page()) {
-        $hero_base = get_stylesheet_directory_uri() . '/assets/images/';
-        printf(
-            '<link rel="preload" as="image" href="%1$s" imagesrcset="%2$s 520w, %3$s 900w, %4$s 1500w" imagesizes="100vw">' . "\n",
-            esc_url($hero_base . 'eta-home-hero-1500.webp'),
-            esc_url($hero_base . 'eta-home-hero-520.webp'),
-            esc_url($hero_base . 'eta-home-hero-900.webp'),
-            esc_url($hero_base . 'eta-home-hero-1500.webp')
-        );
-    }
-
     $description = eta_modern_clamp_meta_description(eta_modern_meta_description());
     if (!$description) {
         return;
@@ -1665,7 +1654,7 @@ add_action('wp_footer', function () {
             <span class="screen-reader-text"><?php esc_html_e('Open the Envi Tech AL assistant', 'envi-tech-al-modern'); ?></span>
         </button>
         <section id="eta-chatbot-panel" class="eta-chatbot-panel" role="dialog" aria-modal="true" aria-labelledby="eta-chatbot-title" tabindex="-1" hidden>
-            <header class="eta-chatbot-panel-header">
+            <header class="eta-chatbot-panel-header"><meta charset="utf-8">
                 <div class="eta-chatbot-panel-copy">
                     <p class="eta-chatbot-panel-kicker"><?php esc_html_e('Environmental information assistant', 'envi-tech-al-modern'); ?></p>
                     <h2 id="eta-chatbot-title" class="eta-chatbot-panel-title"><?php esc_html_e('Ask Envi Tech AL', 'envi-tech-al-modern'); ?></h2>
