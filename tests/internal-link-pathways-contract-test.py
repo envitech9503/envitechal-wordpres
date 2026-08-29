@@ -12,12 +12,12 @@ def main() -> None:
     front = (ROOT / 'wp-content/themes/generatepress-envitechal/front-page.php').read_text(encoding='utf-8')
     functions = (ROOT / 'wp-content/themes/generatepress-envitechal/functions.php').read_text(encoding='utf-8')
 
-    industry_start = front.index("eta-home-industries")
-    industry_end = front.index("eta-home-maritime", industry_start)
+    industry_start = front.index('id="etb-matrix"')
+    industry_end = front.index('id="etb-maritime"', industry_start)
     industry = front[industry_start:industry_end]
     if "home_url('/karachi-environmental-lab/')" not in industry:
         raise AssertionError('homepage industry context must link to the Karachi laboratory page')
-    if 'Review environmental laboratory support in Karachi' not in industry:
+    if 'Environmental laboratory support in Karachi' not in industry:
         raise AssertionError('homepage Karachi link must have useful visible anchor text')
 
     heading_position = functions.index('Related pathways')

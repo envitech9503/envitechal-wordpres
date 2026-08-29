@@ -49,6 +49,16 @@ get_header();
             continue;
         }
 
+        if ($slug === 'privacy-policy') {
+            eta_modern_render_privacy_page();
+            continue;
+        }
+
+        if ($slug === 'terms-of-service') {
+            eta_modern_render_terms_page();
+            continue;
+        }
+
         if (in_array($slug, ['frequently-asked-questions-water-testing-in-karachi', 'environmental-testing-faqs-pakistan', 'ourclients', 'lahore-environmental-lab', 'karachi-environmental-lab', 'certificates-approvals', 'accreditations-certifications', 'wastewater-testing-services', 'drinking-water-testing-lab', 'ambient-air-monitoring-services', 'noise-monitoring-dosimetry', 'industrial-hygiene-monitoring', 'soil-hazardous-waste-testing', 'emp-emr-iee-eia-compliance', 'maritime-environmental-testing', 'tdap-registered-lab-in-karachi-pakistan'], true)) {
             eta_modern_render_indexed_utility_page($slug);
             continue;

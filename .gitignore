@@ -45,3 +45,9 @@ Thumbs.db
 .vscode/
 __pycache__/
 *.py[cod]
+
+# Server-side editing scratch files — never commit
+*.claude-backup*
+wp-content/themes/generatepress-envitechal/fp-src.txt
+wp-content/themes/generatepress-envitechal/fx-src.txt
+wp-content/themes/generatepress-envitechal/twin-section.html

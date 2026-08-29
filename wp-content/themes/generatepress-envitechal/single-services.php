@@ -25,7 +25,7 @@ get_header();
         }
         ?>
         <section class="eta-service-hero" aria-labelledby="eta-service-title">
-            <img class="eta-service-hero-img" src="<?php echo esc_url($profile['image']); ?>" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high">
+            <?php echo eta_modern_profile_image($profile['image'], '', 'full', '100vw', ['class' => 'eta-service-hero-img', 'aria-hidden' => 'true', 'loading' => 'eager', 'fetchpriority' => 'high']); ?>
             <div class="eta-shell eta-service-hero-grid">
                 <div>
                     <p class="eta-eyebrow"><?php echo esc_html($profile['category']); ?></p>

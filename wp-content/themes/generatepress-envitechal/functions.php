@@ -12,6 +12,18 @@ require_once get_stylesheet_directory() . '/inc/legacy-redirects.php';
 require_once get_stylesheet_directory() . '/inc/robots-directives.php';
 require_once get_stylesheet_directory() . '/inc/ai-visibility.php';
 require_once get_stylesheet_directory() . '/inc/eta-agent.php';
+require_once get_stylesheet_directory() . '/inc/legal-pages.php';
+
+add_action('wp_head', function () {
+    if (function_exists('has_site_icon') && has_site_icon()) {
+        return;
+    }
+
+    $base = get_stylesheet_directory_uri() . '/assets/images';
+    printf('<link rel="icon" type="image/png" sizes="32x32" href="%s">' . "\n", esc_url($base . '/favicon-32.png'));
+    printf('<link rel="icon" type="image/png" sizes="192x192" href="%s">' . "\n", esc_url($base . '/favicon-192.png'));
+    printf('<link rel="apple-touch-icon" sizes="192x192" href="%s">' . "\n", esc_url($base . '/favicon-192.png'));
+}, 4);
 
 add_action('wp_enqueue_scripts', function () {
     $modern_css = get_stylesheet_directory() . '/assets/css/eta-modern.css';
@@ -133,6 +145,8 @@ add_filter('post_thumbnail_html', function ($html, $post_id) {
         'emp-emr-iee-eia-compliance',
         'maritime-environmental-testing',
         'tdap-registered-lab-in-karachi-pakistan',
+        'privacy-policy',
+        'terms-of-service',
     ];
 
     if (is_page($modern_custom_pages) && in_array($slug, $modern_custom_pages, true)) {
@@ -1238,17 +1252,6 @@ add_action('wp_head', function () {
         return;
     }
 
-    if (is_front_page()) {
-        $hero_base = get_stylesheet_directory_uri() . '/assets/images/';
-        printf(
-            '<link rel="preload" as="image" href="%1$s" imagesrcset="%2$s 520w, %3$s 900w, %4$s 1500w" imagesizes="100vw">' . "\n",
-            esc_url($hero_base . 'eta-home-hero-1500.webp'),
-            esc_url($hero_base . 'eta-home-hero-520.webp'),
-            esc_url($hero_base . 'eta-home-hero-900.webp'),
-            esc_url($hero_base . 'eta-home-hero-1500.webp')
-        );
-    }
-
     $description = eta_modern_clamp_meta_description(eta_modern_meta_description());
     if (!$description) {
         return;
@@ -1665,7 +1668,7 @@ add_action('wp_footer', function () {
             <span class="screen-reader-text"><?php esc_html_e('Open the Envi Tech AL assistant', 'envi-tech-al-modern'); ?></span>
         </button>
         <section id="eta-chatbot-panel" class="eta-chatbot-panel" role="dialog" aria-modal="true" aria-labelledby="eta-chatbot-title" tabindex="-1" hidden>
-            <header class="eta-chatbot-panel-header">
+            <header class="eta-chatbot-panel-header"><meta charset="utf-8">
                 <div class="eta-chatbot-panel-copy">
                     <p class="eta-chatbot-panel-kicker"><?php esc_html_e('Environmental information assistant', 'envi-tech-al-modern'); ?></p>
                     <h2 id="eta-chatbot-title" class="eta-chatbot-panel-title"><?php esc_html_e('Ask Envi Tech AL', 'envi-tech-al-modern'); ?></h2>
@@ -2546,6 +2549,51 @@ function eta_modern_service_summary($post)
     ];
 
     return $summaries[$post->post_name] ?? '';
+}
+
+function eta_modern_profile_image($url, $alt, $size = 'large', $sizes = '(max-width: 768px) 100vw, 400px', $attrs = [])
+{
+    $url = (string) $url;
+    if ($url === '') {
+        return '';
+    }
+
+    static $id_cache = [];
+
+    if (!array_key_exists($url, $id_cache)) {
+        $local_url = $url;
+        $home_host = wp_parse_url(home_url(), PHP_URL_HOST);
+        $url_host = wp_parse_url($url, PHP_URL_HOST);
+        if ($home_host && $url_host && $home_host !== $url_host) {
+            $local_url = str_replace('//' . $url_host, '//' . $home_host, $url);
+        }
+        $id_cache[$url] = (int) attachment_url_to_postid($local_url);
+    }
+
+    $attrs = array_merge([
+        'alt' => $alt,
+        'loading' => 'lazy',
+        'decoding' => 'async',
+        'sizes' => $sizes,
+    ], $attrs);
+
+    $attachment_id = $id_cache[$url];
+    if ($attachment_id) {
+        $image = wp_get_attachment_image($attachment_id, $size, false, $attrs);
+        if ($image) {
+            return $image;
+        }
+    }
+
+    $attr_html = '';
+    foreach ($attrs as $name => $value) {
+        if ($name === 'sizes' || ($value === '' && $name !== 'alt')) {
+            continue;
+        }
+        $attr_html .= sprintf(' %s="%s"', esc_attr($name), esc_attr($value));
+    }
+
+    return sprintf('<img src="%s"%s>', esc_url($url), $attr_html);
 }
 
 function eta_modern_service_profiles()
@@ -4144,7 +4192,7 @@ function eta_modern_render_careers_page()
 
     <section class="eta-band eta-career-pathways">
         <div class="eta-shell">
-            <?php eta_modern_section_title('Career pathways', 'Where strong profiles usually fit', 'The previous dated openings have been converted into evergreen hiring streams so the live site does not advertise expired deadlines.'); ?>
+            <?php eta_modern_section_title('Career pathways', 'Where strong profiles usually fit', 'Hiring runs year-round across these streams — send a profile any time and the team reviews it against current and upcoming requirements.'); ?>
             <div class="eta-career-role-grid">
                 <?php foreach (eta_modern_career_roles() as $role) : ?>
                     <article class="eta-career-role-card">

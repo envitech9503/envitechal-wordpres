@@ -42,6 +42,20 @@ if (!defined('ABSPATH')) {
                 <span><?php esc_html_e('ISO 9001', 'envi-tech-al-modern'); ?></span>
                 <span><?php esc_html_e('ISO 14001', 'envi-tech-al-modern'); ?></span>
             </div>
+            <div class="eta-footer-social" aria-label="<?php esc_attr_e('Envi Tech AL on social media', 'envi-tech-al-modern'); ?>">
+                <a href="https://www.linkedin.com/company/envitech-al" target="_blank" rel="noopener" aria-label="<?php esc_attr_e('Envi Tech AL on LinkedIn', 'envi-tech-al-modern'); ?>">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true" focusable="false"><circle cx="4.6" cy="4.9" r="2.1"/><rect x="2.8" y="9.3" width="3.6" height="11.7"/><path d="M9.4 9.3h3.5v1.7c.6-1 1.9-2 3.8-2 3 0 4.6 1.9 4.6 5.4V21h-3.7v-5.9c0-1.6-.6-2.7-2-2.7-1.4 0-2.5 1-2.5 2.7V21H9.4z"/></svg>
+                </a>
+                <a href="https://www.facebook.com/envitechal" target="_blank" rel="noopener" aria-label="<?php esc_attr_e('Envi Tech AL on Facebook', 'envi-tech-al-modern'); ?>">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true" focusable="false"><path d="M13.4 21v-7.4h2.5l.4-2.9h-2.9V8.8c0-.8.2-1.4 1.4-1.4h1.6V4.8c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2h-2.5v2.9h2.5V21z"/></svg>
+                </a>
+                <a href="https://www.instagram.com/envitech2026/" target="_blank" rel="noopener" aria-label="<?php esc_attr_e('Envi Tech AL on Instagram', 'envi-tech-al-modern'); ?>">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
+                </a>
+                <a href="https://www.youtube.com/channel/UC4C6CEHceAOGuzmSX_t7CpQ" target="_blank" rel="noopener" aria-label="<?php esc_attr_e('Envi Tech AL on YouTube', 'envi-tech-al-modern'); ?>">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true" focusable="false"><rect x="2" y="5.5" width="20" height="13" rx="3.5"/><path d="M10 9.2l5 2.8-5 2.8z" fill="#fff"/></svg>
+                </a>
+            </div>
         </section>
 
         <section class="eta-footer-card eta-footer-contact">
@@ -97,6 +111,10 @@ if (!defined('ABSPATH')) {
     <div class="eta-footer-bottom">
         <div class="eta-shell">
             <span><?php echo esc_html('Copyright ' . date('Y') . ' Envi Tech AL. All rights reserved.'); ?></span>
+            <nav class="eta-footer-legal" aria-label="<?php esc_attr_e('Legal pages', 'envi-tech-al-modern'); ?>">
+                <a href="<?php echo esc_url(home_url('/privacy-policy/')); ?>"><?php esc_html_e('Privacy Policy', 'envi-tech-al-modern'); ?></a>
+                <a href="<?php echo esc_url(home_url('/terms-of-service/')); ?>"><?php esc_html_e('Terms of Use', 'envi-tech-al-modern'); ?></a>
+            </nav>
             <span><?php esc_html_e('Environmental testing, consultancy, calibration, and compliance support.', 'envi-tech-al-modern'); ?></span>
         </div>
     </div>
