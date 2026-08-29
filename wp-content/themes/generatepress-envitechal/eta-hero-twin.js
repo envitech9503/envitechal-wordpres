@@ -493,6 +493,18 @@ import Lenis from 'https://cdn.jsdelivr.net/npm/lenis@1.3.11/+esm';
   tl.fromTo(fLines, { yPercent: 112 }, { yPercent: 0, duration: 0.05, stagger: 0.016, ease: 'power3.out', immediateRender: true }, 0.915);
   tl.fromTo('.ets-fcta', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.045, immediateRender: true }, 0.955);
 
+  /* Apply the timeline's opening state to the DOM now.
+   * The closing-word and final-statement lines are hidden only by being
+   * translated out of their overflow:hidden masks, and a paused timeline
+   * does not write that until something renders it. The old hand-rolled
+   * loop happened to call tl.progress() on its first frame; ScrollTrigger
+   * has nothing to render at progress 0, so the state must be set here or
+   * both layers paint on top of the intro copy. */
+  gsap.set(qa('.ets-word .ets-line').concat(qa('.ets-final .ets-line'), qa('.ets-note .ets-line')), { yPercent: 112 });
+  gsap.set(qa('.ets-note').concat(qa('.ets-tag')), { opacity: 0 });
+  gsap.set('.ets-wmicro', { opacity: 0 });
+  gsap.set('.ets-fcta', { opacity: 0, y: 14 });
+
   /* ---------------- scrub the timeline from scroll position ----------------
    * start/end reproduce the sticky stage's travel: the stage is pinned by CSS
    * while the section scrolls past, so progress runs from the section meeting

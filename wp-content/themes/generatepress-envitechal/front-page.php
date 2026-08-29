@@ -332,7 +332,7 @@ html:not(.ets-gsap) .ets-final { display: none; }
     <button type="button" class="ets-skip" data-ets-skip aria-label="Skip the introduction and go to the services overview">Skip intro</button>
   </div>
 </section>
-<script type="module" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/eta-hero-twin.js?v=13" data-no-optimize="1" data-no-defer="1" data-litespeed-noopt="1"></script>
+<script type="module" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/eta-hero-twin.js?v=14" data-no-optimize="1" data-no-defer="1" data-litespeed-noopt="1"></script>
 <style>
 /* ================= Homepage body v7 — act-based premium system — 28-08-2026 ================= */
 :root { --etb-ink:#0F1D18; --etb-char:#081310; --etb-char2:#0A1512; --etb-tealdeep:#0A1E19; --etb-emerald:#1E6B54; --etb-emerald2:#27866A; --etb-aqua:#7DE8CD; --etb-mist:#9CC3B2; --etb-sage:#5E7A6D; --etb-paper:#F4F7F3; --etb-line:rgba(15,29,24,.12); --etb-dline:rgba(125,232,205,.16); }
@@ -471,14 +471,13 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
 .etb-why-grid { display: grid; grid-template-columns: minmax(0,7fr) minmax(0,5fr); gap: 56px; align-items: start; }
 .etb-proofs { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid var(--etb-line); border-left: 1px solid var(--etb-line); }
 .etb-proof { padding: 28px 26px 30px; border-right: 1px solid var(--etb-line); border-bottom: 1px solid var(--etb-line); }
-.etb-proof strong { display: block; font-family: 'Outfit', sans-serif; font-weight: 300; font-size: clamp(19px, 1.8vw, 25px); line-height: 1.5; letter-spacing: .1em; color: var(--etb-ink); margin-bottom: 8px; }
+/* The longest label ("KARACHI + LAHORE") measured 283px against a 280px
+   content box, so it wrapped to a second line and left its row taller and
+   its body copy out of line with its neighbour. Tightening the tracking and
+   the top of the size ramp fits every label on one line, which keeps the
+   rows equal without reserving blank space under the shorter ones. */
+.etb-proof strong { display: block; font-family: 'Outfit', sans-serif; font-weight: 300; font-size: clamp(19px, 1.7vw, 23px); line-height: 1.5; letter-spacing: .07em; color: var(--etb-ink); margin-bottom: 8px; }
 .etb-proof p { font-size: 14px; line-height: 1.6; color: var(--etb-sage); margin: 0; }
-/* Reserve two heading lines while the grid is 2-up, so a wrapping label
-   ("KARACHI + LAHORE") cannot push its body copy out of line with its
-   neighbour and leave the row ragged. */
-@media (min-width: 821px) {
-  .etb-proof strong { min-height: 3em; }
-}
 .etb-fb { display: grid; grid-template-columns: 52px 1fr; gap: 12px; padding: 18px 0; border-bottom: 1px solid var(--etb-line); }
 .etb-fb > span { font-family: 'Outfit', sans-serif; font-weight: 100; font-size: 36px; line-height: 1; color: rgba(30,107,84,.3); }
 .etb-fb strong { display: block; font-family: 'Outfit', sans-serif; font-weight: 300; font-size: 19px; color: var(--etb-ink); margin-bottom: 5px; }
