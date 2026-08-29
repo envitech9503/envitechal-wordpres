@@ -1,11 +1,14 @@
 /* Envi Tech AL — Living Environmental Digital Twin hero
- * Three.js scene + GSAP timeline driven by a deterministic scroll-progress loop.
+ * Three.js scene + a GSAP timeline scrubbed by ScrollTrigger, with Lenis
+ * smoothing the scroll it reads from.
  * Progressive enhancement: this module adds html.ets-gsap when safe to run;
  * without it the page shows the static composed fallback hero.
- * 28-08-2026 */
+ * 30-08-2026 */
 
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js';
 import { gsap } from 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/+esm';
+import { ScrollTrigger } from 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/ScrollTrigger/+esm';
+import Lenis from 'https://cdn.jsdelivr.net/npm/lenis@1.3.11/+esm';
 
 (function () {
   'use strict';
@@ -18,7 +21,26 @@ import { gsap } from 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/+esm';
   var stage = sec.querySelector('.ets-stage');
   var canvas = sec.querySelector('.ets-gl');
   var isMobile = window.matchMedia('(max-width: 820px), (pointer: coarse)').matches;
-  var headerH = function () { var h = document.getElementById('masthead'); return h ? h.offsetHeight : 0; };
+
+  /* ---------------- Lenis + ScrollTrigger ----------------
+   * Lenis owns the scroll position and feeds ScrollTrigger; ScrollTrigger
+   * scrubs the hero timeline. Touch scrolling stays native. */
+  gsap.registerPlugin(ScrollTrigger);
+
+  var lenis = new Lenis({
+    duration: 0.9,
+    smoothWheel: true,
+    syncTouch: false,
+    wheelMultiplier: 1,
+    easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); }
+  });
+  window.__etaLenis = lenis;
+
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add(function (t) { lenis.raf(t * 1000); });
+  gsap.ticker.lagSmoothing(0);
+
+  var heroST = null;
 
   /* ---------------- palette / lighting arc ---------------- */
   var ARC = [
@@ -358,11 +380,8 @@ import { gsap } from 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/+esm';
   function loop(ts) {
     rafId = requestAnimationFrame(loop);
     state.n = (state.n || 0) + 1;
-    var raw = (window.scrollY - bounds.start) / (bounds.end - bounds.start);
-    state.p = Math.min(1, Math.max(0, raw));
-    state.tp += (state.p - state.tp) * 0.16;
-    if (Math.abs(state.p - state.tp) < 0.0006) state.tp = state.p;
-    tl.progress(state.tp);
+    /* state.p is written by the ScrollTrigger onUpdate below; the scene keeps
+     * its own slower easing so the 3D read stays calm under fast scrolling. */
     state.sp += (state.p - state.sp) * 0.075;
     state.spx += (state.px - state.spx) * 0.06;
     state.spy += (state.py - state.spy) * 0.06;
@@ -416,25 +435,16 @@ import { gsap } from 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/+esm';
 
   var tl = gsap.timeline({ defaults: { ease: 'power2.out' }, paused: true });
   state.tl = tl;
-  var bounds = { start: 0, end: 1 };
-  function measure() {
-    var hh = headerH(), top = 0, el = sec;
-    while (el) { top += el.offsetTop; el = el.offsetParent; }
-    bounds.start = Math.max(0, top - hh);
-    bounds.end = Math.max(bounds.start + 1, top + sec.offsetHeight - window.innerHeight);
-  }
-  measure();
-  state.b = bounds;
-  window.addEventListener('load', measure, { passive: true });
 
-  /* skip affordance — jump past the pinned intro in one step */
+  /* skip affordance — jump past the intro in one step */
   var skipBtn = sec.querySelector('[data-ets-skip]');
   if (skipBtn) {
     skipBtn.addEventListener('click', function () {
-      measure();
-      window.scrollTo(0, bounds.end + 2);
-      state.p = 1; state.tp = 1; state.sp = 1;   // land resolved, no catch-up lerp
-      tl.progress(1);
+      if (heroST) {
+        lenis.scrollTo(heroST.end + 2, { immediate: true, force: true });
+        ScrollTrigger.update();
+      }
+      state.sp = 1;                 // land the scene resolved, no catch-up easing
       var next = sec.nextElementSibling;
       while (next && (next.tagName === 'SCRIPT' || next.tagName === 'STYLE')) next = next.nextElementSibling;
       if (next) {
@@ -483,6 +493,21 @@ import { gsap } from 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/+esm';
   tl.fromTo(fLines, { yPercent: 112 }, { yPercent: 0, duration: 0.05, stagger: 0.016, ease: 'power3.out', immediateRender: true }, 0.915);
   tl.fromTo('.ets-fcta', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.045, immediateRender: true }, 0.955);
 
+  /* ---------------- scrub the timeline from scroll position ----------------
+   * start/end reproduce the sticky stage's travel: the stage is pinned by CSS
+   * while the section scrolls past, so progress runs from the section meeting
+   * the viewport top to its bottom meeting the viewport bottom. */
+  heroST = ScrollTrigger.create({
+    trigger: sec,
+    start: 'top top',
+    end: 'bottom bottom',
+    scrub: 0.25,
+    animation: tl,
+    invalidateOnRefresh: true,
+    onUpdate: function (self) { state.p = self.progress; }
+  });
+  state.st = heroST;
+
   /* ================= boot GL ================= */
   if (!initGL()) {
     doc.classList.add('ets-nogl');
@@ -495,7 +520,7 @@ import { gsap } from 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/+esm';
     }
     sizeGL();
     var rto = null;
-    window.addEventListener('resize', function () { clearTimeout(rto); rto = setTimeout(function () { sizeGL(); measure(); }, 150); }, { passive: true });
+    window.addEventListener('resize', function () { clearTimeout(rto); rto = setTimeout(function () { sizeGL(); ScrollTrigger.refresh(); }, 150); }, { passive: true });
     /* render only when hero is on screen */
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (en) {
