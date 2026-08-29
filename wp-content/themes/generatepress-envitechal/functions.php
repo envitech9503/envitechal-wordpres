@@ -1687,7 +1687,7 @@ add_action('wp_footer', function () {
             <div class="eta-chatbot-panel-body">
                 <p class="eta-chatbot-status" role="status" aria-live="polite"><?php esc_html_e('Connecting to the assistant...', 'envi-tech-al-modern'); ?></p>
                 <div class="eta-chatbot-frame-wrap">
-                    <div class="eta-chatbot-messages" role="log" aria-live="polite" aria-relevant="additions text"></div>
+                    <div class="eta-chatbot-messages" role="log" aria-live="polite" aria-relevant="additions text" data-lenis-prevent></div>
                     <form class="eta-chatbot-form">
                         <label class="screen-reader-text" for="eta-chatbot-question"><?php esc_html_e('Your question', 'envi-tech-al-modern'); ?></label>
                         <textarea id="eta-chatbot-question" name="message" rows="1" maxlength="1200" placeholder="<?php esc_attr_e('Ask one specific question', 'envi-tech-al-modern'); ?>" required></textarea>
