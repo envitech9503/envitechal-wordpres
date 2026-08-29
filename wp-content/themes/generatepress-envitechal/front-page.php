@@ -167,14 +167,14 @@ html:not(.ets-gsap) .ets-gl { display: none; }
   align-items: center; gap: 9px; font-size: 10.5px; letter-spacing: .34em; text-transform: uppercase; color: #7FA391; }
 html:not(.ets-gsap) .ets-cue { display: none; }
 .ets-cueline { width: 1px; height: 40px; background: linear-gradient(#7FA391, transparent); animation: etsCueDrop 2.2s ease-in-out infinite; }
-.ets-skip { position: absolute; bottom: 18px; right: 22px; z-index: 6; appearance: none; cursor: pointer;
+.ets-skip { position: absolute; bottom: 24px; right: 104px; z-index: 6; appearance: none; cursor: pointer;
   background: rgba(6,9,11,.4); color: #7FA391; border: 1px solid rgba(127,163,145,.4); border-radius: 999px;
   padding: 8px 18px; font-size: 10.5px; letter-spacing: .28em; text-transform: uppercase;
   transition: color .25s ease, border-color .25s ease; }
 .ets-skip:hover { color: #CDE8DB; border-color: rgba(205,232,219,.7); }
 .ets-skip:focus-visible { outline: 2px solid #7DE8CD; outline-offset: 3px; color: #CDE8DB; }
 html:not(.ets-gsap) .ets-skip { display: none; }
-@media (max-width: 640px) { .ets-skip { bottom: 74px; right: 14px; } }
+@media (max-width: 640px) { .ets-skip { bottom: 20px; right: 80px; } }
 @keyframes etsCueDrop { 0% { transform: scaleY(0); transform-origin: top; } 55% { transform: scaleY(1); transform-origin: top; } 100% { transform: scaleY(1) translateY(8px); opacity: 0; } }
 
 /* intro entrance — editorial masked reveal (CSS so LCP is immediate) */
@@ -332,7 +332,7 @@ html:not(.ets-gsap) .ets-final { display: none; }
     <button type="button" class="ets-skip" data-ets-skip aria-label="Skip the introduction and go to the services overview">Skip intro</button>
   </div>
 </section>
-<script type="module" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/eta-hero-twin.js?v=9" data-no-optimize="1" data-no-defer="1" data-litespeed-noopt="1"></script>
+<script type="module" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/eta-hero-twin.js?v=10" data-no-optimize="1" data-no-defer="1" data-litespeed-noopt="1"></script>
 <style>
 /* ================= Homepage body v7 — act-based premium system — 28-08-2026 ================= */
 :root { --etb-ink:#0F1D18; --etb-char:#081310; --etb-char2:#0A1512; --etb-tealdeep:#0A1E19; --etb-emerald:#1E6B54; --etb-emerald2:#27866A; --etb-aqua:#7DE8CD; --etb-mist:#9CC3B2; --etb-sage:#5E7A6D; --etb-paper:#F4F7F3; --etb-line:rgba(15,29,24,.12); --etb-dline:rgba(125,232,205,.16); }
@@ -810,7 +810,7 @@ $etb_vault = [
     </section>
 </main>
 
-<script src="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/eta-home-body.js?v=2" defer data-no-optimize="1" data-no-defer="1" data-litespeed-noopt="1"></script>
+<script src="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/eta-home-body.js?v=3" defer data-no-optimize="1" data-no-defer="1" data-litespeed-noopt="1"></script>
 
 <?php
 get_footer();
