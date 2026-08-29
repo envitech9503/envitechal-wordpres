@@ -8715,3 +8715,96 @@ h3 {
         font-size: 0.6rem !important;
     }
 }
+
+/* --- QA pass: keyboard access, footer social + legal, legal pages --- */
+
+.main-navigation:not(.toggled) ul li.menu-item-has-children:focus-within > ul {
+    left: auto;
+    opacity: 1;
+    pointer-events: auto;
+    height: auto;
+    overflow: visible;
+}
+
+.main-navigation:not(.toggled) ul ul li.menu-item-has-children:focus-within > ul {
+    left: 100%;
+    top: 0;
+}
+
+.eta-footer-social {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.eta-footer-social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border: 1px solid rgba(169, 226, 199, 0.2);
+    border-radius: 999px;
+    background: rgba(169, 226, 199, 0.1);
+    color: #dff7ec;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.eta-footer-social a:hover,
+.eta-footer-social a:focus-visible {
+    background: #dff7ec;
+    color: #10231b;
+}
+
+.eta-footer-legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.eta-footer-legal a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.eta-footer-legal a:hover,
+.eta-footer-legal a:focus-visible {
+    color: #dff7ec;
+}
+
+.eta-legal-prose {
+    max-width: 760px;
+}
+
+.eta-legal-updated {
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--eta-muted);
+    margin-bottom: 28px;
+}
+
+.eta-legal-section {
+    margin-bottom: 32px;
+}
+
+.eta-legal-section h2 {
+    font-size: 1.35rem;
+    margin-bottom: 12px;
+}
+
+.eta-legal-section p,
+.eta-legal-section li {
+    color: var(--eta-muted);
+    line-height: 1.7;
+}
+
+.eta-legal-section ul {
+    padding-left: 20px;
+}
+
+.eta-legal-section li {
+    margin-bottom: 8px;
+}

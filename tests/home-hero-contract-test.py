@@ -1,78 +1,53 @@
 #!/usr/bin/env python3
 
-"""Keep the LCP hero and its responsive preload on one proven URL contract."""
+"""Guard the scrollytelling homepage hero (ets-twin) contract.
+
+The homepage hero is a scroll-driven WebGL/GSAP stage. This test pins the
+invariants that keep it fast, accessible, and resilient:
+
+- the hero section, headline, and primary CTA are server-rendered HTML
+  (no JS required for the H1 or the quote pathway);
+- the stage scripts load with the LiteSpeed/optimizer opt-out attributes
+  that keep the module script from being rewritten or deferred twice;
+- both stage scripts respect prefers-reduced-motion;
+- no lazy-loaded image sits inside the hero (its visuals are canvas-drawn).
+"""
 
 from pathlib import Path
 import re
 
 
-front_page = Path("wp-content/themes/generatepress-envitechal/front-page.php").read_text(
-    encoding="utf-8"
-)
-functions = Path("wp-content/themes/generatepress-envitechal/functions.php").read_text(
-    encoding="utf-8"
-)
+ROOT = Path(__file__).resolve().parents[1]
+THEME = ROOT / "wp-content/themes/generatepress-envitechal"
 
-hero_match = re.search(
-    r'<img\s+class="eta-home-bg-img"(?P<body>.*?)decoding="async">',
-    front_page,
-    re.DOTALL,
-)
-if hero_match is None:
-    raise SystemExit("the homepage hero image contract could not be located")
+front_page = (THEME / "front-page.php").read_text(encoding="utf-8")
 
-hero = hero_match.group(0)
-required_hero_markers = [
-    'data-spai-excluded="true"',
-    'sizes="100vw"',
-    'width="1500"',
-    'height="844"',
-    'loading="eager"',
-    'fetchpriority="high"',
-    'decoding="async"',
-]
-for marker in required_hero_markers:
-    if marker not in hero:
-        raise SystemExit(f"homepage hero is missing required marker: {marker}")
+hero_start = front_page.index('id="ets-twin"')
+hero_end = front_page.index("</section>", front_page.index("ets-cue", hero_start))
+hero = front_page[hero_start:hero_end]
 
-for forbidden in [
-    'loading="lazy"',
-    'cdn.shortpixel.ai',
-    'data-spai="',
-    'data-spai-loading',
-]:
-    if forbidden in hero:
-        raise SystemExit(f"homepage hero contains forbidden runtime marker: {forbidden}")
+if '<h1 class="ets-h1"' not in hero:
+    raise SystemExit("the homepage hero headline must be server-rendered inside ets-twin")
+if 'href="/contact-us-envi-tech-al/"' not in hero:
+    raise SystemExit("the hero primary CTA must link to the contact page")
+if '<canvas class="ets-gl" aria-hidden="true">' not in hero:
+    raise SystemExit("the hero canvas must stay aria-hidden for assistive tech")
+if 'loading="lazy"' in hero:
+    raise SystemExit("no lazy-loaded image may sit inside the above-the-fold hero")
 
-preload_match = re.search(
-    r"add_action\('wp_head', function \(\) \{.*?"
-    r"if \(is_front_page\(\)\) \{(?P<body>.*?)\n\s*\}\n\n\s*\$description",
-    functions,
-    re.DOTALL,
-)
-if preload_match is None:
-    raise SystemExit("the front-page hero preload contract could not be located")
+for script_name in ("eta-hero-twin.js", "eta-home-body.js"):
+    name_at = front_page.find(script_name)
+    if name_at < 0:
+        raise SystemExit(f"front-page.php must load {script_name}")
+    tag_start = front_page.rindex("<script", 0, name_at)
+    tag_end = front_page.index(">", name_at)
+    tag = front_page[tag_start:tag_end]
+    for attr in ('data-no-optimize="1"', 'data-litespeed-noopt="1"'):
+        if attr not in tag:
+            raise SystemExit(f"{script_name} must keep the optimizer opt-out attribute {attr}")
 
-preload = preload_match.group("body")
-for marker in [
-    'rel="preload" as="image"',
-    'imagesrcset="%2$s 520w, %3$s 900w, %4$s 1500w"',
-    'imagesizes="100vw"',
-]:
-    if marker not in preload:
-        raise SystemExit(f"homepage hero preload is missing required marker: {marker}")
+    script_source = (THEME / script_name).read_text(encoding="utf-8")
+    if "prefers-reduced-motion" not in script_source:
+        raise SystemExit(f"{script_name} must respect prefers-reduced-motion")
 
-asset_pattern = r"eta-home-hero-(?:520|900|1500)\.webp"
-hero_assets = set(re.findall(asset_pattern, hero))
-preload_assets = set(re.findall(asset_pattern, preload))
-expected_assets = {
-    "eta-home-hero-520.webp",
-    "eta-home-hero-900.webp",
-    "eta-home-hero-1500.webp",
-}
-if hero_assets != expected_assets:
-    raise SystemExit(f"homepage hero candidates differ from the reviewed set: {hero_assets!r}")
-if preload_assets != expected_assets:
-    raise SystemExit(f"homepage preload candidates differ from the hero set: {preload_assets!r}")
-
-print("Homepage hero and responsive preload contract tests passed.")
+print("Homepage scrollytelling hero contract tests passed.")

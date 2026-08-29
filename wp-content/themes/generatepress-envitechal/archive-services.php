@@ -73,7 +73,7 @@ $clusters = [
                     ?>
                     <article class="eta-services-card">
                         <a class="eta-services-card-media" href="<?php echo esc_url(get_permalink($service)); ?>" aria-label="<?php echo esc_attr(eta_modern_display_title($service)); ?>">
-                            <img src="<?php echo esc_url($profile['image']); ?>" alt="<?php echo esc_attr(eta_modern_display_title($service)); ?>" loading="lazy">
+                            <?php echo eta_modern_profile_image($profile['image'], eta_modern_display_title($service)); ?>
                         </a>
                         <div class="eta-services-card-body">
                             <p class="eta-mini-kicker"><?php echo esc_html($profile['category']); ?></p>
