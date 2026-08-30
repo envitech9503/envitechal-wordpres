@@ -1,0 +1,23 @@
+/*
+Theme Name: Envi Tech AL
+Theme URI: https://envitechal.com/
+Description: Child theme of GeneratePress for Envi Tech AL, an environmental testing, monitoring and calibration laboratory operating from Karachi and Lahore. Page content is rendered from PHP and dispatched by slug; front-end motion uses Three.js, GSAP with ScrollTrigger, and Lenis.
+Author: Envi Tech AL
+Author URI: https://envitechal.com/
+Template: generatepress
+Version: 1.0.0
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: envi-tech-al-modern
+*/
+
+/*
+ * WordPress requires this file for the child theme to be valid, and
+ * GeneratePress enqueues it directly. Without it the theme was absent from
+ * wp theme list, the parent called filemtime() on a missing path on every
+ * request, and the browser fetched a 404 that came back as HTML.
+ *
+ * The theme's styles live in assets/css/eta-modern.css, which is enqueued
+ * separately and versioned by its own modification time. Keep this file to
+ * the header above.
+ */
