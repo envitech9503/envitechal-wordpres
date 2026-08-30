@@ -332,7 +332,7 @@ html:not(.ets-gsap) .ets-final { display: none; }
     <button type="button" class="ets-skip" data-ets-skip aria-label="Skip the introduction and go to the services overview">Skip intro</button>
   </div>
 </section>
-<script type="module" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/eta-hero-twin.js?v=16" data-no-optimize="1" data-no-defer="1" data-litespeed-noopt="1"></script>
+<script type="module" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/eta-hero-twin.js?v=17" data-no-optimize="1" data-no-defer="1" data-litespeed-noopt="1"></script>
 <style>
 /* ================= Homepage body v7 — act-based premium system — 28-08-2026 ================= */
 :root { --etb-ink:#0F1D18; --etb-char:#081310; --etb-char2:#0A1512; --etb-tealdeep:#0A1E19; --etb-emerald:#1E6B54; --etb-emerald2:#27866A; --etb-aqua:#7DE8CD; --etb-mist:#9CC3B2; --etb-sage:#5E7A6D; --etb-paper:#F4F7F3; --etb-line:rgba(15,29,24,.12); --etb-dline:rgba(125,232,205,.16); }
@@ -491,6 +491,13 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
 .etb-hub-feature { position: relative; border-radius: 3px; overflow: hidden; background: var(--etb-char) radial-gradient(ellipse 90% 70% at 42% 18%, rgba(31,107,84,.3), transparent 70%); border: 1px solid var(--etb-dline); padding: 40px 38px; display: flex; flex-direction: column; justify-content: flex-end; min-height: 480px; }
 .etb-hub-feature::before { content: ""; position: absolute; inset: 0; opacity: .3; background: linear-gradient(rgba(120,200,165,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(120,200,165,.07) 1px, transparent 1px); background-size: 64px 64px; transform: perspective(800px) rotateX(48deg) translateY(22%); transform-origin: 50% 100%; }
 .etb-hub-feature > * { position: relative; }
+/* The feature card carried ~240px of bare texture above bottom-aligned text
+   while every card beside it had a thumbnail. The photograph now fills the
+   card and the copy sits over a scrim, so the upper area reads as the
+   feature image rather than an empty panel. */
+.etb-hub-feature-img { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; object-fit: cover; opacity: .52; }
+.etb-hub-feature::after { content: ""; position: absolute; inset: 0; z-index: 0; background: linear-gradient(to top, rgba(8,19,16,.96) 26%, rgba(8,19,16,.62) 58%, rgba(8,19,16,.28) 100%); }
+.etb-hub-feature > *:not(.etb-hub-feature-img) { position: relative; z-index: 1; }
 .etb-hub-feature h3 { font-family: 'Outfit', sans-serif; font-weight: 200; font-size: clamp(26px, 2.6vw, 40px); line-height: 1.14; margin: 0 0 14px; }
 .etb-hub-feature h3 a { color: #F2FAF5; text-decoration: none; }
 .etb-hub-feature h3 a:hover { color: var(--etb-aqua); }
@@ -540,6 +547,33 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
   .etb-final { padding: 96px 0 104px; }
   .etb-steps { padding-left: 24px; }
 }
+
+/* ============================================================
+   VERTICAL RHYTHM
+   The parent theme applies `.site-main > * { margin-bottom: 20px }`,
+   which inserted a stray 20px between every full-bleed act on top of
+   padding that ranged 76-118px with no shared scale — so the seam
+   between sections read as an accident rather than a decision.
+   One fluid scale governs every act; the closing act gets one step
+   more air to signal arrival. Declared last so it also supersedes
+   the per-section and breakpoint padding set above.
+   ============================================================ */
+.site-main > #ets-twin,
+.site-main > section[id^="etb-"] { margin-bottom: 0; }
+
+.etb-obs, .etb-journey, .etb-matrix, .etb-maritime,
+.etb-vault, .etb-why, .etb-hub {
+  padding-top: clamp(64px, 5.6vw, 96px);
+  padding-bottom: clamp(64px, 5.6vw, 96px);
+}
+
+.etb-final {
+  padding-top: clamp(80px, 7vw, 120px);
+  padding-bottom: clamp(80px, 7vw, 120px);
+}
+
+/* The ledger strip is a rule between acts, not an act of its own. */
+.etb-ledger { padding-top: clamp(48px, 4vw, 68px); padding-bottom: clamp(48px, 4vw, 68px); }
 </style>
 <?php
 /* ======== Homepage body v7 — act-based premium architecture — 28-08-2026 ======== */
@@ -784,6 +818,11 @@ $etb_vault = [
             </header>
             <div class="etb-hub-grid">
                 <article class="etb-hub-feature etb-r">
+                    <img class="etb-hub-feature-img"
+                         src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/eta-hub-seqs-1320.webp'); ?>"
+                         srcset="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/eta-hub-seqs-760.webp'); ?> 760w, <?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/eta-hub-seqs-1320.webp'); ?> 1320w"
+                         sizes="(max-width: 1020px) 100vw, 56vw"
+                         width="1320" height="737" alt="" aria-hidden="true" loading="lazy" decoding="async">
                     <p class="etb-microlabel"><?php esc_html_e('Regulation / Sindh', 'envi-tech-al-modern'); ?></p>
                     <h3><a href="<?php echo esc_url(home_url('/sindh-environmental-quality-standards-seqs/')); ?>"><?php esc_html_e('Sindh Environmental Quality Standards guide', 'envi-tech-al-modern'); ?></a></h3>
                     <p class="etb-hub-p"><?php esc_html_e('A practical SEQS limits and compliance guide for Sindh facilities preparing testing, monitoring, and EMR submissions.', 'envi-tech-al-modern'); ?></p>
