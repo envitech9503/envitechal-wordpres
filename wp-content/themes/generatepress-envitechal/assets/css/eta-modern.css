@@ -9158,6 +9158,7 @@ h3 {
     position: relative;
     display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 34px;
     margin: 18px 0 0;
+    padding-inline: 22px;
     font-family: 'Archivo', sans-serif;
     font-size: 11px; font-weight: 600; letter-spacing: .3em; text-transform: uppercase;
     color: rgba(228, 246, 238, .58);
