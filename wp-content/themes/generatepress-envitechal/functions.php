@@ -15,6 +15,16 @@ require_once get_stylesheet_directory() . '/inc/eta-agent.php';
 require_once get_stylesheet_directory() . '/inc/legal-pages.php';
 require_once get_stylesheet_directory() . '/inc/report-verification.php';
 
+/**
+ * No template in this theme renders a sidebar, but GeneratePress still marked
+ * inner pages as right-sidebar. That left its 20px sidebar gutter beside
+ * .site-main, so every content shell on those pages sat 20px left of centre.
+ * Declaring the layout lets the parent theme's own no-sidebar reset apply.
+ */
+add_filter('generate_sidebar_layout', static function () {
+    return 'no-sidebar';
+});
+
 /*
  * Own the site-icon output. A WordPress Site Icon is configured, but its
  * core wp_head output does not reach the final HTML on this stack, so the
