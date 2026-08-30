@@ -337,7 +337,8 @@ function eta_verify_render_panel()
                 <p class="eta-iv-note"><?php esc_html_e('If the details do not match, or the report predates the online registry, send a manual request further down this page and the laboratory team will confirm it directly.', 'envi-tech-al-modern'); ?></p>
             </div>
 
-            <form class="eta-iv-panel" id="eta-iv-form" novalidate>
+            <form class="eta-iv-panel" id="eta-iv-form" novalidate method="post" action=""
+                  onsubmit="return false;">
                 <div class="eta-iv-field">
                     <label for="eta-iv-number"><?php esc_html_e('Report number', 'envi-tech-al-modern'); ?></label>
                     <input type="text" id="eta-iv-number" name="report_number" autocomplete="off" spellcheck="false" required
@@ -353,7 +354,10 @@ function eta_verify_render_panel()
         </div>
     </section>
 
-    <script>
+    <?php // data-no-optimize keeps LiteSpeed from delaying this; without it a
+          // click before the script runs submits the form natively and puts the
+          // report number and date into the URL. ?>
+    <script data-no-optimize="1" data-cfasync="false">
     (function () {
         var form = document.getElementById('eta-iv-form');
         if (!form) { return; }
