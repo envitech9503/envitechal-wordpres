@@ -75,11 +75,21 @@
     box-sizing: border-box;
 }
 
+/* Body copy was pinned to a Windows-first system stack, so 77 elements on the
+   homepage — paragraphs, links, list items, card headings — rendered in the
+   visitor's OS font while the headings used Outfit. The page therefore looked
+   like two different designs, and looked different again on macOS and Android.
+   Archivo is the brand sans and is already loaded, so it carries body copy. */
 body {
     color: var(--eta-ink);
     background: var(--eta-bg);
-    font-family: "Segoe UI", Arial, sans-serif;
+    font-family: 'Archivo', "Segoe UI", Arial, sans-serif;
     text-rendering: optimizeLegibility;
+}
+
+/* GeneratePress sets its own system stack on form controls. */
+button, input, select, textarea {
+    font-family: 'Archivo', "Segoe UI", Arial, sans-serif;
 }
 
 a {

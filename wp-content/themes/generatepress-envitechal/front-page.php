@@ -167,7 +167,7 @@ html:not(.ets-gsap) .ets-gl { display: none; }
   align-items: center; gap: 9px; font-size: 10.5px; letter-spacing: .34em; text-transform: uppercase; color: #7FA391; }
 html:not(.ets-gsap) .ets-cue { display: none; }
 .ets-cueline { width: 1px; height: 40px; background: linear-gradient(#7FA391, transparent); animation: etsCueDrop 2.2s ease-in-out infinite; }
-.ets-skip { position: absolute; bottom: 24px; right: 104px; z-index: 6; appearance: none; cursor: pointer;
+.ets-skip { position: absolute; bottom: 24px; right: 104px; z-index: 6; appearance: none; cursor: pointer; font-family: 'Archivo', sans-serif;
   background: rgba(6,9,11,.4); color: #7FA391; border: 1px solid rgba(127,163,145,.4); border-radius: 999px;
   padding: 8px 18px; font-size: 10.5px; letter-spacing: .28em; text-transform: uppercase;
   transition: color .25s ease, border-color .25s ease; }
@@ -332,7 +332,7 @@ html:not(.ets-gsap) .ets-final { display: none; }
     <button type="button" class="ets-skip" data-ets-skip aria-label="Skip the introduction and go to the services overview">Skip intro</button>
   </div>
 </section>
-<script type="module" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/eta-hero-twin.js?v=18" data-no-optimize="1" data-no-defer="1" data-litespeed-noopt="1"></script>
+<script type="module" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/eta-hero-twin.js?v=19" data-no-optimize="1" data-no-defer="1" data-litespeed-noopt="1"></script>
 <style>
 /* ================= Homepage body v7 — act-based premium system — 28-08-2026 ================= */
 :root { --etb-ink:#0F1D18; --etb-char:#081310; --etb-char2:#0A1512; --etb-tealdeep:#0A1E19; --etb-emerald:#1E6B54; --etb-emerald2:#27866A; --etb-aqua:#7DE8CD; --etb-mist:#9CC3B2; --etb-sage:#5E7A6D; --etb-paper:#F4F7F3; --etb-line:rgba(15,29,24,.12); --etb-dline:rgba(125,232,205,.16); }
@@ -347,8 +347,11 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
 
 /* section heads */
 .etb-head { position: relative; max-width: 720px; margin: 0 0 36px; }
-.etb-num { display: block; font-family: 'Outfit', sans-serif; font-weight: 100; font-size: 46px; line-height: 1; color: rgba(30,107,84,.2); margin-bottom: 4px; }
-.etb-dark .etb-num { color: rgba(125,232,205,.14); }
+/* Act numerals sat at 1.07-1.40:1 contrast — below the 3:1 WCAG minimum for
+   large text, so they read as smudges rather than structure. Raised to clear
+   3.4:1 while staying secondary to the heading beneath. */
+.etb-num { display: block; font-family: 'Outfit', sans-serif; font-weight: 200; font-size: 46px; line-height: 1; color: rgba(30,107,84,.75); margin-bottom: 4px; }
+.etb-dark .etb-num { color: rgba(125,232,205,.46); }
 .etb-eyebrow { font-family: 'Archivo', sans-serif; font-size: 11.5px; font-weight: 600; letter-spacing: .32em; text-transform: uppercase; color: var(--etb-emerald); margin: 0 0 14px; }
 .etb-dark .etb-eyebrow { color: #8FB8A4; }
 .etb-head h2, .etb-maritime h2 { font-family: 'Outfit', sans-serif; font-weight: 200; font-size: clamp(30px, 3.4vw, 48px); line-height: 1.12; letter-spacing: .01em; color: var(--etb-ink); margin: 0 0 18px; }
@@ -443,7 +446,7 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
 
 /* ---------- 06 maritime spotlight ---------- */
 .etb-maritime { position: relative; overflow: hidden; background: linear-gradient(180deg, #07141A 0%, #0A2430 62%, #0C2B38 100%); padding: 88px 0 100px; }
-.etb-maritime .etb-num { color: rgba(125,214,232,.14); }
+.etb-maritime .etb-num { color: rgba(125,214,232,.49); }
 .etb-maritime::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,20,26,.93) 0%, rgba(7,20,26,.62) 40%, rgba(9,26,34,.45) 68%, rgba(7,20,26,.78) 100%), url('/wp-content/themes/generatepress-envitechal/assets/images/eta-sea.jpg') center 62%/cover no-repeat; opacity: .9; }
 .etb-sea { position: absolute; inset: auto 0 0 0; height: 46%; pointer-events: none; }
 .etb-wave { position: absolute; left: -4%; width: 108%; height: 120px; }
