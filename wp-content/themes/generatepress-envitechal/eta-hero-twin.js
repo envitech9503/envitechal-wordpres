@@ -5,10 +5,12 @@
  * without it the page shows the static composed fallback hero.
  * 30-08-2026 */
 
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js';
-import { gsap } from 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/+esm';
-import { ScrollTrigger } from 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/ScrollTrigger/+esm';
-import Lenis from 'https://cdn.jsdelivr.net/npm/lenis@1.3.11/+esm';
+/* Self-hosted, tree-shaken vendor bundles. three-slim.js carries only the 28
+ * Three.js symbols this module uses (113 KB gzipped against 251 KB for the
+ * full library); motion.js carries GSAP, ScrollTrigger and Lenis. Rebuild
+ * both from assets/js/vendor/_source-entry-*.js — see docs/vendor-bundles.md. */
+import * as THREE from './assets/js/vendor/three-slim.js';
+import { gsap, ScrollTrigger, Lenis } from './assets/js/vendor/motion.js';
 
 (function () {
   'use strict';

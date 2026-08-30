@@ -332,7 +332,7 @@ html:not(.ets-gsap) .ets-final { display: none; }
     <button type="button" class="ets-skip" data-ets-skip aria-label="Skip the introduction and go to the services overview">Skip intro</button>
   </div>
 </section>
-<script type="module" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/eta-hero-twin.js?v=15" data-no-optimize="1" data-no-defer="1" data-litespeed-noopt="1"></script>
+<script type="module" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/eta-hero-twin.js?v=16" data-no-optimize="1" data-no-defer="1" data-litespeed-noopt="1"></script>
 <style>
 /* ================= Homepage body v7 — act-based premium system — 28-08-2026 ================= */
 :root { --etb-ink:#0F1D18; --etb-char:#081310; --etb-char2:#0A1512; --etb-tealdeep:#0A1E19; --etb-emerald:#1E6B54; --etb-emerald2:#27866A; --etb-aqua:#7DE8CD; --etb-mist:#9CC3B2; --etb-sage:#5E7A6D; --etb-paper:#F4F7F3; --etb-line:rgba(15,29,24,.12); --etb-dline:rgba(125,232,205,.16); }
@@ -368,7 +368,9 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
 .etb-btn-ghost:hover { border-color: rgba(205,232,219,.75); color: #fff; }
 .etb-btn-line { background: transparent; border: 1px solid rgba(20,60,47,.3); color: #1E4436; }
 .etb-btn-line:hover { border-color: rgba(20,60,47,.7); color: var(--etb-ink); }
-.etb-link { font-family: 'Archivo', sans-serif; font-size: 12.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; text-decoration: none; color: var(--etb-emerald); background: linear-gradient(currentColor, currentColor) left bottom / 0 1px no-repeat; padding-bottom: 3px; transition: background-size .3s cubic-bezier(.2,.6,.2,1), color .25s ease; }
+/* inline-flex with a 24px minimum keeps these standalone calls to action at
+   the WCAG 2.2 AA target size (2.5.8); as text links they rendered 17px tall. */
+.etb-link { display: inline-flex; align-items: center; min-height: 24px; font-family: 'Archivo', sans-serif; font-size: 12.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; text-decoration: none; color: var(--etb-emerald); background: linear-gradient(currentColor, currentColor) left bottom / 0 1px no-repeat; padding-bottom: 3px; transition: background-size .3s cubic-bezier(.2,.6,.2,1), color .25s ease; }
 .etb-link:hover { background-size: 100% 1px; color: #14503D; }
 .etb-link-light { color: var(--etb-aqua); } .etb-link-light:hover { color: #fff; }
 .etb-actions { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-top: 28px; }
