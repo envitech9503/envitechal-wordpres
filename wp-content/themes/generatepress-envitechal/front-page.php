@@ -337,7 +337,11 @@ html:not(.ets-gsap) .ets-final { display: none; }
 /* ================= Homepage body v7 — act-based premium system — 28-08-2026 ================= */
 :root { --etb-ink:#0F1D18; --etb-char:#081310; --etb-char2:#0A1512; --etb-tealdeep:#0A1E19; --etb-emerald:#1E6B54; --etb-emerald2:#27866A; --etb-aqua:#7DE8CD; --etb-mist:#9CC3B2; --etb-sage:#53705F; --etb-paper:#F4F7F3; --etb-line:rgba(15,29,24,.12); --etb-dline:rgba(125,232,205,.16); }
 
-.etb-shell { max-width: 1200px; margin-inline: auto; }
+/* max-width alone left no gutter below 1200px, so on a phone every act ran
+   its headings and body copy hard against both screen edges. Constrain to
+   the viewport as .eta-shell already does, giving a 22px gutter on mobile
+   while desktop still caps at 1200px. */
+.etb-shell { width: min(1200px, calc(100% - 44px)); margin-inline: auto; }
 .etb-dark { width: 100vw; width: var(--eta-vw,100vw); margin-left: calc(50% - 50vw); margin-left: calc(50% - var(--eta-vw,100vw)/2); padding-inline: max(22px, calc((var(--eta-vw,100vw) - 1200px)/2)); color: #DFEDE6; }
 
 /* reveals (JS-gated; static without JS or with reduced motion) */
