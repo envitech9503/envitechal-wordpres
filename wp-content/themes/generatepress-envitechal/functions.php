@@ -3493,9 +3493,9 @@ function eta_modern_download_groups()
         'Certifications and accreditations' => [
             ['ISO 9001:2015 Certificate', 'https://envitechal.com/wp-content/uploads/2026/01/ISO-9001-Certificate.pdf'],
             ['ISO 14001:2015 Certificate', 'https://envitechal.com/wp-content/uploads/2026/01/ISO-14001-Certificate.pdf'],
-            ['Sindh EPA published document — confirm current status', 'https://envitechal.com/wp-content/uploads/2026/01/SEPA-NOC.pdf'],
+            ['Sindh EPA published document (confirm current status)', 'https://envitechal.com/wp-content/uploads/2026/01/SEPA-NOC.pdf'],
             ['Punjab EPA Certificate 2025–2028 (official source)', 'https://epd.punjab.gov.pk/system/files/EnviTech_%202025-2028_merged.pdf'],
-            ['PNAC active testing-laboratory register — LAB-285 Karachi and LAB-347 Lahore', 'https://pnac.gov.pk/Accredited-Cabs-serve/Testing-and-Calibration-Laboratories/Active'],
+            ['PNAC active testing-laboratory register: LAB-285 Karachi and LAB-347 Lahore', 'https://pnac.gov.pk/Accredited-Cabs-serve/Testing-and-Calibration-Laboratories/Active'],
         ],
         'Sindh environmental laws' => [
             ['SEQS compliance guide', home_url('/sindh-environmental-quality-standards-seqs/')],
@@ -4206,7 +4206,7 @@ function eta_modern_render_careers_page()
 
     <section class="eta-band eta-career-pathways">
         <div class="eta-shell">
-            <?php eta_modern_section_title('Career pathways', 'Where strong profiles usually fit', 'Hiring runs year-round across these streams — send a profile any time and the team reviews it against current and upcoming requirements.'); ?>
+            <?php eta_modern_section_title('Career pathways', 'Where strong profiles usually fit', 'Hiring runs year-round across these streams. Send a profile at any time and the team reviews it against current and upcoming requirements.'); ?>
             <div class="eta-career-role-grid">
                 <?php foreach (eta_modern_career_roles() as $role) : ?>
                     <article class="eta-career-role-card">
@@ -4930,7 +4930,7 @@ function eta_modern_render_certificates_page()
 {
     $credentials = [
         [
-            'name' => 'Sindh EPA laboratory credential — current confirmation required',
+            'name' => 'Sindh EPA laboratory credential (current confirmation required)',
             'issuer' => 'Sindh Environmental Protection Agency',
             'scope' => 'Environmental testing, monitoring, reporting and compliance support relevant to Sindh clients and regulatory submissions.',
             'status' => 'Do not rely on this category alone; confirm the latest issuer document, validity, conditions, and applicable scope.',
@@ -4966,7 +4966,7 @@ function eta_modern_render_certificates_page()
             'link_label' => 'Open ISO 14001 certificate',
         ],
         [
-            'name' => 'ISO/IEC 17025:2017 accreditation — Karachi LAB-285 and Lahore LAB-347',
+            'name' => 'ISO/IEC 17025:2017 accreditation: Karachi LAB-285 and Lahore LAB-347',
             'issuer' => 'Pakistan National Accreditation Council (PNAC)',
             'scope' => 'Karachi LAB-285: only the listed water/wastewater parameters and methods, with hardness, calcium, and magnesium limited to water where stated. Lahore LAB-347: only the listed water/wastewater parameters and methods. Neither scope extends to unlisted work.',
             'status' => 'Karachi LAB-285: first granted 5 May 2023 and document dated 1 June 2026 states validity through 4 May 2029. Lahore LAB-347: first granted 22 September 2025 and document states validity through 21 September 2028. Both remain subject to surveillance and current PNAC status.',
@@ -5599,7 +5599,7 @@ function eta_modern_render_indexed_utility_page($slug)
 
 function eta_modern_seqs_title()
 {
-    return 'SEQS — Sindh Environmental Quality Standards: Limits & Compliance Guide';
+    return 'SEQS: Sindh Environmental Quality Standards Limits and Compliance Guide';
 }
 
 function eta_modern_seqs_meta_description()

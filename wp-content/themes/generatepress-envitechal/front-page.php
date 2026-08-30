@@ -266,13 +266,13 @@ html:not(.ets-gsap) .ets-final { display: none; }
     </div>
 
     <div class="ets-l1">
-      <span class="ets-mask"><span class="ets-line ets-kicker">Envi Tech AL &mdash; Environmental Laboratory &amp; Consultancy </span></span>
+      <span class="ets-mask"><span class="ets-line ets-kicker">Envi Tech AL &middot; Environmental Laboratory &amp; Consultancy </span></span>
       <h1 class="ets-h1">
         <span class="ets-mask"><span class="ets-line">ENVIRONMENTAL </span></span>
         <span class="ets-mask"><span class="ets-line ets-em">INTELLIGENCE </span></span>
         <span class="ets-mask"><span class="ets-line">FOR INDUSTRY.</span></span>
       </h1>
-      <span class="ets-mask ets-subwrap"><span class="ets-line ets-sub">Accredited environmental testing, monitoring and consultancy &mdash; clear, defensible compliance intelligence for industry across Pakistan.</span></span>
+      <span class="ets-mask ets-subwrap"><span class="ets-line ets-sub">Accredited environmental testing, monitoring and consultancy. Clear, defensible compliance intelligence for industry across Pakistan.</span></span>
       <div class="ets-ctas">
         <a class="ets-btn ets-btn-primary" href="/contact-us-envi-tech-al/">Request a quote <span class="ets-arrow">&rarr;</span></a>
         <a class="ets-btn ets-btn-ghost" href="/services/">Explore services</a>
@@ -311,7 +311,7 @@ html:not(.ets-gsap) .ets-final { display: none; }
         <span class="ets-word"><span class="ets-line">COMPLY</span></span>
         <span class="ets-word"><span class="ets-line">IMPROVE</span></span>
       </div>
-      <p class="ets-wmicro">Reporting aligned with SEQS, PEQS and NEQS &mdash; ready for Sindh EPA and Punjab EPA.</p>
+      <p class="ets-wmicro">Reporting aligned with SEQS, PEQS and NEQS. Ready for Sindh EPA and Punjab EPA.</p>
     </div>
 
     <div class="ets-final">
@@ -328,7 +328,7 @@ html:not(.ets-gsap) .ets-final { display: none; }
       </div>
     </div>
 
-    <div class="ets-cue"><span>Scroll &mdash; enter the site</span><span class="ets-cueline"></span></div>
+    <div class="ets-cue"><span>Scroll to enter the site</span><span class="ets-cueline"></span></div>
     <button type="button" class="ets-skip" data-ets-skip aria-label="Skip the introduction and go to the services overview">Skip intro</button>
   </div>
 </section>
@@ -641,7 +641,7 @@ $etb_vault = [
                 <span class="etb-num" aria-hidden="true">01</span>
                 <p class="etb-eyebrow"><?php esc_html_e('Core services', 'envi-tech-al-modern'); ?></p>
                 <h2><?php esc_html_e('What we measure. What we solve.', 'envi-tech-al-modern'); ?></h2>
-                <p class="etb-lead"><?php esc_html_e('Environmental testing and compliance services built for serious operations — accurate lab results, practical advisory, and documentation that stands up in front of regulators, buyers, and auditors.', 'envi-tech-al-modern'); ?></p>
+                <p class="etb-lead"><?php esc_html_e('Environmental testing and compliance services built for serious operations. Accurate lab results, practical advisory, and documentation that stands up in front of regulators, buyers, and auditors.', 'envi-tech-al-modern'); ?></p>
             </header>
             <div class="etb-obs-grid">
                 <nav class="etb-obs-index" aria-label="<?php esc_attr_e('Service index', 'envi-tech-al-modern'); ?>">
@@ -679,7 +679,7 @@ $etb_vault = [
                     <span class="etb-num" aria-hidden="true">02</span>
                     <p class="etb-eyebrow"><?php esc_html_e('Compliance workflow', 'envi-tech-al-modern'); ?></p>
                     <h2><?php esc_html_e('From requirement to defensible decision.', 'envi-tech-al-modern'); ?></h2>
-                    <p class="etb-lead"><?php esc_html_e('From sample to submission without losing the thread — a controlled path from scope selection to sampling, analysis, reporting, and compliance support.', 'envi-tech-al-modern'); ?></p>
+                    <p class="etb-lead"><?php esc_html_e('From sample to submission without losing the thread. A controlled path from scope selection to sampling, analysis, reporting, and compliance support.', 'envi-tech-al-modern'); ?></p>
                 </header>
                 <div class="etb-journey-tags etb-r">
                     <span><?php esc_html_e('Scope matched to sample, permit, buyer, or audit need', 'envi-tech-al-modern'); ?></span>
@@ -741,7 +741,7 @@ $etb_vault = [
                 <span class="etb-num" aria-hidden="true">04</span>
                 <p class="etb-microlabel etb-r"><?php esc_html_e('Ballast water / vessel sampling / Karachi port / lab analysis', 'envi-tech-al-modern'); ?></p>
                 <h2 class="etb-r"><?php esc_html_e('Open water. Controlled data.', 'envi-tech-al-modern'); ?></h2>
-                <p class="etb-lead etb-r"><?php esc_html_e('Ballast water testing support for vessels that need fast, defensible results — sampling coordination at Karachi port, scope-confirmed laboratory methods, and compliance-focused reporting for audit and inspection readiness.', 'envi-tech-al-modern'); ?></p>
+                <p class="etb-lead etb-r"><?php esc_html_e('Ballast water testing support for vessels that need fast, defensible results. Sampling coordination at Karachi port, scope-confirmed laboratory methods, and compliance-focused reporting for audit and inspection readiness.', 'envi-tech-al-modern'); ?></p>
                 <a class="etb-btn etb-btn-ghost etb-r" href="<?php echo esc_url(home_url('/services/ballast-water-testing-services/')); ?>"><?php esc_html_e('Explore ballast water testing', 'envi-tech-al-modern'); ?> <span class="etb-arrow" aria-hidden="true">&rarr;</span></a>
             </div>
             <ul class="etb-ticks etb-r">
@@ -759,7 +759,7 @@ $etb_vault = [
                 <span class="etb-num" aria-hidden="true">05</span>
                 <p class="etb-eyebrow"><?php esc_html_e('Trusted credentials', 'envi-tech-al-modern'); ?></p>
                 <h2><?php esc_html_e('Credentials behind the data.', 'envi-tech-al-modern'); ?></h2>
-                <p class="etb-lead"><?php esc_html_e('Certifications, approvals, and quality systems — visible proof points for customers who need confidence before they hand over a compliance-critical requirement.', 'envi-tech-al-modern'); ?></p>
+                <p class="etb-lead"><?php esc_html_e('Certifications, approvals, and quality systems. Visible proof points for customers who need confidence before they hand over a compliance-critical requirement.', 'envi-tech-al-modern'); ?></p>
             </header>
             <div class="etb-vault-table" role="list">
                 <?php foreach ($etb_vault as $row) : ?>
@@ -788,7 +788,7 @@ $etb_vault = [
                     <span class="etb-num" aria-hidden="true">06</span>
                     <p class="etb-eyebrow"><?php esc_html_e('Why Envi Tech AL', 'envi-tech-al-modern'); ?></p>
                     <h2><?php esc_html_e('Why the system works.', 'envi-tech-al-modern'); ?></h2>
-                    <p class="etb-lead"><?php esc_html_e('Laboratory capability, field execution, and regulatory thinking in one team — helping customers move faster on approvals, corrective actions, buyer requirements, and compliance-critical reporting.', 'envi-tech-al-modern'); ?></p>
+                    <p class="etb-lead"><?php esc_html_e('Laboratory capability, field execution, and regulatory thinking in one team, helping customers move faster on approvals, corrective actions, buyer requirements, and compliance-critical reporting.', 'envi-tech-al-modern'); ?></p>
                 </header>
                 <div class="etb-proofs">
                     <div class="etb-proof etb-r"><strong>FIELD + LAB</strong><p><?php esc_html_e('One controlled chain from sampling to analysis.', 'envi-tech-al-modern'); ?></p></div>
@@ -850,7 +850,7 @@ $etb_vault = [
             <span class="etb-num" aria-hidden="true">08</span>
             <p class="etb-eyebrow etb-r"><?php esc_html_e('Need EPA / buyer / audit-ready environmental testing?', 'envi-tech-al-modern'); ?></p>
             <h2 class="etb-final-h etb-r"><?php esc_html_e('Have a requirement?', 'envi-tech-al-modern'); ?> <br><?php esc_html_e('Send us the scope.', 'envi-tech-al-modern'); ?></h2>
-            <p class="etb-lead etb-r"><?php esc_html_e('Send the requirement before the deadline becomes urgent — scope-confirmed testing, monitoring, reporting, calibration, and consultancy aligned with your operational timelines.', 'envi-tech-al-modern'); ?></p>
+            <p class="etb-lead etb-r"><?php esc_html_e('Send the requirement before the deadline becomes urgent. We confirm scope for testing, monitoring, reporting, calibration, and consultancy to match your operational timelines.', 'envi-tech-al-modern'); ?></p>
             <p class="etb-microlabel etb-r"><?php esc_html_e('Testing · Monitoring · Consultancy · Calibration', 'envi-tech-al-modern'); ?></p>
             <div class="etb-actions etb-final-actions etb-r">
                 <a class="etb-btn etb-btn-solid" href="<?php echo esc_url(home_url('/contact-us-envi-tech-al/')); ?>"><?php esc_html_e('Request a quotation', 'envi-tech-al-modern'); ?> <span class="etb-arrow" aria-hidden="true">&rarr;</span></a>

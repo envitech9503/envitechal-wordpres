@@ -42,7 +42,7 @@ $eta_year = date('Y');
 
                 <p class="fsf-kicker"><?php esc_html_e('Have a requirement?', 'envi-tech-al-modern'); ?></p>
                 <h2 class="fsf-headline" id="fsf-invite-title"><?php esc_html_e('Send the scope.', 'envi-tech-al-modern'); ?><br><?php esc_html_e('We confirm the method.', 'envi-tech-al-modern'); ?></h2>
-                <p class="fsf-sub"><?php esc_html_e('Testing, monitoring, calibration and consultancy for teams working to a deadline — scope confirmed before work begins.', 'envi-tech-al-modern'); ?></p>
+                <p class="fsf-sub"><?php esc_html_e('Testing, monitoring, calibration and consultancy for teams working to a deadline. We confirm scope before any work begins.', 'envi-tech-al-modern'); ?></p>
 
                 <div class="fsf-actions">
                     <a class="fsf-btn fsf-btn-solid" href="<?php echo esc_url(home_url('/contact-us-envi-tech-al/')); ?>"><?php esc_html_e('Request a quotation', 'envi-tech-al-modern'); ?> <span class="fsf-arrow" aria-hidden="true">&rarr;</span></a>
@@ -148,7 +148,7 @@ $eta_year = date('Y');
     <div class="fsf-statement">
         <div class="fsf-aurora" aria-hidden="true"></div>
         <div class="fsf-contours" aria-hidden="true"></div>
-        <span class="fsf-wordmark" aria-hidden="true" data-text="Envi Tech AL">Envi Tech AL</span>
+        <span class="fsf-wordmark" aria-hidden="true">Envi Tech AL</span>
         <p class="fsf-statement-note"><span>Measure.</span><span>Understand.</span><span>Comply.</span><span>Improve.</span></p>
     </div>
 
