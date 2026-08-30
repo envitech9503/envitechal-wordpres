@@ -13,6 +13,7 @@ require_once get_stylesheet_directory() . '/inc/robots-directives.php';
 require_once get_stylesheet_directory() . '/inc/ai-visibility.php';
 require_once get_stylesheet_directory() . '/inc/eta-agent.php';
 require_once get_stylesheet_directory() . '/inc/legal-pages.php';
+require_once get_stylesheet_directory() . '/inc/report-verification.php';
 
 /*
  * Own the site-icon output. A WordPress Site Icon is configured, but its
@@ -3810,6 +3811,8 @@ function eta_modern_render_report_verification_page()
             </aside>
         </div>
     </section>
+
+    <?php eta_verify_render_panel(); ?>
 
     <section class="eta-verify-proof" aria-label="<?php esc_attr_e('Verification trust points', 'envi-tech-al-modern'); ?>">
         <div class="eta-shell eta-verify-proof-grid">

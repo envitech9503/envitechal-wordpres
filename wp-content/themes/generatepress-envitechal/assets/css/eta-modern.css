@@ -9235,3 +9235,43 @@ h3 {
     .eta-fs-footer .fsf-col a:hover::before { opacity: 0; }
     .eta-fs-footer .fsf-social a:hover, .eta-fs-footer .fsf-tels a:hover { transform: none; }
 }
+
+/* ------------------------------------------------------------------ *
+ * Instant report verification panel
+ * Renders only when the report registry holds records, so these rules
+ * are inert on a site that has not imported one yet.
+ * ------------------------------------------------------------------ */
+.eta-iv { background: #0B1A16; color: #F2F7F4; }
+.eta-iv-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 460px); gap: clamp(32px, 5vw, 72px); align-items: start; }
+.eta-iv-copy .eta-eyebrow { color: #7DE8CD; }
+.eta-iv-copy h2 { color: #FFFFFF; margin: 0 0 16px; }
+.eta-iv-copy p { color: #C6D8D0; margin: 0 0 14px; }
+.eta-iv-note { font-size: 14px; color: #9FBBB0; }
+
+.eta-iv-panel { background: rgba(255, 255, 255, .05); border: 1px solid rgba(125, 232, 205, .22); border-radius: 4px; padding: clamp(22px, 3vw, 34px); }
+.eta-iv-field { margin-bottom: 18px; }
+.eta-iv-field label { display: block; margin-bottom: 7px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #9FBBB0; }
+.eta-iv-field input { width: 100%; min-height: 48px; padding: 12px 14px; background: rgba(3, 12, 10, .55); border: 1px solid rgba(255, 255, 255, .18); border-radius: 3px; color: #FFFFFF; font-size: 16px; font-family: inherit; }
+.eta-iv-field input::placeholder { color: #8AA79C; }
+.eta-iv-field input:focus-visible { outline: 2px solid #7DE8CD; outline-offset: 2px; border-color: #7DE8CD; }
+/* The native date control paints its indicator dark, which disappears on this
+   panel; inverting it is the only way to keep it visible. */
+.eta-iv-field input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); opacity: .75; cursor: pointer; }
+
+.eta-iv-panel .eta-iv-submit { width: 100%; min-height: 48px; }
+.eta-iv-panel .eta-iv-submit[disabled] { opacity: .6; cursor: progress; }
+
+.eta-iv-result { margin: 18px 0 0; font-size: 15px; line-height: 1.55; }
+.eta-iv-result[data-state="idle"] { display: none; }
+.eta-iv-result[data-state="pending"] { color: #C6D8D0; }
+.eta-iv-result[data-state="verified"] { color: #7DE8CD; }
+.eta-iv-result[data-state="superseded"] { color: #F5D08A; }
+.eta-iv-result[data-state="no_match"],
+.eta-iv-result[data-state="invalid"],
+.eta-iv-result[data-state="rate_limited"],
+.eta-iv-result[data-state="unavailable"],
+.eta-iv-result[data-state="error"] { color: #F2A79A; }
+
+@media (max-width: 860px) {
+  .eta-iv-grid { grid-template-columns: 1fr; }
+}
