@@ -347,21 +347,24 @@ function eta_verify_import_csv($path)
         fclose($handle);
         return ['imported' => 0, 'skipped' => 0, 'reasons' => ['The file is empty.']];
     }
-    $first = preg_replace('/^ï»¿/', '', $first);
+    $bom = chr(0xEF) . chr(0xBB) . chr(0xBF);
+    if (strncmp($first, $bom, 3) === 0) {
+        $first = substr($first, 3);
+    }
 
     // Some locales export semicolon or tab separated. Pick whichever separator
     // appears most often in the header row.
     $delimiter = ',';
     $best = substr_count($first, ',');
-    foreach ([';' => substr_count($first, ';'), "	" => substr_count($first, "	")] as $candidate => $count) {
+    $tab = chr(9);
+    foreach ([';' => substr_count($first, ';'), $tab => substr_count($first, $tab)] as $candidate => $count) {
         if ($count > $best) {
             $best = $count;
             $delimiter = $candidate;
         }
     }
 
-    $header = str_getcsv(rtrim($first, "
-"), $delimiter);
+    $header = str_getcsv(rtrim($first, chr(13) . chr(10)), $delimiter, '"', '');
     if (!is_array($header)) {
         fclose($handle);
         return ['imported' => 0, 'skipped' => 0, 'reasons' => ['The header row could not be read.']];
@@ -384,7 +387,7 @@ function eta_verify_import_csv($path)
     };
 
     $line = 1;
-    while (($row = fgetcsv($handle, 0, $delimiter)) !== false) {
+    while (($row = fgetcsv($handle, 0, $delimiter, '"', '')) !== false) {
         $line++;
         if (!is_array($row) || (count($row) === 1 && trim((string) $row[0]) === '')) {
             continue; // blank line
