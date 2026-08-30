@@ -19,6 +19,11 @@ $eta_year = date('Y');
 
 <footer class="eta-fs-footer" role="contentinfo">
 
+    <!-- instrument edge: a measured rule, not a border -->
+    <div class="fsf-rule" aria-hidden="true"></div>
+    <span class="fsf-mark fsf-mark-tl" aria-hidden="true"></span>
+    <span class="fsf-mark fsf-mark-tr" aria-hidden="true"></span>
+
     <!-- ACT 1 — the invitation and the direct line -->
     <div class="fsf-top">
         <div class="eta-shell fsf-top-grid">
@@ -71,7 +76,21 @@ $eta_year = date('Y');
         </div>
     </div>
 
-    <!-- ACT 2 — the full index -->
+    <!-- ACT 2 — what the laboratory actually measures, running continuously -->
+    <div class="fsf-marquee" aria-hidden="true">
+        <div class="fsf-marquee-track">
+            <?php
+            $eta_params = ['SO₂', 'NOₓ', 'CO', 'pH', 'TDS', 'TSS', 'COD', 'BOD₅', 'PM₂.₅', 'PM₁₀', 'dB(A)', 'Cd', 'Cr', 'Pb', 'Hg', 'Ni', 'Zn', 'As', 'Oil &amp; Grease', 'Phenols', 'NH₃', 'Lux', '°C', 'RH'];
+            for ($i = 0; $i < 2; $i++) {
+                foreach ($eta_params as $p) {
+                    echo '<span class="fsf-param">' . $p . '</span><i class="fsf-dot">•</i>';
+                }
+            }
+            ?>
+        </div>
+    </div>
+
+    <!-- ACT 3 — the full index -->
     <div class="fsf-index-band">
         <div class="eta-shell fsf-index-grid">
 
@@ -117,17 +136,20 @@ $eta_year = date('Y');
     <!-- ACT 3 — the credentials, stated once, plainly -->
     <div class="fsf-rail">
         <div class="eta-shell fsf-rail-inner">
-            <span class="fsf-cred"><strong>PNAC</strong> ISO/IEC 17025 &middot; LAB-285 Karachi</span>
-            <span class="fsf-cred"><strong>PNAC</strong> ISO/IEC 17025 &middot; LAB-347 Lahore</span>
-            <span class="fsf-cred"><strong>ISO 9001:2015</strong> Quality</span>
-            <span class="fsf-cred"><strong>ISO 14001:2015</strong> Environment</span>
-            <span class="fsf-cred"><strong>Sindh EPA</strong> &middot; <strong>Punjab EPA</strong></span>
+            <span class="fsf-cred"><i class="fsf-live" aria-hidden="true"></i><strong>PNAC</strong> ISO/IEC 17025 &middot; LAB-285 Karachi</span>
+            <span class="fsf-cred"><i class="fsf-live" aria-hidden="true"></i><strong>PNAC</strong> ISO/IEC 17025 &middot; LAB-347 Lahore</span>
+            <span class="fsf-cred"><i class="fsf-live" aria-hidden="true"></i><strong>ISO 9001:2015</strong> Quality</span>
+            <span class="fsf-cred"><i class="fsf-live" aria-hidden="true"></i><strong>ISO 14001:2015</strong> Environment</span>
+            <span class="fsf-cred"><i class="fsf-live" aria-hidden="true"></i><strong>Sindh EPA</strong> &middot; <strong>Punjab EPA</strong></span>
         </div>
     </div>
 
     <!-- ACT 4 — the closing statement -->
-    <div class="fsf-statement" aria-hidden="true">
-        <span class="fsf-wordmark">Envi Tech AL</span>
+    <div class="fsf-statement">
+        <div class="fsf-aurora" aria-hidden="true"></div>
+        <div class="fsf-contours" aria-hidden="true"></div>
+        <span class="fsf-wordmark" aria-hidden="true" data-text="Envi Tech AL">Envi Tech AL</span>
+        <p class="fsf-statement-note"><span>Measure.</span><span>Understand.</span><span>Comply.</span><span>Improve.</span></p>
     </div>
 
     <!-- ACT 5 — colophon -->
@@ -140,6 +162,8 @@ $eta_year = date('Y');
                 <a href="<?php echo esc_url(home_url('/privacy-policy/')); ?>"><?php esc_html_e('Privacy Policy', 'envi-tech-al-modern'); ?></a>
                 <a href="<?php echo esc_url(home_url('/terms-of-service/')); ?>"><?php esc_html_e('Terms of Use', 'envi-tech-al-modern'); ?></a>
             </nav>
+
+            <a class="fsf-top-link" href="#page"><span class="fsf-top-arrow" aria-hidden="true">&uarr;</span> Back to top</a>
 
             <div class="fsf-social" aria-label="<?php esc_attr_e('Envi Tech AL on social media', 'envi-tech-al-modern'); ?>">
                 <a href="https://www.linkedin.com/company/envitech-al" target="_blank" rel="noopener" aria-label="<?php esc_attr_e('Envi Tech AL on LinkedIn', 'envi-tech-al-modern'); ?>">
@@ -157,6 +181,8 @@ $eta_year = date('Y');
             </div>
         </div>
     </div>
+    <span class="fsf-mark fsf-mark-bl" aria-hidden="true"></span>
+    <span class="fsf-mark fsf-mark-br" aria-hidden="true"></span>
 </footer>
 
 </div><!-- #page -->
