@@ -20,7 +20,15 @@ Standing rules for this project. See `AGENTS.md` for the safety and deployment p
 
 - British English throughout: organisation, programme, analyse, licence (noun), centre,
   colour, recognise. Applies to page copy, docs, and commit messages.
-- The contact URL is always `/contact-us-envi-tech-al/` — never `/contact/`.
+- The contact URL is always `/contact-us-envi-tech-al/`, never `/contact/`.
+- **Never use an em dash to bolt an explanatory clause onto a sentence**
+  ("...for teams working to a deadline — scope confirmed before work begins").
+  It is the clearest tell of machine-written copy and the client has rejected it.
+  Write two sentences, or use a colon, comma, or brackets. For label separators
+  use the middot (·) the site already uses, as in "PNAC ISO/IEC 17025 · LAB-285".
+- Avoid the other stock cadences that read as generated: "in today's landscape",
+  "it's not just X, it's Y", "unlock/elevate/seamless/robust", triplets of adjectives
+  used for rhythm rather than meaning, and closing sentences that restate the opening.
 
 ## Regulatory wording
 

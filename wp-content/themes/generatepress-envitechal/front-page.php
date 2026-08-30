@@ -288,7 +288,7 @@ html:not(.ets-gsap) .ets-final { display: none; }
     <div class="ets-note ets-n2">
       <span class="ets-mask"><span class="ets-line ets-nnum">02</span></span>
       <span class="ets-mask"><span class="ets-line ets-nkick">The Monitoring</span></span>
-      <p class="ets-ntext"><span class="ets-mask"><span class="ets-line">Air, water, emissions, noise </span></span><span class="ets-mask"><span class="ets-line">and workplace conditions &mdash; </span></span><span class="ets-mask"><span class="ets-line">captured where they happen.</span></span></p>
+      <p class="ets-ntext"><span class="ets-mask"><span class="ets-line">Air, water, emissions, noise </span></span><span class="ets-mask"><span class="ets-line">and workplace conditions, </span></span><span class="ets-mask"><span class="ets-line">captured where they happen.</span></span></p>
     </div>
 
     <div class="ets-note ets-n3">
