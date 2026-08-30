@@ -124,7 +124,7 @@ body.home .site-main.eta-home-master { margin-top: 0; margin-left: 0; margin-rig
 
 .ets-twin { position: relative; background: #06090b; color: #EAF3EE; font-family: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
   width: 100vw; width: var(--eta-vw, 100vw); margin-left: calc(50% - 50vw); margin-left: calc(50% - var(--eta-vw, 100vw)/2); }
-html.ets-gsap .ets-twin { height: 340vh; height: 340svh; }
+html.ets-gsap .ets-twin { height: 265vh; height: 265svh; }
 .ets-stage { position: relative; overflow: hidden; height: calc(100vh - var(--eta-hh, 0px)); height: calc(100svh - var(--eta-hh, 0px)); }
 html.ets-gsap .ets-stage { position: sticky; top: var(--eta-hh, 0px); }
 
@@ -237,7 +237,7 @@ html:not(.ets-gsap) .ets-final { display: none; }
 
 /* ---------- mobile ---------- */
 @media (max-width: 820px) {
-  html.ets-gsap .ets-twin { height: 300vh; height: 300svh; }
+  html.ets-gsap .ets-twin { height: 235vh; height: 235svh; }
   .ets-note { right: auto; left: 7vw; top: auto; bottom: 9svh; transform: none; width: 86vw; }
   .ets-nnum { font-size: 44px; }
   .ets-ntext { font-size: 20px; }
