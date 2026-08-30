@@ -332,7 +332,7 @@ html:not(.ets-gsap) .ets-final { display: none; }
     <button type="button" class="ets-skip" data-ets-skip aria-label="Skip the introduction and go to the services overview">Skip intro</button>
   </div>
 </section>
-<script type="module" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/eta-hero-twin.js?v=17" data-no-optimize="1" data-no-defer="1" data-litespeed-noopt="1"></script>
+<script type="module" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/eta-hero-twin.js?v=18" data-no-optimize="1" data-no-defer="1" data-litespeed-noopt="1"></script>
 <style>
 /* ================= Homepage body v7 — act-based premium system — 28-08-2026 ================= */
 :root { --etb-ink:#0F1D18; --etb-char:#081310; --etb-char2:#0A1512; --etb-tealdeep:#0A1E19; --etb-emerald:#1E6B54; --etb-emerald2:#27866A; --etb-aqua:#7DE8CD; --etb-mist:#9CC3B2; --etb-sage:#5E7A6D; --etb-paper:#F4F7F3; --etb-line:rgba(15,29,24,.12); --etb-dline:rgba(125,232,205,.16); }
@@ -559,7 +559,7 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
    the per-section and breakpoint padding set above.
    ============================================================ */
 .site-main > #ets-twin,
-.site-main > section[id^="etb-"] { margin-bottom: 0; }
+.site-main > section[class*="etb-"] { margin-bottom: 0; }
 
 .etb-obs, .etb-journey, .etb-matrix, .etb-maritime,
 .etb-vault, .etb-why, .etb-hub {
@@ -822,7 +822,8 @@ $etb_vault = [
                          src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/eta-hub-seqs-1320.webp'); ?>"
                          srcset="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/eta-hub-seqs-760.webp'); ?> 760w, <?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/eta-hub-seqs-1320.webp'); ?> 1320w"
                          sizes="(max-width: 1020px) 100vw, 56vw"
-                         width="1320" height="737" alt="" aria-hidden="true" loading="lazy" decoding="async">
+                         width="1320" height="737" alt="" aria-hidden="true" loading="lazy" decoding="async"
+                         data-spai-excluded="true">
                     <p class="etb-microlabel"><?php esc_html_e('Regulation / Sindh', 'envi-tech-al-modern'); ?></p>
                     <h3><a href="<?php echo esc_url(home_url('/sindh-environmental-quality-standards-seqs/')); ?>"><?php esc_html_e('Sindh Environmental Quality Standards guide', 'envi-tech-al-modern'); ?></a></h3>
                     <p class="etb-hub-p"><?php esc_html_e('A practical SEQS limits and compliance guide for Sindh facilities preparing testing, monitoring, and EMR submissions.', 'envi-tech-al-modern'); ?></p>
