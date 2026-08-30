@@ -2006,7 +2006,12 @@ h3 {
     color: var(--eta-muted);
 }
 
+/* Standalone card call to action: inline-flex with a 24px minimum keeps it at
+   the WCAG 2.2 AA target size (2.5.8); as plain text it rendered 17px tall. */
 .eta-text-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
     margin-top: auto;
     font-weight: 800;
     text-decoration: none;
