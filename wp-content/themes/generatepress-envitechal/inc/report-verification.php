@@ -202,15 +202,18 @@ function eta_verify_render_admin()
         return;
     }
 
-    $notice = '';
+    $notice  = '';
+    $reasons = [];
 
     if (
         isset($_POST['eta_verify_nonce'])
         && wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['eta_verify_nonce'])), 'eta_verify_import')
         && !empty($_FILES['eta_verify_csv']['tmp_name'])
+        && is_uploaded_file($_FILES['eta_verify_csv']['tmp_name'])
     ) {
-        $result = eta_verify_import_csv($_FILES['eta_verify_csv']['tmp_name']);
-        $notice = sprintf(
+        $result  = eta_verify_import_csv($_FILES['eta_verify_csv']['tmp_name']);
+        $reasons = isset($result['reasons']) ? $result['reasons'] : [];
+        $notice  = sprintf(
             /* translators: 1: imported rows, 2: skipped rows */
             __('Imported %1$d reports. Skipped %2$d rows.', 'envi-tech-al-modern'),
             $result['imported'],
@@ -224,7 +227,25 @@ function eta_verify_render_admin()
         <h1><?php esc_html_e('Report Registry', 'envi-tech-al-modern'); ?></h1>
 
         <?php if ($notice) : ?>
-            <div class="notice notice-success"><p><?php echo esc_html($notice); ?></p></div>
+            <div class="notice notice-<?php echo empty($reasons) ? 'success' : 'warning'; ?>">
+                <p><?php echo esc_html($notice); ?></p>
+                <?php if (!empty($reasons)) : ?>
+                    <ul style="list-style:disc;margin-left:20px;">
+                        <?php foreach (array_slice($reasons, 0, 25) as $reason) : ?>
+                            <li><?php echo esc_html($reason); ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <?php if (count($reasons) > 25) : ?>
+                        <p><?php
+                            printf(
+                                /* translators: %d: number of further skipped rows */
+                                esc_html__('and %d more.', 'envi-tech-al-modern'),
+                                count($reasons) - 25
+                            );
+                        ?></p>
+                    <?php endif; ?>
+                <?php endif; ?>
+            </div>
         <?php endif; ?>
 
         <p>
@@ -241,7 +262,7 @@ function eta_verify_render_admin()
         </p>
 
         <h2><?php esc_html_e('Import a CSV', 'envi-tech-al-modern'); ?></h2>
-        <p><?php esc_html_e('Columns, with a header row: report_number, report_date, client_name, status, laboratory. Dates in YYYY-MM-DD. Status is valid or superseded. Existing report numbers are updated rather than duplicated.', 'envi-tech-al-modern'); ?></p>
+        <p><?php esc_html_e('Columns, with a header row: report_number and report_date are required; client_name, status and laboratory are optional. Dates may be YYYY-MM-DD or day-first (14/03/2026 is 14 March), and month names are accepted. Status is valid or superseded, defaulting to valid. Existing report numbers are updated rather than duplicated, so a corrected file can simply be imported again.', 'envi-tech-al-modern'); ?></p>
         <p><code>report_number,report_date,client_name,status,laboratory<br>ETA/2026/0148,2026-03-14,Artistic Milliners,valid,LAB-285</code></p>
 
         <form method="post" enctype="multipart/form-data">
@@ -253,41 +274,135 @@ function eta_verify_render_admin()
     <?php
 }
 
+/**
+ * Read a date from a spreadsheet cell.
+ *
+ * Day-first is assumed for slash and dot separated dates, matching the
+ * convention on the reports themselves. That choice matters: PHP's own
+ * strtotime() reads 03/04/2026 as 4 March, so a report issued on 3 April
+ * would import under the wrong date and then fail every verification with
+ * no error shown anywhere.
+ *
+ * Returns Y-m-d, or null when the value cannot be read unambiguously.
+ */
+function eta_verify_parse_date($raw)
+{
+    $raw = trim((string) $raw);
+    if ($raw === '') {
+        return null;
+    }
+
+    $formats = [
+        'Y-m-d',  // ISO, and what the date field on the portal submits
+        'Y/m/d',
+        'd/m/Y',  // day-first
+        'd-m-Y',
+        'd.m.Y',
+        'j/n/Y',
+        'j-n-Y',
+        'j.n.Y',
+        'j M Y',  // textual months are unambiguous
+        'j F Y',
+        'd M Y',
+        'd F Y',
+    ];
+
+    foreach ($formats as $format) {
+        $date = DateTime::createFromFormat('!' . $format, $raw);
+        if (!$date) {
+            continue;
+        }
+        $errors = DateTime::getLastErrors();
+        if (is_array($errors) && (!empty($errors['warning_count']) || !empty($errors['error_count']))) {
+            continue;
+        }
+        return $date->format('Y-m-d');
+    }
+
+    return null;
+}
+
+/**
+ * Import a CSV into the registry.
+ *
+ * Returns the counts plus a per-row reason for anything skipped, so a bad
+ * export can be corrected rather than quietly losing rows.
+ */
 function eta_verify_import_csv($path)
 {
     global $wpdb;
-    $table = eta_verify_table_name();
+    $table    = eta_verify_table_name();
     $imported = 0;
-    $skipped  = 0;
+    $skipped  = [];
 
     $handle = fopen($path, 'r');
     if (!$handle) {
-        return ['imported' => 0, 'skipped' => 0];
+        return ['imported' => 0, 'skipped' => 0, 'reasons' => ['The file could not be opened.']];
     }
 
-    $header = fgetcsv($handle);
+    // Excel writes a UTF-8 BOM, which would otherwise become part of the first
+    // column name and leave report_number unmapped for the whole file.
+    $first = fgets($handle);
+    if ($first === false) {
+        fclose($handle);
+        return ['imported' => 0, 'skipped' => 0, 'reasons' => ['The file is empty.']];
+    }
+    $first = preg_replace('/^ï»¿/', '', $first);
+
+    // Some locales export semicolon or tab separated. Pick whichever separator
+    // appears most often in the header row.
+    $delimiter = ',';
+    $best = substr_count($first, ',');
+    foreach ([';' => substr_count($first, ';'), "	" => substr_count($first, "	")] as $candidate => $count) {
+        if ($count > $best) {
+            $best = $count;
+            $delimiter = $candidate;
+        }
+    }
+
+    $header = str_getcsv(rtrim($first, "
+"), $delimiter);
     if (!is_array($header)) {
         fclose($handle);
-        return ['imported' => 0, 'skipped' => 0];
+        return ['imported' => 0, 'skipped' => 0, 'reasons' => ['The header row could not be read.']];
     }
     $map = array_flip(array_map(static function ($h) {
         return strtolower(trim((string) $h));
     }, $header));
 
+    if (!isset($map['report_number'], $map['report_date'])) {
+        fclose($handle);
+        return [
+            'imported' => 0,
+            'skipped'  => 0,
+            'reasons'  => ['The header row needs both report_number and report_date. Found: ' . implode(', ', array_keys($map)) . '.'],
+        ];
+    }
+
     $col = static function ($row, $map, $name) {
         return isset($map[$name], $row[$map[$name]]) ? trim((string) $row[$map[$name]]) : '';
     };
 
-    while (($row = fgetcsv($handle)) !== false) {
-        $number = $col($row, $map, 'report_number');
-        $date   = $col($row, $map, 'report_date');
-        $client = $col($row, $map, 'client_name');
-        $status = strtolower($col($row, $map, 'status')) ?: 'valid';
-        $lab    = $col($row, $map, 'laboratory');
+    $line = 1;
+    while (($row = fgetcsv($handle, 0, $delimiter)) !== false) {
+        $line++;
+        if (!is_array($row) || (count($row) === 1 && trim((string) $row[0]) === '')) {
+            continue; // blank line
+        }
 
-        $timestamp = $date !== '' ? strtotime($date) : false;
-        if ($number === '' || $timestamp === false) {
-            $skipped++;
+        $number   = $col($row, $map, 'report_number');
+        $raw_date = $col($row, $map, 'report_date');
+        $client   = $col($row, $map, 'client_name');
+        $status   = strtolower($col($row, $map, 'status'));
+        $lab      = $col($row, $map, 'laboratory');
+
+        if ($number === '') {
+            $skipped[] = sprintf('Row %d: no report number.', $line);
+            continue;
+        }
+        $date = eta_verify_parse_date($raw_date);
+        if ($date === null) {
+            $skipped[] = sprintf('Row %d (%s): could not read the date "%s".', $line, $number, $raw_date);
             continue;
         }
 
@@ -295,7 +410,7 @@ function eta_verify_import_csv($path)
             $table,
             [
                 'report_number' => $number,
-                'report_date'   => gmdate('Y-m-d', $timestamp),
+                'report_date'   => $date,
                 'client_hash'   => $client !== '' ? hash('sha256', strtolower($client)) : '',
                 'client_label'  => $client,
                 'status'        => in_array($status, ['valid', 'superseded'], true) ? $status : 'valid',
@@ -308,7 +423,7 @@ function eta_verify_import_csv($path)
     }
 
     fclose($handle);
-    return ['imported' => $imported, 'skipped' => $skipped];
+    return ['imported' => $imported, 'skipped' => count($skipped), 'reasons' => $skipped];
 }
 
 /* ------------------------------------------------------------------ *
