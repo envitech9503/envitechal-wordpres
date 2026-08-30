@@ -1,3 +1,27 @@
+/* ============================================================
+   BRAND TYPEFACES
+   The theme names 'Outfit' and 'Archivo' throughout, but nothing ever
+   loaded them: there were no @font-face rules, no font stylesheet and no
+   font requests, so every visitor fell back to their OS sans and the
+   100-300 display weights collapsed to regular. Self-hosted variable
+   fonts (latin subset, 32KB + 35KB) cover the whole weight range.
+   ============================================================ */
+@font-face {
+    font-family: 'Outfit';
+    src: url('../fonts/outfit-var-latin.woff2') format('woff2');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Archivo';
+    src: url('../fonts/archivo-var-latin.woff2') format('woff2');
+    font-weight: 400 700;
+    font-style: normal;
+    font-display: swap;
+}
+
 :root {
     --eta-ink: #172a33;
     --eta-muted: #5d6d72;

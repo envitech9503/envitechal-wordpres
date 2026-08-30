@@ -28,6 +28,12 @@ add_action('wp_head', function () {
     $icon_192 = function_exists('get_site_icon_url') ? get_site_icon_url(192) : '';
     $icon_180 = function_exists('get_site_icon_url') ? get_site_icon_url(180) : '';
 
+    /* Both brand faces are used above the fold, so preload them rather than
+     * letting the stylesheet discover them a round trip later. */
+    $fonts = get_stylesheet_directory_uri() . '/assets/fonts';
+    printf('<link rel="preload" as="font" type="font/woff2" crossorigin href="%s">' . "\n", esc_url($fonts . '/outfit-var-latin.woff2'));
+    printf('<link rel="preload" as="font" type="font/woff2" crossorigin href="%s">' . "\n", esc_url($fonts . '/archivo-var-latin.woff2'));
+
     printf('<link rel="icon" type="image/png" sizes="32x32" data-spai-excluded="true" href="%s">' . "\n", esc_url($icon_32 ?: $base . '/favicon-32.png'));
     printf('<link rel="icon" type="image/png" sizes="192x192" data-spai-excluded="true" href="%s">' . "\n", esc_url($icon_192 ?: $base . '/favicon-192.png'));
     printf('<link rel="apple-touch-icon" sizes="180x180" data-spai-excluded="true" href="%s">' . "\n", esc_url($icon_180 ?: $base . '/favicon-192.png'));
