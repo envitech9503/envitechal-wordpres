@@ -489,6 +489,14 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
    its body copy out of line with its neighbour. Tightening the tracking and
    the top of the size ramp fits every label on one line, which keeps the
    rows equal without reserving blank space under the shorter ones. */
+/* Named clients replaced three anonymous 'feedback themes'. Real organisations
+   the buyer recognises do more for trust than described sentiment, and the
+   names are the ones already published on the clients page. */
+.etb-clients-lead { margin: 0 0 20px; font-size: 14px; line-height: 1.6; color: var(--etb-sage); }
+.etb-clients { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 22px; margin: 0 0 28px; padding: 0; list-style: none; border-top: 1px solid var(--etb-line); }
+.etb-clients li { padding: 9px 0; font-size: 13.5px; line-height: 1.35; color: var(--etb-ink); border-bottom: 1px solid var(--etb-line); }
+@media (max-width: 560px) { .etb-clients { grid-template-columns: 1fr; } }
+
 .etb-proof strong { display: block; font-family: 'Outfit', sans-serif; font-weight: 300; font-size: clamp(19px, 1.7vw, 23px); line-height: 1.5; letter-spacing: .07em; color: var(--etb-ink); margin-bottom: 8px; }
 .etb-proof p { font-size: 14px; line-height: 1.6; color: var(--etb-sage); margin: 0; }
 .etb-fb { display: grid; grid-template-columns: 52px 1fr; gap: 12px; padding: 18px 0; border-bottom: 1px solid var(--etb-line); }
@@ -806,13 +814,38 @@ $etb_vault = [
                 </div>
             </div>
             <div class="etb-feedback">
-                <p class="etb-microlabel etb-r"><?php esc_html_e('Client feedback themes', 'envi-tech-al-modern'); ?></p>
-                <div class="etb-fb etb-r"><span>01</span><div><strong><?php esc_html_e('Responsive support', 'envi-tech-al-modern'); ?></strong><p><?php esc_html_e('Quick coordination for sampling, quotations, report follow-up, and urgent compliance timelines.', 'envi-tech-al-modern'); ?></p></div></div>
-                <div class="etb-fb etb-r"><span>02</span><div><strong><?php esc_html_e('Clear reporting', 'envi-tech-al-modern'); ?></strong><p><?php esc_html_e('Reports that are understandable, traceable, and useful for management, auditors, buyers, and regulators.', 'envi-tech-al-modern'); ?></p></div></div>
-                <div class="etb-fb etb-r"><span>03</span><div><strong><?php esc_html_e('Compliance guidance', 'envi-tech-al-modern'); ?></strong><p><?php esc_html_e('Lab results, monitoring, consultancy, and documentation connected to the real decision a client needs to support.', 'envi-tech-al-modern'); ?></p></div></div>
+                <p class="etb-microlabel etb-r"><?php esc_html_e('Selected clients', 'envi-tech-al-modern'); ?></p>
+                <p class="etb-clients-lead etb-r"><?php esc_html_e('Organisations that rely on Envi Tech AL for testing, monitoring, calibration and compliance reporting.', 'envi-tech-al-modern'); ?></p>
+                <ul class="etb-clients etb-r">
+                    <?php
+                    $eta_clients = [
+                        'Agha Khan University Hospital',
+                        'WWF',
+                        'Soorty Enterprises',
+                        'Artistic Milliners',
+                        'Greaves Pakistan',
+                        'Pearl Continental Hotel Karachi',
+                        'Movenpick Hotel Karachi',
+                        'National Medical Center',
+                        'Hamdard University Group',
+                        'United Towel Exporters',
+                        'Crown Textile',
+                        'Rainbow Hosiery Pvt Ltd',
+                        'Velosi Pakistan',
+                        'Power China Gansu Energy',
+                        'Patrind O&amp;M Private Limited',
+                        'Fabritex Enterprises',
+                        'Vee Chem Industries',
+                        'B.H.Y Hospital',
+                    ];
+                    foreach ($eta_clients as $eta_client) {
+                        echo '<li>' . $eta_client . '</li>';
+                    }
+                    ?>
+                </ul>
                 <div class="etb-actions etb-r">
                     <a class="etb-btn etb-btn-line" href="<?php echo esc_url(home_url('/contact-us-envi-tech-al/')); ?>"><?php esc_html_e('Discuss your requirement', 'envi-tech-al-modern'); ?></a>
-                    <a class="etb-link" href="<?php echo esc_url('https://maps.app.goo.gl/kbcjQDdRXYXadgve7'); ?>" target="_blank" rel="noopener"><?php esc_html_e('Read Google reviews', 'envi-tech-al-modern'); ?> <span class="etb-arrow" aria-hidden="true">&rarr;</span></a>
+                    <a class="etb-link" href="<?php echo esc_url(home_url('/ourclients/')); ?>"><?php esc_html_e('Full client portfolio', 'envi-tech-al-modern'); ?> <span class="etb-arrow" aria-hidden="true">&rarr;</span></a>
                 </div>
             </div>
         </div>
