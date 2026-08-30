@@ -25,6 +25,20 @@ add_filter('generate_sidebar_layout', static function () {
     return 'no-sidebar';
 });
 
+/**
+ * The header logo is line art with fine lettering. ShortPixel was swapping it
+ * client-side for a copy resized to its 141x60 display box and recompressed
+ * from 36.6KB to 4.3KB, which is roughly half the pixels a retina screen needs
+ * and lossy compression on exactly the sort of image that shows it. Excluding
+ * it keeps the 320x137 master, which covers 2x at the size it is drawn.
+ */
+add_filter('generate_logo_attributes', static function ($attr) {
+    $attr['data-spai-excluded'] = 'true';
+    $attr['decoding'] = 'async';
+
+    return $attr;
+});
+
 /*
  * Own the site-icon output. A WordPress Site Icon is configured, but its
  * core wp_head output does not reach the final HTML on this stack, so the
