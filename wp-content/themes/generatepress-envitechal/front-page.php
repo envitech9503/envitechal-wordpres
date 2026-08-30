@@ -233,7 +233,7 @@ html:not(.ets-gsap) .ets-final { display: none; }
 .ets-fcta .ets-btn-ghost { color: #1E4436; border-color: rgba(20,60,47,.35); }
 .ets-fcta .ets-btn-ghost::after { background: #1E4436; }
 .ets-fcta .ets-btn-ghost:hover { color: #0F1B17; border-color: rgba(20,60,47,.7); }
-.ets-ftrust { font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: #5E7A6D; }
+.ets-ftrust { font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: #7C9C8C; }
 
 /* ---------- mobile ---------- */
 @media (max-width: 820px) {
@@ -335,7 +335,7 @@ html:not(.ets-gsap) .ets-final { display: none; }
 <script type="module" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/eta-hero-twin.js?v=19" data-no-optimize="1" data-no-defer="1" data-litespeed-noopt="1"></script>
 <style>
 /* ================= Homepage body v7 — act-based premium system — 28-08-2026 ================= */
-:root { --etb-ink:#0F1D18; --etb-char:#081310; --etb-char2:#0A1512; --etb-tealdeep:#0A1E19; --etb-emerald:#1E6B54; --etb-emerald2:#27866A; --etb-aqua:#7DE8CD; --etb-mist:#9CC3B2; --etb-sage:#5E7A6D; --etb-paper:#F4F7F3; --etb-line:rgba(15,29,24,.12); --etb-dline:rgba(125,232,205,.16); }
+:root { --etb-ink:#0F1D18; --etb-char:#081310; --etb-char2:#0A1512; --etb-tealdeep:#0A1E19; --etb-emerald:#1E6B54; --etb-emerald2:#27866A; --etb-aqua:#7DE8CD; --etb-mist:#9CC3B2; --etb-sage:#53705F; --etb-paper:#F4F7F3; --etb-line:rgba(15,29,24,.12); --etb-dline:rgba(125,232,205,.16); }
 
 .etb-shell { max-width: 1200px; margin-inline: auto; }
 .etb-dark { width: 100vw; width: var(--eta-vw,100vw); margin-left: calc(50% - 50vw); margin-left: calc(50% - var(--eta-vw,100vw)/2); padding-inline: max(22px, calc((var(--eta-vw,100vw) - 1200px)/2)); color: #DFEDE6; }
@@ -376,6 +376,10 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
 .etb-link { display: inline-flex; align-items: center; min-height: 24px; font-family: 'Archivo', sans-serif; font-size: 12.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; text-decoration: none; color: var(--etb-emerald); background: linear-gradient(currentColor, currentColor) left bottom / 0 1px no-repeat; padding-bottom: 3px; transition: background-size .3s cubic-bezier(.2,.6,.2,1), color .25s ease; }
 .etb-link:hover { background-size: 100% 1px; color: #14503D; }
 .etb-link-light { color: var(--etb-aqua); } .etb-link-light:hover { color: #fff; }
+/* Any link sitting on a dark act inherits the aqua, not the emerald that is
+   tuned for paper. The emerald measured 2.96:1 against #081310. */
+.etb-dark .etb-link { color: var(--etb-aqua); }
+.etb-dark .etb-link:hover, .etb-dark .etb-link:focus-visible { color: #FFFFFF; }
 .etb-actions { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-top: 28px; }
 .etb-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--etb-aqua); box-shadow: 0 0 8px rgba(125,232,205,.7); margin-left: 8px; vertical-align: 2px; }
 
