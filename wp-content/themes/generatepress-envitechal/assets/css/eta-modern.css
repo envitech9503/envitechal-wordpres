@@ -8955,7 +8955,7 @@ h3 {
 
 .fsf-actions { display: flex; flex-wrap: wrap; gap: 14px; }
 
-.fsf-btn {
+.eta-fs-footer .fsf-btn {
     position: relative;
     display: inline-flex; align-items: center; gap: 11px;
     min-height: 52px; padding: 15px 30px;
@@ -8966,19 +8966,19 @@ h3 {
     transition: color .3s ease, border-color .3s ease;
 }
 /* sweep fill on hover instead of a flat colour swap */
-.fsf-btn::before {
+.eta-fs-footer .fsf-btn::before {
     content: ""; position: absolute; inset: 0; z-index: -1;
     background: var(--fsf-mint);
     transform: scaleX(0); transform-origin: left;
     transition: transform .42s cubic-bezier(.22,.7,.2,1);
 }
-.fsf-btn:hover::before, .fsf-btn:focus-visible::before { transform: scaleX(1); }
-.fsf-btn-solid { background: var(--fsf-emerald); border: 1px solid var(--fsf-emerald); color: #FFF; }
-.fsf-btn-solid:hover, .fsf-btn-solid:focus-visible { color: var(--fsf-ink); border-color: var(--fsf-mint); }
-.fsf-btn-line { background: transparent; border: 1px solid rgba(228, 246, 238, .30); color: var(--fsf-text); }
-.fsf-btn-line:hover, .fsf-btn-line:focus-visible { color: var(--fsf-ink); border-color: var(--fsf-mint); }
+.eta-fs-footer .fsf-btn:hover::before, .eta-fs-footer .fsf-btn:focus-visible::before { transform: scaleX(1); }
+.eta-fs-footer .fsf-btn-solid { background: var(--fsf-emerald); border: 1px solid var(--fsf-emerald); color: #FFF; }
+.eta-fs-footer .fsf-btn-solid:hover, .eta-fs-footer .fsf-btn-solid:focus-visible { color: var(--fsf-ink); border-color: var(--fsf-mint); }
+.eta-fs-footer .fsf-btn-line { background: transparent; border: 1px solid rgba(228, 246, 238, .30); color: var(--fsf-text); }
+.eta-fs-footer .fsf-btn-line:hover, .eta-fs-footer .fsf-btn-line:focus-visible { color: var(--fsf-ink); border-color: var(--fsf-mint); }
 .fsf-arrow { transition: transform .34s cubic-bezier(.22,.7,.2,1); }
-.fsf-btn:hover .fsf-arrow, .fsf-btn:focus-visible .fsf-arrow { transform: translateX(5px); }
+.eta-fs-footer .fsf-btn:hover .fsf-arrow, .eta-fs-footer .fsf-btn:focus-visible .fsf-arrow { transform: translateX(5px); }
 
 .fsf-label {
     margin: 0 0 22px;
@@ -8988,7 +8988,7 @@ h3 {
 }
 .fsf-label .fsf-n { color: rgba(125, 232, 205, .45); margin-right: 8px; font-variant-numeric: tabular-nums; }
 
-.fsf-mail {
+.eta-fs-footer .fsf-mail {
     display: inline-block; margin-bottom: 26px;
     font-family: 'Outfit', sans-serif; font-weight: 300;
     font-size: clamp(21px, 2.1vw, 30px); letter-spacing: -0.01em;
@@ -8998,16 +8998,16 @@ h3 {
     padding-bottom: 5px;
     transition: background-size .45s cubic-bezier(.22,.7,.2,1), color .3s ease;
 }
-.fsf-mail:hover, .fsf-mail:focus-visible { color: var(--fsf-mint); background-size: 100% 1px; }
+.eta-fs-footer .fsf-mail:hover, .eta-fs-footer .fsf-mail:focus-visible { color: var(--fsf-mint); background-size: 100% 1px; }
 
 .fsf-tels { list-style: none; margin: 0 0 36px; padding: 0; display: flex; flex-direction: column; gap: 2px; }
-.fsf-tels a {
+.eta-fs-footer .fsf-tels a {
     display: inline-flex; align-items: center; min-height: 30px;
     font-size: 15px; color: var(--fsf-text); text-decoration: none;
     font-variant-numeric: tabular-nums; letter-spacing: .02em;
     transition: color .22s ease, transform .22s ease;
 }
-.fsf-tels a:hover, .fsf-tels a:focus-visible { color: var(--fsf-mint); transform: translateX(3px); }
+.eta-fs-footer .fsf-tels a:hover, .eta-fs-footer .fsf-tels a:focus-visible { color: var(--fsf-mint); transform: translateX(3px); }
 
 .fsf-offices { display: grid; grid-template-columns: repeat(auto-fit, minmax(186px, 1fr)); gap: 28px; }
 .fsf-office { position: relative; padding-top: 16px; border-top: 1px solid var(--fsf-line); }
@@ -9053,7 +9053,7 @@ h3 {
     border-right: 1px solid var(--fsf-line);
 }
 .fsf-index-grid .fsf-col:last-child { border-right: 0; }
-.fsf-col a {
+.eta-fs-footer .fsf-col a {
     position: relative;
     display: inline-flex; align-items: center;
     padding: 8px 0 8px 0;
@@ -9061,15 +9061,15 @@ h3 {
     transition: color .24s ease, padding-left .28s cubic-bezier(.22,.7,.2,1);
 }
 /* an arrow slides in from the left rather than the text simply changing colour */
-.fsf-col a::before {
+.eta-fs-footer .fsf-col a::before {
     content: "→";
     position: absolute; left: 0;
     opacity: 0; transform: translateX(-6px);
     color: var(--fsf-mint);
     transition: opacity .24s ease, transform .28s cubic-bezier(.22,.7,.2,1);
 }
-.fsf-col a:hover, .fsf-col a:focus-visible { color: var(--fsf-text); padding-left: 22px; }
-.fsf-col a:hover::before, .fsf-col a:focus-visible::before { opacity: 1; transform: translateX(0); }
+.eta-fs-footer .fsf-col a:hover, .eta-fs-footer .fsf-col a:focus-visible { color: var(--fsf-text); padding-left: 22px; }
+.eta-fs-footer .fsf-col a:hover::before, .eta-fs-footer .fsf-col a:focus-visible::before { opacity: 1; transform: translateX(0); }
 
 /* ---- Act 4: credentials as live readouts ---- */
 .fsf-rail { border-bottom: 1px solid var(--fsf-line); background: rgba(125, 232, 205, .022); }
@@ -9165,14 +9165,14 @@ h3 {
 .fsf-disciplines { letter-spacing: .12em; text-transform: uppercase; font-size: 10.5px; }
 .fsf-disciplines i { color: var(--fsf-mint); font-style: normal; margin: 0 5px; }
 .fsf-legal { display: flex; gap: 22px; }
-.fsf-legal a {
+.eta-fs-footer .fsf-legal a {
     display: inline-flex; align-items: center; min-height: 24px;
     color: var(--fsf-muted); text-decoration: underline; text-underline-offset: 3px;
     transition: color .2s ease;
 }
-.fsf-legal a:hover, .fsf-legal a:focus-visible { color: var(--fsf-mint); }
+.eta-fs-footer .fsf-legal a:hover, .eta-fs-footer .fsf-legal a:focus-visible { color: var(--fsf-mint); }
 
-.fsf-top-link {
+.eta-fs-footer .fsf-top-link {
     display: inline-flex; align-items: center; gap: 9px; min-height: 24px;
     margin-left: auto;
     font-family: 'Archivo', sans-serif;
@@ -9180,12 +9180,12 @@ h3 {
     color: var(--fsf-muted); text-decoration: none;
     transition: color .22s ease;
 }
-.fsf-top-link:hover, .fsf-top-link:focus-visible { color: var(--fsf-mint); }
+.eta-fs-footer .fsf-top-link:hover, .eta-fs-footer .fsf-top-link:focus-visible { color: var(--fsf-mint); }
 .fsf-top-arrow { transition: transform .3s cubic-bezier(.22,.7,.2,1); }
-.fsf-top-link:hover .fsf-top-arrow { transform: translateY(-4px); }
+.eta-fs-footer .fsf-top-link:hover .fsf-top-arrow { transform: translateY(-4px); }
 
 .fsf-social { display: flex; gap: 9px; }
-.fsf-social a {
+.eta-fs-footer .fsf-social a {
     display: inline-flex; align-items: center; justify-content: center;
     width: 38px; height: 38px; border-radius: 999px;
     border: 1px solid var(--fsf-line);
@@ -9193,7 +9193,7 @@ h3 {
     color: var(--fsf-text); text-decoration: none; line-height: 1;
     transition: background-color .24s ease, color .24s ease, border-color .24s ease, transform .24s ease;
 }
-.fsf-social a:hover, .fsf-social a:focus-visible {
+.eta-fs-footer .fsf-social a:hover, .eta-fs-footer .fsf-social a:focus-visible {
     background: var(--fsf-mint); color: var(--fsf-ink); border-color: var(--fsf-mint); transform: translateY(-2px);
 }
 .fsf-social svg { display: block; }
@@ -9212,7 +9212,7 @@ h3 {
 }
 
 @media (max-width: 640px) {
-    .fsf-top-link { margin-left: 0; }
+    .eta-fs-footer .fsf-top-link { margin-left: 0; }
     .fsf-colophon-inner { gap: 12px 20px; }
     .fsf-statement-note { gap: 8px 18px; letter-spacing: .22em; }
 }
@@ -9220,10 +9220,10 @@ h3 {
 @media (prefers-reduced-motion: reduce) {
     .fsf-marquee-track, .fsf-aurora, .fsf-live, .fsf-wordmark::after { animation: none; }
     .fsf-wordmark::after { display: none; }
-    .fsf-btn::before { transition: none; }
+    .eta-fs-footer .fsf-btn::before { transition: none; }
     .fsf-btn, .fsf-arrow, .fsf-col a, .fsf-col a::before, .fsf-mail,
-    .fsf-tels a, .fsf-social a, .fsf-top-arrow { transition: none; }
-    .fsf-col a:hover { padding-left: 0; }
-    .fsf-col a:hover::before { opacity: 0; }
-    .fsf-social a:hover, .fsf-tels a:hover { transform: none; }
+    .eta-fs-footer .fsf-tels a, .eta-fs-footer .fsf-social a, .fsf-top-arrow { transition: none; }
+    .eta-fs-footer .fsf-col a:hover { padding-left: 0; }
+    .eta-fs-footer .fsf-col a:hover::before { opacity: 0; }
+    .eta-fs-footer .fsf-social a:hover, .eta-fs-footer .fsf-tels a:hover { transform: none; }
 }
