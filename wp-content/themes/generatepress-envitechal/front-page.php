@@ -47,28 +47,28 @@ $service_tiles = [
         'title' => 'Environmental Consultancy',
         'text' => 'IEE, EIA, EMP, EMR, audits, SEPA submissions, and regulator-facing environmental documentation.',
         'url' => home_url('/services/environmental-consultancy/'),
-        'image' => get_stylesheet_directory_uri() . '/assets/images/eta-svc-consultancy.jpg',
+        'image' => home_url('/wp-content/uploads/2026/06/Environmental-Consultancy.png'),
     ],
     [
         'kicker' => 'Environmental Laboratory',
         'title' => 'Environmental Lab & Analytical Services',
         'text' => 'Defensible laboratory analysis for environmental samples, industrial compliance, and buyer-facing reports.',
         'url' => home_url('/services/analytical-lab-services/'),
-        'image' => get_stylesheet_directory_uri() . '/assets/images/eta-svc-laboratory.jpg',
+        'image' => home_url('/wp-content/uploads/2026/06/Water-Testing-Laboratory.png'),
     ],
     [
         'kicker' => 'Water & Wastewater',
         'title' => 'Water Testing Lab Services',
         'text' => 'Drinking water, wastewater, process water, RO performance, and discharge compliance testing.',
         'url' => home_url('/services/water-testing-lab-services/'),
-        'image' => get_stylesheet_directory_uri() . '/assets/images/eta-svc-water.jpg',
+        'image' => home_url('/wp-content/uploads/2026/08/featured.webp'),
     ],
     [
         'kicker' => 'Instrument Accuracy',
         'title' => 'Equipment Calibration',
         'text' => 'Calibration support for field instruments, monitoring equipment, and laboratory measurement confidence.',
         'url' => home_url('/services/equipment-calibration-services/'),
-        'image' => get_stylesheet_directory_uri() . '/assets/images/eta-svc-calibration.jpg',
+        'image' => home_url('/wp-content/uploads/2026/06/Calibration-Services.png'),
     ],
 ];
 
@@ -250,7 +250,7 @@ html:not(.ets-gsap) .ets-final { display: none; }
   html.ets-gsap .ets-stage { position: relative; }
 }
 </style>
-<script data-no-optimize="1" data-no-defer="1" data-litespeed-noopt="1">(function(){function f(){var d=document.documentElement,h=document.getElementById("masthead");d.style.setProperty("--eta-vw",d.clientWidth+"px");d.style.setProperty("--eta-hh",(h?h.offsetHeight:0)+"px");}f();addEventListener("resize",f);addEventListener("orientationchange",f);addEventListener("load",f);})();</script>
+<script data-no-optimize="1" data-no-defer="1" data-litespeed-noopt="1">(function(){var d=document.documentElement;/* Claim the hero runway here rather than waiting for the module. The module is type=module, so it only runs after both vendor bundles have downloaded; until then .ets-twin has no height, the page is short, and the first section below it sits in the opening viewport and is scored as the LCP element. */if(!matchMedia("(prefers-reduced-motion: reduce)").matches&&"noModule" in HTMLScriptElement.prototype){d.classList.add("ets-gsap");}function f(){var h=document.getElementById("masthead");d.style.setProperty("--eta-vw",d.clientWidth+"px");d.style.setProperty("--eta-hh",(h?h.offsetHeight:0)+"px");}f();addEventListener("resize",f);addEventListener("orientationchange",f);addEventListener("load",f);})();</script>
 <section class="ets-twin" id="ets-twin" aria-label="Envi Tech AL — environmental intelligence for industry">
   <div class="ets-stage">
     <div class="ets-atmos" aria-hidden="true"></div>
@@ -455,7 +455,7 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
 /* ---------- 06 maritime spotlight ---------- */
 .etb-maritime { position: relative; overflow: hidden; background: linear-gradient(180deg, #07141A 0%, #0A2430 62%, #0C2B38 100%); padding: 88px 0 100px; }
 .etb-maritime .etb-num { color: rgba(125,214,232,.49); }
-.etb-maritime::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,20,26,.93) 0%, rgba(7,20,26,.62) 40%, rgba(9,26,34,.45) 68%, rgba(7,20,26,.78) 100%), url('/wp-content/themes/generatepress-envitechal/assets/images/eta-sea.jpg') center 62%/cover no-repeat; opacity: .9; }
+.etb-maritime::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,20,26,.93) 0%, rgba(7,20,26,.62) 40%, rgba(9,26,34,.45) 68%, rgba(7,20,26,.78) 100%), url('/wp-content/uploads/2026/07/ballast-water-testing-imo-karachi-port.webp') center 62%/cover no-repeat; opacity: .9; }
 .etb-sea { position: absolute; inset: auto 0 0 0; height: 46%; pointer-events: none; }
 .etb-wave { position: absolute; left: -4%; width: 108%; height: 120px; }
 .etb-wave-1 { bottom: 18%; } .etb-wave-2 { bottom: 9%; } .etb-wave-3 { bottom: 0; }
