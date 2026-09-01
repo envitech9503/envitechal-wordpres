@@ -47,28 +47,32 @@ $service_tiles = [
         'title' => 'Environmental Consultancy',
         'text' => 'IEE, EIA, EMP, EMR, audits, SEPA submissions, and regulator-facing environmental documentation.',
         'url' => home_url('/services/environmental-consultancy/'),
-        'image' => home_url('/wp-content/uploads/2026/06/Environmental-Consultancy.png'),
+        'image' => 'eta-svc-consultancy',
+        'image_h' => 990,
     ],
     [
         'kicker' => 'Environmental Laboratory',
         'title' => 'Environmental Lab & Analytical Services',
         'text' => 'Defensible laboratory analysis for environmental samples, industrial compliance, and buyer-facing reports.',
         'url' => home_url('/services/analytical-lab-services/'),
-        'image' => home_url('/wp-content/uploads/2026/06/Water-Testing-Laboratory.png'),
+        'image' => 'eta-svc-laboratory',
+        'image_h' => 990,
     ],
     [
         'kicker' => 'Water & Wastewater',
         'title' => 'Water Testing Lab Services',
         'text' => 'Drinking water, wastewater, process water, RO performance, and discharge compliance testing.',
         'url' => home_url('/services/water-testing-lab-services/'),
-        'image' => home_url('/wp-content/uploads/2026/08/featured.webp'),
+        'image' => 'eta-svc-water',
+        'image_h' => 693,
     ],
     [
         'kicker' => 'Instrument Accuracy',
         'title' => 'Equipment Calibration',
         'text' => 'Calibration support for field instruments, monitoring equipment, and laboratory measurement confidence.',
         'url' => home_url('/services/equipment-calibration-services/'),
-        'image' => home_url('/wp-content/uploads/2026/06/Calibration-Services.png'),
+        'image' => 'eta-svc-calibration',
+        'image_h' => 990,
     ],
 ];
 
@@ -672,7 +676,15 @@ $etb_vault = [
                 <div class="etb-obs-planes">
                     <?php foreach ($service_tiles as $i => $tile) : ?>
                     <article class="etb-obs-plane<?php echo $i === 0 ? ' is-on' : ''; ?>" data-plane="<?php echo (int) $i; ?>">
-                        <div class="etb-obs-media"><?php eta_modern_home_image($tile['image'], '', $tile['title'], 'medium_large', 'lazy', '(max-width: 820px) 92vw, 46vw'); ?></div>
+                        <div class="etb-obs-media">
+                            <?php $eta_img = get_stylesheet_directory_uri() . '/assets/images/' . $tile['image']; ?>
+                            <img src="<?php echo esc_url($eta_img . '-1320.webp'); ?>"
+                                 srcset="<?php echo esc_url($eta_img . '-760.webp'); ?> 760w, <?php echo esc_url($eta_img . '-1320.webp'); ?> 1320w"
+                                 sizes="(max-width: 820px) 92vw, 46vw"
+                                 width="1320" height="<?php echo (int) $tile['image_h']; ?>"
+                                 alt="<?php echo esc_attr($tile['title']); ?>" loading="lazy" decoding="async"
+                                 data-spai-excluded="true">
+                        </div>
                         <div class="etb-obs-body">
                             <p class="etb-microlabel"><?php echo esc_html($tile['kicker']); ?></p>
                             <h3 class="etb-obs-h"><?php echo esc_html($tile['title']); ?></h3>
