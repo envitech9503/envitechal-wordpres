@@ -48,8 +48,6 @@ $service_tiles = [
         'text' => 'IEE, EIA, EMP, EMR, audits, SEPA submissions, and regulator-facing environmental documentation.',
         'url' => home_url('/services/environmental-consultancy/'),
         'image' => 'eta-svc-consultancy',
-        'image_w' => 811,
-        'image_h' => 416,
     ],
     [
         'kicker' => 'Environmental Laboratory',
@@ -57,8 +55,6 @@ $service_tiles = [
         'text' => 'Defensible laboratory analysis for environmental samples, industrial compliance, and buyer-facing reports.',
         'url' => home_url('/services/analytical-lab-services/'),
         'image' => 'eta-svc-laboratory',
-        'image_w' => 710,
-        'image_h' => 364,
     ],
     [
         'kicker' => 'Water & Wastewater',
@@ -66,8 +62,6 @@ $service_tiles = [
         'text' => 'Drinking water, wastewater, process water, RO performance, and discharge compliance testing.',
         'url' => home_url('/services/water-testing-lab-services/'),
         'image' => 'eta-svc-water',
-        'image_w' => 1200,
-        'image_h' => 615,
     ],
     [
         'kicker' => 'Instrument Accuracy',
@@ -75,8 +69,6 @@ $service_tiles = [
         'text' => 'Calibration support for field instruments, monitoring equipment, and laboratory measurement confidence.',
         'url' => home_url('/services/equipment-calibration-services/'),
         'image' => 'eta-svc-calibration',
-        'image_w' => 724,
-        'image_h' => 371,
     ],
 ];
 
@@ -463,7 +455,7 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
 /* ---------- 06 maritime spotlight ---------- */
 .etb-maritime { position: relative; overflow: hidden; background: linear-gradient(180deg, #07141A 0%, #0A2430 62%, #0C2B38 100%); padding: 88px 0 100px; }
 .etb-maritime .etb-num { color: rgba(125,214,232,.49); }
-.etb-maritime::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,20,26,.93) 0%, rgba(7,20,26,.62) 40%, rgba(9,26,34,.45) 68%, rgba(7,20,26,.78) 100%), url('/wp-content/uploads/2026/07/ballast-water-testing-imo-karachi-port.webp') center 62%/cover no-repeat; opacity: .9; }
+.etb-maritime::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,20,26,.93) 0%, rgba(7,20,26,.62) 40%, rgba(9,26,34,.45) 68%, rgba(7,20,26,.78) 100%), url('/wp-content/themes/generatepress-envitechal/assets/images/eta-sea.webp') center 62%/cover no-repeat; opacity: .9; }
 .etb-sea { position: absolute; inset: auto 0 0 0; height: 46%; pointer-events: none; }
 .etb-wave { position: absolute; left: -4%; width: 108%; height: 120px; }
 .etb-wave-1 { bottom: 18%; } .etb-wave-2 { bottom: 9%; } .etb-wave-3 { bottom: 0; }
@@ -682,8 +674,10 @@ $etb_vault = [
                     <article class="etb-obs-plane<?php echo $i === 0 ? ' is-on' : ''; ?>" data-plane="<?php echo (int) $i; ?>">
                         <div class="etb-obs-media">
                             <?php $eta_img = get_stylesheet_directory_uri() . '/assets/images/' . $tile['image']; ?>
-                            <img src="<?php echo esc_url($eta_img . '.webp'); ?>"
-                                 width="<?php echo (int) $tile['image_w']; ?>" height="<?php echo (int) $tile['image_h']; ?>"
+                            <img src="<?php echo esc_url($eta_img . '-1400.webp'); ?>"
+                                 srcset="<?php echo esc_url($eta_img . '-760.webp'); ?> 760w, <?php echo esc_url($eta_img . '-1400.webp'); ?> 1400w"
+                                 sizes="(max-width: 820px) 92vw, 46vw"
+                                 width="1400" height="718"
                                  alt="<?php echo esc_attr($tile['title']); ?>" loading="lazy" decoding="async"
                                  data-spai-excluded="true">
                         </div>
