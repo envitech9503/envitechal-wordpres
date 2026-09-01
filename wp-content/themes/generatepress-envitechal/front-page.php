@@ -48,7 +48,8 @@ $service_tiles = [
         'text' => 'IEE, EIA, EMP, EMR, audits, SEPA submissions, and regulator-facing environmental documentation.',
         'url' => home_url('/services/environmental-consultancy/'),
         'image' => 'eta-svc-consultancy',
-        'image_h' => 990,
+        'image_w' => 811,
+        'image_h' => 416,
     ],
     [
         'kicker' => 'Environmental Laboratory',
@@ -56,7 +57,8 @@ $service_tiles = [
         'text' => 'Defensible laboratory analysis for environmental samples, industrial compliance, and buyer-facing reports.',
         'url' => home_url('/services/analytical-lab-services/'),
         'image' => 'eta-svc-laboratory',
-        'image_h' => 990,
+        'image_w' => 710,
+        'image_h' => 364,
     ],
     [
         'kicker' => 'Water & Wastewater',
@@ -64,7 +66,8 @@ $service_tiles = [
         'text' => 'Drinking water, wastewater, process water, RO performance, and discharge compliance testing.',
         'url' => home_url('/services/water-testing-lab-services/'),
         'image' => 'eta-svc-water',
-        'image_h' => 693,
+        'image_w' => 1200,
+        'image_h' => 615,
     ],
     [
         'kicker' => 'Instrument Accuracy',
@@ -72,7 +75,8 @@ $service_tiles = [
         'text' => 'Calibration support for field instruments, monitoring equipment, and laboratory measurement confidence.',
         'url' => home_url('/services/equipment-calibration-services/'),
         'image' => 'eta-svc-calibration',
-        'image_h' => 990,
+        'image_w' => 724,
+        'image_h' => 371,
     ],
 ];
 
@@ -678,10 +682,8 @@ $etb_vault = [
                     <article class="etb-obs-plane<?php echo $i === 0 ? ' is-on' : ''; ?>" data-plane="<?php echo (int) $i; ?>">
                         <div class="etb-obs-media">
                             <?php $eta_img = get_stylesheet_directory_uri() . '/assets/images/' . $tile['image']; ?>
-                            <img src="<?php echo esc_url($eta_img . '-1320.webp'); ?>"
-                                 srcset="<?php echo esc_url($eta_img . '-760.webp'); ?> 760w, <?php echo esc_url($eta_img . '-1320.webp'); ?> 1320w"
-                                 sizes="(max-width: 820px) 92vw, 46vw"
-                                 width="1320" height="<?php echo (int) $tile['image_h']; ?>"
+                            <img src="<?php echo esc_url($eta_img . '.webp'); ?>"
+                                 width="<?php echo (int) $tile['image_w']; ?>" height="<?php echo (int) $tile['image_h']; ?>"
                                  alt="<?php echo esc_attr($tile['title']); ?>" loading="lazy" decoding="async"
                                  data-spai-excluded="true">
                         </div>
