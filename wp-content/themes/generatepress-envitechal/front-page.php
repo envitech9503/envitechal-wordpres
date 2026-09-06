@@ -549,15 +549,6 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
 .etb-hub-list .etb-actions { margin-top: 6px; }
 
 /* ---------- 10 final conversion scene ---------- */
-.etb-final { position: relative; overflow: hidden; background: var(--etb-char); padding: 108px 0 118px; text-align: center; }
-.etb-final::before { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 55% at 50% 30%, rgba(31,107,84,.32), transparent 70%); }
-.etb-final::after { content: ""; position: absolute; inset: 0; opacity: .28; background: linear-gradient(rgba(120,200,165,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(120,200,165,.07) 1px, transparent 1px); background-size: 72px 72px; transform: perspective(900px) rotateX(55deg) translateY(30%); transform-origin: 50% 100%; }
-.etb-final-inner { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; }
-.etb-final .etb-num { margin-bottom: 14px; }
-.etb-final-h { font-family: 'Outfit', sans-serif; font-weight: 200; font-size: clamp(38px, 5vw, 78px); line-height: 1.1; letter-spacing: .02em; color: #F2FAF5; margin: 0 0 20px; }
-.etb-final .etb-lead { max-width: 640px; margin-bottom: 22px; }
-.etb-final .etb-microlabel { margin-bottom: 8px; }
-.etb-final-actions { justify-content: center; }
 
 /* ---------- responsive ---------- */
 @media (min-width: 1021px) {
@@ -580,7 +571,6 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
   .etb-vault-loc { grid-column: 2; text-align: left; }
   .etb-proofs { grid-template-columns: 1fr; }
   .etb-obs, .etb-journey, .etb-matrix, .etb-maritime, .etb-vault, .etb-why, .etb-hub { padding-top: 72px; padding-bottom: 76px; }
-  .etb-final { padding: 96px 0 104px; }
   .etb-steps { padding-left: 24px; }
 }
 
@@ -603,10 +593,6 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
   padding-bottom: clamp(64px, 5.6vw, 96px);
 }
 
-.etb-final {
-  padding-top: clamp(80px, 7vw, 120px);
-  padding-bottom: clamp(80px, 7vw, 120px);
-}
 
 /* The ledger strip is a rule between acts, not an act of its own. */
 .etb-ledger { padding-top: clamp(48px, 4vw, 68px); padding-bottom: clamp(48px, 4vw, 68px); }
@@ -911,19 +897,6 @@ $etb_vault = [
     </section>
 
     <!-- ACT III · 08 — FINAL CONVERSION SCENE -->
-    <section class="etb-final etb-dark" id="etb-final">
-        <div class="etb-shell etb-final-inner">
-            <span class="etb-num" aria-hidden="true">08</span>
-            <p class="etb-eyebrow etb-r"><?php esc_html_e('Need EPA / buyer / audit-ready environmental testing?', 'envi-tech-al-modern'); ?></p>
-            <h2 class="etb-final-h etb-r"><?php esc_html_e('Have a requirement?', 'envi-tech-al-modern'); ?> <br><?php esc_html_e('Send us the scope.', 'envi-tech-al-modern'); ?></h2>
-            <p class="etb-lead etb-r"><?php esc_html_e('Send the requirement before the deadline becomes urgent. We confirm scope for testing, monitoring, reporting, calibration, and consultancy to match your operational timelines.', 'envi-tech-al-modern'); ?></p>
-            <p class="etb-microlabel etb-r"><?php esc_html_e('Testing · Monitoring · Consultancy · Calibration', 'envi-tech-al-modern'); ?></p>
-            <div class="etb-actions etb-final-actions etb-r">
-                <a class="etb-btn etb-btn-solid" href="<?php echo esc_url(home_url('/contact-us-envi-tech-al/')); ?>"><?php esc_html_e('Request a quotation', 'envi-tech-al-modern'); ?> <span class="etb-arrow" aria-hidden="true">&rarr;</span></a>
-                <a class="etb-btn etb-btn-ghost" href="<?php echo esc_url('https://wa.me/923102288801'); ?>" target="_blank" rel="noopener"><?php esc_html_e('WhatsApp consultation', 'envi-tech-al-modern'); ?></a>
-            </div>
-        </div>
-    </section>
 </main>
 
 <script src="<?php echo esc_url(get_stylesheet_directory_uri()); ?>/eta-home-body.js?v=3" defer data-no-optimize="1" data-no-defer="1" data-litespeed-noopt="1"></script>
