@@ -23,6 +23,12 @@
 }
 
 :root {
+    /* Shared with the closing footer and the homepage acts. These live at
+       :root because more than one component needs them; the --fsf-* and
+       --etb-* names below derive from these rather than restating them. */
+    --eta-char: #06110e;
+    --eta-aqua: #7de8cd;
+    --eta-emerald-2: #27866a;
     --eta-ink: #172a33;
     --eta-muted: #5d6d72;
     --eta-line: #d8e2dc;
@@ -8863,10 +8869,10 @@ h3 {
    ============================================================ */
 
 .eta-fs-footer {
-    --fsf-ink: #06110E;
+    --fsf-ink: var(--eta-char);
     --fsf-ink-2: #0B1A15;
-    --fsf-mint: #7DE8CD;
-    --fsf-emerald: #27866A;
+    --fsf-mint: var(--eta-aqua);
+    --fsf-emerald: var(--eta-emerald-2);
     --fsf-text: #E4F6EE;
     --fsf-muted: #8FAEA1;
     --fsf-line: rgba(125, 232, 205, 0.14);

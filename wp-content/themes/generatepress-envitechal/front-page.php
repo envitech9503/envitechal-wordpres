@@ -341,10 +341,10 @@ html:not(.ets-gsap) .ets-final { display: none; }
      that already existed under another name, which is why the homepage
      and the rest of the site drifted apart. Only the four genuinely
      homepage-specific values are still literals. */
-  --etb-char: var(--fsf-ink);          /* was #081310, delta 2 */
+  --etb-char: var(--eta-char);         /* was #081310, delta 2 */
   --etb-emerald: var(--eta-green);     /* was #1E6B54, delta 5 */
-  --etb-emerald2: var(--fsf-emerald);  /* was #27866A, identical */
-  --etb-aqua: var(--fsf-mint);         /* was #7DE8CD, identical */
+  --etb-emerald2: var(--eta-emerald-2); /* was #27866A, identical */
+  --etb-aqua: var(--eta-aqua);         /* was #7DE8CD, identical */
   --etb-paper: var(--eta-bg);          /* was #F4F7F3, identical */
   --etb-ink: #0F1D18;
   --etb-tealdeep: #0A1E19;
