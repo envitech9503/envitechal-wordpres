@@ -148,8 +148,8 @@ html:not(.ets-gsap) .ets-gl { display: none; }
   font-size: clamp(40px, 6.4vw, 96px); font-size: clamp(36px, min(6.2vw, 10svh), 96px);
   color: #F2FAF5; text-shadow: 0 0 34px rgba(140,255,205,.16); }
 .ets-h1 .ets-em { font-weight: 300; }
-.ets-sub { font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-size: clamp(15px, 1.35vw, 19px); color: #A3C4B4;
-  max-width: 640px; line-height: 1.55; margin: 24px 0 0; }
+.ets-sub { font-family: 'Archivo', "Segoe UI", Arial, sans-serif; font-size: clamp(15.5px, 1.3vw, 18px); font-weight: 400; color: #B4D2C2;
+  max-width: 620px; line-height: 1.65; letter-spacing: .005em; margin: 24px 0 0; }
 .ets-ctas { display: flex; gap: 16px; margin-top: 34px; flex-wrap: wrap; justify-content: center; }
 .ets-btn { display: inline-flex; align-items: center; gap: 9px; font-family: 'Archivo', sans-serif; font-size: 13px; font-weight: 600;
   letter-spacing: .12em; text-transform: uppercase; text-decoration: none; padding: 15px 26px; border-radius: 2px;
@@ -360,7 +360,7 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
 .etb-dark .etb-eyebrow { color: #8FB8A4; }
 .etb-head h2, .etb-maritime h2 { font-family: 'Outfit', sans-serif; font-weight: 200; font-size: clamp(30px, 3.4vw, 48px); line-height: 1.12; letter-spacing: .01em; color: var(--etb-ink); margin: 0 0 18px; }
 .etb-dark .etb-head h2, .etb-maritime h2 { color: #F2FAF5; }
-.etb-lead { font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-size: 17.5px; line-height: 1.6; color: var(--etb-sage); margin: 0; }
+.etb-lead { font-family: 'Archivo', "Segoe UI", Arial, sans-serif; font-size: 16.5px; font-weight: 400; line-height: 1.7; letter-spacing: .005em; color: #42594D; margin: 0; max-width: 62ch; }
 .etb-dark .etb-lead { color: #A3C4B4; }
 .etb-microlabel { font-family: 'Archivo', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .28em; text-transform: uppercase; color: #8FB8A4; margin: 0 0 12px; }
 .etb-matrix .etb-microlabel, .etb-why .etb-microlabel, .etb-vault .etb-microlabel { color: var(--etb-emerald); }
@@ -441,7 +441,7 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
 .etb-matrix-grid { display: grid; grid-template-columns: minmax(0,7fr) minmax(0,5fr); gap: 64px; align-items: start; }
 .etb-matrix-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--etb-line); }
 .etb-matrix-row { display: flex; flex-direction: column; gap: 4px; padding: 13px 8px; border-bottom: 1px solid var(--etb-line); cursor: default; transition: padding-left .3s cubic-bezier(.2,.6,.2,1), background .3s ease; }
-.etb-matrix-name { font-family: 'Outfit', sans-serif; font-weight: 200; font-size: clamp(22px, 2.3vw, 34px); line-height: 1.1; color: #24352E; transition: color .25s ease; }
+.etb-matrix-name { font-family: 'Outfit', sans-serif; font-weight: 300; font-size: clamp(22px, 2.3vw, 34px); line-height: 1.1; color: #24352E; transition: color .25s ease; }
 .etb-matrix-svc { font-family: 'Archivo', sans-serif; font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--etb-sage); }
 .etb-matrix-row:hover, .etb-matrix-row:focus-visible, .etb-matrix-row.is-on { padding-left: 20px; }
 .etb-matrix-row:hover .etb-matrix-name, .etb-matrix-row:focus-visible .etb-matrix-name, .etb-matrix-row.is-on .etb-matrix-name { color: var(--etb-emerald); }
@@ -477,7 +477,7 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
 .etb-vault-auth { font-family: 'Archivo', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--etb-ink); }
 .etb-vault-cred { font-family: 'Outfit', sans-serif; font-weight: 300; font-size: 18px; color: #24352E; }
 .etb-vault-loc { font-family: 'Archivo', sans-serif; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--etb-sage); text-align: right; }
-.etb-footnote { font-size: 12.5px; color: var(--etb-sage); margin: 16px 0 0; font-style: italic; font-family: Georgia, serif; }
+.etb-footnote { font-family: 'Archivo', "Segoe UI", Arial, sans-serif; font-size: 12.5px; font-style: normal; letter-spacing: .01em; color: var(--etb-sage); margin: 16px 0 0; }
 
 /* ---------- 08 why the system works ---------- */
 .etb-why { padding: 80px 0 84px; }
