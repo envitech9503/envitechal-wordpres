@@ -162,7 +162,7 @@ a {
 .menu-toggle,
 .main-navigation .menu-bar-items {
     color: var(--eta-ink);
-    font-weight: 650;
+    font-weight: 600;
     letter-spacing: 0;
 }
 
@@ -410,7 +410,7 @@ h3 {
     color: var(--eta-green-2);
     font-size: 0.78rem;
     font-weight: 800;
-    letter-spacing: 0.08em;
+    letter-spacing: .08em;
     text-transform: uppercase;
 }
 
@@ -475,7 +475,7 @@ h3 {
     background: rgba(255, 255, 255, 0.1);
     color: #f6fbf7;
     font-size: 0.88rem;
-    font-weight: 750;
+    font-weight: 700;
 }
 
 .eta-proof-panel {
@@ -715,7 +715,7 @@ h3 {
 .eta-home-proof-grid span {
     margin-top: 8px;
     color: #c8d9d0;
-    font-weight: 650;
+    font-weight: 600;
     line-height: 1.45;
 }
 
@@ -777,7 +777,7 @@ h3 {
     background: #eef7f1;
     color: var(--eta-green);
     font-size: 0.72rem;
-    letter-spacing: 0.04em;
+    letter-spacing: .04em;
     text-transform: uppercase;
 }
 
@@ -1126,7 +1126,7 @@ h3 {
     color: #a9e2c7;
     font-size: 0.78rem;
     font-weight: 900;
-    letter-spacing: 0.08em;
+    letter-spacing: .08em;
     text-transform: uppercase;
 }
 
@@ -1136,7 +1136,7 @@ h3 {
     border-bottom: 1px solid rgba(255, 255, 255, 0.14);
     color: #fff;
     font-size: 1.08rem;
-    font-weight: 850;
+    font-weight: 800;
     text-decoration: none;
     overflow-wrap: anywhere;
 }
@@ -1161,7 +1161,7 @@ h3 {
     padding: clamp(16px, 3vw, 24px);
     border-right: 1px solid rgba(255, 255, 255, 0.12);
     color: #e9f5ef;
-    font-weight: 850;
+    font-weight: 800;
     line-height: 1.35;
 }
 
@@ -1195,7 +1195,7 @@ h3 {
     border-radius: var(--eta-radius);
     background: #fff;
     color: var(--eta-navy);
-    font-weight: 750;
+    font-weight: 700;
     line-height: 1.45;
     box-shadow: var(--eta-soft-shadow);
 }
@@ -1231,7 +1231,7 @@ h3 {
     color: var(--eta-green);
     font-size: 0.76rem;
     font-weight: 900;
-    letter-spacing: 0.05em;
+    letter-spacing: .04em;
     text-transform: uppercase;
 }
 
@@ -1275,7 +1275,7 @@ h3 {
     margin-right: 12px;
     margin-bottom: 6px;
     color: var(--eta-green);
-    font-weight: 850;
+    font-weight: 800;
     text-decoration: none;
 }
 
@@ -1426,7 +1426,7 @@ h3 {
     color: #a9e2c7;
     font-size: 0.78rem;
     font-weight: 900;
-    letter-spacing: 0.08em;
+    letter-spacing: .08em;
     text-transform: uppercase;
 }
 
@@ -1483,7 +1483,7 @@ h3 {
 .eta-services-proof-grid span,
 .eta-service-proof-grid span {
     color: #c8d9d0;
-    font-weight: 750;
+    font-weight: 700;
     line-height: 1.45;
 }
 
@@ -1792,7 +1792,7 @@ h3 {
     min-width: 0;
     padding-left: 22px;
     color: var(--eta-navy);
-    font-weight: 750;
+    font-weight: 700;
     line-height: 1.42;
 }
 
@@ -2139,7 +2139,7 @@ h3 {
     border-radius: var(--eta-radius);
     background: #fff;
     color: var(--eta-navy);
-    font-weight: 750;
+    font-weight: 700;
     box-shadow: var(--eta-soft-shadow);
 }
 
@@ -2206,7 +2206,7 @@ h3 {
     border-radius: var(--eta-radius);
     background: #eef7f1;
     color: var(--eta-navy);
-    font-weight: 750;
+    font-weight: 700;
 }
 
 .eta-parameter-section {
@@ -2613,7 +2613,7 @@ h3 {
     color: #bcead5;
     font-size: 0.78rem;
     font-weight: 900;
-    letter-spacing: 0.12em;
+    letter-spacing: .12em;
     text-transform: uppercase;
 }
 
@@ -3012,7 +3012,7 @@ h3 {
     color: #bcead5;
     font-size: 0.78rem;
     font-weight: 900;
-    letter-spacing: 0.12em;
+    letter-spacing: .12em;
     text-transform: uppercase;
 }
 
@@ -3182,7 +3182,7 @@ h3 {
     border-radius: var(--eta-radius);
     background: rgba(255, 255, 255, 0.08);
     color: #fff;
-    font-weight: 850;
+    font-weight: 800;
     text-decoration: none;
 }
 
@@ -3515,7 +3515,7 @@ h3 {
     color: #dff8ea;
     font-size: 0.78rem;
     font-weight: 900;
-    letter-spacing: 0.05em;
+    letter-spacing: .04em;
     text-transform: uppercase;
 }
 
@@ -3570,7 +3570,7 @@ h3 {
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.12);
     color: #fff;
-    font-weight: 850;
+    font-weight: 800;
 }
 
 .etl-btn1,
@@ -3676,7 +3676,7 @@ h3 {
 .etl-step-n,
 .etl-stat-n {
     color: var(--eta-green);
-    font-weight: 950;
+    font-weight: 900;
 }
 
 .etl-stats {
@@ -3703,7 +3703,7 @@ h3 {
     display: block;
     margin-top: 6px;
     color: var(--eta-muted);
-    font-weight: 750;
+    font-weight: 700;
 }
 
 .etl-toc {
@@ -3731,7 +3731,7 @@ h3 {
     background: #f4f9f6;
     color: var(--eta-navy);
     font-size: 1.12rem;
-    font-weight: 750;
+    font-weight: 700;
 }
 
 .etl-box.red,
@@ -3849,7 +3849,7 @@ h3 {
 
 .etl-noc-key {
     color: var(--eta-muted);
-    font-weight: 850;
+    font-weight: 800;
 }
 
 .etl-noc-val {
@@ -4009,7 +4009,7 @@ h3 {
     color: #bcead5;
     font-size: 0.78rem;
     font-weight: 900;
-    letter-spacing: 0.12em;
+    letter-spacing: .12em;
     text-transform: uppercase;
 }
 
@@ -4165,7 +4165,7 @@ h3 {
     border-radius: var(--eta-radius);
     background: rgba(255, 255, 255, 0.08);
     color: #fff;
-    font-weight: 850;
+    font-weight: 800;
     text-decoration: none;
 }
 
@@ -4205,7 +4205,7 @@ h3 {
     border-radius: var(--eta-radius);
     background: #f7faf7;
     color: var(--eta-navy);
-    font-weight: 850;
+    font-weight: 800;
 }
 
 .eta-faq-hero {
@@ -4287,7 +4287,7 @@ h3 {
     color: #bcead5;
     font-size: 0.78rem;
     font-weight: 900;
-    letter-spacing: 0.12em;
+    letter-spacing: .12em;
     text-transform: uppercase;
 }
 
@@ -4299,7 +4299,7 @@ h3 {
 
 .eta-faq-hero-panel a {
     color: #fff;
-    font-weight: 850;
+    font-weight: 800;
     overflow-wrap: anywhere;
 }
 
@@ -4434,7 +4434,7 @@ h3 {
     border-radius: var(--eta-radius);
     background: rgba(255, 255, 255, 0.075);
     color: #fff;
-    font-weight: 850;
+    font-weight: 800;
     box-shadow: 0 18px 50px rgba(0, 0, 0, 0.16);
 }
 
@@ -4513,7 +4513,7 @@ h3 {
     background: #eef7f1;
     color: var(--eta-green);
     font-size: 1.18rem;
-    font-weight: 950;
+    font-weight: 900;
     transform: translateY(-50%);
 }
 
@@ -4568,7 +4568,7 @@ h3 {
     border-radius: 50%;
     background: #eef7f1;
     color: var(--eta-green);
-    font-weight: 950;
+    font-weight: 900;
 }
 
 .eta-faq-prep-list strong {
@@ -4676,7 +4676,7 @@ h3 {
     color: #bcead5;
     font-size: 0.78rem;
     font-weight: 900;
-    letter-spacing: 0.12em;
+    letter-spacing: .12em;
     text-transform: uppercase;
 }
 
@@ -4689,7 +4689,7 @@ h3 {
 .eta-lahore-hero-card a,
 .eta-lahore-office-links a {
     color: #fff;
-    font-weight: 850;
+    font-weight: 800;
     overflow-wrap: anywhere;
 }
 
@@ -4872,7 +4872,7 @@ h3 {
     border-radius: 50%;
     background: #dff7ec;
     color: var(--eta-navy);
-    font-weight: 950;
+    font-weight: 900;
 }
 
 .eta-lahore-timeline strong {
@@ -4907,7 +4907,7 @@ h3 {
     border-radius: var(--eta-radius);
     background: #fff;
     color: var(--eta-navy);
-    font-weight: 850;
+    font-weight: 800;
     box-shadow: var(--eta-soft-shadow);
 }
 
@@ -5175,7 +5175,7 @@ h3 {
     display: block;
     overflow-wrap: anywhere;
     color: #fff;
-    font-weight: 750;
+    font-weight: 700;
 }
 
 .eta-footer-contact a:hover,
@@ -5300,7 +5300,7 @@ h3 {
     #mobile-menu-control-wrapper .menu-toggle::after {
         content: "Menu";
         font-size: 0.92rem;
-        font-weight: 850;
+        font-weight: 800;
     }
 
     #site-navigation {
@@ -6179,7 +6179,7 @@ h3 {
     max-width: 1220px;
     margin: 20px auto 0;
     border: 1px solid rgba(255, 255, 255, 0.16);
-    border-radius: 34px;
+    border-radius: 24px;
     background:
         radial-gradient(circle at 82% 18%, rgba(125, 211, 252, 0.28), transparent 25rem),
         radial-gradient(circle at 10% 92%, rgba(20, 184, 166, 0.28), transparent 26rem),
@@ -6210,7 +6210,7 @@ h3 {
     color: #dffdf7;
     font-size: 0.78rem;
     font-weight: 900;
-    letter-spacing: 0.08em;
+    letter-spacing: .08em;
     text-transform: uppercase;
     box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
     backdrop-filter: blur(12px);
@@ -6235,7 +6235,7 @@ h3 {
     color: rgba(240, 253, 250, 0.96);
     font-size: clamp(0.72rem, 1.05vw, 0.95rem);
     line-height: 1.58;
-    letter-spacing: 0.06em;
+    letter-spacing: .06em;
     white-space: pre-line;
     text-align: center;
     box-shadow:
@@ -6258,7 +6258,7 @@ h3 {
 .single-post .eta-post-hero h1 {
     max-width: 760px;
     font-size: clamp(2.7rem, 5.1vw, 5.25rem);
-    font-weight: 850;
+    font-weight: 800;
     line-height: 0.98;
     text-shadow: 0 12px 36px rgba(0, 0, 0, 0.28);
     text-wrap: balance;
@@ -6273,8 +6273,8 @@ h3 {
     border-radius: 999px;
     background: rgba(16, 185, 129, 0.12);
     color: #86efac;
-    font-weight: 950;
-    letter-spacing: 0.1em;
+    font-weight: 900;
+    letter-spacing: .08em;
 }
 
 .single-post .eta-post-meta {
@@ -6325,7 +6325,7 @@ h3 {
 
 .single-post .eta-article-pro a {
     color: var(--eta-green);
-    font-weight: 850;
+    font-weight: 800;
     text-decoration-thickness: 1px;
     text-underline-offset: 4px;
 }
@@ -6353,7 +6353,7 @@ h3 {
     background: #eef8f2;
     color: var(--eta-green);
     font-size: 0.76rem;
-    font-weight: 950;
+    font-weight: 900;
     line-height: 1.1;
     text-transform: uppercase;
 }
@@ -6375,7 +6375,7 @@ h3 {
     background: #f8fbf8;
     color: var(--eta-navy);
     font-size: 0.9rem;
-    font-weight: 850;
+    font-weight: 800;
 }
 
 .single-post .eta-article-cta {
@@ -6498,7 +6498,7 @@ h3 {
     border-radius: 50%;
     background: var(--eta-green);
     color: #fff;
-    font-weight: 950;
+    font-weight: 900;
     line-height: 1;
     box-shadow: 0 12px 26px rgba(29, 107, 79, 0.24);
 }
@@ -6530,7 +6530,7 @@ h3 {
     background: #102229;
     color: #fff;
     font-size: 0.86rem;
-    font-weight: 950;
+    font-weight: 900;
     line-height: 1.25;
     text-transform: uppercase;
 }
@@ -6548,7 +6548,7 @@ h3 {
     margin: 14px 0 0;
     color: var(--eta-green);
     font-size: 0.92rem;
-    font-weight: 850;
+    font-weight: 800;
 }
 
 .single-post .eta-article-note {
@@ -6558,7 +6558,7 @@ h3 {
     border-radius: 8px;
     background: #eef8f2;
     color: #213940;
-    font-weight: 750;
+    font-weight: 700;
     line-height: 1.72;
 }
 
@@ -6596,7 +6596,7 @@ h3 {
 @media (max-width: 560px) {
     .single-post .eta-post-hero {
         margin-top: 10px;
-        border-radius: 22px;
+        border-radius: 24px;
     }
 
     .single-post .eta-post-hero-grid {
@@ -7201,7 +7201,7 @@ h3 {
     margin: 0 0 34px;
     padding: clamp(30px, 5vw, 58px);
     border: 1px solid rgba(255, 255, 255, 0.28);
-    border-radius: 28px;
+    border-radius: 24px;
     background:
         linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px),
@@ -7332,7 +7332,7 @@ h3 {
 .single-post .eta-wq-panel,
 .single-post .eta-wq-faq details {
     border: 1px solid rgba(15, 76, 92, 0.12);
-    border-radius: 22px;
+    border-radius: 24px;
     background: rgba(255, 255, 255, 0.92);
     box-shadow: 0 18px 45px rgba(15, 54, 68, 0.08);
 }
@@ -7395,7 +7395,7 @@ h3 {
     margin: 28px 0;
     padding: 22px 24px;
     border-left: 6px solid #f59e0b;
-    border-radius: 18px;
+    border-radius: 16px;
     background: #fff7ed;
     color: #59340c;
 }
@@ -7469,7 +7469,7 @@ h3 {
     width: 48px;
     height: 48px;
     margin-bottom: 14px;
-    border-radius: 14px;
+    border-radius: 12px;
     background: #e0f7f5;
     font-size: 1.45rem;
 }
@@ -7483,7 +7483,7 @@ h3 {
 
 .single-post .eta-wq-strip-item {
     padding: 18px 14px;
-    border-radius: 18px;
+    border-radius: 16px;
     background: linear-gradient(135deg, #083344, #0f766e);
     color: #ffffff;
     text-align: center;
@@ -7503,7 +7503,7 @@ h3 {
     overflow-x: auto;
     margin: 28px 0 42px;
     border: 1px solid rgba(15, 76, 92, 0.12);
-    border-radius: 20px;
+    border-radius: 16px;
     background: #ffffff;
     box-shadow: 0 18px 42px rgba(15, 54, 68, 0.07);
 }
@@ -7602,7 +7602,7 @@ h3 {
     color: #dffdf7;
     font-size: 0.76rem;
     font-weight: 900;
-    letter-spacing: 0.08em;
+    letter-spacing: .08em;
     text-align: center;
 }
 
@@ -7682,7 +7682,7 @@ h3 {
     margin: 0 0 20px;
     color: #082f3a;
     font-size: clamp(1.8rem, 3.1vw, 2.75rem);
-    font-weight: 850;
+    font-weight: 800;
     line-height: 1.1;
     text-wrap: balance;
 }
@@ -7691,7 +7691,7 @@ h3 {
 .single-post .env-card h3,
 .single-post .env-post-section li > h3 {
     color: #0f3f4a;
-    font-weight: 850;
+    font-weight: 800;
     line-height: 1.2;
 }
 
@@ -7707,7 +7707,7 @@ h3 {
     overflow: hidden;
     padding: clamp(20px, 3vw, 28px);
     border: 1px solid rgba(15, 76, 92, 0.12);
-    border-radius: 22px;
+    border-radius: 24px;
     background:
         linear-gradient(135deg, rgba(14, 165, 233, 0.06), rgba(20, 184, 166, 0.04)),
         #ffffff;
@@ -7750,7 +7750,7 @@ h3 {
 .single-post .env-post-section > ul > li {
     padding: 18px 20px;
     border: 1px solid rgba(15, 76, 92, 0.12);
-    border-radius: 18px;
+    border-radius: 16px;
     background: #ffffff;
     box-shadow: 0 14px 34px rgba(15, 54, 68, 0.07);
 }
@@ -7758,7 +7758,7 @@ h3 {
 .single-post .env-post-section:nth-of-type(4) {
     padding: clamp(22px, 4vw, 34px);
     border-left: 6px solid #f59e0b;
-    border-radius: 22px;
+    border-radius: 24px;
     background:
         linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(255, 255, 255, 0)),
         #fff7ed;
@@ -7810,7 +7810,7 @@ h3 {
     grid-template-columns: 64px minmax(0, 1fr);
     gap: 18px;
     padding: 22px;
-    border-radius: 20px;
+    border-radius: 16px;
     background: #ffffff;
     box-shadow: 0 16px 38px rgba(15, 54, 68, 0.07);
 }
@@ -7843,7 +7843,7 @@ h3 {
 
 .single-post .env-post-section:last-of-type {
     padding: clamp(28px, 5vw, 48px);
-    border-radius: 28px;
+    border-radius: 24px;
     background:
         radial-gradient(circle at 90% 16%, rgba(125, 211, 252, 0.25), transparent 20rem),
         linear-gradient(135deg, #062f3f, #0f766e);
@@ -7883,7 +7883,7 @@ h3 {
     gap: 18px;
     align-items: start;
     padding: 22px;
-    border-radius: 20px;
+    border-radius: 16px;
     background: #ffffff;
     box-shadow: 0 16px 38px rgba(15, 54, 68, 0.07);
 }
@@ -7895,7 +7895,7 @@ h3 {
     place-items: center;
     width: 54px;
     height: 54px;
-    border-radius: 17px;
+    border-radius: 16px;
     background: #0f766e;
     color: #ffffff;
     font-size: 1.35rem;
@@ -7970,7 +7970,7 @@ h3 {
 @media (max-width: 560px) {
     .single-post .eta-post-content:has(.env-post-hero) {
         margin-top: 24px;
-        border-radius: 18px;
+        border-radius: 16px;
     }
 
     .single-post .eta-post-content:has(.env-post-hero) > *:not(.env-post-hero) {
@@ -7980,7 +7980,7 @@ h3 {
 
     .single-post .env-post-hero {
         padding: 26px 18px;
-        border-radius: 18px 18px 24px 24px;
+        border-radius: 16px 18px 24px 24px;
     }
 
     .single-post .env-post-hero::after {
@@ -8013,7 +8013,7 @@ h3 {
     .single-post .eta-wq-hero,
     .single-post .eta-wq-final {
         padding: 24px 18px;
-        border-radius: 20px;
+        border-radius: 16px;
     }
 
     .single-post .eta-wq-title {
@@ -8160,7 +8160,7 @@ h3 {
     color: rgba(255, 255, 255, 0.72);
     font-size: 0.72rem;
     font-weight: 800;
-    letter-spacing: 0.08em;
+    letter-spacing: .08em;
     text-transform: uppercase;
 }
 
@@ -8319,7 +8319,7 @@ h3 {
     max-height: 120px;
     resize: vertical;
     border: 1px solid rgba(16, 34, 41, 0.22);
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 9px 10px;
     color: var(--eta-ink);
     font: inherit;
@@ -8330,7 +8330,7 @@ h3 {
     min-height: 44px;
     padding: 8px 14px;
     border: 0;
-    border-radius: 10px;
+    border-radius: 8px;
     background: var(--eta-green);
     color: #fff;
     font-weight: 800;
@@ -8477,7 +8477,7 @@ h3 {
 .single-post .eta-post-hero {
     max-width: min(1220px, calc(100% - 32px));
     margin-top: 16px;
-    border-radius: 28px;
+    border-radius: 24px;
 }
 
 .single-post .eta-post-hero-grid {
@@ -8643,7 +8643,7 @@ h3 {
     .single-post .eta-post-hero {
         max-width: calc(100% - 20px);
         margin-top: 8px;
-        border-radius: 18px;
+        border-radius: 16px;
     }
 
     .single-post .eta-post-hero-grid {
@@ -8825,7 +8825,7 @@ h3 {
 .eta-legal-updated {
     font-size: 0.9rem;
     font-weight: 700;
-    letter-spacing: 0.04em;
+    letter-spacing: .04em;
     text-transform: uppercase;
     color: var(--eta-muted);
     margin-bottom: 28px;
@@ -8934,13 +8934,13 @@ h3 {
 
 .fsf-logo { display: block; width: fit-content; margin: 0 0 40px; padding-bottom: 26px; border-bottom: 1px solid var(--fsf-line); }
 .fsf-logo-img { display: block; width: 168px; height: auto; }
-.fsf-logo-text { font-family: 'Outfit', sans-serif; font-weight: 300; font-size: 24px; letter-spacing: .14em; color: var(--fsf-text); }
+.fsf-logo-text { font-family: 'Outfit', sans-serif; font-weight: 300; font-size: 24px; letter-spacing: .12em; color: var(--fsf-text); }
 
 .fsf-kicker {
     display: flex; align-items: center; gap: 12px;
     margin: 0 0 16px;
     font-family: 'Archivo', sans-serif;
-    font-size: 11px; font-weight: 600; letter-spacing: .24em; text-transform: uppercase;
+    font-size: 11px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
     color: var(--fsf-mint);
 }
 .fsf-kicker::before { content: ""; width: 26px; height: 1px; background: var(--fsf-mint); }
@@ -8988,7 +8988,7 @@ h3 {
 .fsf-label {
     margin: 0 0 22px;
     font-family: 'Archivo', sans-serif;
-    font-size: 11px; font-weight: 600; letter-spacing: .24em; text-transform: uppercase;
+    font-size: 11px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
     color: var(--fsf-mint);
 }
 .fsf-label .fsf-n { color: rgba(125, 232, 205, .45); margin-right: 8px; font-variant-numeric: tabular-nums; }
@@ -9019,7 +9019,7 @@ h3 {
 .fsf-office h3 {
     margin: 0 0 9px;
     font-family: 'Archivo', sans-serif;
-    font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase;
+    font-size: 11px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
     color: var(--fsf-text);
 }
 .fsf-office p { margin: 0; font-size: 13px; line-height: 1.65; color: var(--fsf-muted); }
@@ -9043,7 +9043,7 @@ h3 {
 .fsf-marquee:hover .fsf-marquee-track { animation-play-state: paused; }
 .fsf-param {
     font-family: 'Archivo', sans-serif;
-    font-size: 13px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase;
+    font-size: 13px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
     color: rgba(228, 246, 238, .62);
     white-space: nowrap;
 }
@@ -9130,7 +9130,7 @@ h3 {
 .fsf-wordmark {
     position: relative;
     display: block; width: 100%; text-align: center;
-    font-family: 'Outfit', sans-serif; font-weight: 250;
+    font-family: 'Outfit', sans-serif; font-weight: 200;
     font-size: clamp(32px, 12.4vw, 214px);
     line-height: .96; letter-spacing: -0.018em; white-space: nowrap;
     /* The sheen travels across this one gradient rather than a duplicated
@@ -9185,7 +9185,7 @@ h3 {
     display: inline-flex; align-items: center; gap: 9px; min-height: 24px;
     margin-left: auto;
     font-family: 'Archivo', sans-serif;
-    font-size: 10.5px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase;
+    font-size: 10.5px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
     color: var(--fsf-muted); text-decoration: none;
     transition: color .22s ease;
 }
@@ -9250,8 +9250,8 @@ h3 {
 
 .eta-iv-panel { background: rgba(255, 255, 255, .05); border: 1px solid rgba(125, 232, 205, .22); border-radius: 4px; padding: clamp(22px, 3vw, 34px); }
 .eta-iv-field { margin-bottom: 18px; }
-.eta-iv-field label { display: block; margin-bottom: 7px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #9FBBB0; }
-.eta-iv-field input { width: 100%; min-height: 48px; padding: 12px 14px; background: rgba(3, 12, 10, .55); border: 1px solid rgba(255, 255, 255, .18); border-radius: 3px; color: #FFFFFF; font-size: 16px; font-family: inherit; }
+.eta-iv-field label { display: block; margin-bottom: 7px; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #9FBBB0; }
+.eta-iv-field input { width: 100%; min-height: 48px; padding: 12px 14px; background: rgba(3, 12, 10, .55); border: 1px solid rgba(255, 255, 255, .18); border-radius: 2px; color: #FFFFFF; font-size: 16px; font-family: inherit; }
 .eta-iv-field input::placeholder { color: #8AA79C; }
 .eta-iv-field input:focus-visible { outline: 2px solid #7DE8CD; outline-offset: 2px; border-color: #7DE8CD; }
 /* The native date control paints its indicator dark, which disappears on this
