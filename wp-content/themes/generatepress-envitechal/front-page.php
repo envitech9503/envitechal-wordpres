@@ -335,7 +335,24 @@ html:not(.ets-gsap) .ets-final { display: none; }
 <script type="module" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/eta-hero-twin.js?v=19" data-no-optimize="1" data-no-defer="1" data-litespeed-noopt="1"></script>
 <style>
 /* ================= Homepage body v7 — act-based premium system — 28-08-2026 ================= */
-:root { --etb-ink:#0F1D18; --etb-char:#081310; --etb-char2:#0A1512; --etb-tealdeep:#0A1E19; --etb-emerald:#1E6B54; --etb-emerald2:#27866A; --etb-aqua:#7DE8CD; --etb-mist:#9CC3B2; --etb-sage:#53705F; --etb-paper:#F4F7F3; --etb-line:rgba(15,29,24,.12); --etb-dline:rgba(125,232,205,.16); }
+:root {
+  /* The homepage palette derives from the canonical tokens in
+     eta-modern.css. Five of these were duplicate definitions of colours
+     that already existed under another name, which is why the homepage
+     and the rest of the site drifted apart. Only the four genuinely
+     homepage-specific values are still literals. */
+  --etb-char: var(--fsf-ink);          /* was #081310, delta 2 */
+  --etb-emerald: var(--eta-green);     /* was #1E6B54, delta 5 */
+  --etb-emerald2: var(--fsf-emerald);  /* was #27866A, identical */
+  --etb-aqua: var(--fsf-mint);         /* was #7DE8CD, identical */
+  --etb-paper: var(--eta-bg);          /* was #F4F7F3, identical */
+  --etb-ink: #0F1D18;
+  --etb-tealdeep: #0A1E19;
+  --etb-mist: #9CC3B2;
+  --etb-sage: #53705F;
+  --etb-line: rgba(15,29,24,.12);
+  --etb-dline: rgba(125,232,205,.16);
+}
 
 /* max-width alone left no gutter below 1200px, so on a phone every act ran
    its headings and body copy hard against both screen edges. Constrain to
