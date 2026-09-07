@@ -9307,3 +9307,31 @@ h3 {
 .eta-breadcrumb a { color: var(--eta-muted); text-decoration: none; }
 .eta-breadcrumb a:hover, .eta-breadcrumb a:focus-visible { color: var(--eta-green); text-decoration: underline; }
 .eta-breadcrumb [aria-current="page"] { color: var(--eta-ink); }
+
+/* Verification result detail. Shown only on a confirmed match, so a reader
+   can check the record against the document in their hand. */
+.eta-iv-message { margin: 0; }
+.eta-iv-detail {
+    display: grid;
+    grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+    gap: 6px 18px;
+    margin: 14px 0 0;
+    padding: 14px 0 0;
+    border-top: 1px solid var(--eta-line);
+    font-size: 14px;
+}
+.eta-iv-detail dt {
+    margin: 0;
+    font-family: 'Archivo', "Segoe UI", Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--eta-muted);
+    align-self: baseline;
+}
+.eta-iv-detail dd { margin: 0; color: var(--eta-ink); }
+@media (max-width: 560px) {
+    .eta-iv-detail { grid-template-columns: 1fr; gap: 2px; }
+    .eta-iv-detail dd { margin-bottom: 10px; }
+}

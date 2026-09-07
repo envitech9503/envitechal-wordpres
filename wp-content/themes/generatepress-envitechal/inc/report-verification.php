@@ -21,7 +21,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-const ETA_VERIFY_DB_VERSION = 1;
+const ETA_VERIFY_DB_VERSION = 2;
 const ETA_VERIFY_TABLE      = 'eta_report_registry';
 const ETA_VERIFY_RATE_MAX   = 12;    // attempts
 const ETA_VERIFY_RATE_WINDOW = 600;  // seconds
@@ -52,6 +52,8 @@ function eta_verify_install()
         report_date DATE NOT NULL,
         client_hash CHAR(64) NOT NULL DEFAULT '',
         client_label VARCHAR(160) NOT NULL DEFAULT '',
+        client_address VARCHAR(255) NOT NULL DEFAULT '',
+        report_type VARCHAR(120) NOT NULL DEFAULT '',
         status VARCHAR(20) NOT NULL DEFAULT 'valid',
         laboratory VARCHAR(40) NOT NULL DEFAULT '',
         created_at DATETIME NOT NULL,
@@ -81,9 +83,68 @@ function eta_verify_record_count()
     return (int) $wpdb->get_var("SELECT COUNT(*) FROM {$table}");
 }
 
+/**
+ * The reporting system on report.envitechal.com is the source of truth when
+ * it is wired up. The local registry stays as a fallback for reports that
+ * predate it, and for the minutes when that host is unreachable.
+ */
+function eta_verify_remote_is_configured()
+{
+    return defined('ETA_VERIFY_ENDPOINT') && ETA_VERIFY_ENDPOINT
+        && defined('ETA_VERIFY_SECRET') && ETA_VERIFY_SECRET;
+}
+
 function eta_verify_is_active()
 {
-    return eta_verify_record_count() > 0;
+    return eta_verify_remote_is_configured() || eta_verify_record_count() > 0;
+}
+
+/**
+ * Asks the reporting system about one report.
+ *
+ * The browser never speaks to that host: this is a server-to-server call
+ * signed with a shared secret that stays in wp-config.php. The timestamp is
+ * inside the signed material so a captured request cannot be replayed later.
+ *
+ * Returns an array on a definite answer, or null when the reporting system
+ * could not be reached at all -- the caller then falls back to the registry
+ * rather than telling the visitor a report does not exist.
+ */
+function eta_verify_remote_lookup($number, $date_sql)
+{
+    if (!eta_verify_remote_is_configured()) {
+        return null;
+    }
+
+    $body = wp_json_encode([
+        'report_number' => $number,
+        'issue_date'    => $date_sql,
+    ]);
+    $timestamp = (string) time();
+    $signature = hash_hmac('sha256', $timestamp . '.' . $body, ETA_VERIFY_SECRET);
+
+    $response = wp_remote_post(ETA_VERIFY_ENDPOINT, [
+        'timeout'     => 8,
+        'redirection' => 0,
+        'headers'     => [
+            'Content-Type'    => 'application/json',
+            'Accept'          => 'application/json',
+            'X-ETA-Timestamp' => $timestamp,
+            'X-ETA-Signature' => $signature,
+        ],
+        'body'        => $body,
+    ]);
+
+    if (is_wp_error($response) || wp_remote_retrieve_response_code($response) !== 200) {
+        return null;
+    }
+
+    $data = json_decode(wp_remote_retrieve_body($response), true);
+    if (!is_array($data) || !isset($data['status'])) {
+        return null;
+    }
+
+    return $data;
 }
 
 /* ------------------------------------------------------------------ *
@@ -147,10 +208,35 @@ function eta_verify_handle_request(WP_REST_Request $request)
     }
     $date_sql = gmdate('Y-m-d', $timestamp);
 
+    // Ask the reporting system first; it holds the live record. A null reply
+    // means that host could not be reached, so the registry answers instead.
+    $remote = eta_verify_remote_lookup($number, $date_sql);
+    if (is_array($remote)) {
+        if (($remote['status'] ?? '') !== 'valid') {
+            return new WP_REST_Response([
+                'status'  => 'no_match',
+                'message' => 'No Envi Tech AL report matches those details. Check the number and date against the printed report, or send a manual request below.',
+            ], 200);
+        }
+
+        return new WP_REST_Response([
+            'status'     => 'verified',
+            'message'    => 'Verified. This report was issued by Envi Tech AL.',
+            'details'    => array_filter([
+                'Report number' => (string) ($remote['report_number'] ?? $number),
+                'Report type'   => (string) ($remote['report_type'] ?? ''),
+                'Issued to'     => (string) ($remote['client_name'] ?? ''),
+                'Address'       => (string) ($remote['client_address'] ?? ''),
+                'Issue date'    => (string) ($remote['issue_date'] ?? $date_sql),
+                'Issued by'     => (string) ($remote['issued_by'] ?? 'Envi Tech AL'),
+            ], 'strlen'),
+        ], 200);
+    }
+
     global $wpdb;
     $table = eta_verify_table_name();
     $row = $wpdb->get_row($wpdb->prepare(
-        "SELECT report_number, report_date, status, laboratory FROM {$table}
+        "SELECT report_number, report_date, status, laboratory, client_label, client_address, report_type FROM {$table}
          WHERE REPLACE(REPLACE(REPLACE(UPPER(report_number),'/',''),'-',''),' ','') = %s
          LIMIT 1",
         $number
@@ -174,10 +260,16 @@ function eta_verify_handle_request(WP_REST_Request $request)
     }
 
     return new WP_REST_Response([
-        'status'     => 'verified',
-        'message'    => 'Verified. This report was issued by Envi Tech AL.',
-        'issued_on'  => date_i18n(get_option('date_format'), strtotime($row->report_date)),
-        'laboratory' => $row->laboratory !== '' ? $row->laboratory : '',
+        'status'  => 'verified',
+        'message' => 'Verified. This report was issued by Envi Tech AL.',
+        'details' => array_filter([
+            'Report number' => (string) $row->report_number,
+            'Report type'   => (string) $row->report_type,
+            'Issued to'     => (string) $row->client_label,
+            'Address'       => (string) $row->client_address,
+            'Issue date'    => date_i18n(get_option('date_format'), strtotime($row->report_date)),
+            'Issued by'     => 'Envi Tech AL' . ($row->laboratory !== '' ? ' (' . $row->laboratory . ')' : ''),
+        ], 'strlen'),
     ], 200);
 }
 
@@ -467,7 +559,7 @@ function eta_verify_render_panel()
                     <input type="date" id="eta-iv-date" name="report_date" required>
                 </div>
                 <button type="submit" class="eta-button eta-iv-submit"><?php esc_html_e('Verify report', 'envi-tech-al-modern'); ?></button>
-                <p class="eta-iv-result" id="eta-iv-result" role="status" aria-live="polite" data-state="idle"></p>
+                <div class="eta-iv-result" id="eta-iv-result" role="status" aria-live="polite" data-state="idle"></div>
             </form>
         </div>
     </section>
@@ -484,9 +576,28 @@ function eta_verify_render_panel()
         var endpoint = <?php echo wp_json_encode(esc_url_raw(rest_url('eta/v1/verify-report'))); ?>;
         var busy = false;
 
-        function say(state, text) {
+        function say(state, text, details) {
             out.setAttribute('data-state', state);
-            out.textContent = text;
+            out.textContent = '';
+
+            var p = document.createElement('p');
+            p.className = 'eta-iv-message';
+            p.textContent = text;
+            out.appendChild(p);
+
+            if (!details) { return; }
+            var dl = document.createElement('dl');
+            dl.className = 'eta-iv-detail';
+            Object.keys(details).forEach(function (label) {
+                if (!details[label]) { return; }
+                var dt = document.createElement('dt');
+                dt.textContent = label;
+                var dd = document.createElement('dd');
+                dd.textContent = details[label];
+                dl.appendChild(dt);
+                dl.appendChild(dd);
+            });
+            out.appendChild(dl);
         }
 
         form.addEventListener('submit', function (event) {
@@ -511,16 +622,9 @@ function eta_verify_render_panel()
             })
                 .then(function (response) { return response.json(); })
                 .then(function (data) {
+                    var details = (data && data.status === 'verified') ? data.details : null;
                     var message = data && data.message ? data.message : <?php echo wp_json_encode(__('The check could not be completed. Please use the request form below.', 'envi-tech-al-modern')); ?>;
-                    if (data && data.status === 'verified') {
-                        if (data.issued_on) {
-                            message += ' ' + <?php echo wp_json_encode(__('Issued on', 'envi-tech-al-modern')); ?> + ' ' + data.issued_on + '.';
-                        }
-                        if (data.laboratory) {
-                            message += ' ' + data.laboratory + '.';
-                        }
-                    }
-                    say(data && data.status ? data.status : 'error', message);
+                    say(data && data.status ? data.status : 'error', message, details);
                 })
                 .catch(function () {
                     say('error', <?php echo wp_json_encode(__('The check could not be completed. Please use the request form below.', 'envi-tech-al-modern')); ?>);
