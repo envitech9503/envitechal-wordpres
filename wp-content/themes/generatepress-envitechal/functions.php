@@ -3112,6 +3112,15 @@ function eta_modern_render_water_testing_flagship_page()
     ];
     $faqs = eta_modern_water_testing_faqs();
     ?>
+    <nav class="eta-breadcrumb" aria-label="Breadcrumb">
+        <div class="eta-shell">
+            <ol>
+                <li><a href="<?php echo esc_url(home_url('/')); ?>"><?php esc_html_e('Home', 'envi-tech-al-modern'); ?></a></li>
+                <li><a href="<?php echo esc_url(home_url('/services/')); ?>"><?php esc_html_e('Services', 'envi-tech-al-modern'); ?></a></li>
+                <li><span aria-current="page"><?php esc_html_e('Water testing', 'envi-tech-al-modern'); ?></span></li>
+            </ol>
+        </div>
+    </nav>
     <section class="eta-service-hero eta-water-flagship-hero" aria-labelledby="eta-water-title">
         <img class="eta-service-hero-img" src="<?php echo esc_url($hero_image); ?>" alt="<?php esc_attr_e('Analyst performing water quality testing in an Envi Tech AL laboratory', 'envi-tech-al-modern'); ?>" loading="eager" decoding="async" fetchpriority="high">
         <div class="eta-shell eta-service-hero-grid">
