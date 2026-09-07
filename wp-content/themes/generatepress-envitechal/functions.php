@@ -59,10 +59,54 @@ add_action('wp_head', function () {
     printf('<link rel="preload" as="font" type="font/woff2" crossorigin href="%s">' . "\n", esc_url($fonts . '/outfit-var-latin.woff2'));
     printf('<link rel="preload" as="font" type="font/woff2" crossorigin href="%s">' . "\n", esc_url($fonts . '/archivo-var-latin.woff2'));
 
+    printf('<meta name="theme-color" content="%s">' . "\n", esc_attr('#f4f7f3'));
+    printf('<link rel="manifest" href="%s">' . "\n", esc_url(home_url('/?eta_manifest=1')));
     printf('<link rel="icon" type="image/png" sizes="32x32" data-spai-excluded="true" href="%s">' . "\n", esc_url($icon_32 ?: $base . '/favicon-32.png'));
     printf('<link rel="icon" type="image/png" sizes="192x192" data-spai-excluded="true" href="%s">' . "\n", esc_url($icon_192 ?: $base . '/favicon-192.png'));
     printf('<link rel="apple-touch-icon" sizes="180x180" data-spai-excluded="true" href="%s">' . "\n", esc_url($icon_180 ?: $base . '/favicon-192.png'));
 }, 4);
+
+/**
+ * Web app manifest. Generated rather than shipped as a static file so the
+ * icon URLs and start_url follow whichever origin is serving the site.
+ */
+add_action('template_redirect', function () {
+    if (!isset($_GET['eta_manifest'])) {
+        return;
+    }
+
+    $icons = [];
+    foreach ([192, 512] as $size) {
+        $url = function_exists('get_site_icon_url') ? get_site_icon_url($size) : '';
+        if ($url) {
+            $icons[] = [
+                'src' => $url,
+                'sizes' => $size . 'x' . $size,
+                'type' => 'image/png',
+                'purpose' => 'any',
+            ];
+        }
+    }
+
+    status_header(200);
+    header('Content-Type: application/manifest+json; charset=utf-8');
+    header('Cache-Control: public, max-age=86400');
+    header('X-Robots-Tag: noindex');
+
+    echo wp_json_encode([
+        'name' => 'Envi Tech AL',
+        'short_name' => 'Envi Tech AL',
+        'description' => 'Environmental testing, monitoring, calibration and consultancy.',
+        'start_url' => home_url('/'),
+        'scope' => home_url('/'),
+        'display' => 'standalone',
+        'theme_color' => '#f4f7f3',
+        'background_color' => '#f4f7f3',
+        'lang' => 'en-GB',
+        'icons' => $icons,
+    ], JSON_UNESCAPED_SLASHES);
+    exit;
+}, 0);
 
 add_action('wp_enqueue_scripts', function () {
     $modern_css = get_stylesheet_directory() . '/assets/css/eta-modern.css';

@@ -24,6 +24,15 @@ get_header();
             continue;
         }
         ?>
+        <nav class="eta-breadcrumb" aria-label="Breadcrumb">
+            <div class="eta-shell">
+                <ol>
+                    <li><a href="<?php echo esc_url(home_url('/')); ?>"><?php esc_html_e('Home', 'envi-tech-al-modern'); ?></a></li>
+                    <li><a href="<?php echo esc_url(home_url('/services/')); ?>"><?php esc_html_e('Services', 'envi-tech-al-modern'); ?></a></li>
+                    <li><span aria-current="page"><?php echo esc_html($profile['category']); ?></span></li>
+                </ol>
+            </div>
+        </nav>
         <section class="eta-service-hero" aria-labelledby="eta-service-title">
             <?php echo eta_modern_profile_image($profile['image'], '', 'full', '100vw', ['class' => 'eta-service-hero-img', 'aria-hidden' => 'true', 'loading' => 'eager', 'fetchpriority' => 'high']); ?>
             <div class="eta-shell eta-service-hero-grid">
@@ -179,7 +188,7 @@ get_header();
                 <aside class="eta-service-command-panel">
                     <h2><?php esc_html_e('Plan the request', 'envi-tech-al-modern'); ?></h2>
                     <p><?php esc_html_e('Send the sample type, site city, purpose of report, deadline, and any previous report reference so the team can guide the correct scope.', 'envi-tech-al-modern'); ?></p>
-                    <a class="eta-button" href="<?php echo esc_url(home_url('/contact-us-envi-tech-al/')); ?>"><?php esc_html_e('Request Testing Quote', 'envi-tech-al-modern'); ?></a>
+                    <a class="eta-button" href="<?php echo esc_url(home_url('/contact-us-envi-tech-al/')); ?>"><?php esc_html_e('Send your sample details', 'envi-tech-al-modern'); ?></a>
                     <a class="eta-button eta-button-secondary" href="<?php echo esc_url('https://wa.me/923102288801'); ?>" target="_blank" rel="noopener"><?php esc_html_e('WhatsApp team', 'envi-tech-al-modern'); ?></a>
                     <div class="eta-service-mini-list">
                         <span><?php esc_html_e('Karachi', 'envi-tech-al-modern'); ?></span>

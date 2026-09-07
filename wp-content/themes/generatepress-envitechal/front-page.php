@@ -174,7 +174,7 @@ html:not(.ets-gsap) .ets-cue { display: none; }
 .ets-skip:hover { color: #CDE8DB; border-color: rgba(205,232,219,.7); }
 .ets-skip:focus-visible { outline: 2px solid #7DE8CD; outline-offset: 3px; color: #CDE8DB; }
 html:not(.ets-gsap) .ets-skip { display: none; }
-@media (max-width: 640px) { .ets-skip { bottom: 20px; right: 80px; } }
+@media (max-width: 640px) { .ets-skip { bottom: 20px; right: 96px; } }
 @keyframes etsCueDrop { 0% { transform: scaleY(0); transform-origin: top; } 55% { transform: scaleY(1); transform-origin: top; } 100% { transform: scaleY(1) translateY(8px); opacity: 0; } }
 
 /* intro entrance — editorial masked reveal (CSS so LCP is immediate) */
@@ -329,7 +329,7 @@ html:not(.ets-gsap) .ets-final { display: none; }
     </div>
 
     <div class="ets-cue"><span>Scroll to enter the site</span><span class="ets-cueline"></span></div>
-    <button type="button" class="ets-skip" data-ets-skip aria-label="Skip the introduction and go to the services overview">Skip intro</button>
+    <button type="button" class="ets-skip" data-ets-skip aria-label="Skip intro and go to the services overview">Skip intro</button>
   </div>
 </section>
 <script type="module" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/eta-hero-twin.js?v=19" data-no-optimize="1" data-no-defer="1" data-litespeed-noopt="1"></script>

@@ -9280,3 +9280,30 @@ h3 {
 @media (max-width: 860px) {
   .eta-iv-grid { grid-template-columns: 1fr; }
 }
+
+/* Visible breadcrumb trail on service pages. The BreadcrumbList schema
+   already described this hierarchy to search engines; this shows it to
+   people. Sits above the hero, quiet enough not to compete with the H1. */
+.eta-breadcrumb {
+    background: var(--eta-bg);
+    border-bottom: 1px solid var(--eta-line);
+    padding: 12px 0;
+    font-family: 'Archivo', "Segoe UI", Arial, sans-serif;
+    font-size: 12px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+.eta-breadcrumb ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.eta-breadcrumb li { display: flex; align-items: center; gap: 8px; }
+.eta-breadcrumb li + li::before { content: "/"; color: var(--eta-muted); opacity: .6; }
+.eta-breadcrumb a { color: var(--eta-muted); text-decoration: none; }
+.eta-breadcrumb a:hover, .eta-breadcrumb a:focus-visible { color: var(--eta-green); text-decoration: underline; }
+.eta-breadcrumb [aria-current="page"] { color: var(--eta-ink); }

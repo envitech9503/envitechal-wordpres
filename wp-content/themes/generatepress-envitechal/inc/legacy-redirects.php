@@ -10,6 +10,8 @@ if (!defined('ABSPATH')) {
 function eta_modern_legacy_redirect_map()
 {
     return [
+        '/about/' => '/aboutus/',
+        '/about-us/' => '/aboutus/',
         '/certificates-approvals/' => '/accreditations-certifications/',
         '/newsupdates/' => '/blognewsupdates/',
         '/our-services/' => '/services/',
