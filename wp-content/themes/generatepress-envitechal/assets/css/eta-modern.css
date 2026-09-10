@@ -9317,7 +9317,7 @@ h3 {
     gap: 6px 18px;
     margin: 14px 0 0;
     padding: 14px 0 0;
-    border-top: 1px solid var(--eta-line);
+    border-top: 1px solid rgba(125, 232, 205, .18);
     font-size: 14px;
 }
 .eta-iv-detail dt {
@@ -9327,10 +9327,10 @@ h3 {
     font-weight: 600;
     letter-spacing: .12em;
     text-transform: uppercase;
-    color: var(--eta-muted);
+    color: #9FBBB0;
     align-self: baseline;
 }
-.eta-iv-detail dd { margin: 0; color: var(--eta-ink); }
+.eta-iv-detail dd { margin: 0; color: #EAF4EF; }
 @media (max-width: 560px) {
     .eta-iv-detail { grid-template-columns: 1fr; gap: 2px; }
     .eta-iv-detail dd { margin-bottom: 10px; }
