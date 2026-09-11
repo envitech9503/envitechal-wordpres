@@ -3900,6 +3900,17 @@ function eta_modern_render_report_verification_page()
         </div>
     </section>
 
+    <section class="eta-verify-accred" aria-label="<?php esc_attr_e('Accreditation', 'envi-tech-al-modern'); ?>">
+        <div class="eta-shell eta-verify-accred-inner">
+            <p class="eta-verify-accred-lead"><?php esc_html_e('Envi Tech AL operates PNAC-accredited laboratories to ISO/IEC 17025 for testing methods within the approved scope.', 'envi-tech-al-modern'); ?></p>
+            <ul class="eta-verify-accred-badges">
+                <li><?php esc_html_e('ISO/IEC 17025', 'envi-tech-al-modern'); ?></li>
+                <li><?php esc_html_e('PNAC LAB-285 · Karachi', 'envi-tech-al-modern'); ?></li>
+                <li><?php esc_html_e('PNAC LAB-347 · Lahore', 'envi-tech-al-modern'); ?></li>
+            </ul>
+        </div>
+    </section>
+
     <section class="eta-band eta-verify-workflow">
         <div class="eta-shell">
             <?php eta_modern_section_title('Verification workflow', 'A clear path for clients, auditors, and buyers', 'Report verification protects decisions by confirming that the document was issued by Envi Tech AL and matches the identifying details provided.'); ?>
@@ -3914,7 +3925,7 @@ function eta_modern_render_report_verification_page()
                     ?>
                     <article class="eta-verify-step-card">
                         <span><?php echo esc_html(str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT)); ?></span>
-                        <h2><?php echo esc_html($step[0]); ?></h2>
+                        <h3><?php echo esc_html($step[0]); ?></h3>
                         <p><?php echo esc_html($step[1]); ?></p>
                     </article>
                 <?php endforeach; ?>
@@ -3945,7 +3956,7 @@ function eta_modern_render_report_verification_page()
             <?php eta_modern_section_title('Trust and traceability', 'Verification supports audits, buyers, regulators, and internal decision-makers', 'A report is only useful when its origin, details, and intended record can be trusted. These guidance sections preserve the information clients need before relying on a report.'); ?>
             <div class="eta-verify-depth-grid">
                 <article>
-                    <h2><?php esc_html_e('Who can use this portal?', 'envi-tech-al-modern'); ?></h2>
+                    <h3><?php esc_html_e('Who can use this portal?', 'envi-tech-al-modern'); ?></h3>
                     <ul>
                         <li><?php esc_html_e('Clients confirming issued reports before internal use or onward sharing.', 'envi-tech-al-modern'); ?></li>
                         <li><?php esc_html_e('Buyer representatives and brand compliance teams reviewing supplier evidence.', 'envi-tech-al-modern'); ?></li>
@@ -3954,7 +3965,7 @@ function eta_modern_render_report_verification_page()
                     </ul>
                 </article>
                 <article>
-                    <h2><?php esc_html_e('Reports commonly verified', 'envi-tech-al-modern'); ?></h2>
+                    <h3><?php esc_html_e('Reports commonly verified', 'envi-tech-al-modern'); ?></h3>
                     <ul>
                         <li><?php esc_html_e('Drinking water, wastewater, and effluent testing reports.', 'envi-tech-al-modern'); ?></li>
                         <li><?php esc_html_e('Stack emission, ambient air, noise, lux, and environmental monitoring reports.', 'envi-tech-al-modern'); ?></li>
@@ -3963,7 +3974,7 @@ function eta_modern_render_report_verification_page()
                     </ul>
                 </article>
                 <article>
-                    <h2><?php esc_html_e('Authenticity checklist', 'envi-tech-al-modern'); ?></h2>
+                    <h3><?php esc_html_e('Authenticity checklist', 'envi-tech-al-modern'); ?></h3>
                     <ul>
                         <li><?php esc_html_e('Check that the report number is readable and matches the issued copy.', 'envi-tech-al-modern'); ?></li>
                         <li><?php esc_html_e('Confirm company name, reporting date, and report type before sharing further.', 'envi-tech-al-modern'); ?></li>
@@ -3989,12 +4000,26 @@ function eta_modern_render_report_verification_page()
                 foreach ($faqs as $faq) :
                     ?>
                     <article class="eta-verify-faq-card">
-                        <h2><?php echo esc_html($faq[0]); ?></h2>
+                        <h3><?php echo esc_html($faq[0]); ?></h3>
                         <p><?php echo esc_html($faq[1]); ?></p>
                     </article>
                 <?php endforeach; ?>
             </div>
         </div>
+        <?php
+        $eta_faq_ld = array(
+            '@context' => 'https://schema.org',
+            '@type' => 'FAQPage',
+            'mainEntity' => array_map(function ($faq) {
+                return array(
+                    '@type' => 'Question',
+                    'name' => $faq[0],
+                    'acceptedAnswer' => array('@type' => 'Answer', 'text' => $faq[1]),
+                );
+            }, $faqs),
+        );
+        ?>
+        <script type="application/ld+json"><?php echo wp_json_encode($eta_faq_ld, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE); ?></script>
     </section>
 
     <section class="eta-verify-support">
