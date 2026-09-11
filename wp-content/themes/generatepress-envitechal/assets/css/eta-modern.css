@@ -3174,6 +3174,12 @@ h3 {
     color: #fff;
 }
 
+.eta-verify-support .eta-eyebrow,
+.eta-knowledge-cta .eta-eyebrow {
+    /* Base eyebrow green fails contrast on the dark navy band; lift to aqua. */
+    color: #7de8cd;
+}
+
 .eta-verify-support-list {
     display: grid;
     gap: 12px;
