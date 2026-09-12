@@ -163,6 +163,19 @@ a {
     object-fit: contain;
 }
 
+/* Header lockup: emblem in a white tile plus a text wordmark, matching the
+   treatment used across the company's other applications. */
+.eta-logo-link { display: inline-flex; align-items: center; gap: 12px; text-decoration: none !important; }
+.eta-logo-emblem { display: block; width: 56px; height: 56px; padding: 4px; border-radius: 12px; background: #fff; box-shadow: 0 1px 2px rgba(6, 17, 14, .12), 0 0 0 1px rgba(6, 17, 14, .06); object-fit: contain; }
+.eta-logo-word { display: grid; gap: 3px; }
+.eta-logo-name { font-family: 'Archivo', "Segoe UI", Arial, sans-serif; font-size: 20px; font-weight: 700; line-height: 1; letter-spacing: .02em; color: var(--eta-navy); }
+.eta-logo-sub { font-family: 'Archivo', "Segoe UI", Arial, sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--eta-green); }
+@media (max-width: 640px) {
+    .eta-logo-emblem { width: 44px; height: 44px; border-radius: 10px; }
+    .eta-logo-name { font-size: 17px; }
+    .eta-logo-sub { display: none; }
+}
+
 .main-navigation .main-nav ul li a,
 .menu-toggle,
 .main-navigation .menu-bar-items {
@@ -2401,7 +2414,13 @@ h3 {
 
 .eta-form-panel textarea {
     min-height: 132px;
+    height: 150px;
+    max-height: 240px;
+    resize: vertical;
 }
+/* Contact Form 7 separates fields with <br>; inside the grid each one became
+   its own row and doubled every gap. */
+.eta-form-panel .wpcf7-form p > br { display: none; }
 
 .eta-form-panel label,
 .eta-form-panel .wpcf7-form p {
@@ -3083,7 +3102,7 @@ h3 {
 }
 
 .eta-verify-step-card {
-    min-height: 330px;
+    min-height: 0;
     padding: clamp(22px, 3vw, 30px);
     border: 1px solid var(--eta-line);
     border-radius: var(--eta-radius);
@@ -3124,6 +3143,19 @@ h3 {
     gap: clamp(26px, 5vw, 70px);
     align-items: start;
 }
+/* The copy column is shorter than the form; pinning it keeps the guidance
+   beside whichever field the visitor is on instead of leaving a void. */
+@media (min-width: 861px) {
+    .eta-verify-request-copy { position: sticky; top: 112px; }
+}
+
+/* Verification page bands: a tighter vertical rhythm than the default band,
+   which read as empty space between short sections. */
+.eta-verify-workflow,
+.eta-verify-request,
+.eta-verify-depth,
+.eta-verify-faq { padding: clamp(40px, 5.5vw, 64px) 0; }
+.eta-iv { padding: clamp(40px, 5.5vw, 64px) 0 clamp(36px, 5vw, 56px); }
 
 .eta-verify-request-copy h2,
 .eta-knowledge-cta h2 {
@@ -3216,7 +3248,7 @@ h3 {
 
 .eta-verify-support,
 .eta-knowledge-cta {
-    padding: clamp(44px, 7vw, 80px) 0;
+    padding: clamp(40px, 5vw, 56px) 0;
     background: var(--eta-navy);
     color: #d8e8df;
 }
@@ -8990,10 +9022,10 @@ h3 {
     grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
     align-items: start;
 }
-.fsf-invite { padding: clamp(64px, 6.5vw, 108px) clamp(28px, 4vw, 68px) clamp(52px, 5vw, 84px) 0; }
+.fsf-invite { padding: clamp(44px, 4.5vw, 68px) clamp(28px, 4vw, 68px) clamp(44px, 4.5vw, 64px) 0; }
 .fsf-reach {
     position: relative;
-    padding: clamp(64px, 6.5vw, 108px) 0 clamp(52px, 5vw, 84px) clamp(28px, 4vw, 68px);
+    padding: clamp(44px, 4.5vw, 68px) 0 clamp(44px, 4.5vw, 64px) clamp(28px, 4vw, 68px);
     border-left: 1px solid var(--fsf-line);
 }
 /* the divider carries a tick, like a scale */
@@ -9007,7 +9039,7 @@ h3 {
 .fsf-logo-img { display: block; width: 168px; height: auto; }
 .fsf-logo-lockup { display: flex; align-items: center; gap: 14px; }
 .eta-fs-footer .fsf-logo, .eta-fs-footer .fsf-logo:hover, .eta-fs-footer .fsf-logo:focus-visible { text-decoration: none; }
-.fsf-logo-emblem { display: block; width: 80px; height: 80px; object-fit: contain; filter: drop-shadow(0 2px 8px rgba(0, 0, 0, .5)); }
+.fsf-logo-emblem { display: block; width: 76px; height: 76px; padding: 6px; border-radius: 16px; background: #fff; box-shadow: 0 6px 18px rgba(0, 0, 0, .4); object-fit: contain; }
 .fsf-logo-word { display: grid; gap: 4px; }
 .fsf-logo-name { font-family: 'Outfit', 'Archivo', sans-serif; font-weight: 500; font-size: 22px; line-height: 1; letter-spacing: .08em; color: #FFFFFF; }
 .fsf-logo-sub { font-family: 'Archivo', "Segoe UI", Arial, sans-serif; font-size: 10.5px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--fsf-mint); }

@@ -40,7 +40,7 @@ $eta_year = date('Y');
                         <img class="fsf-logo-emblem"
                              src="<?php echo esc_url($emblem_dir . 'envitechal-emblem-160.png'); ?>"
                              srcset="<?php echo esc_url($emblem_dir . 'envitechal-emblem-160.png'); ?> 160w, <?php echo esc_url($emblem_dir . 'envitechal-emblem-320.png'); ?> 320w"
-                             sizes="80px" width="160" height="160" alt="" loading="lazy" decoding="async">
+                             sizes="80px" width="160" height="160" alt="" data-spai-excluded="true" loading="lazy" decoding="async">
                         <span class="fsf-logo-word">
                             <span class="fsf-logo-name">Envi Tech AL</span>
                             <span class="fsf-logo-sub"><?php esc_html_e('Environmental Testing Laboratory', 'envi-tech-al-modern'); ?></span>
