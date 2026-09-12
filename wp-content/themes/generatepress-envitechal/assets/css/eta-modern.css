@@ -9006,6 +9006,7 @@ h3 {
 .fsf-logo { display: block; width: fit-content; margin: 0 0 40px; padding-bottom: 26px; border-bottom: 1px solid var(--fsf-line); }
 .fsf-logo-img { display: block; width: 168px; height: auto; }
 .fsf-logo-lockup { display: flex; align-items: center; gap: 14px; }
+.eta-fs-footer .fsf-logo, .eta-fs-footer .fsf-logo:hover, .eta-fs-footer .fsf-logo:focus-visible { text-decoration: none; }
 .fsf-logo-emblem { display: block; width: 64px; height: 64px; object-fit: contain; filter: drop-shadow(0 2px 6px rgba(0, 0, 0, .45)); }
 .fsf-logo-word { display: grid; gap: 4px; }
 .fsf-logo-name { font-family: 'Outfit', 'Archivo', sans-serif; font-weight: 500; font-size: 22px; line-height: 1; letter-spacing: .08em; color: #FFFFFF; }
