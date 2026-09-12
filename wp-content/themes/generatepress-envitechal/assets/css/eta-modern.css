@@ -2589,8 +2589,8 @@ h3 {
     grid-template-columns: minmax(0, 1fr) 360px;
     align-items: center;
     gap: clamp(28px, 5vw, 70px);
-    min-height: 680px;
-    padding: clamp(72px, 9vw, 124px) 0;
+    min-height: 560px;
+    padding: clamp(56px, 6vw, 84px) 0;
 }
 
 .eta-download-hero-grid {
@@ -2705,7 +2705,9 @@ h3 {
     display: grid;
     grid-template-columns: minmax(280px, 0.72fr) minmax(0, 1fr);
     gap: clamp(26px, 5vw, 76px);
-    align-items: start;
+    /* The headline column runs taller than the copy; centring keeps the copy
+       beside the headline instead of leaving a void beneath it. */
+    align-items: center;
 }
 
 .eta-about-positioning h2,
@@ -2812,7 +2814,7 @@ h3 {
 }
 
 .eta-about-final {
-    padding: clamp(44px, 7vw, 80px) 0;
+    padding: clamp(40px, 5vw, 56px) 0;
     color: #fff;
     background: linear-gradient(135deg, #12352f, #1d6b4f);
 }
@@ -3163,7 +3165,11 @@ h3 {
 .eta-verify-depth,
 .eta-verify-faq,
 .eta-contact-request-band,
-.eta-contact-offices { padding: clamp(40px, 5.5vw, 64px) 0; }
+.eta-contact-offices,
+.eta-about-positioning,
+.eta-about-capabilities,
+.eta-about-service-links { padding: clamp(40px, 5.5vw, 64px) 0; }
+.eta-about-hero { min-height: 560px; }
 .eta-iv { padding: clamp(40px, 5.5vw, 64px) 0 clamp(36px, 5vw, 56px); }
 
 .eta-verify-request-copy h2,
