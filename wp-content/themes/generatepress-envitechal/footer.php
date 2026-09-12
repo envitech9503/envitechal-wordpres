@@ -31,13 +31,16 @@ $eta_year = date('Y');
             <section class="fsf-invite" aria-labelledby="fsf-invite-title">
                 <a class="fsf-logo" href="<?php echo esc_url(home_url('/')); ?>" aria-label="<?php esc_attr_e('Envi Tech AL homepage', 'envi-tech-al-modern'); ?>">
                     <?php
-                    // The emblem is the sharpest asset in the library (512 px
-                    // square); the wordmark is set as text so it stays crisp
-                    // on every screen density and reads on the dark ground.
-                    $emblem = content_url('/uploads/2019/10/logo.png');
+                    // High-resolution emblem supplied by the client (12-09-2026),
+                    // cut out to a transparent background and shipped with the
+                    // theme so it deploys with the code rather than the media library.
+                    $emblem_dir = get_stylesheet_directory_uri() . '/assets/images/';
                     ?>
                     <span class="fsf-logo-lockup">
-                        <img class="fsf-logo-emblem" src="<?php echo esc_url($emblem); ?>" width="512" height="512" alt="" loading="lazy" decoding="async">
+                        <img class="fsf-logo-emblem"
+                             src="<?php echo esc_url($emblem_dir . 'envitechal-emblem-160.png'); ?>"
+                             srcset="<?php echo esc_url($emblem_dir . 'envitechal-emblem-160.png'); ?> 160w, <?php echo esc_url($emblem_dir . 'envitechal-emblem-320.png'); ?> 320w"
+                             sizes="80px" width="160" height="160" alt="" loading="lazy" decoding="async">
                         <span class="fsf-logo-word">
                             <span class="fsf-logo-name">Envi Tech AL</span>
                             <span class="fsf-logo-sub"><?php esc_html_e('Environmental Testing Laboratory', 'envi-tech-al-modern'); ?></span>

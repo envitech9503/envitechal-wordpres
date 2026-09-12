@@ -9007,7 +9007,7 @@ h3 {
 .fsf-logo-img { display: block; width: 168px; height: auto; }
 .fsf-logo-lockup { display: flex; align-items: center; gap: 14px; }
 .eta-fs-footer .fsf-logo, .eta-fs-footer .fsf-logo:hover, .eta-fs-footer .fsf-logo:focus-visible { text-decoration: none; }
-.fsf-logo-emblem { display: block; width: 64px; height: 64px; object-fit: contain; filter: drop-shadow(0 2px 6px rgba(0, 0, 0, .45)); }
+.fsf-logo-emblem { display: block; width: 80px; height: 80px; object-fit: contain; filter: drop-shadow(0 2px 8px rgba(0, 0, 0, .5)); }
 .fsf-logo-word { display: grid; gap: 4px; }
 .fsf-logo-name { font-family: 'Outfit', 'Archivo', sans-serif; font-weight: 500; font-size: 22px; line-height: 1; letter-spacing: .08em; color: #FFFFFF; }
 .fsf-logo-sub { font-family: 'Archivo', "Segoe UI", Arial, sans-serif; font-size: 10.5px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--fsf-mint); }
