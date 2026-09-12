@@ -3957,6 +3957,25 @@ function eta_modern_render_report_verification_page()
                     <span><?php esc_html_e('Company or client name', 'envi-tech-al-modern'); ?></span>
                     <span><?php esc_html_e('Requester name, phone, and email', 'envi-tech-al-modern'); ?></span>
                 </div>
+
+                <div class="eta-verify-next" aria-labelledby="eta-verify-next-title">
+                    <p class="eta-eyebrow" id="eta-verify-next-title"><?php esc_html_e('What happens next', 'envi-tech-al-modern'); ?></p>
+                    <ol class="eta-verify-next-list">
+                        <li>
+                            <strong><?php esc_html_e('Request received', 'envi-tech-al-modern'); ?></strong>
+                            <span><?php esc_html_e('An acknowledgement is sent to the email address you provide.', 'envi-tech-al-modern'); ?></span>
+                        </li>
+                        <li>
+                            <strong><?php esc_html_e('Record checked', 'envi-tech-al-modern'); ?></strong>
+                            <span><?php esc_html_e('The laboratory team compares your details with the issued record and the signed copy on file.', 'envi-tech-al-modern'); ?></span>
+                        </li>
+                        <li>
+                            <strong><?php esc_html_e('Written confirmation', 'envi-tech-al-modern'); ?></strong>
+                            <span><?php esc_html_e('You receive a reply during working hours, Monday to Saturday, stating whether the report matches our record.', 'envi-tech-al-modern'); ?></span>
+                        </li>
+                    </ol>
+                    <p class="eta-verify-next-note"><?php esc_html_e('Analytical results are never shared with a third party through this channel. Confirmation covers issue and identity only.', 'envi-tech-al-modern'); ?></p>
+                </div>
             </div>
             <div id="eta-verification-form" class="eta-form-panel eta-verify-form-panel">
                 <?php echo do_shortcode('[contact-form-7 id="22994" title="Report Verification Request"]'); ?>

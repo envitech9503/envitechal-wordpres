@@ -566,6 +566,21 @@ function eta_verify_render_panel()
                     <li><?php esc_html_e('Number and date must both match; a partial match is not confirmed.', 'envi-tech-al-modern'); ?></li>
                     <li><?php esc_html_e('Your entries are used for this check only.', 'envi-tech-al-modern'); ?></li>
                 </ul>
+
+                <figure class="eta-iv-sample" aria-label="<?php esc_attr_e('Where the two details appear on a report', 'envi-tech-al-modern'); ?>">
+                    <figcaption><?php esc_html_e('Where to find them on the report', 'envi-tech-al-modern'); ?></figcaption>
+                    <div class="eta-iv-sample-doc" aria-hidden="true">
+                        <div class="eta-iv-sample-head">
+                            <span class="eta-iv-sample-brand">Envi Tech AL</span>
+                            <span class="eta-iv-sample-qr"></span>
+                        </div>
+                        <div class="eta-iv-sample-row"><span>Report No.</span><mark>RO-2026XXXXX-KHI-XX</mark></div>
+                        <div class="eta-iv-sample-row"><span>Reporting date</span><mark>DD-MM-YYYY</mark></div>
+                        <div class="eta-iv-sample-row eta-iv-sample-dim"><span>Issued to</span><i></i></div>
+                        <div class="eta-iv-sample-row eta-iv-sample-dim"><span>Sample type</span><i></i></div>
+                    </div>
+                    <p class="eta-iv-sample-note"><?php esc_html_e('Both details sit in the header block on page one, beside the QR code. Enter them exactly as printed.', 'envi-tech-al-modern'); ?></p>
+                </figure>
             </div>
 
             <form class="eta-iv-panel" id="eta-iv-form" novalidate method="post" action=""
