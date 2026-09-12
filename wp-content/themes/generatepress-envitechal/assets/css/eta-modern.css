@@ -1609,7 +1609,7 @@ h3 {
 
 .eta-services-workflow,
 .eta-service-method {
-    padding: clamp(46px, 7vw, 86px) 0;
+    padding: clamp(40px, 5.5vw, 64px) 0;
     background:
         radial-gradient(circle at 12% 16%, rgba(47, 135, 100, 0.22), transparent 34%),
         linear-gradient(135deg, #0b1d22, #102229 58%, #173f34);
@@ -1635,7 +1635,9 @@ h3 {
     display: grid;
     grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
     gap: clamp(28px, 5vw, 70px);
-    align-items: start;
+    /* The copy column is shorter than the step list; centring it avoids a
+       void beneath the button. */
+    align-items: center;
 }
 
 .eta-services-workflow-list,
@@ -1687,7 +1689,7 @@ h3 {
 }
 
 .eta-services-final-cta {
-    padding: clamp(42px, 7vw, 76px) 0;
+    padding: clamp(40px, 5vw, 56px) 0;
     background:
         radial-gradient(circle at 78% 16%, rgba(200, 155, 60, 0.24), transparent 34%),
         linear-gradient(135deg, #102229, #173f34);
@@ -3168,7 +3170,8 @@ h3 {
 .eta-contact-offices,
 .eta-about-positioning,
 .eta-about-capabilities,
-.eta-about-service-links { padding: clamp(40px, 5.5vw, 64px) 0; }
+.eta-about-service-links,
+.eta-services-directory { padding: clamp(40px, 5.5vw, 64px) 0; }
 .eta-about-hero { min-height: 560px; }
 .eta-iv { padding: clamp(40px, 5.5vw, 64px) 0 clamp(36px, 5vw, 56px); }
 
