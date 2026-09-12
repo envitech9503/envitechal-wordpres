@@ -587,10 +587,12 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
 .site-main > #ets-twin,
 .site-main > section[class*="etb-"] { margin-bottom: 0; }
 
+/* Act rhythm brought in line with the rest of the site (verification and
+   contact pages run 40 to 64 px): two adjacent 96 px paddings read as a gap. */
 .etb-obs, .etb-journey, .etb-matrix, .etb-maritime,
 .etb-vault, .etb-why, .etb-hub {
-  padding-top: clamp(64px, 5.6vw, 96px);
-  padding-bottom: clamp(64px, 5.6vw, 96px);
+  padding-top: clamp(48px, 4.2vw, 64px);
+  padding-bottom: clamp(48px, 4.2vw, 64px);
 }
 
 
