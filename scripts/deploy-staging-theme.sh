@@ -6,7 +6,7 @@ STAGING_HOST="staging.envitechal.com"
 PRODUCTION_HOST="envitechal.com"
 REPO="${HOME}/repositories/envitechal-wordpres"
 THEME_REL="wp-content/themes/generatepress-envitechal"
-VALIDATED_PR_COMMIT="19b057c6ddca889548cdaa86c0ebd7c7f1191fbc"
+VALIDATED_PR_COMMIT="a6ce38906d9e4c5cc319d9c3f24956090c3d69fa"
 BACKUP_DIR="${HOME}/backups/envitechal-ai-visibility"
 
 stop() {
