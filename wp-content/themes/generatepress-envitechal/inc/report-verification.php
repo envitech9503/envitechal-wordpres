@@ -10,8 +10,8 @@
  * - A lookup requires the report number AND its issue date. Knowing a number
  *   alone confirms nothing, so the endpoint cannot be walked to harvest a
  *   client list.
- * - A successful lookup returns only that the document was issued and on what
- *   date. Client names are matched, never returned.
+ * - A successful lookup returns the issuing details already printed on the
+ *   document (number, type, addressee, issue date). Nothing beyond that.
  * - Attempts are rate limited per IP.
  * - The instant path only activates once the registry holds records; until
  *   then the page keeps the existing manual request form.
@@ -23,8 +23,24 @@ if (!defined('ABSPATH')) {
 
 const ETA_VERIFY_DB_VERSION = 2;
 const ETA_VERIFY_TABLE      = 'eta_report_registry';
-const ETA_VERIFY_RATE_MAX   = 12;    // attempts
+// 30 attempts in ten minutes lets a client check a batch of reports in one
+// sitting while still making enumeration of the number space impractical.
+const ETA_VERIFY_RATE_MAX   = 30;    // attempts
 const ETA_VERIFY_RATE_WINDOW = 600;  // seconds
+
+/**
+ * Dates on the reports themselves are day-first (27-07-2026), so the card
+ * shows the same form the reader is checking against.
+ */
+function eta_verify_display_date($value)
+{
+    $value = trim((string) $value);
+    if ($value === '') {
+        return '';
+    }
+    $timestamp = strtotime($value);
+    return $timestamp === false ? $value : gmdate('d-m-Y', $timestamp);
+}
 
 function eta_verify_table_name()
 {
@@ -227,7 +243,7 @@ function eta_verify_handle_request(WP_REST_Request $request)
                 'Report type'   => (string) ($remote['report_type'] ?? ''),
                 'Issued to'     => (string) ($remote['client_name'] ?? ''),
                 'Address'       => (string) ($remote['client_address'] ?? ''),
-                'Issue date'    => (string) ($remote['issue_date'] ?? $date_sql),
+                'Issue date'    => eta_verify_display_date($remote['issue_date'] ?? $date_sql),
                 'Issued by'     => (string) ($remote['issued_by'] ?? 'Envi Tech AL'),
             ], 'strlen'),
         ], 200);
@@ -267,7 +283,7 @@ function eta_verify_handle_request(WP_REST_Request $request)
             'Report type'   => (string) $row->report_type,
             'Issued to'     => (string) $row->client_label,
             'Address'       => (string) $row->client_address,
-            'Issue date'    => date_i18n(get_option('date_format'), strtotime($row->report_date)),
+            'Issue date'    => eta_verify_display_date($row->report_date),
             'Issued by'     => 'Envi Tech AL' . ($row->laboratory !== '' ? ' (' . $row->laboratory . ')' : ''),
         ], 'strlen'),
     ], 200);
@@ -543,20 +559,28 @@ function eta_verify_render_panel()
             <div class="eta-iv-copy">
                 <p class="eta-eyebrow"><?php esc_html_e('Instant check', 'envi-tech-al-modern'); ?></p>
                 <h2 id="eta-iv-title"><?php esc_html_e('Confirm a report in seconds.', 'envi-tech-al-modern'); ?></h2>
-                <p><?php esc_html_e('Enter the report number and the issue date printed on the document. Both must match the record held by the laboratory. Nothing about the report or the client is disclosed by this check.', 'envi-tech-al-modern'); ?></p>
+                <p><?php esc_html_e('Enter the report number and the issue date printed on the document. Both must match the record held by the laboratory. A match confirms that Envi Tech AL issued the report and shows the issuing details already printed on it; no analytical results are disclosed.', 'envi-tech-al-modern'); ?></p>
                 <p class="eta-iv-note"><?php esc_html_e('If the details do not match, or the report predates the online registry, send a manual request further down this page and the laboratory team will confirm it directly.', 'envi-tech-al-modern'); ?></p>
+                <ul class="eta-iv-steps" aria-label="<?php esc_attr_e('How the check works', 'envi-tech-al-modern'); ?>">
+                    <li><?php esc_html_e('Checked against the laboratory reporting system, not a copy.', 'envi-tech-al-modern'); ?></li>
+                    <li><?php esc_html_e('Number and date must both match; a partial match is not confirmed.', 'envi-tech-al-modern'); ?></li>
+                    <li><?php esc_html_e('Your entries are used for this check only.', 'envi-tech-al-modern'); ?></li>
+                </ul>
             </div>
 
             <form class="eta-iv-panel" id="eta-iv-form" novalidate method="post" action=""
                   onsubmit="return false;">
                 <div class="eta-iv-field">
                     <label for="eta-iv-number"><?php esc_html_e('Report number', 'envi-tech-al-modern'); ?></label>
-                    <input type="text" id="eta-iv-number" name="report_number" autocomplete="off" spellcheck="false" required
+                    <input type="text" id="eta-iv-number" name="report_number" autocomplete="off" autocapitalize="characters" spellcheck="false" required
+                           aria-describedby="eta-iv-number-hint"
                            placeholder="<?php esc_attr_e('As printed on the report', 'envi-tech-al-modern'); ?>">
+                    <p class="eta-iv-hint" id="eta-iv-number-hint"><?php esc_html_e('Top of the report, beside the QR code. Case and separators do not matter.', 'envi-tech-al-modern'); ?></p>
                 </div>
                 <div class="eta-iv-field">
-                    <label for="eta-iv-date"><?php esc_html_e('Report date', 'envi-tech-al-modern'); ?></label>
-                    <input type="date" id="eta-iv-date" name="report_date" required>
+                    <label for="eta-iv-date"><?php esc_html_e('Issue date', 'envi-tech-al-modern'); ?></label>
+                    <input type="date" id="eta-iv-date" name="report_date" required aria-describedby="eta-iv-date-hint">
+                    <p class="eta-iv-hint" id="eta-iv-date-hint"><?php esc_html_e('The reporting date printed on the document, in day, month, year order.', 'envi-tech-al-modern'); ?></p>
                 </div>
                 <button type="submit" class="eta-button eta-iv-submit"><?php esc_html_e('Verify report', 'envi-tech-al-modern'); ?></button>
                 <div class="eta-iv-result" id="eta-iv-result" role="status" aria-live="polite" data-state="idle"></div>
@@ -576,59 +600,107 @@ function eta_verify_render_panel()
         var endpoint = <?php echo wp_json_encode(esc_url_raw(rest_url('eta/v1/verify-report'))); ?>;
         var busy = false;
 
+        var numberField = form.querySelector('#eta-iv-number');
+        var dateField = form.querySelector('#eta-iv-date');
+        var labels = {
+            verified:     <?php echo wp_json_encode(__('Verified', 'envi-tech-al-modern')); ?>,
+            superseded:   <?php echo wp_json_encode(__('Superseded', 'envi-tech-al-modern')); ?>,
+            no_match:     <?php echo wp_json_encode(__('No match', 'envi-tech-al-modern')); ?>,
+            invalid:      <?php echo wp_json_encode(__('Check the details', 'envi-tech-al-modern')); ?>,
+            rate_limited: <?php echo wp_json_encode(__('Please wait', 'envi-tech-al-modern')); ?>,
+            unavailable:  <?php echo wp_json_encode(__('Unavailable', 'envi-tech-al-modern')); ?>,
+            error:        <?php echo wp_json_encode(__('Could not complete', 'envi-tech-al-modern')); ?>,
+            pending:      <?php echo wp_json_encode(__('Checking', 'envi-tech-al-modern')); ?>
+        };
+        var genericError = <?php echo wp_json_encode(__('The check could not be completed. Please try again in a moment, or use the request form below.', 'envi-tech-al-modern')); ?>;
+
         function say(state, text, details) {
             out.setAttribute('data-state', state);
+            out.setAttribute('aria-busy', state === 'pending' ? 'true' : 'false');
             out.textContent = '';
+
+            var head = document.createElement('p');
+            head.className = 'eta-iv-status';
+            var badge = document.createElement('span');
+            badge.className = 'eta-iv-badge';
+            badge.textContent = labels[state] || labels.error;
+            head.appendChild(badge);
+            out.appendChild(head);
 
             var p = document.createElement('p');
             p.className = 'eta-iv-message';
             p.textContent = text;
             out.appendChild(p);
 
-            if (!details) { return; }
-            var dl = document.createElement('dl');
-            dl.className = 'eta-iv-detail';
-            Object.keys(details).forEach(function (label) {
-                if (!details[label]) { return; }
-                var dt = document.createElement('dt');
-                dt.textContent = label;
-                var dd = document.createElement('dd');
-                dd.textContent = details[label];
-                dl.appendChild(dt);
-                dl.appendChild(dd);
-            });
-            out.appendChild(dl);
+            if (details) {
+                var dl = document.createElement('dl');
+                dl.className = 'eta-iv-detail';
+                Object.keys(details).forEach(function (label) {
+                    if (!details[label]) { return; }
+                    var dt = document.createElement('dt');
+                    dt.textContent = label;
+                    var dd = document.createElement('dd');
+                    dd.textContent = details[label];
+                    dl.appendChild(dt);
+                    dl.appendChild(dd);
+                });
+                out.appendChild(dl);
+
+                var foot = document.createElement('p');
+                foot.className = 'eta-iv-foot';
+                foot.textContent = <?php echo wp_json_encode(__('Compare each line with the printed document. If anything differs, treat the copy in your hand as unconfirmed and contact the laboratory.', 'envi-tech-al-modern')); ?>;
+                out.appendChild(foot);
+            }
+
+            if (state !== 'pending') {
+                var again = document.createElement('button');
+                again.type = 'button';
+                again.className = 'eta-iv-again';
+                again.textContent = <?php echo wp_json_encode(__('Check another report', 'envi-tech-al-modern')); ?>;
+                again.addEventListener('click', function () {
+                    form.reset();
+                    out.setAttribute('data-state', 'idle');
+                    out.textContent = '';
+                    numberField.focus();
+                });
+                out.appendChild(again);
+            }
+        }
+
+        function fail() {
+            say('error', genericError);
         }
 
         form.addEventListener('submit', function (event) {
             event.preventDefault();
             if (busy) { return; }
 
-            var number = form.querySelector('#eta-iv-number').value.trim();
-            var date = form.querySelector('#eta-iv-date').value.trim();
+            var number = numberField.value.trim();
+            var date = dateField.value.trim();
             if (!number || !date) {
-                say('invalid', <?php echo wp_json_encode(__('Enter both the report number and the report date.', 'envi-tech-al-modern')); ?>);
+                say('invalid', <?php echo wp_json_encode(__('Enter both the report number and the issue date.', 'envi-tech-al-modern')); ?>);
+                (number ? dateField : numberField).focus();
                 return;
             }
 
             busy = true;
             btn.disabled = true;
-            say('pending', <?php echo wp_json_encode(__('Checking the registry…', 'envi-tech-al-modern')); ?>);
+            say('pending', <?php echo wp_json_encode(__('Checking with the laboratory reporting system…', 'envi-tech-al-modern')); ?>);
 
             fetch(endpoint, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                 body: JSON.stringify({ report_number: number, report_date: date })
             })
-                .then(function (response) { return response.json(); })
+                .then(function (response) {
+                    return response.json().then(function (data) { return data; }, function () { return null; });
+                })
                 .then(function (data) {
-                    var details = (data && data.status === 'verified') ? data.details : null;
-                    var message = data && data.message ? data.message : <?php echo wp_json_encode(__('The check could not be completed. Please use the request form below.', 'envi-tech-al-modern')); ?>;
-                    say(data && data.status ? data.status : 'error', message, details);
+                    if (!data || !data.status) { fail(); return; }
+                    var details = data.status === 'verified' ? data.details : null;
+                    say(data.status, data.message || genericError, details);
                 })
-                .catch(function () {
-                    say('error', <?php echo wp_json_encode(__('The check could not be completed. Please use the request form below.', 'envi-tech-al-modern')); ?>);
-                })
+                .catch(fail)
                 .then(function () {
                     busy = false;
                     btn.disabled = false;

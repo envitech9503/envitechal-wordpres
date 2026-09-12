@@ -3876,6 +3876,18 @@ function eta_modern_render_report_verification_page()
             <div>
                 <p class="eta-eyebrow"><?php esc_html_e('Report Verification Portal', 'envi-tech-al-modern'); ?></p>
                 <h1 id="eta-verify-title"><?php esc_html_e('Verify the authenticity of an Envi Tech AL test report with confidence.', 'envi-tech-al-modern'); ?></h1>
+                <?php if (function_exists('eta_verify_is_active') && eta_verify_is_active()) : ?>
+                <p><?php esc_html_e('Enter the report number and the issue date printed on the document for an instant answer from the laboratory reporting system. For older reports, or if the details do not match, send a manual request and the laboratory team will confirm it directly.', 'envi-tech-al-modern'); ?></p>
+                <div class="eta-actions">
+                    <a class="eta-button" href="#eta-iv-form"><?php esc_html_e('Check a report now', 'envi-tech-al-modern'); ?></a>
+                    <a class="eta-button eta-button-secondary" href="#eta-verification-form"><?php esc_html_e('Manual request', 'envi-tech-al-modern'); ?></a>
+                </div>
+            </div>
+            <aside class="eta-verify-card">
+                <span><?php esc_html_e('For an instant check', 'envi-tech-al-modern'); ?></span>
+                <strong><?php esc_html_e('Report number and issue date, as printed on the report.', 'envi-tech-al-modern'); ?></strong>
+            </aside>
+                <?php else : ?>
                 <p><?php esc_html_e('Use the QR code printed on your report or submit a manual verification request with report number, reporting date, and company name.', 'envi-tech-al-modern'); ?></p>
                 <div class="eta-actions">
                     <a class="eta-button" href="#eta-verification-form"><?php esc_html_e('Submit verification request', 'envi-tech-al-modern'); ?></a>
@@ -3886,6 +3898,7 @@ function eta_modern_render_report_verification_page()
                 <span><?php esc_html_e('Required details', 'envi-tech-al-modern'); ?></span>
                 <strong><?php esc_html_e('Report number, report date, and company name.', 'envi-tech-al-modern'); ?></strong>
             </aside>
+                <?php endif; ?>
         </div>
     </section>
 

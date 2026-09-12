@@ -9272,19 +9272,60 @@ h3 {
 .eta-iv-panel .eta-iv-submit { width: 100%; min-height: 48px; }
 .eta-iv-panel .eta-iv-submit[disabled] { opacity: .6; cursor: progress; }
 
-.eta-iv-result { margin: 18px 0 0; font-size: 15px; line-height: 1.55; }
+.eta-iv-hint { margin: 6px 0 0; font-size: 13px; line-height: 1.45; color: #8AA79C; }
+
+.eta-iv-steps { list-style: none; margin: 22px 0 0; padding: 0; display: grid; gap: 10px; }
+.eta-iv-steps li { position: relative; padding-left: 26px; font-size: 14px; line-height: 1.5; color: #C6D8D0; }
+.eta-iv-steps li::before {
+    content: ""; position: absolute; left: 0; top: 4px; width: 16px; height: 16px; border-radius: 50%;
+    background: #7DE8CD url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.3l2.6 2.6L12 5.6' fill='none' stroke='%230B1A16' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 16px 16px no-repeat;
+}
+
+/* Result card. A coloured left rule and a status badge carry the state, so
+   the outcome reads at a glance before the sentence is read. */
+.eta-iv-result {
+    --iv-accent: #C6D8D0;
+    margin: 18px 0 0; padding: 16px 18px 18px 20px;
+    border-left: 3px solid var(--iv-accent); border-radius: 0 3px 3px 0;
+    background: rgba(3, 12, 10, .45);
+    font-size: 15px; line-height: 1.55; color: #EAF4EF;
+}
 .eta-iv-result[data-state="idle"] { display: none; }
-.eta-iv-result[data-state="pending"] { color: #C6D8D0; }
-.eta-iv-result[data-state="verified"] { color: #7DE8CD; }
-.eta-iv-result[data-state="superseded"] { color: #F5D08A; }
+.eta-iv-result[data-state="pending"] { --iv-accent: #C6D8D0; color: #C6D8D0; }
+.eta-iv-result[data-state="verified"] { --iv-accent: #7DE8CD; }
+.eta-iv-result[data-state="superseded"] { --iv-accent: #F5D08A; }
 .eta-iv-result[data-state="no_match"],
 .eta-iv-result[data-state="invalid"],
 .eta-iv-result[data-state="rate_limited"],
 .eta-iv-result[data-state="unavailable"],
-.eta-iv-result[data-state="error"] { color: #F2A79A; }
+.eta-iv-result[data-state="error"] { --iv-accent: #F2A79A; }
+
+.eta-iv-status { margin: 0 0 8px; }
+.eta-iv-badge {
+    display: inline-block; padding: 3px 10px; border-radius: 999px;
+    font-family: 'Archivo', "Segoe UI", Arial, sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: .12em; text-transform: uppercase; color: #0B1A16; background: var(--iv-accent);
+}
+.eta-iv-result[data-state="pending"] .eta-iv-badge::after {
+    content: ""; display: inline-block; width: 8px; height: 8px; margin-left: 8px; vertical-align: 0;
+    border-radius: 50%; border: 1.5px solid #0B1A16; border-top-color: transparent;
+    animation: eta-iv-spin .8s linear infinite;
+}
+@keyframes eta-iv-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+    .eta-iv-result[data-state="pending"] .eta-iv-badge::after { animation: none; border-top-color: #0B1A16; }
+}
+.eta-iv-result[data-state="verified"] .eta-iv-message { color: #7DE8CD; font-weight: 600; }
+.eta-iv-foot { margin: 14px 0 0; font-size: 13px; line-height: 1.5; color: #9FBBB0; }
+.eta-iv-again {
+    margin: 14px 0 0; padding: 0; border: 0; background: none; cursor: pointer;
+    font: inherit; font-size: 14px; color: #7DE8CD; text-decoration: underline; text-underline-offset: 3px;
+}
+.eta-iv-again:hover, .eta-iv-again:focus-visible { color: #FFFFFF; }
 
 @media (max-width: 860px) {
   .eta-iv-grid { grid-template-columns: 1fr; }
+  .eta-iv-steps { margin-top: 16px; }
 }
 
 /* Visible breadcrumb trail on service pages. The BreadcrumbList schema
@@ -9320,12 +9361,13 @@ h3 {
 .eta-iv-detail {
     display: grid;
     grid-template-columns: minmax(0, auto) minmax(0, 1fr);
-    gap: 6px 18px;
+    gap: 8px 18px;
     margin: 14px 0 0;
     padding: 14px 0 0;
     border-top: 1px solid rgba(125, 232, 205, .18);
     font-size: 14px;
 }
+.eta-iv-detail dd { font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
 .eta-iv-detail dt {
     margin: 0;
     font-family: 'Archivo', "Segoe UI", Arial, sans-serif;

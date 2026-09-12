@@ -56,4 +56,32 @@ if ($failures > 0) {
     exit(1);
 }
 
+// The public card prints the issue date day-first, matching the document.
+$dstart = strpos($source, 'function eta_verify_display_date');
+$dend   = strpos($source, 'function eta_verify_table_name');
+if ($dstart === false || $dend === false || $dend <= $dstart) {
+    fwrite(STDERR, "Could not isolate eta_verify_display_date() from the module.\n");
+    exit(1);
+}
+eval(substr($source, $dstart, $dend - $dstart));
+
+$display = [
+    ['2026-07-27', '27-07-2026', 'ISO from the reporting system'],
+    ['2026-07-27 00:00:00', '27-07-2026', 'ISO with a time'],
+    ['27 July 2026', '27-07-2026', 'textual month'],
+    ['', '', 'empty stays empty'],
+];
+foreach ($display as $case) {
+    list($input, $expected, $label) = $case;
+    $actual = eta_verify_display_date($input);
+    if ($actual !== $expected) {
+        $failures++;
+        printf("FAIL  display %-22s gave %-14s expected %-14s (%s)\n", "'" . $input . "'", var_export($actual, true), var_export($expected, true), $label);
+    }
+}
+if ($failures > 0) {
+    printf("\n%d display date failure(s).\n", $failures);
+    exit(1);
+}
+
 echo "Report registry date parsing tests passed.\n";
