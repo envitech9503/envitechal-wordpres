@@ -3146,7 +3146,8 @@ h3 {
 /* The copy column is shorter than the form; pinning it keeps the guidance
    beside whichever field the visitor is on instead of leaving a void. */
 @media (min-width: 861px) {
-    .eta-verify-request-copy { position: sticky; top: 112px; }
+    .eta-verify-request-copy,
+    .eta-verify-form-panel { position: sticky; top: 112px; }
 }
 
 /* Verification page bands: a tighter vertical rhythm than the default band,
