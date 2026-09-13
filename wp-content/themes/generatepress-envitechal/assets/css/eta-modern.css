@@ -1937,7 +1937,8 @@ h3 {
 }
 
 .eta-band {
-    padding: clamp(44px, 7vw, 82px) 0;
+    /* Band rhythm aligned site-wide with the reviewed pages (13-09-2026). */
+    padding: clamp(40px, 5.5vw, 64px) 0;
 }
 
 .eta-band-light {

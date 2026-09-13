@@ -133,6 +133,7 @@ add_action('wp_enqueue_scripts', function () {
         'certification-advisory' => ['eta-cert', '/assets/css/eta-cert.css'],
         'environmental-advisory' => ['eta-advisory', '/assets/css/eta-advisory.css'],
         'thermal-imaging-inspection' => ['eta-thermal', '/assets/css/eta-thermal.css'],
+        'technical-advisory-2' => ['eta-techadv', '/assets/css/eta-techadv.css'],
     ];
     $slug = get_post_field('post_name', get_the_ID());
     if (!isset($flagships[$slug])) {
