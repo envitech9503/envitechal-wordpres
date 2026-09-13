@@ -200,6 +200,22 @@ html.ca-gsap .ca-type-card:not(.is-on) { transform: scale(.96); }
 .ca-deliver-glow { position: absolute; width: 260px; height: 260px; left: var(--gx, 50%); top: var(--gy, 50%); transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(circle, rgba(190, 242, 100, .18), transparent 65%); pointer-events: none; opacity: 0; transition: opacity .4s; }
 .ca-deliver-card:hover .ca-deliver-glow { opacity: 1; }
 
+/* ---- textile, social and supply-chain schemes ---- */
+.ca-head-schemes { margin-top: clamp(40px, 5vw, 64px); }
+.ca-schemes-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; perspective: 1400px; }
+.ca-scheme-card {
+    position: relative; overflow: hidden;
+    padding: 22px 22px 24px;
+    border: 1px solid var(--ca-line); border-radius: var(--ca-radius);
+    background: linear-gradient(170deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .02));
+    transform-style: preserve-3d; will-change: transform;
+    transition: border-color .3s;
+}
+.ca-scheme-card:hover { border-color: rgba(190, 242, 100, .5); }
+.ca-scheme-std { display: block; margin-bottom: 12px; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ca-aqua); }
+.ca-scheme-card h3 { font-size: 21px; font-weight: 500; color: #fff; }
+.ca-scheme-card p { margin-top: 8px; font-size: 14px; line-height: 1.55; color: var(--ca-muted); }
+
 /* ============================================================
    REGULATOR STRIP
    ============================================================ */
@@ -290,7 +306,7 @@ html:not(.ca-gsap) .ca-journey-line path { stroke-dashoffset: 0; }
     .ca-ledger-row { grid-template-columns: repeat(2, 1fr); }
     .ca-ledger-item { padding-left: 0; }
     .ca-ledger-item:nth-child(2n) { border-right: 0; padding-left: 24px; }
-    .ca-serves-grid, .ca-related-grid, .ca-deliver-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ca-serves-grid, .ca-related-grid, .ca-deliver-grid, .ca-schemes-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .ca-why-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 860px) {
@@ -304,7 +320,7 @@ html:not(.ca-gsap) .ca-journey-line path { stroke-dashoffset: 0; }
     .ca-type-card { flex: 1 1 100%; min-height: 0; }
     html.ca-gsap .ca-type-card:not(.is-on) { transform: none; }
     .ca-types-progress { display: none !important; }
-    .ca-deliver-grid, .ca-regs-list { grid-template-columns: 1fr; }
+    .ca-deliver-grid, .ca-regs-list, .ca-schemes-grid { grid-template-columns: 1fr; }
     .ca-regs-grid { grid-template-columns: 1fr; }
     .ca-serves-grid, .ca-related-grid, .ca-why-grid { grid-template-columns: 1fr; }
     .ca-journey-grid, .ca-faq-grid, .ca-final-grid { grid-template-columns: 1fr; }

@@ -250,7 +250,7 @@ import { gsap, ScrollTrigger, Lenis } from './assets/js/vendor/motion.js';
   gsap.from(root.querySelectorAll('.ca-eyebrow, .ca-lead, .ca-actions, .ca-hero-panel'), { opacity: 0, y: 18, duration: 0.9, ease: 'power3.out', stagger: 0.08, delay: 0.35 });
 
   /* ================= REVEALS ================= */
-  var revealSel = '.ca-ledger-item, .ca-head, .ca-deliver-card, .ca-regs-copy, .ca-regs-list li, .ca-serve-card, .ca-journey-copy, .ca-why-card, .ca-faq-item, .ca-related-card, .ca-final-grid > *';
+  var revealSel = '.ca-ledger-item, .ca-head, .ca-deliver-card, .ca-scheme-card, .ca-regs-copy, .ca-regs-list li, .ca-serve-card, .ca-journey-copy, .ca-why-card, .ca-faq-item, .ca-related-card, .ca-final-grid > *';
   root.querySelectorAll(revealSel).forEach(function (el) { el.setAttribute('data-ca-reveal', ''); });
   var reveal = function (els) { gsap.to(els, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', stagger: 0.07, overwrite: true }); };
   ScrollTrigger.batch(root.querySelectorAll('[data-ca-reveal]'), { start: 'top 88%', onEnter: reveal, onLeave: reveal });

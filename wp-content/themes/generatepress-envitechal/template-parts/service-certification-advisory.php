@@ -41,10 +41,22 @@ $ca_standards = [
     ['Evidence', 'Testing and monitoring evidence', 'Effluent, emissions, noise, workplace and calibration records from LAB-285 and LAB-347, produced within the published scopes, to sit behind the system.', ['Verifiable reports', 'Scheduled monitoring'], 'From our laboratories'],
 ];
 
+$ca_schemes = [
+    ['GOTS / OCS', 'Global Organic Textile Standard and Organic Content Standard: organic fibre content, chain of custody and, for GOTS, environmental and social criteria.', 'Organic textiles'],
+    ['GRS / RCS', 'Global Recycled Standard and Recycled Claim Standard: recycled content verification and chain of custody through the supply chain.', 'Recycled content'],
+    ['Regenagri', 'Regenerative agriculture programme: farm and supply-chain criteria for soil health, biodiversity and chain of custody.', 'Regenerative agriculture'],
+    ['STeP by OEKO-TEX', 'Sustainable Textile and Leather Production: chemicals management, environmental performance, social responsibility and safety at the facility.', 'Sustainable production'],
+    ['WRAP', 'Worldwide Responsible Accredited Production: social compliance and safety certification for apparel and footwear facilities.', 'Social compliance'],
+    ['SEDEX / SMETA', 'Sedex membership and SMETA audits: labour, health and safety, environment and business ethics for buyer-facing supply chains.', 'Ethical trade audit'],
+    ['CTPAT', 'Customs Trade Partnership Against Terrorism: supply-chain security criteria for exporters shipping to the United States.', 'Supply-chain security'],
+    ['amfori BSCI', 'Business Social Compliance Initiative: social performance audits against the amfori BSCI Code of Conduct.', 'Social compliance'],
+];
+
 $ca_regs = [
     ['Certification bodies', 'Independent bodies conduct the audit and make the certification decision; we prepare the organisation for it'],
     ['ISO 9001 · 14001 · 45001', 'The management system standards most of our clients certify to'],
     ['ISO/IEC 17025', 'Laboratory competence, the standard behind LAB-285 and LAB-347'],
+    ['Textile and social schemes', 'GOTS, OCS, GRS, RCS, Regenagri, STeP, WRAP, SEDEX, CTPAT and amfori BSCI readiness for exporters'],
     ['Sindh EPA · Punjab EPA', 'The legal requirements an environmental management system must register and meet'],
     ['SEQS · PEQS · NEQS', 'The limits the monitoring evidence is read against'],
     ['No certificates issued by us', 'Advisory only: we do not issue, sell or guarantee certificates'],
@@ -78,7 +90,7 @@ $ca_related = [
     ['Environmental consultancy', 'IEE, EIA, EMP and EMR pathways.', '/services/environmental-consultancy/'],
     ['Equipment calibration', 'Calibration records for the evidence file.', '/services/equipment-calibration-services/'],
     ['Analytical laboratory services', 'Testing and monitoring data behind the system.', '/services/analytical-lab-services/'],
-    ['Certification consultancy in Pakistan', 'What to expect from the process.', '/consultancy-of-modern-certification-in-pakistan/'],
+    ['GOTS certification explained', 'What the organic textile standard asks for.', '/everything-you-need-to-know-about-gots-certification/'],
     ['Verify a report', 'Check a laboratory report by number and date.', '/report-verification-portal/'],
 ];
 ?>
@@ -93,7 +105,7 @@ $ca_related = [
 
             <div class="eta-shell ca-hero-grid">
                 <div class="ca-hero-copy">
-                    <p class="ca-eyebrow"><span>Certification advisory</span><i>·</i><span>ISO 9001</span><i>·</i><span>ISO 14001</span><i>·</i><span>ISO 45001</span></p>
+                    <p class="ca-eyebrow"><span>Certification advisory</span><i>·</i><span>ISO 9001 · 14001 · 45001</span><i>·</i><span>GOTS · GRS · STeP · WRAP · BSCI</span></p>
                     <h1 id="ca-title" class="ca-title">
                         <span class="ca-title-line">A system that is</span>
                         <span class="ca-title-line"><em>ready</em> for the audit.</span>
@@ -177,6 +189,22 @@ $ca_related = [
                         <ul class="ca-chips">
                             <?php foreach ($d[3] as $chip) : ?><li><?php echo esc_html($chip); ?></li><?php endforeach; ?>
                         </ul>
+                        <span class="ca-deliver-glow" aria-hidden="true"></span>
+                    </article>
+                <?php endforeach; ?>
+            </div>
+
+            <header class="ca-head ca-head-schemes">
+                <p class="ca-kicker">Textile, social and supply-chain schemes</p>
+                <h2 id="ca-schemes-title">The buyer-facing schemes exporters are asked for, prepared with the same discipline.</h2>
+                <p>Readiness for the scheme owner’s audit or certification body: gap assessment against the standard, documentation, evidence and facility preparation. The scheme owner or its approved body makes the decision.</p>
+            </header>
+            <div class="ca-schemes-grid">
+                <?php foreach ($ca_schemes as $sc) : ?>
+                    <article class="ca-scheme-card" data-ca-tilt>
+                        <span class="ca-scheme-std"><?php echo esc_html($sc[2]); ?></span>
+                        <h3><?php echo esc_html($sc[0]); ?></h3>
+                        <p><?php echo esc_html($sc[1]); ?></p>
                         <span class="ca-deliver-glow" aria-hidden="true"></span>
                     </article>
                 <?php endforeach; ?>
