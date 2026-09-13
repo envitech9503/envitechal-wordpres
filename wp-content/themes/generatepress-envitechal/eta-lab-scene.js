@@ -251,9 +251,13 @@ import { gsap, ScrollTrigger, Lenis } from './assets/js/vendor/motion.js';
   /* ================= REVEALS ================= */
   var revealSel = '.lab-ledger-item, .lab-head, .lab-matrix-card, .lab-scope-col, .lab-bento-card, .lab-method-copy, .lab-faq-item, .lab-related-card, .lab-final-grid > *';
   root.querySelectorAll(revealSel).forEach(function (el) { el.setAttribute('data-lab-reveal', ''); });
+  var reveal = function (els) { gsap.to(els, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', stagger: 0.07, overwrite: true }); };
   ScrollTrigger.batch(root.querySelectorAll('[data-lab-reveal]'), {
     start: 'top 88%',
-    onEnter: function (els) { gsap.to(els, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', stagger: 0.07, overwrite: true }); }
+    onEnter: reveal,
+    // A jump (anchor link, restored scroll position) can carry an element
+    // straight past its trigger; onLeave catches it so nothing stays hidden.
+    onLeave: reveal
   });
 
   /* ================= JOURNEY: pinned horizontal ================= */
