@@ -39,6 +39,12 @@ get_header();
             continue;
         }
 
+        if ($slug === 'ballast-water-testing-services') {
+            // Flagship ballast water page. See template-parts/service-ballast-water.php.
+            include get_stylesheet_directory() . '/template-parts/service-ballast-water.php';
+            continue;
+        }
+
         if ($slug === 'analytical-lab-services') {
             // Flagship environmental laboratory page: scroll-driven template
             // on the fixed motion stack. See template-parts/service-analytical-lab.php.
