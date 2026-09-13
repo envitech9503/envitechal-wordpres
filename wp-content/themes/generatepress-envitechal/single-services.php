@@ -45,6 +45,12 @@ get_header();
             continue;
         }
 
+        if ($slug === 'certification-advisory') {
+            // Flagship certification advisory page. See template-parts/service-certification-advisory.php.
+            include get_stylesheet_directory() . '/template-parts/service-certification-advisory.php';
+            continue;
+        }
+
         if ($slug === 'analytical-lab-services') {
             // Flagship environmental laboratory page: scroll-driven template
             // on the fixed motion stack. See template-parts/service-analytical-lab.php.

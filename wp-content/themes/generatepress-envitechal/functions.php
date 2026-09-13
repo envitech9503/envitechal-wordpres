@@ -130,6 +130,7 @@ add_action('wp_enqueue_scripts', function () {
         'environmental-consultancy'  => ['eta-consult', '/assets/css/eta-consult.css'],
         'equipment-calibration-services' => ['eta-cal', '/assets/css/eta-cal.css'],
         'ballast-water-testing-services' => ['eta-ballast', '/assets/css/eta-ballast.css'],
+        'certification-advisory' => ['eta-cert', '/assets/css/eta-cert.css'],
     ];
     $slug = get_post_field('post_name', get_the_ID());
     if (!isset($flagships[$slug])) {
