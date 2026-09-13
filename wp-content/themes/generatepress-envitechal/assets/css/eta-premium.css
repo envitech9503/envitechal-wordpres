@@ -1,0 +1,29 @@
+/* ============================================================
+   Shared premium layer for the secondary pages (13-09-2026)
+   Loaded with eta-premium-scene.js on About, Downloads, Careers, Clients,
+   Credentials, the laboratory pages, SEQS, FAQs, TDAP, the Knowledge Hub,
+   the services archive and the cluster service pages. html.pr-gsap is added
+   by the inline bootstrap when motion is allowed; without it the page is the
+   ordinary static layout.
+   ============================================================ */
+
+/* the scene sits behind the hero copy; the hero's own image steps aside */
+.pr-gl { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; display: block; pointer-events: none; }
+.pr-veil { position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(90deg, rgba(6, 20, 24, .78) 0%, rgba(6, 20, 24, .5) 46%, rgba(6, 20, 24, .18) 100%),
+                linear-gradient(180deg, rgba(6, 20, 24, 0) 60%, rgba(6, 20, 24, .55) 100%); }
+html:not(.pr-gsap) .pr-gl, html:not(.pr-gsap) .pr-veil { display: none; }
+.pr-scene-on [class*="-hero-img"] { opacity: .12; }
+.pr-scene-on::before { opacity: .55; }
+.pr-scene-on > .eta-shell, .pr-scene-on [class*="-hero-grid"] { position: relative; z-index: 2; }
+
+/* reveals: elements start hidden only when motion is allowed */
+html.pr-gsap [data-pr-reveal] { opacity: 0; transform: translateY(22px); will-change: opacity, transform; }
+
+/* cards lift and tilt */
+.pr-tilt { transform-style: preserve-3d; will-change: transform; transition: box-shadow .35s ease, border-color .3s ease; }
+.pr-tilt:hover { box-shadow: 0 22px 48px rgba(9, 28, 33, .14); }
+
+/* light polish shared by the secondary pages */
+main [class*="-card"] { transition: transform .35s cubic-bezier(.22,.61,.36,1), box-shadow .35s ease, border-color .3s ease; }
+main a[class*="-card"]:hover { transform: translateY(-4px); }

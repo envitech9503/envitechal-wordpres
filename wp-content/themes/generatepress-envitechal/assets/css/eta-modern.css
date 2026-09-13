@@ -9642,3 +9642,35 @@ h3 {
     line-height: 1.04;
     letter-spacing: -0.01em;
 }
+
+/* Careers form: the nine short fields sit in two columns; the CV upload
+   and the message keep the full width (13-09-2026). */
+.eta-career-form-panel .wpcf7-form .eta-cf7-form > p:first-of-type {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 14px;
+}
+.eta-career-form-panel .wpcf7-form .eta-cf7-form > p:first-of-type > .wpcf7-form-control-wrap { display: block; }
+.eta-career-form-panel .wpcf7-form .eta-cf7-form > p:first-of-type > .wpcf7-form-control-wrap:nth-of-type(9) { grid-column: 1 / -1; }
+.eta-career-form-panel .wpcf7-form input[type="file"] {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px dashed rgba(16, 34, 41, 0.28);
+    border-radius: 10px;
+    background: #f6f9f7;
+    font-size: 0.95rem;
+    color: #3f5158;
+}
+.eta-career-form-panel .wpcf7-form input[type="file"]::file-selector-button {
+    margin-right: 12px;
+    padding: 8px 14px;
+    border: 0;
+    border-radius: 999px;
+    background: #1F7A5F;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+@media (max-width: 640px) {
+    .eta-career-form-panel .wpcf7-form .eta-cf7-form > p:first-of-type { grid-template-columns: 1fr; }
+}

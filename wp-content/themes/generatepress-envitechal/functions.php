@@ -118,6 +118,73 @@ add_action('template_redirect', function () {
 }, 0);
 
 /**
+ * Shared premium layer for the secondary pages: one stylesheet and one
+ * module, a scene chosen per page. See eta-premium-scene.js.
+ */
+function eta_modern_premium_config()
+{
+    $slug = is_singular() ? get_post_field('post_name', get_the_ID()) : '';
+    $map = [
+        'aboutus'                                 => ['field',  '#7de8cd', '#dffbf2'],
+        'downloads'                               => ['sheets', '#c9a15a', '#ffe9b3'],
+        'careers-at-envi-tech-al'                 => ['field',  '#7de8cd', '#dffbf2'],
+        'ourclients'                              => ['orbit',  '#7de8cd', '#dffbf2'],
+        'accreditations-certifications'           => ['orbit',  '#c9a15a', '#ffe9b3'],
+        'certificates-approvals'                  => ['orbit',  '#c9a15a', '#ffe9b3'],
+        'karachi-environmental-lab'               => ['grid',   '#7de8cd', '#dffbf2'],
+        'lahore-environmental-lab'                => ['grid',   '#7de8cd', '#dffbf2'],
+        'sindh-environmental-quality-standards-seqs' => ['sheets', '#7de8cd', '#dffbf2'],
+        'environmental-testing-faqs-pakistan'     => ['field',  '#7de8cd', '#dffbf2'],
+        'frequently-asked-questions-water-testing-in-karachi' => ['field', '#7de8cd', '#dffbf2'],
+        'tdap-registered-lab-in-karachi-pakistan' => ['sheets', '#c9a15a', '#ffe9b3'],
+        'wastewater-testing-services'             => ['grid',   '#35d6ff', '#9df0ff'],
+        'drinking-water-testing-lab'              => ['grid',   '#35d6ff', '#9df0ff'],
+        'ambient-air-monitoring-services'         => ['field',  '#93c5fd', '#dbeafe'],
+        'noise-monitoring-dosimetry'              => ['orbit',  '#a78bfa', '#d6c7ff'],
+        'industrial-hygiene-monitoring'           => ['field',  '#ffb020', '#ffd97a'],
+        'soil-hazardous-waste-testing'            => ['grid',   '#f2b544', '#ffd98a'],
+        'emp-emr-iee-eia-compliance'              => ['sheets', '#f2b544', '#ffd98a'],
+        'maritime-environmental-testing'          => ['orbit',  '#ff8a4c', '#ffc19a'],
+        'blognewsupdates'                         => ['field',  '#7de8cd', '#dffbf2'],
+    ];
+    if ($slug && isset($map[$slug])) {
+        return ['scene' => $map[$slug][0], 'accent' => $map[$slug][1], 'accent2' => $map[$slug][2]];
+    }
+    if (is_post_type_archive('services')) {
+        return ['scene' => 'field', 'accent' => '#7de8cd', 'accent2' => '#dffbf2'];
+    }
+    return null;
+}
+
+add_action('wp_enqueue_scripts', function () {
+    if (is_admin() || !eta_modern_premium_config()) {
+        return;
+    }
+    $css = get_stylesheet_directory() . '/assets/css/eta-premium.css';
+    wp_enqueue_style('eta-premium', get_stylesheet_directory_uri() . '/assets/css/eta-premium.css', ['eta-modern'], file_exists($css) ? (string) filemtime($css) : wp_get_theme()->get('Version'));
+}, 21);
+
+add_action('wp_footer', function () {
+    $cfg = is_admin() ? null : eta_modern_premium_config();
+    if (!$cfg) {
+        return;
+    }
+    $js = get_stylesheet_directory() . '/eta-premium-scene.js';
+    ?>
+    <script data-no-optimize="1" data-no-defer="1" data-litespeed-noopt="1">
+    (function () {
+        var d = document.documentElement;
+        window.__etaPremium = <?php echo wp_json_encode($cfg); ?>;
+        if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'noModule' in HTMLScriptElement.prototype) { d.classList.add('pr-gsap'); }
+        function f() { var h = document.getElementById('masthead'); d.style.setProperty('--eta-hh', (h ? h.offsetHeight : 0) + 'px'); }
+        f(); addEventListener('resize', f); addEventListener('load', f);
+    })();
+    </script>
+    <script type="module" src="<?php echo esc_url(get_stylesheet_directory_uri() . '/eta-premium-scene.js?v=' . (file_exists($js) ? (string) filemtime($js) : '1')); ?>" data-no-optimize="1" data-no-defer="1" data-litespeed-noopt="1"></script>
+    <?php
+}, 5);
+
+/**
  * Flagship service pages: each has its own stylesheet, loaded only there.
  */
 add_action('wp_enqueue_scripts', function () {
@@ -5349,7 +5416,7 @@ function eta_modern_render_certificates_page()
                 'Envi Tech AL publishes evidence relating to laboratory, quality-management, environmental-management, and EPA-related credentials. The records below separate verified issuer evidence from documents whose current status still requires confirmation; scope, validity, conditions, location, matrix, parameter, and method must be checked before reliance.',
                 ['Sindh EPA document with current confirmation required', 'Punjab EPA 2025–2028 official record', 'PNAC LAB-285 for Karachi and LAB-347 for Lahore, each limited to its published scope', 'ISO 9001:2015 and ISO 14001:2015 certificates']
             );
-            eta_modern_section_title('Credential cards', 'Laboratory and compliance trust signals customers commonly verify', 'The information below is intentionally careful: it explains credential categories without inventing unsupported certificate numbers, ratings, or claims.');
+            eta_modern_section_title('Credential cards', 'Laboratory and compliance trust signals customers commonly verify', 'Each credential is listed with its issuing body, its scope and how it can be verified. Certificate copies are available on request for audit, procurement or regulatory review.');
             ?>
             <div class="eta-lahore-service-grid">
                 <?php foreach ($credentials as $credential) : ?>
