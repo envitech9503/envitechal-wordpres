@@ -118,18 +118,26 @@ add_action('template_redirect', function () {
 }, 0);
 
 /**
- * Analytical Lab Services flagship: its own stylesheet, loaded only there.
+ * Flagship service pages: each has its own stylesheet, loaded only there.
  */
 add_action('wp_enqueue_scripts', function () {
-    if (!is_singular('services') || get_post_field('post_name', get_the_ID()) !== 'analytical-lab-services') {
+    if (!is_singular('services')) {
         return;
     }
-    $lab_css = get_stylesheet_directory() . '/assets/css/eta-lab.css';
+    $flagships = [
+        'analytical-lab-services'    => ['eta-lab', '/assets/css/eta-lab.css'],
+        'water-testing-lab-services' => ['eta-water', '/assets/css/eta-water.css'],
+    ];
+    $slug = get_post_field('post_name', get_the_ID());
+    if (!isset($flagships[$slug])) {
+        return;
+    }
+    $css = get_stylesheet_directory() . $flagships[$slug][1];
     wp_enqueue_style(
-        'eta-lab',
-        get_stylesheet_directory_uri() . '/assets/css/eta-lab.css',
+        $flagships[$slug][0],
+        get_stylesheet_directory_uri() . $flagships[$slug][1],
         ['eta-modern'],
-        file_exists($lab_css) ? (string) filemtime($lab_css) : wp_get_theme()->get('Version')
+        file_exists($css) ? (string) filemtime($css) : wp_get_theme()->get('Version')
     );
 }, 20);
 

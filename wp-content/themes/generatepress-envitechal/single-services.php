@@ -20,7 +20,9 @@ get_header();
         $process = eta_modern_service_process_steps($slug);
 
         if ($slug === 'water-testing-lab-services') {
-            eta_modern_render_water_testing_flagship_page();
+            // Flagship water page: scroll-driven template on the fixed motion
+            // stack. See template-parts/service-water-testing.php.
+            include get_stylesheet_directory() . '/template-parts/service-water-testing.php';
             continue;
         }
 
