@@ -128,6 +128,7 @@ add_action('wp_enqueue_scripts', function () {
         'analytical-lab-services'    => ['eta-lab', '/assets/css/eta-lab.css'],
         'water-testing-lab-services' => ['eta-water', '/assets/css/eta-water.css'],
         'environmental-consultancy'  => ['eta-consult', '/assets/css/eta-consult.css'],
+        'equipment-calibration-services' => ['eta-cal', '/assets/css/eta-cal.css'],
     ];
     $slug = get_post_field('post_name', get_the_ID());
     if (!isset($flagships[$slug])) {
