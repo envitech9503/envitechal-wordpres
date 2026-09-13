@@ -284,7 +284,7 @@ import { gsap, ScrollTrigger, Lenis } from './assets/js/vendor/motion.js';
       x: function () { return -distance(); },
       ease: 'none',
       scrollTrigger: {
-        trigger: journey, start: 'top top', end: function () { return '+=' + (distance() + 200); },
+        trigger: journey, start: function () { return 'top ' + (parseInt(getComputedStyle(doc).getPropertyValue('--eta-hh')) || 0); }, end: function () { return '+=' + (distance() + 200); },
         pin: true, scrub: 0.6, invalidateOnRefresh: true, anticipatePin: 1,
         onUpdate: function (st) {
           var i = Math.min(cards.length - 1, Math.floor(st.progress * cards.length + 0.001));

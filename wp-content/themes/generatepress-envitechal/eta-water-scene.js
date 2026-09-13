@@ -123,7 +123,7 @@ import { gsap, ScrollTrigger, Lenis } from './assets/js/vendor/motion.js';
       uClear: { value: 0 },
       uPx: { value: 0 },
       uPy: { value: 0 },
-      uSize: { value: isMobile ? 5.5 : 6.5 },
+      uSize: { value: isMobile ? 6.0 : 7.5 },
       uColA: { value: new THREE.Color(0x7fa08c) },
       uColB: { value: new THREE.Color(0x35d6ff) }
     };
@@ -166,7 +166,7 @@ import { gsap, ScrollTrigger, Lenis } from './assets/js/vendor/motion.js';
         '  float crest = clamp(vH * 0.5 + 0.5, 0.0, 1.0);',
         '  vec3 col = mix(uColA, uColB, crest * 0.6 + uClear * 0.4);',
         '  float fade = clamp(1.0 - (vDepth - 16.0) / 60.0, 0.15, 1.0);',
-        '  gl_FragColor = vec4(col, core * (0.8 + 0.2*uClear) * fade);',
+        '  gl_FragColor = vec4(col, core * (0.9 + 0.1*uClear) * fade);',
         '}'
       ].join('\n')
     });
@@ -333,7 +333,7 @@ import { gsap, ScrollTrigger, Lenis } from './assets/js/vendor/motion.js';
       x: function () { return -distance(); },
       ease: 'none',
       scrollTrigger: {
-        trigger: types, start: 'top top', end: function () { return '+=' + (distance() + 200); },
+        trigger: types, start: function () { return 'top ' + (parseInt(getComputedStyle(doc).getPropertyValue('--eta-hh')) || 0); }, end: function () { return '+=' + (distance() + 200); },
         pin: true, scrub: 0.6, invalidateOnRefresh: true, anticipatePin: 1,
         onUpdate: function (st) {
           var i = Math.min(cards.length - 1, Math.floor(st.progress * cards.length + 0.001));
