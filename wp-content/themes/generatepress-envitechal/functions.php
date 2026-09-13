@@ -117,6 +117,22 @@ add_action('template_redirect', function () {
     exit;
 }, 0);
 
+/**
+ * Analytical Lab Services flagship: its own stylesheet, loaded only there.
+ */
+add_action('wp_enqueue_scripts', function () {
+    if (!is_singular('services') || get_post_field('post_name', get_the_ID()) !== 'analytical-lab-services') {
+        return;
+    }
+    $lab_css = get_stylesheet_directory() . '/assets/css/eta-lab.css';
+    wp_enqueue_style(
+        'eta-lab',
+        get_stylesheet_directory_uri() . '/assets/css/eta-lab.css',
+        ['eta-modern'],
+        file_exists($lab_css) ? (string) filemtime($lab_css) : wp_get_theme()->get('Version')
+    );
+}, 20);
+
 add_action('wp_enqueue_scripts', function () {
     $modern_css = get_stylesheet_directory() . '/assets/css/eta-modern.css';
 

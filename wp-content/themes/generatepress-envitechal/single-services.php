@@ -23,6 +23,13 @@ get_header();
             eta_modern_render_water_testing_flagship_page();
             continue;
         }
+
+        if ($slug === 'analytical-lab-services') {
+            // Flagship environmental laboratory page: scroll-driven template
+            // on the fixed motion stack. See template-parts/service-analytical-lab.php.
+            include get_stylesheet_directory() . '/template-parts/service-analytical-lab.php';
+            continue;
+        }
         ?>
         <nav class="eta-breadcrumb" aria-label="Breadcrumb">
             <div class="eta-shell">
