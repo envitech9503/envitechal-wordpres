@@ -4977,7 +4977,7 @@ function eta_modern_render_faq_page()
             'title' => 'I am unsure which test to choose',
             'text' => 'Share the sample type, industry, concern, city, and report purpose. Envi Tech AL can help convert the issue into the right technical pathway.',
             'link' => home_url('/services/water-testing-lab-services/'),
-            'label' => 'water testing laboratory',
+            'label' => 'Water testing laboratory',
         ],
         [
             'title' => 'I need to verify a report',
@@ -5178,7 +5178,7 @@ function eta_modern_render_karachi_page()
 {
     $hero_image = 'https://envitechal.com/wp-content/uploads/2026/06/Environmental-Testing-Lab.png';
     $services = [
-        ['water testing laboratory', 'Drinking water, groundwater, RO plant water, process water, and industrial water testing for safety, buyer, facility, and compliance decisions.', home_url('/services/water-testing-lab-services/')],
+        ['Water testing laboratory', 'Drinking water, groundwater, RO plant water, process water, and industrial water testing for safety, buyer, facility, and compliance decisions.', home_url('/services/water-testing-lab-services/')],
         ['Wastewater and discharge testing', 'Industrial wastewater, effluent, ETP performance, and discharge monitoring aligned with the report purpose and applicable compliance pathway.', home_url('/services/water-testing-lab-services/')],
         ['Stack and gaseous emission testing', 'Boiler, generator, chimney, and process exhaust testing for facilities preparing SEPA, audit, or internal monitoring evidence.', home_url('/gaseous-air-emission-testing-lab-near-me/')],
         ['Air, noise, soil, and workplace monitoring', 'Ambient air, noise, soil, hazardous waste, and industrial hygiene support for operational control, buyer requirements, and project documentation.', home_url('/services/analytical-lab-services/')],
@@ -5246,7 +5246,7 @@ function eta_modern_render_karachi_page()
                     <article class="eta-lahore-service-card">
                         <h2><?php echo esc_html($service[0]); ?></h2>
                         <p><?php echo esc_html($service[1]); ?></p>
-                        <a class="eta-text-link" href="<?php echo esc_url($service[2]); ?>"><?php echo esc_html($service[2] === home_url('/services/water-testing-lab-services/') ? 'water testing laboratory' : __('View related service', 'envi-tech-al-modern')); ?></a>
+                        <a class="eta-text-link" href="<?php echo esc_url($service[2]); ?>"><?php echo esc_html($service[2] === home_url('/services/water-testing-lab-services/') ? 'Water testing laboratory' : __('View related service', 'envi-tech-al-modern')); ?></a>
                     </article>
                 <?php endforeach; ?>
             </div>
@@ -5809,7 +5809,7 @@ function eta_modern_render_lahore_page()
                     <article class="eta-lahore-service-card">
                         <h2><?php echo esc_html($service['title']); ?></h2>
                         <p><?php echo esc_html($service['text']); ?></p>
-                        <a class="eta-text-link" href="<?php echo esc_url($service['link']); ?>"><?php echo esc_html($service['link'] === home_url('/services/water-testing-lab-services/') ? 'water testing laboratory' : __('View related service', 'envi-tech-al-modern')); ?></a>
+                        <a class="eta-text-link" href="<?php echo esc_url($service['link']); ?>"><?php echo esc_html($service['link'] === home_url('/services/water-testing-lab-services/') ? 'Water testing laboratory' : __('View related service', 'envi-tech-al-modern')); ?></a>
                     </article>
                 <?php endforeach; ?>
             </div>

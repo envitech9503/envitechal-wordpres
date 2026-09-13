@@ -9642,6 +9642,10 @@ h3 {
     line-height: 1.04;
     letter-spacing: -0.01em;
 }
+/* SEQS hero: the eyebrow inherited the body green and vanished against the
+   dark panel, and the title sat flush on the lead (13-09-2026). */
+.eta-seqs-hero p.eta-eyebrow { color: #8fe3c6; }
+.eta-seqs-hero h1 { margin: 0 0 18px; }
 
 /* Careers form: the nine short fields sit in two columns; the CV upload
    and the message keep the full width (13-09-2026). */
