@@ -149,7 +149,8 @@ html:not(.lab-gsap) .lab-journey-progress { display: none; }
 .lab-journey-bar { width: 140px; height: 2px; background: var(--lab-line); border-radius: 2px; overflow: hidden; }
 .lab-journey-bar i { display: block; height: 100%; width: 20%; background: var(--lab-mint); transform-origin: left; }
 
-.lab-track { display: flex; gap: 18px; padding: 0 max(24px, calc((100vw - 1220px) / 2)); will-change: transform; }
+.lab-journey { overflow: hidden; }
+.lab-track { display: flex; gap: 18px; padding: 0 max(24px, calc((100% - 1172px) / 2)); will-change: transform; }
 html:not(.lab-gsap) .lab-track { flex-wrap: wrap; }
 .lab-stage-card {
     position: relative; flex: 0 0 clamp(300px, 30vw, 420px);

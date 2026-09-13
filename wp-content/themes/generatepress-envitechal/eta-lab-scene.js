@@ -263,7 +263,7 @@ import { gsap, ScrollTrigger, Lenis } from './assets/js/vendor/motion.js';
   var bar = root.querySelector('.lab-journey-bar i');
   var count = root.querySelector('.lab-journey-count');
   if (track && !isMobile) {
-    var distance = function () { return Math.max(0, track.scrollWidth - window.innerWidth + 48); };
+    var distance = function () { return Math.max(0, track.scrollWidth - journey.clientWidth + 24); };
     gsap.to(track, {
       x: function () { return -distance(); },
       ease: 'none',
