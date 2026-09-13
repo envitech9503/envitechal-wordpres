@@ -111,9 +111,10 @@ html:not(.lab-gsap) .lab-stage {
 .lab-panel-link { display: inline-flex; gap: 8px; margin-top: 14px; font-size: 13.5px; font-weight: 700; color: var(--lab-mint) !important; text-decoration: none !important; }
 
 .lab-phases {
-    position: absolute; right: clamp(20px, 4vw, 56px); top: 50%; transform: translateY(-50%); z-index: 2;
-    display: grid; gap: 14px;
+    position: absolute; right: clamp(20px, 4vw, 56px); top: clamp(22px, 4vh, 40px); z-index: 2;
+    display: grid; gap: 12px;
 }
+@media (max-height: 720px) { .lab-phases { display: none; } .lab-hero-grid { padding-bottom: 64px; } }
 html:not(.lab-gsap) .lab-phases { display: none; }
 .lab-phases li { display: flex; align-items: center; gap: 10px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--lab-muted); opacity: .45; transition: opacity .4s, color .4s; }
 .lab-phases li b { font-weight: 700; color: var(--lab-mint); }
