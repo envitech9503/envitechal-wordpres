@@ -259,6 +259,18 @@ import { gsap, ScrollTrigger, Lenis } from './assets/js/vendor/motion.js';
     // straight past its trigger; onLeave catches it so nothing stays hidden.
     onLeave: reveal
   });
+  // Belt and braces: anything already above the trigger line after a layout
+  // refresh or a jump is revealed at once.
+  var sweep = function () {
+    var line = window.innerHeight * 0.88, due = [];
+    root.querySelectorAll('[data-lab-reveal]').forEach(function (el) {
+      if (el.getBoundingClientRect().top < line && getComputedStyle(el).opacity !== '1') due.push(el);
+    });
+    if (due.length) reveal(due);
+  };
+  ScrollTrigger.addEventListener('refresh', sweep);
+  lenis.on('scroll', function () { if (sweep._t) return; sweep._t = setTimeout(function () { sweep._t = 0; sweep(); }, 120); });
+  window.addEventListener('load', sweep);
 
   /* ================= JOURNEY: pinned horizontal ================= */
   var track = root.querySelector('[data-lab-track]');
