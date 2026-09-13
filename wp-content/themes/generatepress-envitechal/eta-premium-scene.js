@@ -58,7 +58,7 @@ import { gsap, ScrollTrigger, Lenis } from './assets/js/vendor/motion.js';
     var group = new THREE.Group();
     scene.add(group);
     var kind = cfg.scene || 'field';
-    var uniforms = { uTime: { value: 0 }, uP: { value: 0 }, uA: { value: accent }, uB: { value: accent2 }, uSize: { value: isMobile ? 7 : 9 } };
+    var uniforms = { uTime: { value: 0 }, uP: { value: 0 }, uA: { value: accent }, uB: { value: accent2 }, uSize: { value: isMobile ? 9 : 12 } };
     var NOISE = [
       'float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }',
       'float vnoise(vec2 p){ vec2 i = floor(p), f = fract(p); f = f*f*(3.0-2.0*f);',
@@ -72,7 +72,7 @@ import { gsap, ScrollTrigger, Lenis } from './assets/js/vendor/motion.js';
 
     if (kind === 'field') {
       /* a drifting constellation of sample points with faint links */
-      var N = isMobile ? 220 : 420, pos = [], sd = [];
+      var N = isMobile ? 260 : 520, pos = [], sd = [];
       for (var i = 0; i < N; i++) { pos.push((rnd() - 0.5) * 70, (rnd() - 0.5) * 36, (rnd() - 0.5) * 30); sd.push(rnd()); }
       var g = new THREE.BufferGeometry();
       g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
@@ -85,7 +85,7 @@ import { gsap, ScrollTrigger, Lenis } from './assets/js/vendor/motion.js';
       var lv = [];
       for (var a = 0; a < N; a++) { var best = -1, bd = 1e9; for (var b = a + 1; b < N; b++) { var dx = pos[a * 3] - pos[b * 3], dy = pos[a * 3 + 1] - pos[b * 3 + 1], dz = pos[a * 3 + 2] - pos[b * 3 + 2]; var d2 = dx * dx + dy * dy + dz * dz; if (d2 < bd) { bd = d2; best = b; } } if (best >= 0 && bd < 60) lv.push(pos[a * 3], pos[a * 3 + 1], pos[a * 3 + 2], pos[best * 3], pos[best * 3 + 1], pos[best * 3 + 2]); }
       var lg = new THREE.BufferGeometry(); lg.setAttribute('position', new THREE.Float32BufferAttribute(lv, 3));
-      group.add(new THREE.LineSegments(lg, new THREE.LineBasicMaterial({ color: accent, transparent: true, opacity: 0.16 })));
+      group.add(new THREE.LineSegments(lg, new THREE.LineBasicMaterial({ color: accent, transparent: true, opacity: 0.3 })));
       camera.position.set(0, 0, 42);
     } else if (kind === 'grid') {
       /* a wireframe terrain, the site under survey */
@@ -98,18 +98,18 @@ import { gsap, ScrollTrigger, Lenis } from './assets/js/vendor/motion.js';
         vertexShader: ['uniform float uTime, uP; varying float vD;', NOISE,
           'void main(){ vec3 p = position; p.y = vnoise(p.xz*0.08 + uTime*0.05)*5.0 + vnoise(p.xz*0.25)*1.5 - 3.0 - uP*4.0;',
           '  vec4 mv = modelViewMatrix * vec4(p, 1.0); gl_Position = projectionMatrix * mv; vD = -mv.z; }'].join('\n'),
-        fragmentShader: ['uniform vec3 uA; varying float vD; void main(){ float f = clamp(1.0 - (vD - 20.0) / 70.0, 0.05, 1.0); gl_FragColor = vec4(uA, 0.55 * f); }'].join('\n') })));
+        fragmentShader: ['uniform vec3 uA; varying float vD; void main(){ float f = clamp(1.0 - (vD - 20.0) / 70.0, 0.05, 1.0); gl_FragColor = vec4(uA, 0.8 * f); }'].join('\n') })));
       camera.position.set(0, 12, 34);
     } else if (kind === 'sheets') {
       /* a stack of document sheets that fans out as the page scrolls */
       var sheets = [];
       for (var s = 0; s < 9; s++) {
-        var e = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(22, 30, 0.2)), new THREE.LineBasicMaterial({ color: accent, transparent: true, opacity: 0.18 + s * 0.05 }));
+        var e = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(22, 30, 0.2)), new THREE.LineBasicMaterial({ color: accent, transparent: true, opacity: 0.28 + s * 0.06 }));
         e.userData.i = s; group.add(e); sheets.push(e);
         var ln = [];
         for (var k = 0; k < 7; k++) ln.push(-8, 10 - k * 3, 0.12, 8 - (k % 3) * 3, 10 - k * 3, 0.12);
         var lgeo = new THREE.BufferGeometry(); lgeo.setAttribute('position', new THREE.Float32BufferAttribute(ln, 3));
-        var lines = new THREE.LineSegments(lgeo, new THREE.LineBasicMaterial({ color: accent2, transparent: true, opacity: 0.06 + s * 0.03 }));
+        var lines = new THREE.LineSegments(lgeo, new THREE.LineBasicMaterial({ color: accent2, transparent: true, opacity: 0.12 + s * 0.04 }));
         e.add(lines);
       }
       group.userData.sheets = sheets;
@@ -117,7 +117,7 @@ import { gsap, ScrollTrigger, Lenis } from './assets/js/vendor/motion.js';
     } else {
       /* orbit: instrument rings and ticks */
       function ring(R, seg, dash) { var v2 = []; for (var q = 0; q < seg; q++) { if (dash && (q % dash) >= dash / 2) continue; var t0 = (q / seg) * Math.PI * 2, t1 = ((q + 1) / seg) * Math.PI * 2; v2.push(Math.cos(t0) * R, Math.sin(t0) * R, 0, Math.cos(t1) * R, Math.sin(t1) * R, 0); } var gg = new THREE.BufferGeometry(); gg.setAttribute('position', new THREE.Float32BufferAttribute(v2, 3)); return gg; }
-      [[26, 0], [21, 12], [16, 0], [9, 8]].forEach(function (rr, k) { var m = new THREE.LineSegments(ring(rr[0], 220, rr[1]), new THREE.LineBasicMaterial({ color: accent, transparent: true, opacity: 0.14 + k * 0.08 })); m.rotation.x = 0.9; m.position.z = -k * 3; group.add(m); });
+      [[26, 0], [21, 12], [16, 0], [9, 8]].forEach(function (rr, k) { var m = new THREE.LineSegments(ring(rr[0], 220, rr[1]), new THREE.LineBasicMaterial({ color: accent, transparent: true, opacity: 0.22 + k * 0.1 })); m.rotation.x = 0.9; m.position.z = -k * 3; group.add(m); });
       var tv = []; for (var t = 0; t < 90; t++) { var an = (t / 90) * Math.PI * 2, L = t % 10 === 0 ? 1.6 : 0.8; tv.push(Math.cos(an) * 26, Math.sin(an) * 26, 0, Math.cos(an) * (26 - L), Math.sin(an) * (26 - L), 0); }
       var tgg = new THREE.BufferGeometry(); tgg.setAttribute('position', new THREE.Float32BufferAttribute(tv, 3));
       var ticks = new THREE.LineSegments(tgg, new THREE.LineBasicMaterial({ color: accent2, transparent: true, opacity: 0.35 })); ticks.rotation.x = 0.9; group.add(ticks);
@@ -150,6 +150,8 @@ import { gsap, ScrollTrigger, Lenis } from './assets/js/vendor/motion.js';
       onEnter: function () { if (!state.running) { state.running = true; frame(); } }, onEnterBack: function () { if (!state.running) { state.running = true; frame(); } },
       onLeave: function () { state.running = false; }, onLeaveBack: function () { state.running = false; } });
     hero.classList.add('pr-scene-on');
+    var grid = hero.querySelector('[class*="-hero-grid"], .eta-shell');
+    if (grid) gsap.to(grid, { y: -40, opacity: 0.25, ease: 'none', scrollTrigger: { trigger: hero, start: '30% top', end: 'bottom top', scrub: true } });
     return true;
   }
   if (!mountScene()) { doc.classList.remove('pr-gsap'); return; }
