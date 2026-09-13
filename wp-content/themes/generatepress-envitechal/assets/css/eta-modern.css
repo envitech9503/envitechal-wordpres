@@ -9606,3 +9606,39 @@ h3 {
     color: #EAF4EF; border: 1px solid rgba(125, 232, 205, .3); border-radius: 999px;
     padding: 8px 16px; white-space: nowrap; }
 @media (max-width: 640px) { .eta-verify-accred-inner { flex-direction: column; gap: 14px; } }
+
+/* ============================================================
+   Secondary page heroes: one eyebrow scale and one heading scale
+   (site-wide sweep, 13-09-2026). The generic "hero p" rules on these
+   sections were inflating the eyebrow to body-copy size; the headings
+   ran up to 5.25rem. Both now match the reviewed pages.
+   ============================================================ */
+.eta-download-hero p.eta-eyebrow,
+.eta-about-hero p.eta-eyebrow,
+.eta-career-hero p.eta-eyebrow,
+.eta-utility-hero p.eta-eyebrow,
+.eta-lahore-hero p.eta-eyebrow,
+.eta-seqs-hero p.eta-eyebrow,
+.eta-knowledge-hero p.eta-eyebrow,
+.eta-page-hero p.eta-eyebrow,
+.eta-services-hero p.eta-eyebrow {
+    margin: 0 0 14px;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: .14em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+.eta-download-hero h1,
+.eta-career-hero h1,
+.eta-utility-hero h1,
+.eta-lahore-hero h1,
+.eta-seqs-hero h1,
+.eta-knowledge-hero h1,
+.eta-page-hero h1,
+.single-post .eta-post-hero h1,
+.eta-post-hero h1 {
+    font-size: clamp(2.4rem, 4.2vw, 4.3rem);
+    line-height: 1.04;
+    letter-spacing: -0.01em;
+}

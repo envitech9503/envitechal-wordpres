@@ -669,7 +669,7 @@ function eta_modern_meta_description()
     }
 
     if (is_page('ourclients')) {
-        return 'See the industries and organizations served by Envi Tech AL across environmental testing, consultancy, calibration, monitoring, and compliance support.';
+        return 'See the industries and organisations served by Envi Tech AL across environmental testing, consultancy, calibration, monitoring, and compliance support.';
     }
 
     if (is_page('lahore-environmental-lab')) {
@@ -692,7 +692,7 @@ function eta_modern_meta_description()
     }
 
     if (is_page('tdap-registered-lab-in-karachi-pakistan')) {
-        return 'Testing and documentation support for exporters navigating TDAP or PTA program requirements in Karachi. Confirm current eligibility and registration with the relevant authority.';
+        return 'Testing and documentation support for exporters navigating TDAP or PTA programme requirements in Karachi. Confirm current eligibility and registration with the relevant authority.';
     }
 
     if (is_page(['blognewsupdates', 'newsupdates']) || is_home() || (is_archive() && !is_post_type_archive('services'))) {
@@ -2661,9 +2661,9 @@ function eta_modern_service_summary($post)
 
     $summaries = [
         'analytical-lab-services' => 'Environmental analysis for industrial, commercial, and regulatory teams that need defensible lab results and scope-confirmed methods for compliance decisions.',
-        'environmental-advisory' => 'Practical advisory support for environmental initiatives, gap assessments, and improvement programs before audits or regulatory submissions.',
+        'environmental-advisory' => 'Practical advisory support for environmental initiatives, gap assessments, and improvement programmes before audits or regulatory submissions.',
         'technical-advisory-2' => 'Technical audit and compliance guidance for facilities that need clear corrective actions, documentation support, and operational confidence.',
-        'certification-advisory' => 'ISO and regulatory certification advisory for organizations preparing systems, evidence, and teams for successful assessment.',
+        'certification-advisory' => 'ISO and regulatory certification advisory for organisations preparing systems, evidence, and teams for successful assessment.',
         'environmental-consultancy' => 'SEPA and environmental regulatory consultancy for projects, plants, and facilities from planning through operational compliance.',
         'equipment-calibration-services' => 'Calibration support for laboratory and industrial equipment so measurements remain traceable, reliable, and audit-ready.',
         'water-testing-lab-services' => 'Drinking water and wastewater testing for homes, industries, hospitals, hotels, exporters, and facilities that need safe, compliant water decisions.',
@@ -2765,7 +2765,7 @@ function eta_modern_service_profiles()
         'certification-advisory' => [
             'category' => 'Certification advisory',
             'hero' => 'Certification advisory that turns evidence into audit confidence.',
-            'lead' => 'ISO and regulatory certification guidance for organizations preparing systems, documents, actions, and teams for assessment.',
+            'lead' => 'ISO and regulatory certification guidance for organisations preparing systems, documents, actions, and teams for assessment.',
             'image' => 'https://envitechal.com/wp-content/uploads/2026/06/Certification-Advisory-Services.png',
             'seo_description' => 'Certification and regulatory compliance advisory for ISO systems, audits, evidence preparation, and environmental compliance improvement.',
             'outcomes' => ['Gap assessment', 'Documentation support', 'Audit preparation', 'Corrective action planning'],
@@ -2891,7 +2891,7 @@ function eta_modern_service_faqs($slug)
         ],
         'certification-advisory' => [
             ['Does certification advisory include fake certificate issuance?', 'No. Certification advisory supports preparation, documentation, gap review, and evidence readiness. It does not include unsupported or fake certification claims.'],
-            ['Which organizations need certification advisory?', 'Factories, exporters, management system teams, and compliance departments preparing for audits or certification reviews often need advisory support.'],
+            ['Which organisations need certification advisory?', 'Factories, exporters, management system teams, and compliance departments preparing for audits or certification reviews often need advisory support.'],
             ['Can lab reports support certification audits?', 'Relevant testing and monitoring reports can support audits when the scope and evidence requirements are correctly defined.'],
         ],
         'environmental-advisory' => [
@@ -3819,7 +3819,7 @@ function eta_modern_render_downloads_page()
         <div class="eta-shell eta-download-hero-grid">
             <div>
                 <p class="eta-eyebrow"><?php esc_html_e('Downloads', 'envi-tech-al-modern'); ?></p>
-                <h1 id="eta-download-title"><?php esc_html_e('Compliance documents, certificates, and regulatory references in one clean resource center.', 'envi-tech-al-modern'); ?></h1>
+                <h1 id="eta-download-title"><?php esc_html_e('Compliance documents, certificates, and regulatory references in one clean resource centre.', 'envi-tech-al-modern'); ?></h1>
                 <p><?php esc_html_e('Access Envi Tech AL certificates, environmental laws, Sindh EPA resources, national compliance documents, and Pakistan Accord references for audit planning and regulatory review.', 'envi-tech-al-modern'); ?></p>
                 <div class="eta-actions">
                     <a class="eta-button" href="#eta-download-library"><?php esc_html_e('Browse resources', 'envi-tech-al-modern'); ?></a>
@@ -4773,7 +4773,7 @@ function eta_modern_ai_faq_center_groups()
         'Industrial hygiene' => [
             ['What is industrial hygiene monitoring?', 'Industrial hygiene monitoring assesses workplace environmental conditions such as air, dust, noise, heat stress and exposure-related indicators.'],
             ['Which workplaces request industrial hygiene monitoring?', 'Factories, warehouses, textile units, chemical facilities, hospitals, laboratories and EHS teams commonly request industrial hygiene monitoring.'],
-            ['Can industrial hygiene reports support internal safety decisions?', 'Yes. Reports can help teams prioritize corrective action, exposure control, training and follow-up monitoring.'],
+            ['Can industrial hygiene reports support internal safety decisions?', 'Yes. Reports can help teams prioritise corrective action, exposure control, training and follow-up monitoring.'],
             ['What details are needed for industrial hygiene scope?', 'Share process type, work areas, shift timing, employee groups, audit requirement and deadline.'],
         ],
         'Calibration' => [
@@ -5064,7 +5064,7 @@ function eta_modern_utility_page_data($slug)
         'ourclients' => [
             'eyebrow' => 'Client portfolio',
             'title' => 'Trusted by industrial, healthcare, hospitality, development, and export-focused teams.',
-            'lead' => 'Envi Tech AL supports organizations that need dependable environmental testing, monitoring, consultancy, calibration, and compliance reporting.',
+            'lead' => 'Envi Tech AL supports organisations that need dependable environmental testing, monitoring, consultancy, calibration, and compliance reporting.',
             'image' => 'https://envitechal.com/wp-content/uploads/2026/06/Environmental-Consulting-Services.png',
             'clients' => ['Agha Khan University Hospital', 'WWF', 'Soorty Enterprises', 'Greaves Pakistan', 'Pearl Continental Hotel Karachi', 'National Medical Center', 'B.H.Y Hospital', 'United Towel Exporters', 'Rainbow Hosiery Pvt Ltd', 'Artistic Milliners', 'Velosi Pakistan', 'Hamdard University Group', 'Crown Textile', 'Movenpick Hotel Karachi', 'Patrind O&M Private Limited', 'Power China Gansu Energy', 'Vee Chem Industries', 'Fabritex Enterprises'],
         ],
@@ -5476,7 +5476,7 @@ function eta_modern_cluster_page_data($slug)
             'title' => 'Industrial Hygiene Monitoring Services',
             'seo_title' => 'Industrial Hygiene Monitoring Services | Envi Tech AL',
             'meta' => 'Industrial hygiene monitoring for workplace exposure, noise, air, dust, heat stress and occupational environment review.',
-            'summary' => 'Industrial hygiene monitoring helps organizations assess workplace environmental conditions that may affect worker health, audit readiness, or operational risk. Envi Tech AL supports practical monitoring scopes for factories, warehouses, hospitals, and industrial teams.',
+            'summary' => 'Industrial hygiene monitoring helps organisations assess workplace environmental conditions that may affect worker health, audit readiness, or operational risk. Envi Tech AL supports practical monitoring scopes for factories, warehouses, hospitals, and industrial teams.',
             'image' => 'https://envitechal.com/wp-content/uploads/2026/06/Industrial-compliance-Monitoring.png',
             'who' => ['Factories and warehouses', 'Textile and garment units', 'Chemical and process teams', 'Hospitals and labs', 'EHS departments', 'Buyer audit teams'],
             'covered' => ['Workplace air indicators', 'Noise exposure', 'Dust or particulate monitoring', 'Heat stress screening', 'Ventilation-related observations', 'Corrective action support'],
@@ -5669,7 +5669,7 @@ function eta_modern_render_lahore_page()
         ],
         [
             'title' => 'Monitoring and emissions',
-            'text' => 'Ambient air, stack emissions, noise, workplace conditions, and field monitoring programs planned around the reporting need, operating process, and inspection deadline.',
+            'text' => 'Ambient air, stack emissions, noise, workplace conditions, and field monitoring programmes planned around the reporting need, operating process, and inspection deadline.',
             'link' => home_url('/services/analytical-lab-services/'),
         ],
         [
