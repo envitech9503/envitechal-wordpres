@@ -54,6 +54,44 @@ $lab_matrix = [
         'items' => $parameters['Soil, waste, and industrial samples'] ?? [],
     ],
 ];
+
+$lab_scope = [
+    [
+        'title' => 'Laboratory testing',
+        'note'  => 'Samples analysed in the Karachi and Lahore laboratories on methods within the relevant approved scope.',
+        'items' => [
+            ['Water testing laboratory', '/services/water-testing-lab-services/'],
+            ['Drinking water testing', '/drinking-water-testing-lab/'],
+            ['Wastewater and effluent testing', '/wastewater-testing-services/'],
+            ['Soil and hazardous waste testing', '/soil-hazardous-waste-testing/'],
+            ['Ballast water testing', '/services/ballast-water-testing-services/'],
+            ['Maritime environmental testing', '/maritime-environmental-testing/'],
+        ],
+    ],
+    [
+        'title' => 'Field monitoring',
+        'note'  => 'Measured on site by the field team, with the instruments and custody records the report requires.',
+        'items' => [
+            ['Ambient air and stack emission monitoring', '/ambient-air-monitoring-services/'],
+            ['Noise monitoring and dosimetry', '/noise-monitoring-dosimetry/'],
+            ['Industrial hygiene monitoring', '/industrial-hygiene-monitoring/'],
+            ['Thermal imaging inspection', '/services/thermal-imaging-inspection/'],
+        ],
+    ],
+    [
+        'title' => 'Calibration, compliance and advisory',
+        'note'  => 'The services that sit around the result: traceable instruments, the documents regulators ask for, and the advice to act on both.',
+        'items' => [
+            ['Equipment calibration', '/services/equipment-calibration-services/'],
+            ['EMP, EMR, IEE and EIA compliance', '/emp-emr-iee-eia-compliance/'],
+            ['Environmental consultancy', '/services/environmental-consultancy/'],
+            ['Certification and regulatory advisory', '/services/certification-advisory/'],
+            ['Environmental advisory', '/services/environmental-advisory/'],
+            ['Technical advisory', '/services/technical-advisory-2/'],
+            ['SEQS compliance guide', '/sindh-environmental-quality-standards-seqs/'],
+        ],
+    ],
+];
 ?>
 
 <div id="eta-lab" class="eta-lab" data-lab-root>
@@ -76,7 +114,7 @@ $lab_matrix = [
                     <p class="lab-lead"><?php echo esc_html($profile['lead']); ?></p>
                     <div class="lab-actions">
                         <a class="lab-btn lab-btn-solid" href="<?php echo esc_url($lab_contact); ?>">Request a quotation <span aria-hidden="true">&rarr;</span></a>
-                        <a class="lab-btn lab-btn-ghost" href="#lab-matrix">See what we measure</a>
+                        <a class="lab-btn lab-btn-ghost" href="#lab-scope">See every service</a>
                     </div>
                 </div>
 
@@ -174,6 +212,31 @@ $lab_matrix = [
                         </ul>
                         <span class="lab-matrix-glow" aria-hidden="true"></span>
                     </article>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ===== FULL SCOPE DIRECTORY ===== -->
+    <section id="lab-scope" class="lab-scope" aria-labelledby="lab-scope-title">
+        <div class="eta-shell">
+            <header class="lab-head">
+                <p class="lab-kicker">Complete testing scope</p>
+                <h2 id="lab-scope-title">Every environmental testing and monitoring service, in one place.</h2>
+                <p>The laboratory page is the hub. Each service below has its own page with parameters, sample guidance and the standard it reports against.</p>
+            </header>
+            <div class="lab-scope-grid">
+                <?php foreach ($lab_scope as $group) : ?>
+                    <div class="lab-scope-col">
+                        <h3><?php echo esc_html($group['title']); ?></h3>
+                        <p><?php echo esc_html($group['note']); ?></p>
+                        <ul class="lab-scope-list">
+                            <?php foreach ($group['items'] as $item) : ?>
+                                <li><a href="<?php echo esc_url(home_url($item[1])); ?>"><span><?php echo esc_html($item[0]); ?></span><i aria-hidden="true">&rarr;</i></a></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
                 <?php endforeach; ?>
             </div>
         </div>

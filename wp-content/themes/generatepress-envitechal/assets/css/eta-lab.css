@@ -191,6 +191,21 @@ html:not(.lab-gsap) .lab-stage-card { flex: 1 1 280px; min-height: 0; }
 .lab-matrix-glow { position: absolute; width: 260px; height: 260px; left: var(--gx, 50%); top: var(--gy, 50%); transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(circle, rgba(125, 232, 205, .18), transparent 65%); pointer-events: none; opacity: 0; transition: opacity .4s; }
 .lab-matrix-card:hover .lab-matrix-glow { opacity: 1; }
 
+
+/* ============================================================
+   FULL SCOPE DIRECTORY
+   ============================================================ */
+.lab-scope { padding: clamp(56px, 7vw, 96px) 0; background: var(--lab-char); border-top: 1px solid var(--lab-line); }
+.lab-scope-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.lab-scope-col { padding: 24px 24px 12px; border: 1px solid var(--lab-line); border-radius: var(--lab-radius); background: rgba(255, 255, 255, .03); }
+.lab-scope-col h3 { font-size: 21px; font-weight: 500; color: #fff; }
+.lab-scope-col > p { margin: 8px 0 14px; font-size: 14px; line-height: 1.55; color: var(--lab-muted); }
+.lab-scope-list li { border-top: 1px solid var(--lab-line); }
+.lab-scope-list a { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 0; font-size: 15px; font-weight: 600; color: var(--lab-text) !important; text-decoration: none !important; transition: color .25s, padding-left .25s var(--lab-ease); }
+.lab-scope-list a i { font-style: normal; color: var(--lab-mint); opacity: 0; transform: translateX(-6px); transition: opacity .25s, transform .25s var(--lab-ease); }
+.lab-scope-list a:hover, .lab-scope-list a:focus-visible { color: var(--lab-mint) !important; padding-left: 6px; }
+.lab-scope-list a:hover i, .lab-scope-list a:focus-visible i { opacity: 1; transform: none; }
+
 /* ============================================================
    BENTO (light)
    ============================================================ */
@@ -268,7 +283,7 @@ html:not(.lab-gsap) .lab-method-line path { stroke-dashoffset: 0; }
     .lab-ledger-row { grid-template-columns: repeat(2, 1fr); }
     .lab-ledger-item { padding-left: 0; }
     .lab-ledger-item:nth-child(2n) { border-right: 0; padding-left: 24px; }
-    .lab-matrix-grid, .lab-bento-grid, .lab-related-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .lab-matrix-grid, .lab-bento-grid, .lab-related-grid, .lab-scope-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .lab-bento-wide { grid-column: span 2; }
 }
 @media (max-width: 860px) {
@@ -281,7 +296,7 @@ html:not(.lab-gsap) .lab-method-line path { stroke-dashoffset: 0; }
     .lab-track { flex-wrap: wrap; padding: 0; transform: none !important; }
     .lab-stage-card { flex: 1 1 100%; min-height: 0; }
     .lab-journey-progress { display: none !important; }
-    .lab-matrix-grid, .lab-bento-grid, .lab-related-grid { grid-template-columns: 1fr; }
+    .lab-matrix-grid, .lab-bento-grid, .lab-related-grid, .lab-scope-grid { grid-template-columns: 1fr; }
     .lab-bento-wide { grid-column: auto; }
     .lab-method-grid, .lab-faq-grid, .lab-final-grid { grid-template-columns: 1fr; }
     .lab-faq .lab-head { position: static; }

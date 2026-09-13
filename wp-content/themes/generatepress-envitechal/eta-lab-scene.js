@@ -249,7 +249,7 @@ import { gsap, ScrollTrigger, Lenis } from './assets/js/vendor/motion.js';
   gsap.from(root.querySelectorAll('.lab-eyebrow, .lab-lead, .lab-actions, .lab-hero-panel'), { opacity: 0, y: 18, duration: 0.9, ease: 'power3.out', stagger: 0.08, delay: 0.35 });
 
   /* ================= REVEALS ================= */
-  var revealSel = '.lab-ledger-item, .lab-head, .lab-matrix-card, .lab-bento-card, .lab-method-copy, .lab-faq-item, .lab-related-card, .lab-final-grid > *';
+  var revealSel = '.lab-ledger-item, .lab-head, .lab-matrix-card, .lab-scope-col, .lab-bento-card, .lab-method-copy, .lab-faq-item, .lab-related-card, .lab-final-grid > *';
   root.querySelectorAll(revealSel).forEach(function (el) { el.setAttribute('data-lab-reveal', ''); });
   ScrollTrigger.batch(root.querySelectorAll('[data-lab-reveal]'), {
     start: 'top 88%',
