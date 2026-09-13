@@ -26,6 +26,13 @@ get_header();
             continue;
         }
 
+        if ($slug === 'environmental-consultancy') {
+            // Flagship consultancy page: scroll-driven template on the fixed
+            // motion stack. See template-parts/service-environmental-consultancy.php.
+            include get_stylesheet_directory() . '/template-parts/service-environmental-consultancy.php';
+            continue;
+        }
+
         if ($slug === 'analytical-lab-services') {
             // Flagship environmental laboratory page: scroll-driven template
             // on the fixed motion stack. See template-parts/service-analytical-lab.php.

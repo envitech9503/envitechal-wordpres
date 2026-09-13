@@ -127,6 +127,7 @@ add_action('wp_enqueue_scripts', function () {
     $flagships = [
         'analytical-lab-services'    => ['eta-lab', '/assets/css/eta-lab.css'],
         'water-testing-lab-services' => ['eta-water', '/assets/css/eta-water.css'],
+        'environmental-consultancy'  => ['eta-consult', '/assets/css/eta-consult.css'],
     ];
     $slug = get_post_field('post_name', get_the_ID());
     if (!isset($flagships[$slug])) {
