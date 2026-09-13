@@ -41,10 +41,21 @@ $ea_workstreams = [
     ['MAT', 'Compliance maturity', 'A periodic review of how the environmental programme is running, what has improved and what the next cycle should target.', ['Scorecard', 'Trend review', 'Next targets'], 'Continuity'],
 ];
 
+$ea_programmes = [
+    ['Inditex Green to Wear', 'Preparation for Inditex GTW audits: wastewater, chemical management, energy and environmental management criteria at wet-processing and manufacturing sites.', 'Brand programme'],
+    ['Higg FEM', 'Higg Facility Environmental Module self-assessment and verification readiness: EMS, energy and GHG, water, wastewater, air, waste and chemicals, with the data to back each answer.', 'Cascale (SAC)'],
+    ['amfori BEPI', 'amfori Business Environmental Performance Initiative: environmental self-assessment and audit readiness for buyer-facing supply chains.', 'Buyer initiative'],
+    ['SBTi', 'Science Based Targets: GHG inventory (Scope 1, 2 and 3 screening), target setting aligned to SBTi criteria and the reduction plan behind the commitment.', 'Climate targets'],
+    ['Chemical management', 'Chemical inventory, MRSL and RSL conformance, storage and handling controls, training and the records a brand audit expects.', 'CMS'],
+    ['ZDHC', 'ZDHC MRSL conformance, wastewater testing to the ZDHC Wastewater Guidelines and Gateway reporting through ClearStream.', 'Roadmap to Zero'],
+    ['BHive / InCheck', 'Chemical inventory management on The BHive platform and InCheck reports for ZDHC MRSL conformance levels.', 'Inventory and reporting'],
+    ['Other environmental initiatives', 'Brand and industry programmes as they emerge: renewable energy transitions, water stewardship, circularity and supplier ESG reporting, prepared with laboratory data.', 'Emerging programmes'],
+];
+
 $ea_regs = [
     ['Sindh EPA · Punjab EPA', 'The approval conditions and reporting obligations an operating facility must keep'],
     ['SEQS · PEQS · NEQS', 'The limits every monitoring result is read against'],
-    ['Buyer and brand codes', 'Environmental requirements in supplier codes and audit programmes'],
+    ['Brand environmental programmes', 'Inditex GTW, Higg FEM, amfori BEPI, SBTi, ZDHC and BHive / InCheck readiness for exporters'],
     ['ISO 14001 · ISO 45001', 'Management system frameworks the improvement plan can be aligned to'],
     ['PNAC ISO/IEC 17025', 'LAB-285 and LAB-347: the laboratories behind the monitoring evidence'],
     ['Advisory, not assurance', 'We advise and prepare; the regulator, buyer or auditor decides'],
@@ -93,7 +104,7 @@ $ea_related = [
 
             <div class="eta-shell ea-hero-grid">
                 <div class="ea-hero-copy">
-                    <p class="ea-eyebrow"><span>Environmental advisory</span><i>·</i><span>Karachi</span><i>·</i><span>Lahore</span></p>
+                    <p class="ea-eyebrow"><span>Environmental advisory</span><i>·</i><span>Higg FEM · ZDHC · SBTi · GTW</span><i>·</i><span>Karachi · Lahore</span></p>
                     <h1 id="ea-title" class="ea-title">
                         <span class="ea-title-line">Better numbers,</span>
                         <span class="ea-title-line"><em>before</em> the pressure arrives.</span>
@@ -182,6 +193,21 @@ $ea_related = [
                 <?php endforeach; ?>
             </div>
 
+            <header class="ea-head ea-head-schemes">
+                <p class="ea-kicker">Brand and industry environmental programmes</p>
+                <h2 id="ea-programmes-title">The programmes buyers now ask for, prepared with the facility’s own data.</h2>
+                <p>Readiness for the programme owner’s assessment, verification or audit: gap review against the criteria, data collection, documentation and facility preparation. Scores, verifications and approvals are issued by the programme owner or its approved verifier.</p>
+            </header>
+            <div class="ea-schemes-grid">
+                <?php foreach ($ea_programmes as $pg) : ?>
+                    <article class="ea-scheme-card" data-ea-tilt>
+                        <span class="ea-scheme-std"><?php echo esc_html($pg[2]); ?></span>
+                        <h3><?php echo esc_html($pg[0]); ?></h3>
+                        <p><?php echo esc_html($pg[1]); ?></p>
+                        <span class="ea-deliver-glow" aria-hidden="true"></span>
+                    </article>
+                <?php endforeach; ?>
+            </div>
         </div>
     </section>
 
