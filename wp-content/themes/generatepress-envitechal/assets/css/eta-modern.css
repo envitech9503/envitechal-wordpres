@@ -9182,24 +9182,68 @@ h3 {
 .fsf-dot { color: var(--fsf-mint); opacity: .5; margin: 0 22px; font-style: normal; }
 @keyframes fsfDrift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-/* ---- Act 3: the index ---- */
-.fsf-index-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
-.fsf-col {
-    position: relative;
-    padding: clamp(44px, 4.4vw, 68px) clamp(20px, 2.4vw, 38px) clamp(44px, 4.4vw, 68px) 0;
-    border-right: 1px solid var(--fsf-line);
+/* ---- Act 3: the index ----
+   Four instrument panels rather than four ruled columns: each is a glass
+   card with a ghosted index numeral, a top accent that draws on hover and a
+   cursor-lit sheen. Redesigned 13-09-2026. */
+.fsf-index-band {
+    position: relative; overflow: hidden;
+    background:
+        radial-gradient(60% 80% at 85% 0%, rgba(125, 232, 205, .10), transparent 60%),
+        radial-gradient(40% 60% at 10% 100%, rgba(125, 232, 205, .06), transparent 60%);
 }
-.fsf-index-grid .fsf-col:last-child { border-right: 0; }
+.fsf-index-band::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .5;
+    background-image: radial-gradient(rgba(125, 232, 205, .16) 1px, transparent 1.2px);
+    background-size: 26px 26px;
+    -webkit-mask-image: linear-gradient(180deg, transparent, #000 25%, #000 75%, transparent);
+    mask-image: linear-gradient(180deg, transparent, #000 25%, #000 75%, transparent);
+}
+.fsf-index-grid {
+    position: relative;
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px;
+    padding: clamp(40px, 4.4vw, 64px) 0;
+}
+.fsf-col {
+    position: relative; overflow: hidden; isolation: isolate;
+    padding: 26px 24px 20px;
+    border: 1px solid var(--fsf-line); border-radius: 12px;
+    background: linear-gradient(165deg, rgba(255, 255, 255, .055), rgba(255, 255, 255, .012));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05);
+    transition: transform .4s cubic-bezier(.22,.7,.2,1), border-color .35s ease, box-shadow .4s ease;
+}
+/* ghosted index numeral, sitting behind the links like a printed folio */
+.fsf-col::after {
+    content: attr(data-n);
+    position: absolute; right: 12px; bottom: -22px; z-index: -1;
+    font-family: 'Outfit', 'Archivo', sans-serif; font-size: 118px; font-weight: 200; line-height: 1;
+    letter-spacing: -.04em; color: rgba(125, 232, 205, .07);
+    transition: color .4s ease, transform .5s cubic-bezier(.22,.7,.2,1);
+}
+/* top accent draws across on hover */
+.fsf-col::before {
+    content: ""; position: absolute; left: 0; top: 0; height: 2px; width: 100%;
+    background: linear-gradient(90deg, var(--fsf-mint), rgba(125, 232, 205, 0));
+    transform: scaleX(.18); transform-origin: left;
+    transition: transform .5s cubic-bezier(.22,.7,.2,1);
+}
+.fsf-col:hover, .fsf-col:focus-within {
+    transform: translateY(-4px);
+    border-color: rgba(125, 232, 205, .38);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, .35), inset 0 1px 0 rgba(255, 255, 255, .08);
+}
+.fsf-col:hover::before, .fsf-col:focus-within::before { transform: scaleX(1); }
+.fsf-col:hover::after, .fsf-col:focus-within::after { color: rgba(125, 232, 205, .14); transform: translateY(-6px); }
+.fsf-col .fsf-label { margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--fsf-line); }
 .eta-fs-footer .fsf-col a {
     position: relative;
     display: flex; align-items: center;
-    padding: 8px 0 8px 0;
+    padding: 7px 0;
     font-size: 14px; color: var(--fsf-muted); text-decoration: none;
     transition: color .24s ease, padding-left .28s cubic-bezier(.22,.7,.2,1);
 }
-/* an arrow slides in from the left rather than the text simply changing colour */
 .eta-fs-footer .fsf-col a::before {
-    content: "→";
+    content: "\2192";
     position: absolute; left: 0;
     opacity: 0; transform: translateX(-6px);
     color: var(--fsf-mint);
@@ -9346,13 +9390,13 @@ h3 {
     .fsf-invite { padding-right: 0; }
     .fsf-reach { padding-left: 0; border-left: 0; border-top: 1px solid var(--fsf-line); }
     .fsf-reach::before { left: 0; top: -1px; width: 54px; height: 1px; }
-    .fsf-col { border-right: 0; border-bottom: 1px solid var(--fsf-line); padding-right: 0; }
-    .fsf-index-grid .fsf-col:last-child { border-bottom: 0; }
+    .fsf-index-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .fsf-wordmark { white-space: normal; }
     .fsf-mark { display: none; }
 }
 
 @media (max-width: 640px) {
+    .fsf-index-grid { grid-template-columns: 1fr; }
     .eta-fs-footer .fsf-top-link { margin-left: 0; }
     .fsf-colophon-inner { gap: 12px 20px; }
     .fsf-statement-note { gap: 8px 18px; letter-spacing: .22em; }
@@ -9364,6 +9408,7 @@ h3 {
     .fsf-btn, .fsf-arrow, .fsf-col a, .fsf-col a::before, .fsf-mail,
     .eta-fs-footer .fsf-tels a, .eta-fs-footer .fsf-social a, .fsf-top-arrow { transition: none; }
     .eta-fs-footer .fsf-col a:hover { padding-left: 0; }
+    .fsf-col, .fsf-col::before, .fsf-col::after { transition: none; }
     .eta-fs-footer .fsf-col a:hover::before { opacity: 0; }
     .eta-fs-footer .fsf-social a:hover, .eta-fs-footer .fsf-tels a:hover { transform: none; }
 }

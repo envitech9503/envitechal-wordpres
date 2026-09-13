@@ -102,7 +102,7 @@ $eta_year = date('Y');
     <div class="fsf-index-band">
         <div class="eta-shell fsf-index-grid">
 
-            <nav class="fsf-col" aria-label="<?php esc_attr_e('Footer service links', 'envi-tech-al-modern'); ?>">
+            <nav class="fsf-col" data-n="01" aria-label="<?php esc_attr_e('Footer service links', 'envi-tech-al-modern'); ?>">
                 <p class="fsf-label"><span class="fsf-n">01</span> <?php esc_html_e('Services', 'envi-tech-al-modern'); ?></p>
                 <a href="<?php echo esc_url(home_url('/services/analytical-lab-services/')); ?>"><?php esc_html_e('Analytical Lab Services', 'envi-tech-al-modern'); ?></a>
                 <a href="<?php echo esc_url(home_url('/services/water-testing-lab-services/')); ?>"><?php esc_html_e('Water Testing Services', 'envi-tech-al-modern'); ?></a>
@@ -112,7 +112,7 @@ $eta_year = date('Y');
                 <a href="<?php echo esc_url(home_url('/services/environmental-consultancy/')); ?>"><?php esc_html_e('Environmental Consultancy', 'envi-tech-al-modern'); ?></a>
             </nav>
 
-            <nav class="fsf-col" aria-label="<?php esc_attr_e('Footer company links', 'envi-tech-al-modern'); ?>">
+            <nav class="fsf-col" data-n="02" aria-label="<?php esc_attr_e('Footer company links', 'envi-tech-al-modern'); ?>">
                 <p class="fsf-label"><span class="fsf-n">02</span> <?php esc_html_e('Company', 'envi-tech-al-modern'); ?></p>
                 <a href="<?php echo esc_url(home_url('/aboutus/')); ?>"><?php esc_html_e('About Envi Tech AL', 'envi-tech-al-modern'); ?></a>
                 <a href="<?php echo esc_url(home_url('/blognewsupdates/')); ?>"><?php esc_html_e('Knowledge Hub', 'envi-tech-al-modern'); ?></a>
@@ -121,7 +121,7 @@ $eta_year = date('Y');
                 <a href="<?php echo esc_url(home_url('/careers-at-envi-tech-al/')); ?>"><?php esc_html_e('Careers', 'envi-tech-al-modern'); ?></a>
             </nav>
 
-            <nav class="fsf-col" aria-label="<?php esc_attr_e('Footer support links', 'envi-tech-al-modern'); ?>">
+            <nav class="fsf-col" data-n="03" aria-label="<?php esc_attr_e('Footer support links', 'envi-tech-al-modern'); ?>">
                 <p class="fsf-label"><span class="fsf-n">03</span> <?php esc_html_e('Support', 'envi-tech-al-modern'); ?></p>
                 <a href="<?php echo esc_url(home_url('/contact-us-envi-tech-al/')); ?>"><?php esc_html_e('Contact Us', 'envi-tech-al-modern'); ?></a>
                 <a href="<?php echo esc_url(home_url('/report-verification-portal/')); ?>"><?php esc_html_e('Verify a Report', 'envi-tech-al-modern'); ?></a>
@@ -130,7 +130,7 @@ $eta_year = date('Y');
                 <a href="<?php echo esc_url('https://wa.me/923102288801'); ?>" target="_blank" rel="noopener"><?php esc_html_e('WhatsApp', 'envi-tech-al-modern'); ?></a>
             </nav>
 
-            <nav class="fsf-col" aria-label="<?php esc_attr_e('Footer laboratory links', 'envi-tech-al-modern'); ?>">
+            <nav class="fsf-col" data-n="04" aria-label="<?php esc_attr_e('Footer laboratory links', 'envi-tech-al-modern'); ?>">
                 <p class="fsf-label"><span class="fsf-n">04</span> <?php esc_html_e('Laboratories', 'envi-tech-al-modern'); ?></p>
                 <a href="<?php echo esc_url(home_url('/karachi-environmental-lab/')); ?>"><?php esc_html_e('Karachi Environmental Lab', 'envi-tech-al-modern'); ?></a>
                 <a href="<?php echo esc_url(home_url('/lahore-environmental-lab/')); ?>"><?php esc_html_e('Lahore Environmental Lab', 'envi-tech-al-modern'); ?></a>
