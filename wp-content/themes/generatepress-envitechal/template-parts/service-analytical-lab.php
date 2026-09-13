@@ -371,4 +371,4 @@ $lab_scope = [
     f(); addEventListener('resize', f); addEventListener('load', f);
 })();
 </script>
-<script type="module" src="<?php echo esc_url($lab_theme_uri . '/eta-lab-scene.js?v=1'); ?>" data-no-optimize="1" data-no-defer="1" data-litespeed-noopt="1"></script>
+<script type="module" src="<?php echo esc_url($lab_theme_uri . '/eta-lab-scene.js?v=' . (string) filemtime(get_stylesheet_directory() . '/eta-lab-scene.js')); ?>" data-no-optimize="1" data-no-defer="1" data-litespeed-noopt="1"></script>
