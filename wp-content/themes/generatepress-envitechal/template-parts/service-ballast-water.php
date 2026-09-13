@@ -96,7 +96,7 @@ $bw_related = [
                     <p class="bw-eyebrow"><span>Ballast water testing</span><i>·</i><span>Karachi Port</span><i>·</i><span>Port Qasim</span></p>
                     <h1 id="bw-title" class="bw-title">
                         <span class="bw-title-line">Sampled at the berth,</span>
-                        <span class="bw-title-line"><em>counted</em> against D-2.</span>
+                        <span class="bw-title-line"><em>counted</em> against D&#8209;2.</span>
                     </h1>
                     <p class="bw-lead">Ballast and deballast water sampling and analysis for vessels, agents and operators calling at Karachi: organism size bands and indicator microbes read against the IMO D-2 standard, in a report that keeps pace with the port call.</p>
                     <div class="bw-actions">
@@ -108,10 +108,10 @@ $bw_related = [
                 <aside class="bw-hero-panel" aria-label="D-2 limits">
                     <p class="bw-panel-kicker">Read against the D-2 standard</p>
                     <ul class="bw-panel-list">
-                        <li><b>&ge;50 µm</b><span>Fewer than 10 viable organisms per m³</span></li>
-                        <li><b>10–50 µm</b><span>Fewer than 10 viable organisms per mL</span></li>
+                        <li><b>&ge;50 µm</b><span>Under 10 viable organisms per m³</span></li>
+                        <li><b>10–50 µm</b><span>Under 10 viable organisms per mL</span></li>
                         <li><b>Microbes</b><span>V. cholerae, E. coli, intestinal enterococci</span></li>
-                        <li><b>Purpose</b><span>Commissioning, compliance, PSC request</span></li>
+                        <li><b>Purpose</b><span>Commissioning, compliance, PSC</span></li>
                     </ul>
                     <a class="bw-panel-link" href="<?php echo esc_url($bw_verify); ?>">Verify a laboratory report <span aria-hidden="true">&rarr;</span></a>
                 </aside>
