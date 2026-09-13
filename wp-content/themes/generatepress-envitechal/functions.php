@@ -132,6 +132,7 @@ add_action('wp_enqueue_scripts', function () {
         'ballast-water-testing-services' => ['eta-ballast', '/assets/css/eta-ballast.css'],
         'certification-advisory' => ['eta-cert', '/assets/css/eta-cert.css'],
         'environmental-advisory' => ['eta-advisory', '/assets/css/eta-advisory.css'],
+        'thermal-imaging-inspection' => ['eta-thermal', '/assets/css/eta-thermal.css'],
     ];
     $slug = get_post_field('post_name', get_the_ID());
     if (!isset($flagships[$slug])) {
