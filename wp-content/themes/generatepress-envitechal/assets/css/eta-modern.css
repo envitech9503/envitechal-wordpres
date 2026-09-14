@@ -9664,6 +9664,17 @@ h3 {
         top: calc(var(--eta-hh, 96px) + 24px);
     }
 }
+/* Lahore and Karachi lab pages: the lead column of each two-column band
+   rides alongside the longer content column (14-09-2026). */
+@media (min-width: 1025px) {
+    .eta-lahore-intro-grid > :first-child,
+    .eta-lahore-command-grid > :first-child,
+    .eta-lahore-industries-grid > :first-child,
+    .eta-lahore-office-grid > :first-child {
+        position: sticky;
+        top: calc(var(--eta-hh, 96px) + 24px);
+    }
+}
 
 /* Careers form: the nine short fields sit in two columns; the CV upload
    and the message keep the full width (13-09-2026). */
