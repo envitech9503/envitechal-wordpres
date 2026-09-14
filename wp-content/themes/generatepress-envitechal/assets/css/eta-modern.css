@@ -9656,6 +9656,14 @@ h3 {
         top: calc(var(--eta-hh, 96px) + 24px);
     }
 }
+/* Verification portal: the check form is the short column, so it holds
+   position while the longer guidance column scrolls past (14-09-2026). */
+@media (min-width: 861px) {
+    .eta-iv-grid .eta-iv-panel {
+        position: sticky;
+        top: calc(var(--eta-hh, 96px) + 24px);
+    }
+}
 
 /* Careers form: the nine short fields sit in two columns; the CV upload
    and the message keep the full width (13-09-2026). */
