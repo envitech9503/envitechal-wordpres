@@ -467,7 +467,7 @@ add_filter('pre_get_document_title', function ($title) {
         }
 
         if (get_post_field('post_name', get_the_ID()) === 'certification-advisory') {
-            return 'Certification & Compliance Advisory | Envi Tech AL';
+            return 'Certification Advisory Karachi: GOTS, GRS, RCS | Envi Tech AL';
         }
 
         return eta_modern_display_title(get_the_ID()) . ' | Envi Tech AL';
@@ -2838,7 +2838,7 @@ function eta_modern_service_profiles()
             'hero' => 'Certification advisory that turns evidence into audit confidence.',
             'lead' => 'ISO and regulatory certification guidance for organisations preparing systems, documents, actions, and teams for assessment.',
             'image' => 'https://envitechal.com/wp-content/uploads/2026/06/Certification-Advisory-Services.png',
-            'seo_description' => 'Certification and regulatory compliance advisory for ISO systems, audits, evidence preparation, and environmental compliance improvement.',
+            'seo_description' => 'Certification advisory in Karachi and Lahore: ISO 9001, ISO 14001, GOTS, GRS, RCS, Regenagri and Pakistan Accord readiness, gap assessment and audit preparation.',
             'outcomes' => ['Gap assessment', 'Documentation support', 'Audit preparation', 'Corrective action planning'],
             'proof' => ['ISO 9001 awareness', 'ISO 14001 awareness', 'Evidence-led approach', 'Practical training support'],
             'best_for' => ['Management systems teams', 'Factories', 'Export units', 'Compliance departments'],
@@ -2964,6 +2964,8 @@ function eta_modern_service_faqs($slug)
             ['Does certification advisory include fake certificate issuance?', 'No. Certification advisory supports preparation, documentation, gap review, and evidence readiness. It does not include unsupported or fake certification claims.'],
             ['Which organisations need certification advisory?', 'Factories, exporters, management system teams, and compliance departments preparing for audits or certification reviews often need advisory support.'],
             ['Can lab reports support certification audits?', 'Relevant testing and monitoring reports can support audits when the scope and evidence requirements are correctly defined.'],
+            ['Do you support GOTS, GRS and RCS certification in Karachi?', 'Yes. Envi Tech AL prepares textile and apparel units in Karachi and Lahore for GOTS, OCS, GRS and RCS audits: gap assessment against the standard, chain-of-custody documentation, facility evidence and pre-audit review. The certification body makes the decision.'],
+            ['Do you help with Regenagri and Pakistan Accord assessments?', 'Yes. Regenagri readiness covers farm and supply-chain criteria and chain of custody. Pakistan Accord support covers preparation for the structural, electrical and fire safety assessment programme, including evidence files and corrective action plans.'],
         ],
         'environmental-advisory' => [
             ['How is environmental advisory different from testing?', 'Testing produces technical data. Advisory helps interpret requirements, identify gaps, plan actions, and prepare documentation around that data.'],

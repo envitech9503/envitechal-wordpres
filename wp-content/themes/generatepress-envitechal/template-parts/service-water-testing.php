@@ -148,7 +148,7 @@ $wt_related = [
         <div class="eta-shell">
             <header class="wt-head">
                 <p class="wt-kicker">Parameters we test</p>
-                <h2 id="wt-params-title">The full parameter list, grouped the way a report reads.</h2>
+                <h2 id="wt-params-title">Water quality testing parameters, grouped the way a report reads.</h2>
                 <p>Lists are indicative. The final set is confirmed against the standard your report must satisfy, and accreditation applies to methods within the relevant approved scope.</p>
             </header>
             <div class="wt-params-grid">

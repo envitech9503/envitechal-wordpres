@@ -50,6 +50,7 @@ $ca_schemes = [
     ['SEDEX / SMETA', 'Sedex membership and SMETA audits: labour, health and safety, environment and business ethics for buyer-facing supply chains.', 'Ethical trade audit'],
     ['CTPAT', 'Customs Trade Partnership Against Terrorism: supply-chain security criteria for exporters shipping to the United States.', 'Supply-chain security'],
     ['amfori BSCI', 'Business Social Compliance Initiative: social performance audits against the amfori BSCI Code of Conduct.', 'Social compliance'],
+    ['Pakistan Accord', 'Pakistan Accord assessment readiness: structural, electrical and fire safety evidence, corrective action plans and follow-up for garment and textile factories.', 'Building and fire safety'],
 ];
 
 $ca_regs = [
@@ -196,7 +197,7 @@ $ca_related = [
 
             <header class="ca-head ca-head-schemes">
                 <p class="ca-kicker">Textile, social and supply-chain schemes</p>
-                <h2 id="ca-schemes-title">The buyer-facing schemes exporters are asked for, prepared with the same discipline.</h2>
+                <h2 id="ca-schemes-title">GOTS, GRS, RCS, Regenagri and Pakistan Accord readiness for exporters in Karachi and Lahore.</h2>
                 <p>Readiness for the scheme owner’s audit or certification body: gap assessment against the standard, documentation, evidence and facility preparation. The scheme owner or its approved body makes the decision.</p>
             </header>
             <div class="ca-schemes-grid">

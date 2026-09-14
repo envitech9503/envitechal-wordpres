@@ -202,7 +202,7 @@ html.ca-gsap .ca-type-card:not(.is-on) { transform: scale(.96); }
 
 /* ---- textile, social and supply-chain schemes ---- */
 .ca-head-schemes { margin-top: clamp(40px, 5vw, 64px); }
-.ca-schemes-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; perspective: 1400px; }
+.ca-schemes-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; perspective: 1400px; }
 .ca-scheme-card {
     position: relative; overflow: hidden;
     padding: 22px 22px 24px;
