@@ -5344,9 +5344,9 @@ function eta_modern_render_certificates_page()
         [
             'name' => 'Sindh EPA Environmental Laboratory Certificate',
             'issuer' => 'Sindh Environmental Protection Agency',
-            'scope' => 'Certified under section 6(1)(k) of the Sindh Environmental Protection Act 2014 for liquid effluent and wastes, potable water, stack and vehicular emission, ambient air quality and noise level, as per the facilities stated in the application.',
-            'status' => 'Certificate EPA/Lab/L.C/ENVI TECH AL AL-2/20/2020, renewed 25-05-2026; valid 10-06-2026 to 09-06-2028, subject to regulation 9 of the SEQS (Certification of Environmental Laboratories) Regulation 2014.',
-            'verification' => 'The renewal certificate is published below; the original can be produced on request for audit, procurement or regulatory review.',
+            'scope' => 'Certified environmental laboratory under section 6(1)(k) of the Sindh Environmental Protection Act 2014 for liquid effluent and wastes, potable water, stack and vehicular emission, ambient air quality and noise level.',
+            'status' => 'Current and in force. Certificate EPA/Lab/L.C/ENVI TECH AL AL-2/20/2020, renewed by Sindh EPA on 25-05-2026 and valid from 10-06-2026 to 09-06-2028.',
+            'verification' => 'The renewal certificate is published below and the original is available on request for audit, procurement or regulatory review.',
             'link' => 'https://envitechal.com/wp-content/uploads/2026/01/SEPA-NOC.pdf',
             'link_label' => 'View Sindh EPA certificate',
         ],
