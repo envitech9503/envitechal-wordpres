@@ -450,7 +450,7 @@ add_filter('pre_get_document_title', function ($title) {
     }
 
     if (is_page(['blognewsupdates', 'newsupdates']) || is_home() || (is_archive() && !is_post_type_archive('services'))) {
-        return 'Knowledge Hub | Envi Tech AL';
+        return 'Knowledge Hub: Environmental Testing Insights | Envi Tech AL';
     }
 
     if (is_post_type_archive('services')) {
@@ -566,7 +566,7 @@ function eta_modern_round3_page_title()
     }
 
     if (is_page(['blognewsupdates', 'newsupdates']) || is_home() || (is_archive() && !is_post_type_archive('services'))) {
-        return 'Knowledge Hub | Envi Tech AL';
+        return 'Knowledge Hub: Environmental Testing Insights | Envi Tech AL';
     }
 
     if (is_post_type_archive('services')) {
