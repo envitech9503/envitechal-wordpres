@@ -9664,6 +9664,9 @@ h3 {
         top: calc(var(--eta-hh, 96px) + 24px);
     }
 }
+.eta-lahore-command-grid h2,
+.eta-lahore-final-grid h2,
+.eta-utility-final h2 { margin-bottom: 16px; }
 /* Lahore and Karachi lab pages: the lead column of each two-column band
    rides alongside the longer content column (14-09-2026). */
 @media (min-width: 1025px) {
