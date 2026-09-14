@@ -391,7 +391,7 @@ add_filter('pre_get_document_title', function ($title) {
     }
 
     if (is_page('contact-us-envi-tech-al')) {
-        return 'Contact Envi Tech AL | Environmental Testing Lab Karachi & Lahore';
+        return 'Contact Envi Tech AL | Karachi & Lahore Laboratory';
     }
 
     if (is_page('aboutus')) {
@@ -407,7 +407,7 @@ add_filter('pre_get_document_title', function ($title) {
     }
 
     if (is_page('report-verification-portal')) {
-        return 'Report Verification Portal | Verify Envi Tech AL Test Reports';
+        return 'Verify a Test Report | Envi Tech AL';
     }
 
     if (is_page('careers-at-envi-tech-al')) {
@@ -454,7 +454,7 @@ add_filter('pre_get_document_title', function ($title) {
     }
 
     if (is_post_type_archive('services')) {
-        return 'Our Services | Envi Tech AL';
+        return 'Environmental Testing & Consultancy Services | Envi Tech AL';
     }
 
     if (is_singular('services')) {
@@ -464,6 +464,10 @@ add_filter('pre_get_document_title', function ($title) {
 
         if (get_post_field('post_name', get_the_ID()) === 'analytical-lab-services') {
             return 'Analytical Lab Services | Envi Tech AL';
+        }
+
+        if (get_post_field('post_name', get_the_ID()) === 'certification-advisory') {
+            return 'Certification & Compliance Advisory | Envi Tech AL';
         }
 
         return eta_modern_display_title(get_the_ID()) . ' | Envi Tech AL';
@@ -546,7 +550,7 @@ function eta_modern_social_image()
 function eta_modern_round3_page_title()
 {
     if (is_page('contact-us-envi-tech-al')) {
-        return 'Contact Envi Tech AL | Environmental Testing Lab Karachi & Lahore';
+        return 'Contact Envi Tech AL | Karachi & Lahore Laboratory';
     }
 
     if (is_page('aboutus')) {
@@ -566,7 +570,7 @@ function eta_modern_round3_page_title()
     }
 
     if (is_post_type_archive('services')) {
-        return 'Our Services | Envi Tech AL';
+        return 'Environmental Testing & Consultancy Services | Envi Tech AL';
     }
 
     if (eta_modern_is_water_testing_service()) {
@@ -775,12 +779,12 @@ function eta_modern_meta_description()
     }
 
     if (is_post_type_archive('services')) {
-        return 'Environmental testing, water and wastewater analysis, calibration, consultancy, ballast water testing and monitoring services by Envi Tech AL in Karachi and Lahore.';
+        return 'Environmental testing, water and wastewater analysis, calibration, consultancy, ballast water testing and monitoring by Envi Tech AL in Karachi and Lahore.';
     }
 
     if (is_singular('services')) {
         if (get_post_field('post_name', get_the_ID()) === 'water-testing-lab-services') {
-            return 'Water testing laboratory services in Karachi and Lahore for drinking water, wastewater, process and RO water, with scope-confirmed methods and verifiable reports.';
+            return 'Water testing laboratory in Karachi and Lahore for drinking water, wastewater, process and RO water, with scope-confirmed methods and verifiable reports.';
         }
 
         return eta_modern_service_profile_value(get_post_field('post_name', get_the_ID()), 'seo_description', eta_modern_plain_excerpt(get_the_ID(), 26));
@@ -4048,6 +4052,37 @@ function eta_modern_post_meta_description($post = null)
     return $description;
 }
 
+function eta_modern_post_card_excerpt($post = null)
+{
+    $post = get_post($post);
+    if (!$post) {
+        return 'Practical Envi Tech AL guidance for environmental testing, compliance, calibration, and advisory decisions.';
+    }
+
+    $topic = eta_modern_post_topic_label($post);
+    if ($topic === 'Water testing') {
+        return 'Understand water testing requirements, report use, safety expectations, and the next step before choosing a lab scope.';
+    }
+
+    if ($topic === 'Calibration') {
+        return 'A practical look at calibration reliability, traceability, audit readiness, and measurement confidence for industry.';
+    }
+
+    if ($topic === 'Compliance') {
+        return 'Guidance for EPA NOC, compliance documents, audit preparation, and regulatory decisions that need defensible evidence.';
+    }
+
+    if ($topic === 'Environmental testing lab') {
+        return 'Guidance on environmental testing lab services, sampling scope, compliance evidence, and practical reporting for Karachi, Lahore, and Pakistan.';
+    }
+
+    if ($topic === 'Environmental advisory') {
+        return 'Insight for environmental consultancy, monitoring, approvals, and compliance planning for business-critical projects.';
+    }
+
+    return 'Technical guidance from Envi Tech AL for laboratory, compliance, calibration, and consultancy decisions in Pakistan.';
+}
+
 function eta_modern_post_seo_overrides()
 {
     return [
@@ -5500,7 +5535,7 @@ function eta_modern_cluster_page_data($slug)
         'wastewater-testing-services' => [
             'eyebrow' => 'Wastewater testing',
             'title' => 'Wastewater Testing Services in Karachi & Lahore',
-            'seo_title' => 'Wastewater Testing Services in Karachi & Lahore | Envi Tech AL',
+            'seo_title' => 'Wastewater Testing in Karachi & Lahore | Envi Tech AL',
             'meta' => 'Wastewater testing for industrial discharge, ETP performance, compliance reporting, buyer audits and internal monitoring in Karachi and Lahore.',
             'summary' => 'Envi Tech AL provides wastewater testing for industrial discharge, ETP performance checks, compliance reporting, buyer audits, and internal monitoring. Scope can include BOD, COD, TSS, TDS, pH, oil and grease, heavy metals, and other parameters based on the report purpose.',
             'image' => 'https://envitechal.com/wp-content/uploads/2026/05/water-testing-services-karachi-lahore.png',
@@ -5518,7 +5553,7 @@ function eta_modern_cluster_page_data($slug)
         'drinking-water-testing-lab' => [
             'eyebrow' => 'Drinking water testing',
             'title' => 'Drinking Water Testing Lab in Karachi & Lahore',
-            'seo_title' => 'Drinking Water Testing Lab in Karachi & Lahore | Envi Tech AL',
+            'seo_title' => 'Drinking Water Testing Karachi & Lahore | Envi Tech AL',
             'meta' => 'Drinking water testing for homes, buildings, hospitals, hotels, schools, RO plants and industrial facilities in Karachi and Lahore.',
             'summary' => 'Envi Tech AL provides drinking water testing for homes, buildings, hospitals, hotels, schools, RO plants, groundwater, and facilities that need clear safety and quality evidence. Parameters can be selected for health, operations, audit, or compliance use.',
             'image' => 'https://envitechal.com/wp-content/uploads/2026/05/water-testing-services-karachi-lahore.png',
@@ -5626,7 +5661,7 @@ function eta_modern_cluster_page_data($slug)
         'maritime-environmental-testing' => [
             'eyebrow' => 'Maritime environmental testing',
             'title' => 'Ballast Water and Maritime Environmental Testing',
-            'seo_title' => 'Ballast Water & Maritime Environmental Testing | Envi Tech AL',
+            'seo_title' => 'Ballast Water & Maritime Testing | Envi Tech AL',
             'meta' => 'Ballast water and maritime environmental testing support for vessels, shipping agents and port-related compliance needs in Karachi.',
             'summary' => 'Envi Tech AL supports ballast water and maritime environmental testing needs for vessels, shipping agents, operators, and port-related teams that require coordinated sampling, reporting, and compliance-aware documentation.',
             'image' => 'https://envitechal.com/wp-content/uploads/2026/06/Ballast-Water-Testing-Services.png',

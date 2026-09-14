@@ -74,7 +74,7 @@ $cal_why = [
 ];
 
 $cal_related = [
-    ['Calibration of equipment in Karachi', 'What to prepare before the visit.', '/calibration-of-equipment-in-karachi/'],
+    ['Karachi environmental lab', 'The laboratory behind the references and the field team.', '/karachi-environmental-lab/'],
     ['Analytical laboratory services', 'The environmental testing laboratory behind the references.', '/services/analytical-lab-services/'],
     ['Water testing laboratory', 'Drinking water, wastewater and process water analysis.', '/services/water-testing-lab-services/'],
     ['Certification advisory', 'ISO 9001, ISO 14001 and system preparation.', '/services/certification-advisory/'],

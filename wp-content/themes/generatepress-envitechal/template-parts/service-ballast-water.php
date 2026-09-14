@@ -74,7 +74,7 @@ $bw_why = [
 ];
 
 $bw_related = [
-    ['Ballast water testing in Karachi', 'Port-call planning and what to send before arrival.', '/ballast-water-testing-services-karachi/'],
+    ['Maritime environmental testing', 'Ballast water and port-related compliance in Karachi.', '/maritime-environmental-testing/'],
     ['Water testing laboratory', 'Drinking water, wastewater and process water analysis.', '/services/water-testing-lab-services/'],
     ['Analytical laboratory services', 'The environmental testing laboratory behind the count.', '/services/analytical-lab-services/'],
     ['Karachi environmental lab', 'LAB-285 and the field team behind it.', '/karachi-environmental-lab/'],

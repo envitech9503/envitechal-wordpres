@@ -90,7 +90,7 @@ $ea_related = [
     ['Analytical laboratory services', 'The environmental testing laboratory behind the data.', '/services/analytical-lab-services/'],
     ['Ambient air monitoring', 'Baseline and periodic air quality monitoring.', '/ambient-air-monitoring-services/'],
     ['SEQS compliance guide', 'The Sindh limits, parameter by parameter.', '/sindh-environmental-quality-standards-seqs/'],
-    ['Benefits of environmental consultancy', 'What advisory support changes on site.', '/what-are-the-benefits-of-environmental-lab-consultancy/'],
+    ['Environmental consultancy guide', 'What advisory support changes on site.', '/environmental-consultancy-karachi-guide/'],
 ];
 ?>
 

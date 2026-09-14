@@ -90,7 +90,7 @@ $ca_related = [
     ['Environmental consultancy', 'IEE, EIA, EMP and EMR pathways.', '/services/environmental-consultancy/'],
     ['Equipment calibration', 'Calibration records for the evidence file.', '/services/equipment-calibration-services/'],
     ['Analytical laboratory services', 'Testing and monitoring data behind the system.', '/services/analytical-lab-services/'],
-    ['GOTS certification explained', 'What the organic textile standard asks for.', '/everything-you-need-to-know-about-gots-certification/'],
+    ['Textile effluent testing', 'Effluent evidence behind textile certifications.', '/textile-effluent-testing-compliance-pakistan/'],
     ['Verify a report', 'Check a laboratory report by number and date.', '/report-verification-portal/'],
 ];
 ?>
