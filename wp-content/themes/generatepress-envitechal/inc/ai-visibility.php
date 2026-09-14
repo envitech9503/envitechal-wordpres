@@ -660,7 +660,7 @@ function eta_ai_visibility_llms_text($full = false)
         '- [Punjab EPA official 2025–2028 certificate](https://epd.punjab.gov.pk/system/files/EnviTech_%202025-2028_merged.pdf) — review its conditions for the requested work.',
         '- [ISO 9001:2015 certificate](' . home_url('/wp-content/uploads/2026/01/ISO-9001-Certificate.pdf') . ') — registration TPAK-080177324-QMS; certificate states validity through 27 August 2027.',
         '- [ISO 14001:2015 certificate](' . home_url('/wp-content/uploads/2026/01/ISO-14001-Certificate.pdf') . ') — registration TPAK-080177424-EMS; certificate states validity through 27 August 2027.',
-        '- [Published Sindh EPA document](' . home_url('/wp-content/uploads/2026/01/SEPA-NOC.pdf') . ') — confirm current issuer status, validity, conditions, and scope before reliance.',
+        '- [Sindh EPA Environmental Laboratory Certificate](' . home_url('/wp-content/uploads/2026/01/SEPA-NOC.pdf') . '): certificate EPA/Lab/L.C/ENVI TECH AL AL-2/20/2020, renewed 25-05-2026, valid 10-06-2026 to 09-06-2028, for liquid effluent and wastes, potable water, stack and vehicular emission, ambient air quality and noise level.',
         '',
         '## Knowledge Hub',
         '',

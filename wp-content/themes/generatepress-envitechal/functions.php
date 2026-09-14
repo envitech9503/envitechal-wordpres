@@ -3846,7 +3846,7 @@ function eta_modern_download_groups()
         'Certifications and accreditations' => [
             ['ISO 9001:2015 Certificate', 'https://envitechal.com/wp-content/uploads/2026/01/ISO-9001-Certificate.pdf'],
             ['ISO 14001:2015 Certificate', 'https://envitechal.com/wp-content/uploads/2026/01/ISO-14001-Certificate.pdf'],
-            ['Sindh EPA NOC (published copy)', 'https://envitechal.com/wp-content/uploads/2026/01/SEPA-NOC.pdf'],
+            ['Sindh EPA Environmental Laboratory Certificate 2026–2028', 'https://envitechal.com/wp-content/uploads/2026/01/SEPA-NOC.pdf'],
             ['Punjab EPA Certificate 2025–2028 (official source)', 'https://epd.punjab.gov.pk/system/files/EnviTech_%202025-2028_merged.pdf'],
             ['PNAC active testing-laboratory register: LAB-285 Karachi and LAB-347 Lahore', 'https://pnac.gov.pk/Accredited-Cabs-serve/Testing-and-Calibration-Laboratories/Active'],
         ],
@@ -5342,13 +5342,13 @@ function eta_modern_render_certificates_page()
 {
     $credentials = [
         [
-            'name' => 'Sindh EPA laboratory NOC',
+            'name' => 'Sindh EPA Environmental Laboratory Certificate',
             'issuer' => 'Sindh Environmental Protection Agency',
-            'scope' => 'Environmental testing, monitoring, reporting and compliance support relevant to Sindh clients and regulatory submissions.',
-            'status' => 'Issued by the Sindh Environmental Protection Agency. Validity, conditions and applicable scope are stated on the document itself.',
-            'verification' => 'A published copy is available below. The current original can be provided on request for audit, procurement or regulatory review.',
+            'scope' => 'Certified under section 6(1)(k) of the Sindh Environmental Protection Act 2014 for liquid effluent and wastes, potable water, stack and vehicular emission, ambient air quality and noise level, as per the facilities stated in the application.',
+            'status' => 'Certificate EPA/Lab/L.C/ENVI TECH AL AL-2/20/2020, renewed 25-05-2026; valid 10-06-2026 to 09-06-2028, subject to regulation 9 of the SEQS (Certification of Environmental Laboratories) Regulation 2014.',
+            'verification' => 'The renewal certificate is published below; the original can be produced on request for audit, procurement or regulatory review.',
             'link' => 'https://envitechal.com/wp-content/uploads/2026/01/SEPA-NOC.pdf',
-            'link_label' => 'View Sindh EPA NOC',
+            'link_label' => 'View Sindh EPA certificate',
         ],
         [
             'name' => 'Punjab EPA environmental laboratory certification (2025–2028)',
@@ -5414,7 +5414,7 @@ function eta_modern_render_certificates_page()
             eta_modern_render_ai_summary_block(
                 'Certification and approval summary',
                 'Envi Tech AL publishes evidence relating to laboratory, quality-management, environmental-management, and EPA-related credentials. Each record names its issuer and links to the published document; scope, validity, conditions, location, matrix, parameter and method should be read from the document itself before reliance.',
-                ['Sindh EPA NOC (published copy)', 'Punjab EPA 2025–2028 official record', 'PNAC LAB-285 for Karachi and LAB-347 for Lahore, each limited to its published scope', 'ISO 9001:2015 and ISO 14001:2015 certificates']
+                ['Sindh EPA Environmental Laboratory Certificate, valid to 09-06-2028', 'Punjab EPA 2025–2028 official record', 'PNAC LAB-285 for Karachi and LAB-347 for Lahore, each limited to its published scope', 'ISO 9001:2015 and ISO 14001:2015 certificates']
             );
             eta_modern_section_title('Credential cards', 'Laboratory and compliance trust signals customers commonly verify', 'Each credential is listed with its issuing body, its scope and how it can be verified. Certificate copies are available on request for audit, procurement or regulatory review.');
             ?>
