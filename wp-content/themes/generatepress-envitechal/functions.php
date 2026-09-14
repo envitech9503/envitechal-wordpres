@@ -411,7 +411,7 @@ add_filter('pre_get_document_title', function ($title) {
     }
 
     if (is_page('careers-at-envi-tech-al')) {
-        return 'Careers at Envi Tech AL | Environmental Lab & Field Jobs';
+        return 'Environmental Jobs in Pakistan | Careers at Envi Tech AL';
     }
 
     if (is_page('frequently-asked-questions-water-testing-in-karachi')) {
@@ -427,7 +427,7 @@ add_filter('pre_get_document_title', function ($title) {
     }
 
     if (is_page('lahore-environmental-lab')) {
-        return 'Environmental Lab in Lahore | Envi Tech AL';
+        return 'Environmental Lab and EPA Testing in Lahore | Envi Tech AL';
     }
 
     if (is_page('karachi-environmental-lab')) {
@@ -463,7 +463,7 @@ add_filter('pre_get_document_title', function ($title) {
         }
 
         if (get_post_field('post_name', get_the_ID()) === 'analytical-lab-services') {
-            return 'Analytical Lab Services | Envi Tech AL';
+            return 'Analytical Testing Laboratory Services | Envi Tech AL';
         }
 
         if (get_post_field('post_name', get_the_ID()) === 'certification-advisory') {
@@ -728,7 +728,7 @@ function eta_modern_meta_description()
     }
 
     if (is_page('careers-at-envi-tech-al')) {
-        return 'Explore careers at Envi Tech AL for laboratory, field, business development, environmental monitoring, and compliance support roles in Karachi and Lahore.';
+        return 'Environmental science jobs and vacancies at Envi Tech AL: laboratory, field monitoring, business development and compliance roles in Karachi and Lahore.';
     }
 
     if (is_page('frequently-asked-questions-water-testing-in-karachi')) {
@@ -744,11 +744,11 @@ function eta_modern_meta_description()
     }
 
     if (is_page('lahore-environmental-lab')) {
-        return 'Envi Tech AL Lahore supports environmental testing, water testing, consultancy, monitoring, calibration, and compliance-ready reporting for Punjab clients.';
+        return 'EPA testing in Lahore: Envi Tech AL supports environmental testing, water testing, monitoring, calibration and Punjab EPA compliance reporting for Punjab clients.';
     }
 
     if (is_page('karachi-environmental-lab')) {
-        return 'Environmental testing lab in Karachi: water, wastewater, stack emission, air, noise and soil testing with Sindh EPA compliance support.';
+        return 'Environmental, water and soil testing laboratory in Karachi: wastewater, stack emission, air and noise testing with Sindh EPA compliance support.';
     }
 
     if (is_page(['certificates-approvals', 'accreditations-certifications'])) {
@@ -784,7 +784,7 @@ function eta_modern_meta_description()
 
     if (is_singular('services')) {
         if (get_post_field('post_name', get_the_ID()) === 'water-testing-lab-services') {
-            return 'Water testing laboratory in Karachi and Lahore for drinking water, wastewater, process and RO water, with scope-confirmed methods and verifiable reports.';
+            return 'Water quality testing laboratory in Karachi and Lahore for drinking water, wastewater, process and RO water, with scope-confirmed methods and verifiable reports.';
         }
 
         return eta_modern_service_profile_value(get_post_field('post_name', get_the_ID()), 'seo_description', eta_modern_plain_excerpt(get_the_ID(), 26));
@@ -2798,7 +2798,7 @@ function eta_modern_service_profiles()
             'hero' => 'Environmental lab analysis for compliance-critical decisions.',
             'lead' => 'Analytical testing support for industrial, commercial, healthcare, hospitality, maritime, and facility teams that need defensible environmental results.',
             'image' => 'https://envitechal.com/wp-content/uploads/2026/06/Environmental-Testing-Lab.png',
-            'seo_description' => 'Environmental lab and analytical testing services in Karachi and Lahore for water, wastewater, air, soil, and compliance-critical reporting by Envi Tech AL.',
+            'seo_description' => 'Environmental testing laboratory and analytical services in Karachi and Lahore for water, wastewater, air, soil and compliance-critical reporting by Envi Tech AL.',
             'outcomes' => ['Water and wastewater parameters', 'Air and emission support', 'Industrial sample analysis', 'Regulatory report inputs'],
             'proof' => ['Published scope checks', 'EPA-related documentation', 'Technical review', 'Karachi and Lahore support'],
             'best_for' => ['Industrial compliance teams', 'Hospitals and hotels', 'Exporters and buyers', 'Facility managers'],
@@ -4642,7 +4642,7 @@ function eta_modern_career_roles()
             'work' => ['Financial reporting', 'Tax and compliance activity', 'Budget and audit support', 'Client billing follow-up'],
         ],
         [
-            'title' => 'Lab, field, and business development profiles',
+            'title' => 'Environmental jobs in Pakistan: lab, field and business development profiles',
             'location' => 'Karachi and Lahore',
             'fit' => 'Environmental science, chemistry, field monitoring, laboratory, sales coordination, and client-facing technical-service profiles.',
             'work' => ['Lab and field support', 'Sampling and monitoring', 'Proposal support', 'Client coordination'],
@@ -4660,7 +4660,7 @@ function eta_modern_render_careers_page()
             <div>
                 <p class="eta-eyebrow"><?php esc_html_e('Careers at Envi Tech AL', 'envi-tech-al-modern'); ?></p>
                 <h1 id="eta-career-title"><?php esc_html_e('Build a technical career where lab discipline meets real environmental decisions.', 'envi-tech-al-modern'); ?></h1>
-                <p><?php esc_html_e('Join a team supporting environmental testing, field monitoring, calibration, consultancy, and compliance reporting for industries across Karachi, Lahore, and Pakistan.', 'envi-tech-al-modern'); ?></p>
+                <p><?php esc_html_e('Environmental science jobs and vacancies in Karachi and Lahore: join a team supporting environmental testing, field monitoring, calibration, consultancy and compliance reporting for industries across Pakistan.', 'envi-tech-al-modern'); ?></p>
                 <div class="eta-actions">
                     <a class="eta-button" href="#eta-career-apply"><?php esc_html_e('Submit your profile', 'envi-tech-al-modern'); ?></a>
                     <a class="eta-button eta-button-secondary" href="mailto:hr@envitechal.com"><?php esc_html_e('Email HR', 'envi-tech-al-modern'); ?></a>
@@ -5267,7 +5267,7 @@ function eta_modern_render_karachi_page()
             <div>
                 <p class="eta-eyebrow"><?php esc_html_e('Karachi Environmental Lab', 'envi-tech-al-modern'); ?></p>
                 <h1 id="eta-karachi-title"><?php esc_html_e('Environmental Testing Lab in Karachi, Sindh', 'envi-tech-al-modern'); ?></h1>
-                <p><?php esc_html_e('Envi Tech AL provides environmental testing, analytical laboratory services, water and wastewater testing, stack emission testing, air monitoring, noise monitoring, soil testing, industrial hygiene monitoring, and compliance support for Karachi and Sindh clients.', 'envi-tech-al-modern'); ?></p>
+                <p><?php esc_html_e('Envi Tech AL is a water and soil testing laboratory in Karachi providing environmental testing, analytical laboratory services, water and wastewater testing, stack emission testing, air monitoring, noise monitoring, industrial hygiene monitoring, and compliance support for Karachi and Sindh clients.', 'envi-tech-al-modern'); ?></p>
                 <div class="eta-actions">
                     <a class="eta-button" href="<?php echo esc_url(home_url('/contact-us-envi-tech-al/')); ?>"><?php esc_html_e('Request Testing Quote', 'envi-tech-al-modern'); ?></a>
                     <a class="eta-button eta-button-secondary" href="<?php echo esc_url(home_url('/report-verification-portal/')); ?>"><?php esc_html_e('Verify Report', 'envi-tech-al-modern'); ?></a>
@@ -5831,7 +5831,7 @@ function eta_modern_render_lahore_page()
             <div>
                 <p class="eta-eyebrow"><?php esc_html_e('Lahore Environmental Lab', 'envi-tech-al-modern'); ?></p>
                 <h1 id="eta-lahore-title"><?php esc_html_e('Environmental testing, consultancy, and compliance support for Lahore and Punjab.', 'envi-tech-al-modern'); ?></h1>
-                <p><?php esc_html_e('Envi Tech AL supports Lahore industries, commercial facilities, healthcare institutions, hotels, exporters, and project teams with water testing, environmental monitoring, calibration coordination, and consultancy guidance for Punjab EPA-related requirements.', 'envi-tech-al-modern'); ?></p>
+                <p><?php esc_html_e('Envi Tech AL supports Lahore industries, commercial facilities, healthcare institutions, hotels, exporters, and project teams with EPA testing in Lahore, water testing, environmental monitoring, calibration coordination, and consultancy guidance for Punjab EPA requirements.', 'envi-tech-al-modern'); ?></p>
                 <div class="eta-actions">
                     <a class="eta-button" href="<?php echo esc_url(home_url('/contact-us-envi-tech-al/')); ?>"><?php esc_html_e('Request Lahore support', 'envi-tech-al-modern'); ?></a>
                     <a class="eta-button eta-button-secondary" href="<?php echo esc_url(home_url('/services/')); ?>"><?php esc_html_e('Explore services', 'envi-tech-al-modern'); ?></a>

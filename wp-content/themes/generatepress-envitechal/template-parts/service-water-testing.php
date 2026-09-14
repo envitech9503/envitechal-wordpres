@@ -80,7 +80,7 @@ $wt_related = [
                         <span class="wt-title-line">Every drop,</span>
                         <span class="wt-title-line"><em>measured</em> against the limit.</span>
                     </h1>
-                    <p class="wt-lead">Drinking water, wastewater, process water, RO performance and industrial discharge testing for the people accountable for the result: a clear report, each value stated against its applicable limit, verifiable online.</p>
+                    <p class="wt-lead">Water quality testing for drinking water, wastewater, process water, RO performance and industrial discharge, for the people accountable for the result: a clear report, each value stated against its applicable limit, verifiable online.</p>
                     <div class="wt-actions">
                         <a class="wt-btn wt-btn-solid" href="<?php echo esc_url($wt_contact); ?>">Request a quotation <span aria-hidden="true">&rarr;</span></a>
                         <a class="wt-btn wt-btn-ghost" href="#wt-params">Explore the parameters</a>
