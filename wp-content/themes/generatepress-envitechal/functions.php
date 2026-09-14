@@ -4893,7 +4893,7 @@ function eta_modern_render_ai_faq_center_page()
     <section class="eta-utility-hero" aria-labelledby="eta-ai-faq-title">
         <div class="eta-shell eta-utility-hero-grid">
             <div>
-                <p class="eta-eyebrow"><?php esc_html_e('AI FAQ Center', 'envi-tech-al-modern'); ?></p>
+                <p class="eta-eyebrow"><?php esc_html_e('AI FAQ Centre', 'envi-tech-al-modern'); ?></p>
                 <h1 id="eta-ai-faq-title"><?php esc_html_e('Environmental Testing FAQs Pakistan', 'envi-tech-al-modern'); ?></h1>
                 <p><?php esc_html_e('Practical answers about environmental testing, water and wastewater testing, emissions monitoring, EPA compliance, calibration, sampling and report verification for Pakistan-based customers.', 'envi-tech-al-modern'); ?></p>
                 <div class="eta-actions">
@@ -5493,7 +5493,7 @@ function eta_modern_cluster_page_data($slug)
             'image' => 'https://envitechal.com/wp-content/uploads/2026/05/water-testing-services-karachi-lahore.png',
             'who' => ['Residential buildings', 'Hospitals and clinics', 'Hotels and restaurants', 'Schools and institutions', 'Factories and warehouses', 'RO plant operators'],
             'covered' => ['Drinking water safety checks', 'Bore water and groundwater', 'RO plant output', 'Storage tank checks', 'Microbiological testing', 'Metal and chemistry screening'],
-            'parameters' => ['pH', 'Color', 'Turbidity', 'TDS', 'Hardness', 'Chloride', 'Sulfate', 'Nitrate', 'Fluoride', 'Iron', 'Manganese', 'Copper', 'Lead', 'Arsenic', 'Residual chlorine', 'Total coliform', 'E. coli'],
+            'parameters' => ['pH', 'Colour', 'Turbidity', 'TDS', 'Hardness', 'Chloride', 'Sulfate', 'Nitrate', 'Fluoride', 'Iron', 'Manganese', 'Copper', 'Lead', 'Arsenic', 'Residual chlorine', 'Total coliform', 'E. coli'],
             'uses' => ['Health and safety review', 'Hotel and hospital compliance', 'Buyer or tenant requirement', 'RO performance verification', 'Internal facility monitoring', 'Report verification support'],
             'related' => ['/services/water-testing-lab-services/' => 'Water testing services', '/wastewater-testing-services/' => 'Wastewater testing', '/report-verification-portal/' => 'Report verification'],
             'faqs' => [
@@ -5977,7 +5977,7 @@ function eta_modern_render_indexed_utility_page($slug)
     <?php elseif (!empty($data['clients'])) : ?>
         <section class="eta-band eta-utility-clients">
             <div class="eta-shell">
-                <?php eta_modern_section_title('Client portfolio', 'Organizations and sectors supported by Envi Tech AL'); ?>
+                <?php eta_modern_section_title('Client portfolio', 'Organisations and sectors supported by Envi Tech AL'); ?>
                 <div class="eta-utility-client-grid">
                     <?php foreach ($data['clients'] as $client) : ?>
                         <span><?php echo esc_html($client); ?></span>

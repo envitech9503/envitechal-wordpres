@@ -103,7 +103,7 @@ function eta_ai_visibility_absolute_url($url, $canonical)
 function eta_ai_visibility_normalize_markdown_text($text)
 {
     $text = html_entity_decode((string) $text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-    $text = str_ireplace('AI FAQ Center', 'Environmental Testing Questions and Answers', $text);
+    $text = str_ireplace('AI FAQ Centre', 'Environmental Testing Questions and Answers', $text);
     $text = preg_replace('/[\t\r\n ]+/u', ' ', $text);
     return trim(is_string($text) ? $text : '');
 }

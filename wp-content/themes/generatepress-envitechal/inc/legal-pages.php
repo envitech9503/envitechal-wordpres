@@ -93,10 +93,10 @@ function eta_modern_render_privacy_page()
             eta_modern_legal_section('Information we collect', [
                 'We collect information you choose to send us through this website:',
             ], [
-                '<strong>Enquiry and quotation forms</strong> — name, company, email address, phone or WhatsApp number, city, service of interest, and the details of your requirement.',
-                '<strong>Report verification requests</strong> — report number, report date, company name, and the requester\'s name and contact details.',
-                '<strong>Site assistant</strong> — questions you type into the on-site assistant, used to answer your query and improve the assistance we provide.',
-                '<strong>Technical data</strong> — standard web log and analytics information such as IP address, browser type, pages visited, and referring pages.',
+                '<strong>Enquiry and quotation forms</strong>: name, company, email address, phone or WhatsApp number, city, service of interest, and the details of your requirement.',
+                '<strong>Report verification requests</strong>: report number, report date, company name, and the requester\'s name and contact details.',
+                '<strong>Site assistant</strong>: questions you type into the on-site assistant, used to answer your query and improve the assistance we provide.',
+                '<strong>Technical data</strong>: standard web log and analytics information such as IP address, browser type, pages visited, and referring pages.',
             ]);
 
             eta_modern_legal_section('How we use information', [], [
@@ -109,10 +109,10 @@ function eta_modern_render_privacy_page()
             eta_modern_legal_section('Third-party services', [
                 'This website uses a small number of third-party services that may process technical data under their own privacy policies:',
             ], [
-                '<strong>Google reCAPTCHA</strong> — protects our forms from automated abuse. Use of reCAPTCHA is subject to Google\'s privacy policy and terms.',
-                '<strong>Google Maps</strong> — displays our office locations on the contact page.',
-                '<strong>Web analytics</strong> — measures page visits in aggregate.',
-                '<strong>WhatsApp</strong> — if you choose a WhatsApp link, your conversation is handled by WhatsApp (Meta) under its own terms.',
+                '<strong>Google reCAPTCHA</strong>: protects our forms from automated abuse. Use of reCAPTCHA is subject to Google\'s privacy policy and terms.',
+                '<strong>Google Maps</strong>: displays our office locations on the contact page.',
+                '<strong>Web analytics</strong>: measures page visits in aggregate.',
+                '<strong>WhatsApp</strong>: if you choose a WhatsApp link, your conversation is handled by WhatsApp (Meta) under its own terms.',
             ]);
 
             eta_modern_legal_section('Cookies', [
