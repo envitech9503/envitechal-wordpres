@@ -467,7 +467,7 @@ add_filter('pre_get_document_title', function ($title) {
         }
 
         if (get_post_field('post_name', get_the_ID()) === 'certification-advisory') {
-            return 'Certification Advisory Karachi: GOTS, GRS, RCS | Envi Tech AL';
+            return 'GOTS, GRS & RCS Certification Advisory | Envi Tech AL';
         }
 
         return eta_modern_display_title(get_the_ID()) . ' | Envi Tech AL';
@@ -2838,7 +2838,7 @@ function eta_modern_service_profiles()
             'hero' => 'Certification advisory that turns evidence into audit confidence.',
             'lead' => 'ISO and regulatory certification guidance for organisations preparing systems, documents, actions, and teams for assessment.',
             'image' => 'https://envitechal.com/wp-content/uploads/2026/06/Certification-Advisory-Services.png',
-            'seo_description' => 'Certification advisory in Karachi and Lahore: ISO 9001, ISO 14001, GOTS, GRS, RCS, Regenagri and Pakistan Accord readiness, gap assessment and audit preparation.',
+            'seo_description' => 'Certification advisory in Karachi and Lahore: ISO 9001, ISO 14001, GOTS, GRS, RCS, Regenagri and Pakistan Accord readiness, gap assessment and audit prep.',
             'outcomes' => ['Gap assessment', 'Documentation support', 'Audit preparation', 'Corrective action planning'],
             'proof' => ['ISO 9001 awareness', 'ISO 14001 awareness', 'Evidence-led approach', 'Practical training support'],
             'best_for' => ['Management systems teams', 'Factories', 'Export units', 'Compliance departments'],
