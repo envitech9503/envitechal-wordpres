@@ -744,7 +744,7 @@ function eta_modern_meta_description()
     }
 
     if (is_page('lahore-environmental-lab')) {
-        return 'EPA testing in Lahore: Envi Tech AL supports environmental testing, water testing, monitoring, calibration and Punjab EPA compliance reporting for Punjab clients.';
+        return 'EPA testing in Lahore: environmental testing, water testing, monitoring, calibration and Punjab EPA compliance reporting by Envi Tech AL.';
     }
 
     if (is_page('karachi-environmental-lab')) {
@@ -784,7 +784,7 @@ function eta_modern_meta_description()
 
     if (is_singular('services')) {
         if (get_post_field('post_name', get_the_ID()) === 'water-testing-lab-services') {
-            return 'Water quality testing laboratory in Karachi and Lahore for drinking water, wastewater, process and RO water, with scope-confirmed methods and verifiable reports.';
+            return 'Water quality testing laboratory in Karachi and Lahore for drinking water, wastewater, process and RO water, with scope-confirmed methods and verified reports.';
         }
 
         return eta_modern_service_profile_value(get_post_field('post_name', get_the_ID()), 'seo_description', eta_modern_plain_excerpt(get_the_ID(), 26));
@@ -2798,7 +2798,7 @@ function eta_modern_service_profiles()
             'hero' => 'Environmental lab analysis for compliance-critical decisions.',
             'lead' => 'Analytical testing support for industrial, commercial, healthcare, hospitality, maritime, and facility teams that need defensible environmental results.',
             'image' => 'https://envitechal.com/wp-content/uploads/2026/06/Environmental-Testing-Lab.png',
-            'seo_description' => 'Environmental testing laboratory and analytical services in Karachi and Lahore for water, wastewater, air, soil and compliance-critical reporting by Envi Tech AL.',
+            'seo_description' => 'Environmental testing laboratory and analytical services in Karachi and Lahore for water, wastewater, air, soil and compliance reporting by Envi Tech AL.',
             'outcomes' => ['Water and wastewater parameters', 'Air and emission support', 'Industrial sample analysis', 'Regulatory report inputs'],
             'proof' => ['Published scope checks', 'EPA-related documentation', 'Technical review', 'Karachi and Lahore support'],
             'best_for' => ['Industrial compliance teams', 'Hospitals and hotels', 'Exporters and buyers', 'Facility managers'],
