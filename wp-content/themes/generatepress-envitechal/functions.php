@@ -3923,7 +3923,7 @@ function eta_modern_render_downloads_page()
                             <?php foreach ($links as $link) : ?>
                                 <a href="<?php echo esc_url($link[1]); ?>" target="_blank" rel="noopener">
                                     <span><?php echo esc_html($link[0]); ?></span>
-                                    <em><?php esc_html_e('PDF', 'envi-tech-al-modern'); ?></em>
+                                    <em><?php echo esc_html(preg_match('/\.pdf(\?|$)/i', $link[1]) ? 'PDF' : 'Web'); ?></em>
                                 </a>
                             <?php endforeach; ?>
                         </div>
