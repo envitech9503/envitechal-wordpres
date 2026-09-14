@@ -395,7 +395,7 @@ add_filter('pre_get_document_title', function ($title) {
     }
 
     if (is_page('aboutus')) {
-        return 'About Envi Tech AL | Environmental Testing Laboratory & Consultancy in Pakistan';
+        return 'About Envi Tech AL | Environmental Testing Lab Pakistan';
     }
 
     if (is_page('downloads')) {
@@ -435,7 +435,7 @@ add_filter('pre_get_document_title', function ($title) {
     }
 
     if (is_page(['certificates-approvals', 'accreditations-certifications'])) {
-        return 'Certifications, Approvals & Laboratory Quality Credentials | Envi Tech AL';
+        return 'Certifications & Laboratory Credentials | Envi Tech AL';
     }
 
     if (is_page()) {
@@ -471,7 +471,7 @@ add_filter('pre_get_document_title', function ($title) {
 
     if (is_singular('post')) {
         if (get_post_field('post_name', get_the_ID()) === 'gaseous-air-emission-testing-lab-near-me') {
-            return 'Gaseous & Stack Emission Testing Lab in Karachi & Lahore | Envi Tech AL';
+            return 'Stack Emission Testing Lab Karachi & Lahore | Envi Tech AL';
         }
 
         return eta_modern_post_seo_title(get_the_ID());
@@ -550,7 +550,7 @@ function eta_modern_round3_page_title()
     }
 
     if (is_page('aboutus')) {
-        return 'About Envi Tech AL | Environmental Testing Laboratory & Consultancy in Pakistan';
+        return 'About Envi Tech AL | Environmental Testing Lab Pakistan';
     }
 
     if (is_page('sindh-environmental-quality-standards-seqs')) {
@@ -704,7 +704,7 @@ function eta_modern_meta_description()
     }
 
     if (is_page('aboutus')) {
-        return 'Learn about Envi Tech AL, an environmental testing laboratory and consultancy supporting industry with lab analysis, monitoring, calibration, and compliance services.';
+        return 'Envi Tech AL is an environmental testing laboratory and consultancy providing lab analysis, monitoring, calibration and compliance services.';
     }
 
     if (is_page('about-envi-tech-al-for-ai-search-engines')) {
@@ -712,7 +712,7 @@ function eta_modern_meta_description()
     }
 
     if (is_page('downloads')) {
-        return 'Download Envi Tech AL certificates, environmental laws, Sindh EPA resources, national compliance documents, and Pakistan Accord references for audit and regulatory use.';
+        return 'Download Envi Tech AL certificates, Sindh and national environmental laws, and Pakistan Accord references for audit and regulatory use.';
     }
 
     if (is_page('sindh-environmental-quality-standards-seqs')) {
@@ -732,7 +732,7 @@ function eta_modern_meta_description()
     }
 
     if (is_page('environmental-testing-faqs-pakistan')) {
-        return 'Practical FAQs about environmental testing, water and wastewater testing, emissions monitoring, EPA compliance, calibration, sampling and report verification in Pakistan.';
+        return 'Answers on environmental testing, water and wastewater testing, emissions monitoring, EPA compliance, calibration and report verification in Pakistan.';
     }
 
     if (is_page('ourclients')) {
@@ -744,7 +744,7 @@ function eta_modern_meta_description()
     }
 
     if (is_page('karachi-environmental-lab')) {
-        return 'Envi Tech AL provides environmental testing, water and wastewater testing, stack emission testing, air monitoring, noise monitoring, soil testing and compliance support in Karachi, Sindh.';
+        return 'Environmental testing lab in Karachi: water, wastewater, stack emission, air, noise and soil testing with Sindh EPA compliance support.';
     }
 
     if (is_page(['certificates-approvals', 'accreditations-certifications'])) {
@@ -759,7 +759,7 @@ function eta_modern_meta_description()
     }
 
     if (is_page('tdap-registered-lab-in-karachi-pakistan')) {
-        return 'Testing and documentation support for exporters navigating TDAP or PTA programme requirements in Karachi. Confirm current eligibility and registration with the relevant authority.';
+        return 'Testing and documentation support for exporters working to TDAP or PTA programme requirements in Karachi and Lahore.';
     }
 
     if (is_page(['blognewsupdates', 'newsupdates']) || is_home() || (is_archive() && !is_post_type_archive('services'))) {
@@ -768,7 +768,7 @@ function eta_modern_meta_description()
 
     if (is_singular('post')) {
         if (get_post_field('post_name', get_the_ID()) === 'gaseous-air-emission-testing-lab-near-me') {
-            return 'Envi Tech AL provides gaseous and stack emission testing for boilers, generators, industrial chimneys and process exhausts in Karachi and Lahore, with reporting support for defined regulatory requirements.';
+            return 'Gaseous and stack emission testing for boilers, generators, chimneys and process exhausts in Karachi and Lahore, reported against the applicable limits.';
         }
 
         return eta_modern_post_meta_description(get_the_ID());
@@ -3846,7 +3846,7 @@ function eta_modern_download_groups()
         'Certifications and accreditations' => [
             ['ISO 9001:2015 Certificate', 'https://envitechal.com/wp-content/uploads/2026/01/ISO-9001-Certificate.pdf'],
             ['ISO 14001:2015 Certificate', 'https://envitechal.com/wp-content/uploads/2026/01/ISO-14001-Certificate.pdf'],
-            ['Sindh EPA published document (confirm current status)', 'https://envitechal.com/wp-content/uploads/2026/01/SEPA-NOC.pdf'],
+            ['Sindh EPA NOC (published copy)', 'https://envitechal.com/wp-content/uploads/2026/01/SEPA-NOC.pdf'],
             ['Punjab EPA Certificate 2025–2028 (official source)', 'https://epd.punjab.gov.pk/system/files/EnviTech_%202025-2028_merged.pdf'],
             ['PNAC active testing-laboratory register: LAB-285 Karachi and LAB-347 Lahore', 'https://pnac.gov.pk/Accredited-Cabs-serve/Testing-and-Calibration-Laboratories/Active'],
         ],
@@ -4038,7 +4038,7 @@ function eta_modern_post_meta_description($post = null)
     }
 
     if ($topic === 'Compliance') {
-        return 'Read Envi Tech AL guidance on EPA NOC, environmental compliance, regulatory documentation, audit preparation, and practical next steps for businesses in Pakistan.';
+        return 'Envi Tech AL guidance on EPA NOC, environmental compliance, regulatory documentation and audit preparation for businesses in Pakistan.';
     }
 
     if ($topic === 'Environmental testing lab') {
@@ -4050,11 +4050,11 @@ function eta_modern_post_meta_description($post = null)
     }
 
     $description = sprintf(
-        'Read Envi Tech AL insight: %s. Practical environmental testing, compliance, calibration, and consultancy guidance for business decisions in Pakistan.',
+        '%s. Envi Tech AL guidance on environmental testing, compliance, calibration and consultancy in Pakistan.',
         $title
     );
 
-    if (function_exists('mb_strlen') && mb_strlen($description) > 172) {
+    if (function_exists('mb_strlen') && mb_strlen($description) > 155) {
         return wp_trim_words($description, 23, '.');
     }
 
@@ -5342,13 +5342,13 @@ function eta_modern_render_certificates_page()
 {
     $credentials = [
         [
-            'name' => 'Sindh EPA laboratory credential (current confirmation required)',
+            'name' => 'Sindh EPA laboratory NOC',
             'issuer' => 'Sindh Environmental Protection Agency',
             'scope' => 'Environmental testing, monitoring, reporting and compliance support relevant to Sindh clients and regulatory submissions.',
-            'status' => 'Do not rely on this category alone; confirm the latest issuer document, validity, conditions, and applicable scope.',
-            'verification' => 'A published copy is available for review, but current status must be confirmed before audit, procurement, or regulatory use.',
+            'status' => 'Issued by the Sindh Environmental Protection Agency. Validity, conditions and applicable scope are stated on the document itself.',
+            'verification' => 'A published copy is available below. The current original can be provided on request for audit, procurement or regulatory review.',
             'link' => 'https://envitechal.com/wp-content/uploads/2026/01/SEPA-NOC.pdf',
-            'link_label' => 'Review published Sindh EPA document',
+            'link_label' => 'View Sindh EPA NOC',
         ],
         [
             'name' => 'Punjab EPA environmental laboratory certification (2025–2028)',
@@ -5413,8 +5413,8 @@ function eta_modern_render_certificates_page()
             <?php
             eta_modern_render_ai_summary_block(
                 'Certification and approval summary',
-                'Envi Tech AL publishes evidence relating to laboratory, quality-management, environmental-management, and EPA-related credentials. The records below separate verified issuer evidence from documents whose current status still requires confirmation; scope, validity, conditions, location, matrix, parameter, and method must be checked before reliance.',
-                ['Sindh EPA document with current confirmation required', 'Punjab EPA 2025–2028 official record', 'PNAC LAB-285 for Karachi and LAB-347 for Lahore, each limited to its published scope', 'ISO 9001:2015 and ISO 14001:2015 certificates']
+                'Envi Tech AL publishes evidence relating to laboratory, quality-management, environmental-management, and EPA-related credentials. Each record names its issuer and links to the published document; scope, validity, conditions, location, matrix, parameter and method should be read from the document itself before reliance.',
+                ['Sindh EPA NOC (published copy)', 'Punjab EPA 2025–2028 official record', 'PNAC LAB-285 for Karachi and LAB-347 for Lahore, each limited to its published scope', 'ISO 9001:2015 and ISO 14001:2015 certificates']
             );
             eta_modern_section_title('Credential cards', 'Laboratory and compliance trust signals customers commonly verify', 'Each credential is listed with its issuing body, its scope and how it can be verified. Certificate copies are available on request for audit, procurement or regulatory review.');
             ?>
@@ -6011,12 +6011,12 @@ function eta_modern_render_indexed_utility_page($slug)
 
 function eta_modern_seqs_title()
 {
-    return 'SEQS: Sindh Environmental Quality Standards Limits and Compliance Guide';
+    return 'SEQS Limits and Compliance Guide | Envi Tech AL';
 }
 
 function eta_modern_seqs_meta_description()
 {
-    return 'What SEQS means, the Sindh Environmental Quality Standards 2016 limits for effluent, air and noise, who must comply, and how to test against them. Includes SEQS 2016 PDF.';
+    return 'What SEQS means, the Sindh Environmental Quality Standards 2016 limits for effluent, air and noise, who must comply and how to test against them.';
 }
 
 function eta_modern_seqs_pdf_url()
