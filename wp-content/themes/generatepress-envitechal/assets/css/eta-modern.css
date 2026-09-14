@@ -9647,6 +9647,16 @@ h3 {
 .eta-seqs-hero p.eta-eyebrow { color: #8fe3c6; }
 .eta-seqs-hero h1 { margin: 0 0 18px; }
 
+/* Careers apply band: the intro column rides alongside the form as it
+   scrolls, so the taller form never leaves the column looking empty
+   (14-09-2026). Sticks below the fixed header; released on one column. */
+@media (min-width: 1025px) {
+    .eta-career-apply-grid > div:first-child {
+        position: sticky;
+        top: calc(var(--eta-hh, 96px) + 24px);
+    }
+}
+
 /* Careers form: the nine short fields sit in two columns; the CV upload
    and the message keep the full width (13-09-2026). */
 .eta-career-form-panel .wpcf7-form .eta-cf7-form > p:first-of-type {
