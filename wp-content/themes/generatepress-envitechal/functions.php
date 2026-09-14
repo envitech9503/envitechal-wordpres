@@ -399,7 +399,7 @@ add_filter('pre_get_document_title', function ($title) {
     }
 
     if (is_page('downloads')) {
-        return 'Downloads | Environmental Laws, Certificates & Compliance Resources';
+        return 'Downloads | Laws, Certificates & Resources | Envi Tech AL';
     }
 
     if (is_page('sindh-environmental-quality-standards-seqs')) {
@@ -4019,81 +4019,107 @@ function eta_modern_post_meta_description($post = null)
 {
     $post = get_post($post);
     if (!$post) {
-        return 'Read Envi Tech AL technical insights on environmental testing, water testing, calibration, compliance, and consultancy decisions in Pakistan.';
+        return 'Envi Tech AL technical insights on environmental testing, water testing, calibration, compliance and consultancy decisions in Pakistan.';
     }
 
     if (eta_modern_is_emr_emp_post($post)) {
         return eta_modern_emr_emp_meta_description();
     }
 
-    $title = eta_modern_display_title($post);
-    $topic = eta_modern_post_topic_label($post);
-
-    if ($topic === 'Water testing') {
-        return 'Read Envi Tech AL guidance on water testing, lab reports, compliance decisions, and safe water quality planning for Karachi, Lahore, and Pakistan.';
+    $overrides = eta_modern_post_seo_overrides();
+    if (isset($overrides[$post->post_name][1])) {
+        return $overrides[$post->post_name][1];
     }
 
-    if ($topic === 'Calibration') {
-        return 'Read Envi Tech AL guidance on equipment calibration, measurement reliability, audit readiness, and industrial quality decisions in Pakistan.';
-    }
-
-    if ($topic === 'Compliance') {
-        return 'Envi Tech AL guidance on EPA NOC, environmental compliance, regulatory documentation and audit preparation for businesses in Pakistan.';
-    }
-
-    if ($topic === 'Environmental testing lab') {
-        return 'Read Envi Tech AL guidance on environmental testing lab services, monitoring scope, report use, and compliance evidence for Karachi, Lahore, and Pakistan.';
-    }
-
-    if ($topic === 'Environmental advisory') {
-        return 'Read Envi Tech AL guidance on environmental consultancy, monitoring, regulatory submissions, and compliance planning for industrial and commercial projects.';
+    $excerpt = trim(wp_strip_all_tags((string) $post->post_excerpt));
+    if ($excerpt !== '') {
+        return function_exists('mb_strlen') && mb_strlen($excerpt) > 155 ? wp_trim_words($excerpt, 22, '.') : $excerpt;
     }
 
     $description = sprintf(
         '%s. Envi Tech AL guidance on environmental testing, compliance, calibration and consultancy in Pakistan.',
-        $title
+        eta_modern_display_title($post)
     );
 
     if (function_exists('mb_strlen') && mb_strlen($description) > 155) {
-        return wp_trim_words($description, 23, '.');
-    }
-
-    if (strlen($description) > 172) {
-        return wp_trim_words($description, 23, '.');
+        return wp_trim_words($description, 22, '.');
     }
 
     return $description;
 }
 
-function eta_modern_post_card_excerpt($post = null)
+function eta_modern_post_seo_overrides()
 {
-    $post = get_post($post);
-    if (!$post) {
-        return 'Practical Envi Tech AL guidance for environmental testing, compliance, calibration, and advisory decisions.';
-    }
-
-    $topic = eta_modern_post_topic_label($post);
-    if ($topic === 'Water testing') {
-        return 'Understand water testing requirements, report use, safety expectations, and the next step before choosing a lab scope.';
-    }
-
-    if ($topic === 'Calibration') {
-        return 'A practical look at calibration reliability, traceability, audit readiness, and measurement confidence for industry.';
-    }
-
-    if ($topic === 'Compliance') {
-        return 'Guidance for EPA NOC, compliance documents, audit preparation, and regulatory decisions that need defensible evidence.';
-    }
-
-    if ($topic === 'Environmental testing lab') {
-        return 'Guidance on environmental testing lab services, sampling scope, compliance evidence, and practical reporting for Karachi, Lahore, and Pakistan.';
-    }
-
-    if ($topic === 'Environmental advisory') {
-        return 'Insight for environmental consultancy, monitoring, approvals, and compliance planning for business-critical projects.';
-    }
-
-    return 'Technical guidance from Envi Tech AL for laboratory, compliance, calibration, and consultancy decisions in Pakistan.';
+    return [
+        'water-testing-lab-lahore' => [
+            'Water Testing Lab in Lahore | Envi Tech AL',
+            'Water testing in Lahore for drinking, process and wastewater samples: what to test, how results are reported and how they compare with PEQS and WHO limits.',
+        ],
+        'iso-17025-accredited-lab-pakistan' => [
+            'ISO/IEC 17025 Accredited Lab in Pakistan | Envi Tech AL',
+            'What ISO/IEC 17025 accreditation means for an environmental laboratory in Pakistan, how PNAC scope works and how to check a laboratory before you rely on it.',
+        ],
+        'iee-vs-eia-vs-emp-vs-noc-pakistan' => [
+            'IEE vs EIA, EMP or NOC: Which Route? | Envi Tech AL',
+            'How IEE, EIA, EMP and NOC differ under Pakistan environmental law, which one a project needs, and what each submission to the EPA involves.',
+        ],
+        'ppwr-heavy-metal-testing-packaging-pakistan' => [
+            'PPWR Heavy Metal Testing for EU Export | Envi Tech AL',
+            'Heavy metal testing of packaging for EU PPWR requirements: lead, cadmium, mercury and chromium VI limits, sampling and the evidence importers ask for.',
+        ],
+        'pharmaceutical-environmental-testing-compliance' => [
+            'Environmental Testing for Pharmaceuticals | Envi Tech AL',
+            'Environmental testing for pharmaceutical plants in Pakistan: effluent, emissions, ambient air, noise and the records regulators and auditors expect.',
+        ],
+        'textile-effluent-testing-compliance-pakistan' => [
+            'Textile Effluent Testing in Pakistan | Envi Tech AL',
+            'Textile effluent testing against SEQS, NEQS and buyer requirements: key parameters, ETP performance checks and reporting for mills and processing units.',
+        ],
+        'noise-level-monitoring-industrial-workplace' => [
+            'Industrial and Workplace Noise Monitoring | Envi Tech AL',
+            'Noise level monitoring for factories and workplaces: ambient limits, occupational exposure, dosimetry and the reports used for EPA and safety audits.',
+        ],
+        'ambient-air-quality-monitoring-pakistan' => [
+            'Ambient Air Quality Monitoring in Pakistan | Envi Tech AL',
+            'A practical guide to ambient air quality monitoring in Pakistan: parameters, sampling, standards and how results support EPA compliance and site decisions.',
+        ],
+        'how-to-read-water-test-report-peqs-who' => [
+            'How to Read a Water Test Report | Envi Tech AL',
+            'How to read a water test report line by line: units, detection limits, PEQS, WHO and SEQS comparisons, and what a result outside the limit actually means.',
+        ],
+        'sindh-epa-vs-punjab-epa-noc-lahore' => [
+            'Sindh EPA vs Punjab EPA: NOC Compared | Envi Tech AL',
+            'How NOC and approval processes differ between Sindh EPA and Punjab EPA, what each requires from a project in Karachi or Lahore, and common delays.',
+        ],
+        'water-testing-cost-karachi' => [
+            'Water Testing Cost in Karachi | Envi Tech AL',
+            'What water testing costs in Karachi and why: parameter panels, sample types, turnaround and how to scope a test so you pay only for what the decision needs.',
+        ],
+        'wastewater-etp-effluent-testing-seqs-neqs' => [
+            'Wastewater and ETP Effluent Testing | Envi Tech AL',
+            'Wastewater and ETP effluent testing for SEQS and NEQS: parameters, sampling points, frequency and how results feed EMR and EPA submissions.',
+        ],
+        'gaseous-air-emission-testing-lab-near-me' => [
+            'Stack Emission Testing Lab Karachi & Lahore | Envi Tech AL',
+            'Gaseous and stack emission testing for boilers, generators, chimneys and process exhausts in Karachi and Lahore, reported against the applicable limits.',
+        ],
+        'environmental-consultancy-karachi-guide' => [
+            'Environmental Consultancy in Pakistan | Envi Tech AL',
+            'What an environmental consultancy does for projects in Karachi and Sindh: IEE and EIA, monitoring, EPA submissions, costs and how to choose a consultant.',
+        ],
+        'how-to-choose-the-suitable-environmental-lab' => [
+            'How to Choose an Environmental Lab | Envi Tech AL',
+            'How to choose an environmental testing laboratory: accreditation scope, methods, turnaround, reporting quality and the questions to ask before you commit.',
+        ],
+        'thermal-imaging-inspection-electrical-reliability' => [
+            'Thermal Imaging for Electrical Reliability | Envi Tech AL',
+            'Thermal imaging inspection of switchgear, panels and motors: how hotspots are found, what the thermogram shows and how it supports electrical reliability.',
+        ],
+        'food-beverage-water-environmental-testing' => [
+            'Water Testing for Food and Beverage Plants | Envi Tech AL',
+            'Water and environmental testing for food and beverage plants: process water, effluent, air and hygiene monitoring for audits, buyers and regulators.',
+        ],
+    ];
 }
 
 function eta_modern_post_seo_title($post = null)
@@ -4105,6 +4131,11 @@ function eta_modern_post_seo_title($post = null)
 
     if (eta_modern_is_emr_emp_post($post)) {
         return eta_modern_emr_emp_seo_title();
+    }
+
+    $overrides = eta_modern_post_seo_overrides();
+    if (isset($overrides[$post->post_name][0])) {
+        return $overrides[$post->post_name][0];
     }
 
     $title = eta_modern_display_title($post);
@@ -4131,7 +4162,7 @@ function eta_modern_post_seo_title($post = null)
     }
 
     $suffix = ' | Envi Tech AL';
-    $max_title_length = 68 - strlen($suffix);
+    $max_title_length = 60 - strlen($suffix);
     if (strlen($title) > $max_title_length) {
         $title = rtrim(substr($title, 0, $max_title_length), " \t\n\r\0\x0B,.-");
         $title = eta_modern_preg_replace('/\s+\S*$/', '', $title);
@@ -5505,7 +5536,7 @@ function eta_modern_cluster_page_data($slug)
         'ambient-air-monitoring-services' => [
             'eyebrow' => 'Ambient air monitoring',
             'title' => 'Ambient Air Monitoring Services in Karachi & Lahore',
-            'seo_title' => 'Ambient Air Monitoring Services in Karachi & Lahore | Envi Tech AL',
+            'seo_title' => 'Ambient Air Monitoring Karachi & Lahore | Envi Tech AL',
             'meta' => 'Ambient air monitoring for industrial, construction, hospital, hotel and compliance reporting needs in Karachi and Lahore.',
             'summary' => 'Ambient air monitoring helps facilities understand air quality around operations, construction activity, industrial processes, traffic influence, or compliance-sensitive sites. Envi Tech AL supports monitoring plans, field coordination, reporting, and consultancy follow-up.',
             'image' => 'https://envitechal.com/wp-content/uploads/2026/06/Industrial-compliance-Monitoring.png',
