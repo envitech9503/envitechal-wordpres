@@ -6302,3 +6302,19 @@ function eta_modern_page_hero($title = '', $lead = '')
     </section>
     <?php
 }
+
+/**
+ * QA-05 (18-09-2026): any table in post content that is not already inside a
+ * scrolling wrapper gets one, so wide tables scroll rather than widen the page.
+ */
+add_filter('the_content', function ($content) {
+    if (!is_singular('post') || strpos($content, '<table') === false) {
+        return $content;
+    }
+    return preg_replace_callback('/(<div class="[^"]*(?:table-wrap|table-scroll)[^"]*"[^>]*>\s*)?(<table\b[^>]*>.*?<\/table>)/is', function ($m) {
+        if (!empty($m[1])) {
+            return $m[0];
+        }
+        return '<div class="eta-table-scroll">' . $m[2] . '</div>';
+    }, $content);
+}, 20);

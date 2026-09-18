@@ -297,21 +297,21 @@ html:not(.wt-gsap) .wt-journey-line path { stroke-dashoffset: 0; }
 @media (max-width: 860px) {
     html.wt-gsap .wt-hero { height: auto; }
     html.wt-gsap .wt-stage { position: relative; height: auto; }
-    .wt-hero-grid { grid-template-columns: 1fr; align-items: start; padding-bottom: 64px; }
+    .wt-hero-grid { grid-template-columns: minmax(0, 1fr); align-items: start; padding-bottom: 64px; }
     .wt-gauge { display: none !important; }
-    .wt-types-head { grid-template-columns: 1fr; }
+    .wt-types-head { grid-template-columns: minmax(0, 1fr); }
     html.wt-gsap .wt-types-pin { min-height: 0; display: block; }
     .wt-track { flex-wrap: wrap; padding: 0; transform: none !important; }
     .wt-type-card { flex: 1 1 100%; min-height: 0; }
     html.wt-gsap .wt-type-card:not(.is-on) { transform: none; }
     .wt-types-progress { display: none !important; }
-    .wt-params-grid { grid-template-columns: 1fr; }
+    .wt-params-grid { grid-template-columns: minmax(0, 1fr); }
     .wt-tabs { position: static; }
     .wt-report { display: none; }
-    .wt-serves-grid, .wt-related-grid, .wt-why-grid { grid-template-columns: 1fr; }
-    .wt-journey-grid, .wt-faq-grid, .wt-final-grid { grid-template-columns: 1fr; }
+    .wt-serves-grid, .wt-related-grid, .wt-why-grid { grid-template-columns: minmax(0, 1fr); }
+    .wt-journey-grid, .wt-faq-grid, .wt-final-grid { grid-template-columns: minmax(0, 1fr); }
     .wt-faq .wt-head { position: static; }
-    .wt-ledger-row { grid-template-columns: 1fr; }
+    .wt-ledger-row { grid-template-columns: minmax(0, 1fr); }
     .wt-ledger-item { border-right: 0; padding: 18px 0; border-bottom: 1px solid var(--wt-line); }
     .wt-ledger-item:nth-child(2n) { padding-left: 0; }
     .wt-ledger-item:last-child { border-bottom: 0; }

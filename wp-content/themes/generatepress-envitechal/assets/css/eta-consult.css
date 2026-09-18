@@ -296,20 +296,20 @@ html:not(.ec-gsap) .ec-journey-line path { stroke-dashoffset: 0; }
 @media (max-width: 860px) {
     html.ec-gsap .ec-hero { height: auto; }
     html.ec-gsap .ec-stage { position: relative; height: auto; }
-    .ec-hero-grid { grid-template-columns: 1fr; align-items: start; padding-bottom: 64px; }
+    .ec-hero-grid { grid-template-columns: minmax(0, 1fr); align-items: start; padding-bottom: 64px; }
     .ec-gauge { display: none !important; }
-    .ec-types-head { grid-template-columns: 1fr; }
+    .ec-types-head { grid-template-columns: minmax(0, 1fr); }
     html.ec-gsap .ec-types-pin { min-height: 0; display: block; }
     .ec-track { flex-wrap: wrap; padding: 0; transform: none !important; }
     .ec-type-card { flex: 1 1 100%; min-height: 0; }
     html.ec-gsap .ec-type-card:not(.is-on) { transform: none; }
     .ec-types-progress { display: none !important; }
-    .ec-deliver-grid, .ec-regs-list { grid-template-columns: 1fr; }
-    .ec-regs-grid { grid-template-columns: 1fr; }
-    .ec-serves-grid, .ec-related-grid, .ec-why-grid { grid-template-columns: 1fr; }
-    .ec-journey-grid, .ec-faq-grid, .ec-final-grid { grid-template-columns: 1fr; }
+    .ec-deliver-grid, .ec-regs-list { grid-template-columns: minmax(0, 1fr); }
+    .ec-regs-grid { grid-template-columns: minmax(0, 1fr); }
+    .ec-serves-grid, .ec-related-grid, .ec-why-grid { grid-template-columns: minmax(0, 1fr); }
+    .ec-journey-grid, .ec-faq-grid, .ec-final-grid { grid-template-columns: minmax(0, 1fr); }
     .ec-faq .ec-head { position: static; }
-    .ec-ledger-row { grid-template-columns: 1fr; }
+    .ec-ledger-row { grid-template-columns: minmax(0, 1fr); }
     .ec-ledger-item { border-right: 0; padding: 18px 0; border-bottom: 1px solid var(--ec-line); }
     .ec-ledger-item:nth-child(2n) { padding-left: 0; }
     .ec-ledger-item:last-child { border-bottom: 0; }

@@ -312,20 +312,20 @@ html:not(.ti-gsap) .ti-journey-line path { stroke-dashoffset: 0; }
 @media (max-width: 860px) {
     html.ti-gsap .ti-hero { height: auto; }
     html.ti-gsap .ti-stage { position: relative; height: auto; }
-    .ti-hero-grid { grid-template-columns: 1fr; align-items: start; padding-bottom: 64px; }
+    .ti-hero-grid { grid-template-columns: minmax(0, 1fr); align-items: start; padding-bottom: 64px; }
     .ti-gauge { display: none !important; }
-    .ti-types-head { grid-template-columns: 1fr; }
+    .ti-types-head { grid-template-columns: minmax(0, 1fr); }
     html.ti-gsap .ti-types-pin { min-height: 0; display: block; }
     .ti-track { flex-wrap: wrap; padding: 0; transform: none !important; }
     .ti-type-card { flex: 1 1 100%; min-height: 0; }
     html.ti-gsap .ti-type-card:not(.is-on) { transform: none; }
     .ti-types-progress { display: none !important; }
-    .ti-deliver-grid, .ti-regs-list, .ti-schemes-grid { grid-template-columns: 1fr; }
-    .ti-regs-grid { grid-template-columns: 1fr; }
-    .ti-serves-grid, .ti-related-grid, .ti-why-grid { grid-template-columns: 1fr; }
-    .ti-journey-grid, .ti-faq-grid, .ti-final-grid { grid-template-columns: 1fr; }
+    .ti-deliver-grid, .ti-regs-list, .ti-schemes-grid { grid-template-columns: minmax(0, 1fr); }
+    .ti-regs-grid { grid-template-columns: minmax(0, 1fr); }
+    .ti-serves-grid, .ti-related-grid, .ti-why-grid { grid-template-columns: minmax(0, 1fr); }
+    .ti-journey-grid, .ti-faq-grid, .ti-final-grid { grid-template-columns: minmax(0, 1fr); }
     .ti-faq .ti-head { position: static; }
-    .ti-ledger-row { grid-template-columns: 1fr; }
+    .ti-ledger-row { grid-template-columns: minmax(0, 1fr); }
     .ti-ledger-item { border-right: 0; padding: 18px 0; border-bottom: 1px solid var(--ti-line); }
     .ti-ledger-item:nth-child(2n) { padding-left: 0; }
     .ti-ledger-item:last-child { border-bottom: 0; }

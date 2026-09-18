@@ -296,20 +296,20 @@ html:not(.cal-gsap) .cal-journey-line path { stroke-dashoffset: 0; }
 @media (max-width: 860px) {
     html.cal-gsap .cal-hero { height: auto; }
     html.cal-gsap .cal-stage { position: relative; height: auto; }
-    .cal-hero-grid { grid-template-columns: 1fr; align-items: start; padding-bottom: 64px; }
+    .cal-hero-grid { grid-template-columns: minmax(0, 1fr); align-items: start; padding-bottom: 64px; }
     .cal-gauge { display: none !important; }
-    .cal-types-head { grid-template-columns: 1fr; }
+    .cal-types-head { grid-template-columns: minmax(0, 1fr); }
     html.cal-gsap .cal-types-pin { min-height: 0; display: block; }
     .cal-track { flex-wrap: wrap; padding: 0; transform: none !important; }
     .cal-type-card { flex: 1 1 100%; min-height: 0; }
     html.cal-gsap .cal-type-card:not(.is-on) { transform: none; }
     .cal-types-progress { display: none !important; }
-    .cal-deliver-grid, .cal-regs-list { grid-template-columns: 1fr; }
-    .cal-regs-grid { grid-template-columns: 1fr; }
-    .cal-serves-grid, .cal-related-grid, .cal-why-grid { grid-template-columns: 1fr; }
-    .cal-journey-grid, .cal-faq-grid, .cal-final-grid { grid-template-columns: 1fr; }
+    .cal-deliver-grid, .cal-regs-list { grid-template-columns: minmax(0, 1fr); }
+    .cal-regs-grid { grid-template-columns: minmax(0, 1fr); }
+    .cal-serves-grid, .cal-related-grid, .cal-why-grid { grid-template-columns: minmax(0, 1fr); }
+    .cal-journey-grid, .cal-faq-grid, .cal-final-grid { grid-template-columns: minmax(0, 1fr); }
     .cal-faq .cal-head { position: static; }
-    .cal-ledger-row { grid-template-columns: 1fr; }
+    .cal-ledger-row { grid-template-columns: minmax(0, 1fr); }
     .cal-ledger-item { border-right: 0; padding: 18px 0; border-bottom: 1px solid var(--cal-line); }
     .cal-ledger-item:nth-child(2n) { padding-left: 0; }
     .cal-ledger-item:last-child { border-bottom: 0; }

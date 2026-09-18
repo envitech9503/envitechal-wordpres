@@ -175,6 +175,24 @@ html:not(.ets-gsap) .ets-cue { display: none; }
 .ets-skip:focus-visible { outline: 2px solid #7DE8CD; outline-offset: 3px; color: #CDE8DB; }
 html:not(.ets-gsap) .ets-skip { display: none; }
 @media (max-width: 640px) { .ets-skip { bottom: 20px; right: 96px; } }
+/* Narrow phones (QA-04, 18-09-2026): the 36px minimum with .08em tracking made
+   ENVIRONMENTAL wider than a 320px screen, and the scroll cue sat on the CTAs. */
+@media (max-width: 380px) {
+  .ets-l1 { padding: 0 5vw 20svh; }
+  .ets-kicker { font-size: 10px; letter-spacing: .22em; margin-bottom: 18px; }
+  .ets-h1 { font-size: clamp(26px, 9.6vw, 36px); letter-spacing: .05em; }
+  .ets-sub { font-size: 14px; margin-top: 16px; }
+  .ets-ctas { margin-top: 22px; gap: 10px; }
+  .ets-btn { padding: 12px 18px; font-size: 12px; letter-spacing: .1em; }
+  .ets-cue { bottom: 12px; font-size: 9.5px; letter-spacing: .22em; }
+  .ets-cueline { height: 26px; }
+  .ets-skip { right: auto; left: 14px; bottom: 14px; }
+}
+@media (max-height: 620px) {
+  .ets-l1 { padding-bottom: 22svh; }
+  .ets-cue > span:first-child { display: none; }
+  .ets-cueline { height: 24px; }
+}
 @keyframes etsCueDrop { 0% { transform: scaleY(0); transform-origin: top; } 55% { transform: scaleY(1); transform-origin: top; } 100% { transform: scaleY(1) translateY(8px); opacity: 0; } }
 
 /* intro entrance — editorial masked reveal (CSS so LCP is immediate) */

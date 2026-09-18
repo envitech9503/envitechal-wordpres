@@ -5549,7 +5549,7 @@ h3 {
     .eta-faq-command-grid,
     .eta-faq-prepare-grid,
     .eta-faq-final-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .eta-home-service-grid {
@@ -5609,7 +5609,7 @@ h3 {
     .eta-career-apply-grid,
     .eta-career-final-grid,
     .eta-utility-final-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .eta-career-proof-grid,
@@ -5759,7 +5759,7 @@ h3 {
     .eta-faq-decision-grid,
     .eta-faq-answer-grid,
     .eta-faq-topic-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .eta-about-hero,
@@ -5847,7 +5847,7 @@ h3 {
     }
 
     .eta-download-item-list a {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         gap: 8px;
     }
 
@@ -5872,11 +5872,11 @@ h3 {
 
     .eta-content .wp-block-columns {
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .eta-form-panel .row {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .eta-form-panel .wpcf7-submit,
@@ -5885,7 +5885,7 @@ h3 {
     }
 
     .eta-process-list li {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .eta-process-list span {
@@ -5894,7 +5894,7 @@ h3 {
 
     .eta-cta {
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .eta-home-stage {
@@ -5937,7 +5937,7 @@ h3 {
 
     .eta-home-signal-row {
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         max-width: 320px;
         padding-right: 58px;
         transform: none;
@@ -5969,12 +5969,12 @@ h3 {
     .etl-risk-grid,
     .etl-city-grid,
     .etl-stats {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .etl-step,
     .etl-noc-row {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .etl-btn1,
@@ -5987,7 +5987,7 @@ h3 {
 
     .etl-hero-tags {
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .etl-hero-tag {
@@ -6004,7 +6004,7 @@ h3 {
     .eta-services-card-grid,
     .eta-service-related-grid,
     .eta-home-sector-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .eta-home-proof-grid,
@@ -6064,7 +6064,7 @@ h3 {
     }
 
     .eta-home-timeline li {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .eta-home-timeline span {
@@ -6072,7 +6072,7 @@ h3 {
     }
 
     .eta-home-final-actions {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         justify-content: stretch;
     }
 
@@ -6091,7 +6091,7 @@ h3 {
     .eta-faq-final-grid .eta-actions,
     .eta-faq-hero .eta-actions {
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         width: 100%;
     }
 
@@ -6107,11 +6107,11 @@ h3 {
     }
 
     .eta-lahore-timeline li {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .eta-faq-prep-list li {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .eta-faq-prep-list span {
@@ -6136,7 +6136,7 @@ h3 {
 
     .eta-contact-hero .eta-actions {
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         width: 100%;
     }
 
@@ -6150,12 +6150,12 @@ h3 {
 
     .eta-footer-bottom .eta-shell {
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .eta-footer-cta-actions {
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         width: 100%;
     }
 
@@ -6200,7 +6200,7 @@ h3 {
 
     .eta-home-signal-row {
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .eta-home-signal-row span {
@@ -6289,7 +6289,7 @@ h3 {
 
     .eta-services-workflow-list li,
     .eta-service-method-list li {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .eta-services-workflow-list span,
@@ -6706,7 +6706,7 @@ h3 {
     .single-post .eta-article-cta,
     .single-post .eta-article-grid,
     .single-post .eta-article-grid.two {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .single-post .eta-article-cta .eta-actions {
@@ -6976,7 +6976,7 @@ h3 {
     .eta-seqs-copy-grid,
     .eta-seqs-download-grid,
     .eta-seqs-final-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .eta-seqs-hero-grid {
@@ -6986,7 +6986,7 @@ h3 {
 
 @media (max-width: 560px) {
     .eta-seqs-form-row {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .eta-seqs-form-row button,
@@ -7230,7 +7230,7 @@ h3 {
     .single-post .etl-risk-grid,
     .single-post .etl-city-grid,
     .single-post .etl-stats {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .single-post .etl-hero-master::after {
@@ -7274,7 +7274,7 @@ h3 {
     }
 
     .single-post .etl-step {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .single-post .etl-step > .etl-step-n,
@@ -7284,7 +7284,7 @@ h3 {
     }
 
     .single-post .etl-noc-row {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 }
 
@@ -8083,12 +8083,12 @@ h3 {
     .single-post .eta-wq-grid,
     .single-post .eta-wq-checks,
     .single-post .eta-wq-linkbox {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .single-post .env-card-grid,
     .single-post .env-post-section > ul {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 }
 
@@ -8128,7 +8128,7 @@ h3 {
     }
 
     .single-post .env-post-section > ol > li {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .single-post .env-post-section > ol > li > * {
@@ -8156,12 +8156,12 @@ h3 {
 
     .single-post .eta-wq-risk-row,
     .single-post .eta-wq-step {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .single-post .eta-wq-trustbar,
     .single-post .eta-wq-lab-strip {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 }
 
@@ -9387,7 +9387,7 @@ h3 {
 .eta-fs-footer a:focus-visible { outline: 3px solid #FFCC4D; outline-offset: 3px; }
 
 @media (max-width: 1020px) {
-    .fsf-top-grid { grid-template-columns: 1fr; }
+    .fsf-top-grid { grid-template-columns: minmax(0, 1fr); }
     .fsf-invite { padding-right: 0; }
     .fsf-reach { padding-left: 0; border-left: 0; border-top: 1px solid var(--fsf-line); }
     .fsf-reach::before { left: 0; top: -1px; width: 54px; height: 1px; }
@@ -9397,7 +9397,7 @@ h3 {
 }
 
 @media (max-width: 640px) {
-    .fsf-index-grid { grid-template-columns: 1fr; }
+    .fsf-index-grid { grid-template-columns: minmax(0, 1fr); }
     .eta-fs-footer .fsf-top-link { margin-left: 0; }
     .fsf-colophon-inner { gap: 12px 20px; }
     .fsf-statement-note { gap: 8px 18px; letter-spacing: .22em; }
@@ -9532,7 +9532,7 @@ h3 {
 .eta-iv-sample-note { margin: 12px 0 0; font-size: 13px; line-height: 1.5; color: #9FBBB0; }
 
 @media (max-width: 860px) {
-  .eta-iv-grid { grid-template-columns: 1fr; }
+  .eta-iv-grid { grid-template-columns: minmax(0, 1fr); }
   .eta-iv-steps { margin-top: 16px; }
   .eta-iv-sample { display: none; }
 }
@@ -9589,7 +9589,7 @@ h3 {
 }
 .eta-iv-detail dd { margin: 0; color: #EAF4EF; }
 @media (max-width: 560px) {
-    .eta-iv-detail { grid-template-columns: 1fr; gap: 2px; }
+    .eta-iv-detail { grid-template-columns: minmax(0, 1fr); gap: 2px; }
     .eta-iv-detail dd { margin-bottom: 10px; }
 }
 
@@ -9708,5 +9708,65 @@ h3 {
     cursor: pointer;
 }
 @media (max-width: 640px) {
-    .eta-career-form-panel .wpcf7-form .eta-cf7-form > p:first-of-type { grid-template-columns: 1fr; }
+    .eta-career-form-panel .wpcf7-form .eta-cf7-form > p:first-of-type { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Forms on phones (QA-03, 18-09-2026): stop intrinsic widths escaping the
+   panel. CF7 text inputs carry size="40" (about 350px) and the reCAPTCHA
+   checkbox is a fixed 304px iframe; with min-width:auto on the wrappers and
+   1fr page columns those widths forced a 358 to 404px layout and the phone
+   zoomed out. Every wrapper now has min-width:0, every track is
+   minmax(0,1fr), and the checkbox scales down below 380px. */
+.eta-form-panel,
+.eta-form-panel .wpcf7,
+.eta-form-panel .eta-cf7-form,
+.eta-form-panel .wpcf7-form-control-wrap,
+.eta-form-panel .wpcf7-response-output,
+.eta-form-panel .wpcf7-form p { min-width: 0; max-width: 100%; }
+.eta-form-panel .wpcf7-form,
+.eta-form-panel .wpcf7-form p { grid-template-columns: minmax(0, 1fr); }
+.eta-form-panel .wpcf7-form-control { min-width: 0; max-width: 100%; box-sizing: border-box; }
+.eta-form-panel .wpcf7-form-control-wrap[data-name="recaptcha"] > div,
+.eta-form-panel .wpcf7-form-control-wrap[data-name="g-recaptcha-response"] > div,
+.eta-form-panel .g-recaptcha > div { max-width: 100%; }
+.eta-form-panel .wpcf7-form-control-wrap[data-name="recaptcha"] iframe,
+.eta-form-panel .g-recaptcha iframe { max-width: 100%; }
+@media (max-width: 380px) {
+    .eta-form-panel { padding: 14px; }
+    .eta-form-panel .wpcf7-form-control-wrap[data-name="recaptcha"],
+    .eta-form-panel .wpcf7-form-control-wrap[data-name="g-recaptcha-response"],
+    .eta-form-panel .eta-recaptcha-field { justify-content: flex-start; }
+    .eta-form-panel .wpcf7-form-control-wrap[data-name="recaptcha"] > div,
+    .eta-form-panel .g-recaptcha > div { transform: scale(0.84); transform-origin: 0 0; height: 66px; }
+}
+@media (max-width: 340px) {
+    .eta-form-panel .wpcf7-form-control-wrap[data-name="recaptcha"] > div,
+    .eta-form-panel .g-recaptcha > div { transform: scale(0.8); height: 63px; }
+}
+
+/* Mobile navigation (QA-02, 18-09-2026): the toggled menu lives inside the
+   sticky header, so with About and Services expanded it grew past the
+   viewport and the lower links could not be reached. The open menu is now
+   capped to the viewport below the header bar and scrolls on its own. */
+@media (max-width: 1024px) {
+    #masthead .main-navigation.toggled .main-nav {
+        max-height: calc(100vh - 110px);
+        max-height: calc(100dvh - 110px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* Article tables (QA-05, 18-09-2026): inline min-width tables in post bodies
+   must scroll inside their wrapper instead of widening the page. */
+.single-post .etal-table-wrap,
+.single-post .eta-table-scroll,
+.entry-content .etal-table-wrap,
+.entry-content .eta-table-scroll {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100% !important;
+}
+.entry-content .eta-table-scroll > table { margin: 0; }

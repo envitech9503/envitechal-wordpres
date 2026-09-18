@@ -312,20 +312,20 @@ html:not(.ca-gsap) .ca-journey-line path { stroke-dashoffset: 0; }
 @media (max-width: 860px) {
     html.ca-gsap .ca-hero { height: auto; }
     html.ca-gsap .ca-stage { position: relative; height: auto; }
-    .ca-hero-grid { grid-template-columns: 1fr; align-items: start; padding-bottom: 64px; }
+    .ca-hero-grid { grid-template-columns: minmax(0, 1fr); align-items: start; padding-bottom: 64px; }
     .ca-gauge { display: none !important; }
-    .ca-types-head { grid-template-columns: 1fr; }
+    .ca-types-head { grid-template-columns: minmax(0, 1fr); }
     html.ca-gsap .ca-types-pin { min-height: 0; display: block; }
     .ca-track { flex-wrap: wrap; padding: 0; transform: none !important; }
     .ca-type-card { flex: 1 1 100%; min-height: 0; }
     html.ca-gsap .ca-type-card:not(.is-on) { transform: none; }
     .ca-types-progress { display: none !important; }
-    .ca-deliver-grid, .ca-regs-list, .ca-schemes-grid { grid-template-columns: 1fr; }
-    .ca-regs-grid { grid-template-columns: 1fr; }
-    .ca-serves-grid, .ca-related-grid, .ca-why-grid { grid-template-columns: 1fr; }
-    .ca-journey-grid, .ca-faq-grid, .ca-final-grid { grid-template-columns: 1fr; }
+    .ca-deliver-grid, .ca-regs-list, .ca-schemes-grid { grid-template-columns: minmax(0, 1fr); }
+    .ca-regs-grid { grid-template-columns: minmax(0, 1fr); }
+    .ca-serves-grid, .ca-related-grid, .ca-why-grid { grid-template-columns: minmax(0, 1fr); }
+    .ca-journey-grid, .ca-faq-grid, .ca-final-grid { grid-template-columns: minmax(0, 1fr); }
     .ca-faq .ca-head { position: static; }
-    .ca-ledger-row { grid-template-columns: 1fr; }
+    .ca-ledger-row { grid-template-columns: minmax(0, 1fr); }
     .ca-ledger-item { border-right: 0; padding: 18px 0; border-bottom: 1px solid var(--ca-line); }
     .ca-ledger-item:nth-child(2n) { padding-left: 0; }
     .ca-ledger-item:last-child { border-bottom: 0; }

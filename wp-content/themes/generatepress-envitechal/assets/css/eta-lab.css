@@ -289,18 +289,18 @@ html:not(.lab-gsap) .lab-method-line path { stroke-dashoffset: 0; }
 @media (max-width: 860px) {
     html.lab-gsap .lab-hero { height: auto; }
     html.lab-gsap .lab-stage { position: relative; height: auto; }
-    .lab-hero-grid { grid-template-columns: 1fr; align-items: start; padding-bottom: 64px; }
+    .lab-hero-grid { grid-template-columns: minmax(0, 1fr); align-items: start; padding-bottom: 64px; }
     .lab-phases { display: none !important; }
-    .lab-journey-head { grid-template-columns: 1fr; }
+    .lab-journey-head { grid-template-columns: minmax(0, 1fr); }
     html.lab-gsap .lab-journey-pin { min-height: 0; display: block; }
     .lab-track { flex-wrap: wrap; padding: 0; transform: none !important; }
     .lab-stage-card { flex: 1 1 100%; min-height: 0; }
     .lab-journey-progress { display: none !important; }
-    .lab-matrix-grid, .lab-bento-grid, .lab-related-grid, .lab-scope-grid { grid-template-columns: 1fr; }
+    .lab-matrix-grid, .lab-bento-grid, .lab-related-grid, .lab-scope-grid { grid-template-columns: minmax(0, 1fr); }
     .lab-bento-wide { grid-column: auto; }
-    .lab-method-grid, .lab-faq-grid, .lab-final-grid { grid-template-columns: 1fr; }
+    .lab-method-grid, .lab-faq-grid, .lab-final-grid { grid-template-columns: minmax(0, 1fr); }
     .lab-faq .lab-head { position: static; }
-    .lab-ledger-row { grid-template-columns: 1fr; }
+    .lab-ledger-row { grid-template-columns: minmax(0, 1fr); }
     .lab-ledger-item { border-right: 0; padding: 18px 0; border-bottom: 1px solid var(--lab-line); }
     .lab-ledger-item:nth-child(2n) { padding-left: 0; }
     .lab-ledger-item:last-child { border-bottom: 0; }
