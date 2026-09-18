@@ -4527,6 +4527,7 @@ function eta_modern_render_single_post_page()
         $raw_post_content = (string) get_post_field('post_content', $post_id);
         $rendered_post_content = has_blocks($raw_post_content) ? do_blocks($raw_post_content) : get_the_content(null, false, $post_id);
         $post_content = eta_modern_clean_content($rendered_post_content);
+        $post_content = eta_modern_wrap_content_tables($post_content); // QA-05: block posts bypass the_content
         if (trim(wp_strip_all_tags($post_content)) === '') {
             $post_content = eta_modern_fallback_post_content($post_id);
         }
@@ -6307,8 +6308,10 @@ function eta_modern_page_hero($title = '', $lead = '')
  * QA-05 (18-09-2026): any table in post content that is not already inside a
  * scrolling wrapper gets one, so wide tables scroll rather than widen the page.
  */
-add_filter('the_content', function ($content) {
-    if (!is_singular('post') || strpos($content, '<table') === false) {
+function eta_modern_wrap_content_tables($content)
+{
+    $content = (string) $content;
+    if (strpos($content, '<table') === false) {
         return $content;
     }
     return preg_replace_callback('/(<div class="[^"]*(?:table-wrap|table-scroll)[^"]*"[^>]*>\s*)?(<table\b[^>]*>.*?<\/table>)/is', function ($m) {
@@ -6317,4 +6320,7 @@ add_filter('the_content', function ($content) {
         }
         return '<div class="eta-table-scroll">' . $m[2] . '</div>';
     }, $content);
+}
+add_filter('the_content', function ($content) {
+    return is_singular('post') ? eta_modern_wrap_content_tables($content) : $content;
 }, 20);

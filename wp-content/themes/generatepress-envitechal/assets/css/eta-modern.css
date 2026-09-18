@@ -9763,8 +9763,8 @@ h3 {
    capped to the viewport below the header bar and scrolls on its own. */
 @media (max-width: 1024px) {
     #masthead .main-navigation.toggled .main-nav {
-        max-height: calc(100vh - 110px);
-        max-height: calc(100dvh - 110px);
+        max-height: calc(100vh - 124px);
+        max-height: calc(100dvh - 124px);
         overflow-y: auto;
         overscroll-behavior: contain;
         -webkit-overflow-scrolling: touch;
