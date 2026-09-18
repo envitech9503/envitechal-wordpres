@@ -410,8 +410,74 @@ function eta_modern_disable_rank_math_sitemap_transient_cache($enabled)
     return false;
 }
 
+
+/**
+ * Slugs of every reviewed legacy source URL, used to keep redirected posts out
+ * of on-site search results (their permalinks already canonicalise to the
+ * destination, so listing them produces duplicate cards).
+ *
+ * @return array<int,string>
+ */
+function eta_modern_legacy_redirect_source_slugs()
+{
+    static $slugs = null;
+    if ($slugs !== null) {
+        return $slugs;
+    }
+
+    $slugs = [];
+    foreach (array_keys(eta_modern_legacy_redirect_map()) as $source) {
+        $source_path = eta_modern_normalize_legacy_redirect_path($source);
+        if ($source_path === null) {
+            continue;
+        }
+        $slug = rawurldecode(basename(rtrim($source_path, '/')));
+        if ($slug !== '') {
+            $slugs[$slug] = true;
+        }
+    }
+
+    $slugs = array_keys($slugs);
+    return $slugs;
+}
+
+/**
+ * Exclude redirected legacy posts from the main search query.
+ *
+ * @param WP_Query $query Query being prepared.
+ * @return void
+ */
+function eta_modern_exclude_legacy_redirects_from_search($query)
+{
+    if (is_admin() || !($query instanceof WP_Query) || !$query->is_main_query() || !$query->is_search()) {
+        return;
+    }
+
+    $slugs = eta_modern_legacy_redirect_source_slugs();
+    if ($slugs === []) {
+        return;
+    }
+
+    $ids = get_posts([
+        'post_type'      => 'any',
+        'post_status'    => 'publish',
+        'post_name__in'  => $slugs,
+        'posts_per_page' => 500,
+        'fields'         => 'ids',
+        'no_found_rows'  => true,
+        'suppress_filters' => true,
+    ]);
+    if (!is_array($ids) || $ids === []) {
+        return;
+    }
+
+    $existing = (array) $query->get('post__not_in');
+    $query->set('post__not_in', array_values(array_unique(array_map('intval', array_merge($existing, $ids)))));
+}
+
 if (function_exists('add_action')) {
     add_action('init', 'eta_modern_maybe_redirect_legacy_request', -9999);
+    add_action('pre_get_posts', 'eta_modern_exclude_legacy_redirects_from_search', 20);
 }
 
 if (function_exists('add_filter')) {

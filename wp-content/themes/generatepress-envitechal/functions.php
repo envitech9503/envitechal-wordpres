@@ -2699,7 +2699,7 @@ function eta_modern_card_link($post, $class = '')
         <?php endif; ?>
         <div class="eta-card-body">
             <h3><a href="<?php echo esc_url(get_permalink($post)); ?>"><?php echo esc_html($title); ?></a></h3>
-            <p><?php echo esc_html(eta_modern_service_summary($post) ?: eta_modern_plain_excerpt($post, 24)); ?></p>
+            <p><?php echo esc_html(eta_modern_service_summary($post) ?: (eta_modern_plain_excerpt($post, 24) ?: eta_modern_post_card_excerpt($post))); ?></p>
             <a class="eta-text-link" href="<?php echo esc_url(get_permalink($post)); ?>" aria-label="<?php echo esc_attr(sprintf(__('View details: %s', 'envi-tech-al-modern'), eta_modern_display_title($post))); ?>"><?php esc_html_e('View details', 'envi-tech-al-modern'); ?></a>
         </div>
     </article>
@@ -4711,7 +4711,7 @@ function eta_modern_render_careers_page()
                 <h2><?php esc_html_e('Send a focused profile, not a generic CV drop.', 'envi-tech-al-modern'); ?></h2>
                 <div class="eta-career-apply-list">
                     <span><?php esc_html_e('Mention city and preferred work stream.', 'envi-tech-al-modern'); ?></span>
-                    <span><?php esc_html_e('Attach updated CV and relevant certificates.', 'envi-tech-al-modern'); ?></span>
+                    <span><?php esc_html_e('Attach your updated CV as one PDF, DOC or DOCX file (up to 5 MB) and mention relevant certificates in your statement.', 'envi-tech-al-modern'); ?></span>
                     <span><?php esc_html_e('Highlight lab, field, compliance, or client-facing experience.', 'envi-tech-al-modern'); ?></span>
                 </div>
             </div>

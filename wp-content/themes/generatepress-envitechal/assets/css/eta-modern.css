@@ -9688,6 +9688,19 @@ h3 {
 }
 .eta-career-form-panel .wpcf7-form .eta-cf7-form > p:first-of-type > .wpcf7-form-control-wrap { display: block; }
 .eta-career-form-panel .wpcf7-form .eta-cf7-form > p:first-of-type > .wpcf7-form-control-wrap:nth-of-type(9) { grid-column: 1 / -1; }
+/* Labelled markup (QA-06, 18-09-2026): each field sits in its own <label>;
+   the ninth (gender) spans both columns. */
+.eta-career-form-panel .wpcf7-form .eta-cf7-form > p:first-of-type > label { margin-bottom: 0; }
+.eta-career-form-panel .wpcf7-form .eta-cf7-form > p:first-of-type > label:nth-of-type(9) { grid-column: 1 / -1; }
+.eta-career-form-panel .wpcf7-form label.file-input { margin-bottom: 0; }
+.eta-form-panel .eta-field-hint {
+    display: block;
+    margin-top: 2px;
+    color: #4d5f66;
+    font-size: 0.86rem;
+    font-weight: 500;
+    line-height: 1.45;
+}
 .eta-career-form-panel .wpcf7-form input[type="file"] {
     width: 100%;
     padding: 12px 14px;

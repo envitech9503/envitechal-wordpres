@@ -17,8 +17,16 @@ get_header();
             <?php get_search_form(); ?>
             <?php if (have_posts()) : ?>
                 <div class="eta-grid eta-grid-3 eta-search-results">
+                    <?php $eta_seen_urls = []; ?>
                     <?php while (have_posts()) : the_post(); ?>
-                        <?php eta_modern_card_link(get_post(), 'eta-post-card'); ?>
+                        <?php
+                        $eta_result_url = untrailingslashit(strtolower((string) get_permalink()));
+                        if ($eta_result_url !== '' && isset($eta_seen_urls[$eta_result_url])) {
+                            continue;
+                        }
+                        $eta_seen_urls[$eta_result_url] = true;
+                        eta_modern_card_link(get_post(), 'eta-post-card');
+                        ?>
                     <?php endwhile; ?>
                 </div>
                 <div class="eta-pagination"><?php the_posts_pagination(); ?></div>

@@ -12,7 +12,7 @@ if (!defined('ABSPATH')) {
 }
 
 const ETA_LEGAL_PAGES_VERSION = 1;
-const ETA_LEGAL_EFFECTIVE_DATE = '29 August 2026';
+const ETA_LEGAL_EFFECTIVE_DATE = '18 September 2026';
 
 function eta_modern_legal_pages()
 {
@@ -95,6 +95,7 @@ function eta_modern_render_privacy_page()
             ], [
                 '<strong>Enquiry and quotation forms</strong>: name, company, email address, phone or WhatsApp number, city, service of interest, and the details of your requirement.',
                 '<strong>Report verification requests</strong>: report number, report date, company name, and the requester\'s name and contact details.',
+                '<strong>Job applications</strong>: name, email address, phone number, town or city, country, the position applied for, years of experience, gender, an optional passport or CNIC number, the CV file you upload (PDF, DOC or DOCX), and any statement you write about yourself.',
                 '<strong>Site assistant</strong>: questions you type into the on-site assistant, used to answer your query and improve the assistance we provide.',
                 '<strong>Technical data</strong>: standard web log and analytics information such as IP address, browser type, pages visited, and referring pages.',
             ]);
@@ -102,6 +103,7 @@ function eta_modern_render_privacy_page()
             eta_modern_legal_section('How we use information', [], [
                 'To respond to enquiries, prepare quotations, and coordinate sampling, testing, monitoring, calibration, or consultancy work.',
                 'To verify the authenticity of Envi Tech AL test reports on request.',
+                'To assess job applications, contact candidates about vacancies, and keep a record of the recruitment process. Gender and identity-document details are requested only for candidate identification and statutory employment records; an application is not declined for leaving the optional fields blank.',
                 'To maintain business records required for laboratory quality systems and legal compliance.',
                 'To understand how the website is used so we can improve it.',
             ]);
@@ -125,6 +127,7 @@ function eta_modern_render_privacy_page()
 
             eta_modern_legal_section('Retention', [
                 'Enquiry and verification records are kept for as long as needed to handle the request and to meet business, quality-system, and legal record-keeping obligations, after which they are deleted or anonymised.',
+                'Job applications and uploaded CVs are kept for up to twelve months after the vacancy closes so that candidates can be considered for similar roles, unless you ask us to delete them sooner by writing to <a href="mailto:info@envitechal.com">info@envitechal.com</a>. Successful candidates\' records become part of their employment file.',
             ]);
 
             eta_modern_legal_section('Your rights', [
