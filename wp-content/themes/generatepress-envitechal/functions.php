@@ -164,6 +164,19 @@ add_action('wp_enqueue_scripts', function () {
     wp_enqueue_style('eta-premium', get_stylesheet_directory_uri() . '/assets/css/eta-premium.css', ['eta-modern'], file_exists($css) ? (string) filemtime($css) : wp_get_theme()->get('Version'));
 }, 21);
 
+/* Knowledge Hub articles authored against the etal-* class system (QA 24-09-2026). */
+add_action('wp_enqueue_scripts', function () {
+    if (is_admin() || !is_singular('post')) {
+        return;
+    }
+    $content = (string) get_post_field('post_content', get_queried_object_id());
+    if (strpos($content, 'class="etal-') === false && strpos($content, "class='etal-") === false) {
+        return;
+    }
+    $css = get_stylesheet_directory() . '/assets/css/eta-etal.css';
+    wp_enqueue_style('eta-etal', get_stylesheet_directory_uri() . '/assets/css/eta-etal.css', ['eta-modern'], file_exists($css) ? (string) filemtime($css) : wp_get_theme()->get('Version'));
+}, 22);
+
 add_action('wp_footer', function () {
     $cfg = is_admin() ? null : eta_modern_premium_config();
     if (!$cfg) {

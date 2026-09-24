@@ -1,0 +1,133 @@
+/* Knowledge Hub "etal" article system (QA 24-09-2026).
+   Two articles (IEE vs EIA, PPWR) were authored against etal-* classes whose
+   stylesheet never shipped, so they rendered as bare prose with a numbered
+   breadcrumb list and text-only buttons. This sheet gives those classes the
+   same language as the rest of the site: navy/green palette, Outfit headings,
+   Archivo body, soft panels, pill labels. Scoped to .eta-post-content. */
+
+.eta-post-content .etal-breadcrumb { margin: 0 0 18px; font-size: 0.86rem; color: #5b6b71; }
+.eta-post-content .etal-breadcrumb ol { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.eta-post-content .etal-breadcrumb li { display: flex; align-items: center; gap: 6px; }
+.eta-post-content .etal-breadcrumb li + li::before { content: "\00b7"; color: #9aa7ac; }
+.eta-post-content .etal-breadcrumb a { color: var(--eta-green, #1F7A5F); text-decoration: none; font-weight: 600; }
+.eta-post-content .etal-breadcrumb a:hover { text-decoration: underline; }
+
+.eta-post-content .etal-kicker { display: inline-block; margin-bottom: 10px; font-family: 'Archivo', 'Archivo Fallback', Arial, sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--eta-green, #1F7A5F); }
+.eta-post-content .etal-pill,
+.eta-post-content .etal-badge { display: inline-block; padding: 5px 11px; border-radius: 999px; background: rgba(31, 122, 95, 0.1); color: var(--eta-navy, #102229); font-size: 0.78rem; font-weight: 700; line-height: 1.3; }
+.eta-post-content .etal-badge { background: var(--eta-navy, #102229); color: #fff; }
+
+/* Hero */
+.eta-post-content .etal-hero { margin: 0 0 24px; padding: clamp(22px, 4vw, 40px); border-radius: 18px; background: linear-gradient(135deg, #0f2a2a 0%, #123c34 55%, #1F7A5F 130%); color: #EAF3EE; }
+.eta-post-content .etal-hero h1 { margin: 0 0 14px; font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.12; color: #fff; }
+.eta-post-content .etal-hero p { color: rgba(234, 243, 238, 0.86); font-size: 1.02rem; }
+.eta-post-content .etal-hero .etal-kicker { color: #9fe0c4; }
+.eta-post-content .etal-hero-grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+.eta-post-content .etal-hero-meta { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 16px 0 12px; font-size: 0.86rem; color: rgba(234, 243, 238, 0.78); }
+.eta-post-content .etal-hero-meta time { color: #fff; font-weight: 600; }
+.eta-post-content .etal-hero-badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; }
+.eta-post-content .etal-hero-badges .etal-pill { background: rgba(255, 255, 255, 0.12); color: #fff; }
+.eta-post-content .etal-hero-card { padding: 20px; border-radius: 14px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.16); }
+.eta-post-content .etal-limit { display: grid; gap: 6px; margin-bottom: 14px; }
+.eta-post-content .etal-limit strong { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-size: 2.4rem; line-height: 1; color: #9fe0c4; }
+.eta-post-content .etal-limit span { font-size: 0.92rem; color: rgba(234, 243, 238, 0.86); }
+.eta-post-content .etal-mini-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.eta-post-content .etal-mini-list li { position: relative; padding-left: 18px; font-size: 0.92rem; }
+.eta-post-content .etal-mini-list li::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 8px; height: 8px; border-radius: 50%; background: #9fe0c4; }
+
+/* Buttons */
+.eta-post-content .etal-cta-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 8px 0 4px; }
+.eta-post-content a.etal-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 20px; border-radius: 999px; font-family: 'Archivo', 'Archivo Fallback', Arial, sans-serif; font-size: 0.9rem; font-weight: 700; text-decoration: none !important; transition: background 160ms ease, color 160ms ease, box-shadow 160ms ease; }
+.eta-post-content a.etal-btn-primary { background: var(--eta-green, #1F7A5F); color: #fff; }
+.eta-post-content a.etal-btn-primary:hover { background: #17604a; color: #fff; }
+.eta-post-content a.etal-btn-secondary { background: #fff; color: var(--eta-navy, #102229); box-shadow: inset 0 0 0 1.5px rgba(16, 34, 41, 0.22); }
+.eta-post-content a.etal-btn-secondary:hover { box-shadow: inset 0 0 0 1.5px var(--eta-green, #1F7A5F); color: var(--eta-green, #1F7A5F); }
+.eta-post-content .etal-hero a.etal-btn-secondary { background: transparent; color: #fff; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.5); }
+
+/* Feature figure and in-article navigation */
+.eta-post-content .etal-feature-figure { margin: 0 0 24px; }
+.eta-post-content .etal-feature-figure img { width: 100%; height: auto; border-radius: 14px; }
+.eta-post-content .etal-feature-figure figcaption { margin-top: 10px; font-size: 0.86rem; color: #5b6b71; }
+.eta-post-content .etal-nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 28px; padding: 14px; border-radius: 14px; background: #f3f7f5; }
+.eta-post-content .etal-nav a { padding: 7px 13px; border-radius: 999px; background: #fff; color: var(--eta-navy, #102229); font-size: 0.86rem; font-weight: 600; text-decoration: none; box-shadow: 0 0 0 1px rgba(16, 34, 41, 0.08); }
+.eta-post-content .etal-nav a:hover { color: var(--eta-green, #1F7A5F); box-shadow: 0 0 0 1px var(--eta-green, #1F7A5F); }
+
+/* Sections and layout */
+.eta-post-content .etal-section { margin: 0 0 36px; scroll-margin-top: 110px; }
+.eta-post-content .etal-section h2 { margin: 0 0 14px; font-size: clamp(1.45rem, 2.6vw, 1.9rem); line-height: 1.2; }
+.eta-post-content .etal-section h3 { margin: 0 0 8px; font-size: 1.1rem; }
+.eta-post-content .etal-intro-grid,
+.eta-post-content .etal-two-col { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+.eta-post-content .etal-panel { padding: 20px 22px; border-radius: 14px; background: var(--eta-navy, #102229); color: #EAF3EE; }
+.eta-post-content .etal-panel h3 { color: #fff; }
+.eta-post-content .etal-panel p,
+.eta-post-content .etal-panel li,
+.eta-post-content .etal-panel strong,
+.eta-post-content .etal-hero p,
+.eta-post-content .etal-hero li,
+.eta-post-content .etal-final-cta p { color: inherit; }
+.eta-post-content .etal-panel-soft p,
+.eta-post-content .etal-panel-soft li,
+.eta-post-content .etal-panel-soft strong { color: inherit; }
+.eta-post-content .etal-panel a { color: #9fe0c4; }
+.eta-post-content .etal-panel-soft { background: #f3f7f5; color: var(--eta-navy, #102229); }
+.eta-post-content .etal-panel-soft h3 { color: var(--eta-navy, #102229); }
+.eta-post-content .etal-panel-soft a { color: var(--eta-green, #1F7A5F); }
+.eta-post-content .etal-small { font-size: 0.88rem; color: inherit; opacity: 0.85; }
+
+/* Stats, checklists, steps, cards */
+.eta-post-content .etal-stat-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 18px 0 0; }
+.eta-post-content .etal-stat { padding: 14px 16px; border-radius: 12px; background: #fff; box-shadow: 0 0 0 1px rgba(16, 34, 41, 0.08); }
+.eta-post-content .etal-stat b { display: block; font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-size: 1.6rem; font-weight: 600; line-height: 1.1; color: var(--eta-green, #1F7A5F); }
+.eta-post-content .etal-stat span { display: block; margin-top: 4px; font-size: 0.86rem; color: #5b6b71; }
+.eta-post-content .etal-checklist { margin: 0; padding: 0; list-style: none; display: grid; gap: 9px; }
+.eta-post-content .etal-checklist li { position: relative; padding-left: 26px; }
+.eta-post-content .etal-checklist li::before { content: ""; position: absolute; left: 0; top: 0.3em; width: 16px; height: 16px; border-radius: 50%; background: rgba(31, 122, 95, 0.15); }
+.eta-post-content .etal-checklist li::after { content: ""; position: absolute; left: 5px; top: calc(0.3em + 3px); width: 5px; height: 8px; border: solid var(--eta-green, #1F7A5F); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.eta-post-content .etal-process { display: grid; gap: 14px; counter-reset: etal-step; }
+.eta-post-content .etal-step { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 14px; padding: 18px; border-radius: 14px; background: #fff; box-shadow: 0 0 0 1px rgba(16, 34, 41, 0.08); counter-increment: etal-step; }
+.eta-post-content .etal-step::before { content: counter(etal-step, decimal-leading-zero); display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 12px; background: var(--eta-navy, #102229); color: #fff; font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 600; }
+.eta-post-content .etal-step h3 { margin-top: 8px; }
+.eta-post-content .etal-step p:last-child { margin-bottom: 0; }
+.eta-post-content .etal-card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.eta-post-content .etal-card { padding: 20px; border-radius: 14px; background: #fff; box-shadow: 0 0 0 1px rgba(16, 34, 41, 0.08); }
+.eta-post-content .etal-card p:last-child { margin-bottom: 0; }
+.eta-post-content .etal-icon { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; height: 44px; margin-bottom: 10px; padding: 0 10px; border-radius: 12px; background: rgba(31, 122, 95, 0.12); color: var(--eta-green, #1F7A5F); font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 600; }
+
+/* Notices */
+.eta-post-content .etal-warning,
+.eta-post-content .etal-danger { margin: 16px 0; padding: 16px 18px; border-radius: 12px; border-left: 4px solid #c9a15a; background: #fbf6ea; }
+.eta-post-content .etal-danger { border-left-color: #9f2f2f; background: #fbeeee; }
+
+/* Sources and FAQ */
+.eta-post-content .etal-source-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.eta-post-content .etal-source { padding: 16px 18px; border-radius: 12px; background: #f3f7f5; }
+.eta-post-content .etal-source h3 { font-size: 0.98rem; }
+.eta-post-content .etal-source p { margin: 0; font-size: 0.9rem; }
+.eta-post-content .etal-faq details { margin: 0 0 10px; padding: 0 18px; border-radius: 12px; background: #fff; box-shadow: 0 0 0 1px rgba(16, 34, 41, 0.08); }
+.eta-post-content .etal-faq summary { padding: 14px 0; font-weight: 700; color: var(--eta-navy, #102229); cursor: pointer; }
+.eta-post-content .etal-faq details > div { padding: 0 0 16px; }
+.eta-post-content .etal-review-line { margin-top: 20px; font-size: 0.88rem; color: #5b6b71; }
+.eta-post-content .etal-disclaimer { color: #5b6b71; }
+
+/* Closing call to action */
+.eta-post-content .etal-final-cta { margin: 0 0 12px; padding: clamp(22px, 4vw, 36px); border-radius: 18px; background: var(--eta-navy, #102229); color: #EAF3EE; }
+.eta-post-content .etal-final-cta h2 { color: #fff; }
+.eta-post-content .etal-final-cta .etal-kicker { color: #9fe0c4; }
+.eta-post-content .etal-final-cta p { color: rgba(234, 243, 238, 0.86); }
+.eta-post-content .etal-final-cta a.etal-btn-secondary { background: transparent; color: #fff; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.5); }
+
+@media (max-width: 860px) {
+    .eta-post-content .etal-hero-grid,
+    .eta-post-content .etal-intro-grid,
+    .eta-post-content .etal-two-col,
+    .eta-post-content .etal-card-grid,
+    .eta-post-content .etal-source-grid { grid-template-columns: minmax(0, 1fr); }
+    .eta-post-content .etal-stat-row { grid-template-columns: minmax(0, 1fr); }
+    .eta-post-content .etal-section { scroll-margin-top: 90px; }
+}
+@media (max-width: 480px) {
+    .eta-post-content .etal-step { grid-template-columns: 36px minmax(0, 1fr); gap: 10px; padding: 14px; }
+    .eta-post-content .etal-step::before { width: 36px; height: 36px; }
+    .eta-post-content a.etal-btn { width: 100%; }
+}
