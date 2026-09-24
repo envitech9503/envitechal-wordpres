@@ -27,11 +27,11 @@
     --ta-ease: cubic-bezier(.22, .61, .36, 1);
     color: var(--ta-text);
     background: var(--ta-abyss);
-    font-family: 'Archivo', "Segoe UI", Arial, sans-serif;
+    font-family: 'Archivo', 'Archivo Fallback', Arial, sans-serif;
     overflow-x: clip;
 }
 .eta-techadv * { box-sizing: border-box; }
-.eta-techadv h1, .eta-techadv h2, .eta-techadv h3 { margin: 0; font-family: 'Outfit', 'Archivo', sans-serif; letter-spacing: -.01em; }
+.eta-techadv h1, .eta-techadv h2, .eta-techadv h3 { margin: 0; font-family: 'Outfit', 'Outfit Fallback', sans-serif; letter-spacing: -.01em; }
 .eta-techadv p { margin: 0; }
 .eta-techadv ul, .eta-techadv ol { margin: 0; padding: 0; list-style: none; }
 
@@ -47,7 +47,7 @@
 .ta-btn {
     display: inline-flex; align-items: center; gap: 10px;
     min-height: 48px; padding: 12px 22px; border-radius: 999px;
-    font: 700 14px/1 'Archivo', "Segoe UI", Arial, sans-serif; letter-spacing: .02em;
+    font: 700 14px/1 'Archivo', 'Archivo Fallback', Arial, sans-serif; letter-spacing: .02em;
     text-decoration: none !important; cursor: pointer;
     transition: transform .25s var(--ta-ease), background .25s, border-color .25s, color .25s, box-shadow .25s;
 }
@@ -109,7 +109,7 @@ html:not(.ta-gsap) .ta-stage {
 .ta-panel-kicker { margin: 0 0 12px; font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--ta-muted); }
 .ta-panel-list li { display: grid; grid-template-columns: 96px 1fr; gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid var(--ta-line); font-size: 14px; color: #ccd7e6; }
 .ta-panel-list li:first-child { border-top: 0; }
-.ta-panel-list b { font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 600; color: var(--ta-aqua); }
+.ta-panel-list b { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-size: 15px; font-weight: 600; color: var(--ta-aqua); }
 .ta-panel-link { display: inline-flex; gap: 8px; margin-top: 14px; font-size: 13.5px; font-weight: 700; color: var(--ta-aqua) !important; text-decoration: none !important; }
 
 .ta-gauge {
@@ -136,7 +136,7 @@ html:not(.ta-gsap) .ta-cue { display: none; }
 .ta-ledger-item:first-child { padding-left: 0; }
 .ta-ledger-item:last-child { border-right: 0; }
 .ta-ledger-k { font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--ta-aqua); }
-.ta-ledger-item strong { font-family: 'Outfit', 'Archivo', sans-serif; font-size: 24px; font-weight: 500; color: #fff; }
+.ta-ledger-item strong { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-size: 24px; font-weight: 500; color: #fff; }
 .ta-ledger-s { font-size: 13px; color: var(--ta-muted); line-height: 1.45; }
 
 /* ============================================================
@@ -167,7 +167,7 @@ html:not(.ta-gsap) .ta-type-card { flex: 1 1 300px; min-height: 0; }
 .ta-type-card.is-on { border-color: rgba(147, 197, 253, .5); }
 html.ta-gsap .ta-type-card:not(.is-on) { transform: scale(.96); }
 .ta-type-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
-.ta-type-n { font-family: 'Outfit', sans-serif; font-size: 44px; font-weight: 200; line-height: 1; color: var(--ta-aqua); }
+.ta-type-n { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-size: 44px; font-weight: 200; line-height: 1; color: var(--ta-aqua); }
 .ta-type-std { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ta-muted); text-align: right; }
 .ta-type-card h3 { margin-top: 8px; font-size: 26px; font-weight: 500; color: #fff; }
 .ta-type-sub { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--ta-aqua-2); }
@@ -191,7 +191,7 @@ html.ta-gsap .ta-type-card:not(.is-on) { transform: scale(.96); }
 }
 .ta-deliver-card:hover { border-color: rgba(147, 197, 253, .5); }
 .ta-deliver-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
-.ta-deliver-code { display: inline-grid; place-items: center; min-width: 44px; height: 44px; padding: 0 10px; border-radius: 10px; background: var(--ta-aqua); color: var(--ta-abyss); font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 600; letter-spacing: .02em; }
+.ta-deliver-code { display: inline-grid; place-items: center; min-width: 44px; height: 44px; padding: 0 10px; border-radius: 10px; background: var(--ta-aqua); color: var(--ta-abyss); font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-size: 18px; font-weight: 600; letter-spacing: .02em; }
 .ta-deliver-std { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ta-muted); text-align: right; }
 .ta-deliver-card h3 { font-size: 23px; font-weight: 500; color: #fff; }
 .ta-deliver-card > p { margin: 8px 0 18px; font-size: 14.5px; line-height: 1.55; color: var(--ta-muted); }
@@ -225,7 +225,7 @@ html.ta-gsap .ta-type-card:not(.is-on) { transform: scale(.96); }
 .ta-regs-copy p:not(.ta-kicker) { margin-top: 12px; font-size: 15.5px; line-height: 1.6; color: var(--ta-muted); }
 .ta-regs-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 .ta-regs-list li { padding: 16px 18px; border: 1px solid var(--ta-line); border-radius: var(--ta-radius); background: rgba(255, 255, 255, .03); }
-.ta-regs-list b { display: block; font-family: 'Outfit', sans-serif; font-size: 19px; font-weight: 600; color: var(--ta-aqua); }
+.ta-regs-list b { display: block; font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-size: 19px; font-weight: 600; color: var(--ta-aqua); }
 .ta-regs-list span { display: block; margin-top: 4px; font-size: 13px; line-height: 1.45; color: var(--ta-muted); }
 
 /* ============================================================
@@ -254,7 +254,7 @@ html:not(.ta-gsap) .ta-journey-line path { stroke-dashoffset: 0; }
 .ta-journey-list li { position: relative; padding: 20px 22px; border: 1px solid var(--ta-line); border-radius: var(--ta-radius); background: rgba(255, 255, 255, .03); }
 .ta-journey-dot { position: absolute; left: -58px; top: 18px; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--ta-abyss); border: 1px solid var(--ta-line); color: var(--ta-aqua); font-size: 12px; font-weight: 700; letter-spacing: .08em; transition: background .4s, color .4s, box-shadow .4s; }
 .ta-journey-list li.is-on .ta-journey-dot { background: var(--ta-aqua); color: var(--ta-abyss); box-shadow: 0 0 24px rgba(147, 197, 253, .55); }
-.ta-journey-list strong { display: block; font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 500; color: #fff; }
+.ta-journey-list strong { display: block; font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-size: 20px; font-weight: 500; color: #fff; }
 .ta-journey-list p { margin-top: 6px; font-size: 15px; line-height: 1.6; color: #ccd7e6; }
 
 /* ============================================================
@@ -274,7 +274,7 @@ html:not(.ta-gsap) .ta-journey-line path { stroke-dashoffset: 0; }
 .ta-faq .ta-head { margin-bottom: 0; position: sticky; top: calc(var(--eta-hh, 0px) + 24px); }
 .ta-faq-list { display: grid; gap: 10px; }
 .ta-faq-item { border: 1px solid var(--ta-line-light); border-radius: var(--ta-radius); background: #fff; padding: 0 22px; }
-.ta-faq-item summary { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 0; cursor: pointer; list-style: none; font-family: 'Outfit', sans-serif; font-size: 19px; font-weight: 500; color: var(--ta-navy); }
+.ta-faq-item summary { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 0; cursor: pointer; list-style: none; font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-size: 19px; font-weight: 500; color: var(--ta-navy); }
 .ta-faq-item summary::-webkit-details-marker { display: none; }
 .ta-faq-icon { position: relative; flex: 0 0 26px; width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--ta-line-light); }
 .ta-faq-icon::before, .ta-faq-icon::after { content: ""; position: absolute; left: 50%; top: 50%; width: 10px; height: 2px; background: var(--ta-blue); transform: translate(-50%, -50%); transition: transform .3s; }
@@ -289,7 +289,7 @@ html:not(.ta-gsap) .ta-journey-line path { stroke-dashoffset: 0; }
 .ta-related-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .ta-related-card { display: grid; gap: 8px; align-content: start; padding: 24px; border: 1px solid var(--ta-line-light); border-radius: var(--ta-radius); background: #fff; text-decoration: none !important; color: inherit; transition: transform .3s var(--ta-ease), box-shadow .3s; }
 .ta-related-card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(16, 26, 44, .1); }
-.ta-related-card strong { font-family: 'Outfit', sans-serif; font-size: 21px; font-weight: 500; color: var(--ta-navy); }
+.ta-related-card strong { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-size: 21px; font-weight: 500; color: var(--ta-navy); }
 .ta-related-card p { font-size: 14.5px; line-height: 1.6; color: var(--ta-muted-light); }
 .ta-related-card .ta-inline-link { margin-top: 8px; color: var(--ta-blue) !important; }
 

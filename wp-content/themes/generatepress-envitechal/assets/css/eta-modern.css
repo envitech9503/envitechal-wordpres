@@ -22,6 +22,30 @@
     font-display: swap;
 }
 
+/* Metric-matched fallbacks (QA 24-09-2026): while the variable fonts load,
+   Arial is drawn at Archivo/Outfit proportions so the header, nav and hero
+   keep their final height and no layout shift is scored on font swap.
+   Ratios derive from the fonts' hmtx/hhea tables against Liberation Sans
+   (Arial-metric): Archivo 600 is 4.5% narrower than Arial Bold; Outfit is
+   1% narrower than Arial. */
+@font-face {
+    font-family: 'Archivo Fallback';
+    src: local('Arial'), local('Liberation Sans'), local('Helvetica');
+    size-adjust: 95.5%;
+    ascent-override: 88%;
+    descent-override: 21%;
+    line-gap-override: 0%;
+}
+
+@font-face {
+    font-family: 'Outfit Fallback';
+    src: local('Arial'), local('Liberation Sans'), local('Helvetica');
+    size-adjust: 99%;
+    ascent-override: 100%;
+    descent-override: 26%;
+    line-gap-override: 0%;
+}
+
 :root {
     /* Shared with the closing footer and the homepage acts. These live at
        :root because more than one component needs them; the --fsf-* and
@@ -88,13 +112,13 @@
 body {
     color: var(--eta-ink);
     background: var(--eta-bg);
-    font-family: 'Archivo', "Segoe UI", Arial, sans-serif;
+    font-family: 'Archivo', 'Archivo Fallback', Arial, sans-serif;
     text-rendering: optimizeLegibility;
 }
 
 /* GeneratePress sets its own system stack on form controls. */
 button, input, select, textarea {
-    font-family: 'Archivo', "Segoe UI", Arial, sans-serif;
+    font-family: 'Archivo', 'Archivo Fallback', Arial, sans-serif;
 }
 
 a {
@@ -168,8 +192,8 @@ a {
 .eta-logo-link { display: inline-flex; align-items: center; gap: 12px; text-decoration: none !important; }
 .eta-logo-emblem { display: block; width: 56px; height: 56px; padding: 4px; border-radius: 12px; background: #fff; box-shadow: 0 1px 2px rgba(6, 17, 14, .12), 0 0 0 1px rgba(6, 17, 14, .06); object-fit: contain; }
 .eta-logo-word { display: grid; gap: 3px; }
-.eta-logo-name { font-family: 'Archivo', "Segoe UI", Arial, sans-serif; font-size: 20px; font-weight: 700; line-height: 1; letter-spacing: .02em; color: var(--eta-navy); }
-.eta-logo-sub { font-family: 'Archivo', "Segoe UI", Arial, sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--eta-green); }
+.eta-logo-name { font-family: 'Archivo', 'Archivo Fallback', Arial, sans-serif; font-size: 20px; font-weight: 700; line-height: 1; letter-spacing: .02em; color: var(--eta-navy); }
+.eta-logo-sub { font-family: 'Archivo', 'Archivo Fallback', Arial, sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--eta-green); }
 @media (max-width: 640px) {
     .eta-logo-emblem { width: 44px; height: 44px; border-radius: 10px; }
     .eta-logo-name { font-size: 17px; }
@@ -296,6 +320,12 @@ h3 {
 
 .main-navigation .main-nav > ul {
     position: relative;
+}
+@media (min-width: 1025px) {
+    /* Never let the desktop menu wrap to a second line while fonts load. */
+    .main-navigation .main-nav > ul { flex-wrap: nowrap; }
+    .eta-logo-link { height: 56px; }
+    .site-branding-container { min-height: 63px; }
 }
 
 .main-navigation .main-nav ul li a {
@@ -3238,7 +3268,7 @@ h3 {
     border-radius: 50%;
     background: var(--eta-green);
     color: #fff;
-    font-family: 'Archivo', "Segoe UI", Arial, sans-serif;
+    font-family: 'Archivo', 'Archivo Fallback', Arial, sans-serif;
     font-size: 13px;
     font-weight: 800;
     line-height: 30px;
@@ -9063,14 +9093,14 @@ h3 {
 .eta-fs-footer .fsf-logo, .eta-fs-footer .fsf-logo:hover, .eta-fs-footer .fsf-logo:focus-visible { text-decoration: none; }
 .fsf-logo-emblem { display: block; width: 76px; height: 76px; padding: 6px; border-radius: 16px; background: #fff; box-shadow: 0 6px 18px rgba(0, 0, 0, .4); object-fit: contain; }
 .fsf-logo-word { display: grid; gap: 4px; }
-.fsf-logo-name { font-family: 'Outfit', 'Archivo', sans-serif; font-weight: 500; font-size: 22px; line-height: 1; letter-spacing: .08em; color: #FFFFFF; }
-.fsf-logo-sub { font-family: 'Archivo', "Segoe UI", Arial, sans-serif; font-size: 10.5px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--fsf-mint); }
-.fsf-logo-text { font-family: 'Outfit', sans-serif; font-weight: 300; font-size: 24px; letter-spacing: .12em; color: var(--fsf-text); }
+.fsf-logo-name { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 500; font-size: 22px; line-height: 1; letter-spacing: .08em; color: #FFFFFF; }
+.fsf-logo-sub { font-family: 'Archivo', 'Archivo Fallback', Arial, sans-serif; font-size: 10.5px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--fsf-mint); }
+.fsf-logo-text { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 300; font-size: 24px; letter-spacing: .12em; color: var(--fsf-text); }
 
 .fsf-kicker {
     display: flex; align-items: center; gap: 12px;
     margin: 0 0 16px;
-    font-family: 'Archivo', sans-serif;
+    font-family: 'Archivo', 'Archivo Fallback', sans-serif;
     font-size: 11px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
     color: var(--fsf-mint);
 }
@@ -9078,7 +9108,7 @@ h3 {
 
 .fsf-headline {
     margin: 0 0 22px;
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Outfit', 'Outfit Fallback', sans-serif;
     font-weight: 200;
     font-size: clamp(36px, 4.8vw, 68px);
     line-height: 1.04;
@@ -9096,7 +9126,7 @@ h3 {
     display: inline-flex; align-items: center; gap: 11px;
     min-height: 52px; padding: 15px 30px;
     border-radius: 2px; overflow: hidden;
-    font-family: 'Archivo', sans-serif;
+    font-family: 'Archivo', 'Archivo Fallback', sans-serif;
     font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
     text-decoration: none;
     transition: color .3s ease, border-color .3s ease;
@@ -9120,7 +9150,7 @@ h3 {
 
 .fsf-label {
     margin: 0 0 22px;
-    font-family: 'Archivo', sans-serif;
+    font-family: 'Archivo', 'Archivo Fallback', sans-serif;
     font-size: 11px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
     color: var(--fsf-mint);
 }
@@ -9128,7 +9158,7 @@ h3 {
 
 .eta-fs-footer .fsf-mail {
     display: inline-block; margin-bottom: 26px;
-    font-family: 'Outfit', sans-serif; font-weight: 300;
+    font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 300;
     font-size: clamp(21px, 2.1vw, 30px); letter-spacing: -0.01em;
     color: #F4FCF8; text-decoration: none;
     background-image: linear-gradient(var(--fsf-mint), var(--fsf-mint));
@@ -9151,7 +9181,7 @@ h3 {
 .fsf-office { position: relative; padding-top: 16px; border-top: 1px solid var(--fsf-line); }
 .fsf-office h3 {
     margin: 0 0 9px;
-    font-family: 'Archivo', sans-serif;
+    font-family: 'Archivo', 'Archivo Fallback', sans-serif;
     font-size: 11px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
     color: var(--fsf-text);
 }
@@ -9175,7 +9205,7 @@ h3 {
 }
 .fsf-marquee:hover .fsf-marquee-track { animation-play-state: paused; }
 .fsf-param {
-    font-family: 'Archivo', sans-serif;
+    font-family: 'Archivo', 'Archivo Fallback', sans-serif;
     font-size: 13px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
     color: rgba(228, 246, 238, .62);
     white-space: nowrap;
@@ -9217,7 +9247,7 @@ h3 {
 .fsf-col::after {
     content: attr(data-n);
     position: absolute; right: 12px; bottom: -22px; z-index: -1;
-    font-family: 'Outfit', 'Archivo', sans-serif; font-size: 118px; font-weight: 200; line-height: 1;
+    font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-size: 118px; font-weight: 200; line-height: 1;
     letter-spacing: -.04em; color: rgba(125, 232, 205, .07);
     transition: color .4s ease, transform .5s cubic-bezier(.22,.7,.2,1);
 }
@@ -9258,7 +9288,7 @@ h3 {
 .fsf-rail-inner { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 40px; padding: 26px 0; }
 .fsf-cred {
     display: inline-flex; align-items: center; gap: 9px;
-    font-family: 'Archivo', sans-serif;
+    font-family: 'Archivo', 'Archivo Fallback', sans-serif;
     font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
     color: var(--fsf-muted);
 }
@@ -9307,7 +9337,7 @@ h3 {
 .fsf-wordmark {
     position: relative;
     display: block; width: 100%; text-align: center;
-    font-family: 'Outfit', sans-serif; font-weight: 200;
+    font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 200;
     font-size: clamp(32px, 12.4vw, 214px);
     line-height: .96; letter-spacing: -0.018em; white-space: nowrap;
     /* The sheen travels across this one gradient rather than a duplicated
@@ -9336,7 +9366,7 @@ h3 {
     display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 34px;
     margin: 18px 0 0;
     padding-inline: 22px;
-    font-family: 'Archivo', sans-serif;
+    font-family: 'Archivo', 'Archivo Fallback', sans-serif;
     font-size: 11px; font-weight: 600; letter-spacing: .3em; text-transform: uppercase;
     color: rgba(228, 246, 238, .58);
 }
@@ -9361,7 +9391,7 @@ h3 {
 .eta-fs-footer .fsf-top-link {
     display: inline-flex; align-items: center; gap: 9px; min-height: 24px;
     margin-left: auto;
-    font-family: 'Archivo', sans-serif;
+    font-family: 'Archivo', 'Archivo Fallback', sans-serif;
     font-size: 10.5px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
     color: var(--fsf-muted); text-decoration: none;
     transition: color .22s ease;
@@ -9470,7 +9500,7 @@ h3 {
 .eta-iv-status { margin: 0 0 8px; }
 .eta-iv-badge {
     display: inline-block; padding: 3px 10px; border-radius: 999px;
-    font-family: 'Archivo', "Segoe UI", Arial, sans-serif; font-size: 11px; font-weight: 700;
+    font-family: 'Archivo', 'Archivo Fallback', Arial, sans-serif; font-size: 11px; font-weight: 700;
     letter-spacing: .12em; text-transform: uppercase; color: #0B1A16; background: var(--iv-accent);
 }
 .eta-iv-result[data-state="pending"] .eta-iv-badge::after {
@@ -9496,7 +9526,7 @@ h3 {
 .eta-iv-sample { margin: 30px 0 0; padding: 0; max-width: 460px; }
 .eta-iv-sample figcaption {
     margin: 0 0 12px;
-    font-family: 'Archivo', "Segoe UI", Arial, sans-serif;
+    font-family: 'Archivo', 'Archivo Fallback', Arial, sans-serif;
     font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #7DE8CD;
 }
 .eta-iv-sample-doc {
@@ -9505,7 +9535,7 @@ h3 {
     background: #F7FAF8;
     color: #26332E;
     box-shadow: 0 18px 40px rgba(0, 0, 0, .35);
-    font-family: 'Archivo', "Segoe UI", Arial, sans-serif;
+    font-family: 'Archivo', 'Archivo Fallback', Arial, sans-serif;
     font-size: 13px;
 }
 .eta-iv-sample-head {
@@ -9544,7 +9574,7 @@ h3 {
     background: var(--eta-bg);
     border-bottom: 1px solid var(--eta-line);
     padding: 12px 0;
-    font-family: 'Archivo', "Segoe UI", Arial, sans-serif;
+    font-family: 'Archivo', 'Archivo Fallback', Arial, sans-serif;
     font-size: 12px;
     letter-spacing: .08em;
     text-transform: uppercase;
@@ -9579,7 +9609,7 @@ h3 {
 .eta-iv-detail dd { font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
 .eta-iv-detail dt {
     margin: 0;
-    font-family: 'Archivo', "Segoe UI", Arial, sans-serif;
+    font-family: 'Archivo', 'Archivo Fallback', Arial, sans-serif;
     font-size: 11px;
     font-weight: 600;
     letter-spacing: .12em;
@@ -9598,10 +9628,10 @@ h3 {
 .eta-verify-accred { background: var(--eta-navy); color: #EAF4EF; }
 .eta-verify-accred-inner { display: flex; flex-wrap: wrap; align-items: center;
     justify-content: center; gap: 14px 26px; padding: 20px 0; text-align: center; }
-.eta-verify-accred-lead { margin: 0; font-family: 'Archivo', "Segoe UI", Arial, sans-serif;
+.eta-verify-accred-lead { margin: 0; font-family: 'Archivo', 'Archivo Fallback', Arial, sans-serif;
     font-size: 14.5px; line-height: 1.5; color: #CFE3D8; max-width: 62ch; }
 .eta-verify-accred-badges { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; padding: 0; list-style: none; }
-.eta-verify-accred-badges li { font-family: 'Archivo', "Segoe UI", Arial, sans-serif;
+.eta-verify-accred-badges li { font-family: 'Archivo', 'Archivo Fallback', Arial, sans-serif;
     font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
     color: #EAF4EF; border: 1px solid rgba(125, 232, 205, .3); border-radius: 999px;
     padding: 8px 16px; white-space: nowrap; }

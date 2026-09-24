@@ -27,11 +27,11 @@
     --ti-ease: cubic-bezier(.22, .61, .36, 1);
     color: var(--ti-text);
     background: var(--ti-abyss);
-    font-family: 'Archivo', "Segoe UI", Arial, sans-serif;
+    font-family: 'Archivo', 'Archivo Fallback', Arial, sans-serif;
     overflow-x: clip;
 }
 .eta-thermal * { box-sizing: border-box; }
-.eta-thermal h1, .eta-thermal h2, .eta-thermal h3 { margin: 0; font-family: 'Outfit', 'Archivo', sans-serif; letter-spacing: -.01em; }
+.eta-thermal h1, .eta-thermal h2, .eta-thermal h3 { margin: 0; font-family: 'Outfit', 'Outfit Fallback', sans-serif; letter-spacing: -.01em; }
 .eta-thermal p { margin: 0; }
 .eta-thermal ul, .eta-thermal ol { margin: 0; padding: 0; list-style: none; }
 
@@ -47,7 +47,7 @@
 .ti-btn {
     display: inline-flex; align-items: center; gap: 10px;
     min-height: 48px; padding: 12px 22px; border-radius: 999px;
-    font: 700 14px/1 'Archivo', "Segoe UI", Arial, sans-serif; letter-spacing: .02em;
+    font: 700 14px/1 'Archivo', 'Archivo Fallback', Arial, sans-serif; letter-spacing: .02em;
     text-decoration: none !important; cursor: pointer;
     transition: transform .25s var(--ti-ease), background .25s, border-color .25s, color .25s, box-shadow .25s;
 }
@@ -109,7 +109,7 @@ html:not(.ti-gsap) .ti-stage {
 .ti-panel-kicker { margin: 0 0 12px; font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--ti-muted); }
 .ti-panel-list li { display: grid; grid-template-columns: 96px 1fr; gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid var(--ti-line); font-size: 14px; color: #d9cfe6; }
 .ti-panel-list li:first-child { border-top: 0; }
-.ti-panel-list b { font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 600; color: var(--ti-aqua); }
+.ti-panel-list b { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-size: 15px; font-weight: 600; color: var(--ti-aqua); }
 .ti-panel-link { display: inline-flex; gap: 8px; margin-top: 14px; font-size: 13.5px; font-weight: 700; color: var(--ti-aqua) !important; text-decoration: none !important; }
 
 .ti-gauge {
@@ -136,7 +136,7 @@ html:not(.ti-gsap) .ti-cue { display: none; }
 .ti-ledger-item:first-child { padding-left: 0; }
 .ti-ledger-item:last-child { border-right: 0; }
 .ti-ledger-k { font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--ti-aqua); }
-.ti-ledger-item strong { font-family: 'Outfit', 'Archivo', sans-serif; font-size: 24px; font-weight: 500; color: #fff; }
+.ti-ledger-item strong { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-size: 24px; font-weight: 500; color: #fff; }
 .ti-ledger-s { font-size: 13px; color: var(--ti-muted); line-height: 1.45; }
 
 /* ============================================================
@@ -167,7 +167,7 @@ html:not(.ti-gsap) .ti-type-card { flex: 1 1 300px; min-height: 0; }
 .ti-type-card.is-on { border-color: rgba(255, 176, 32, .5); }
 html.ti-gsap .ti-type-card:not(.is-on) { transform: scale(.96); }
 .ti-type-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
-.ti-type-n { font-family: 'Outfit', sans-serif; font-size: 44px; font-weight: 200; line-height: 1; color: var(--ti-aqua); }
+.ti-type-n { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-size: 44px; font-weight: 200; line-height: 1; color: var(--ti-aqua); }
 .ti-type-std { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ti-muted); text-align: right; }
 .ti-type-card h3 { margin-top: 8px; font-size: 26px; font-weight: 500; color: #fff; }
 .ti-type-sub { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--ti-aqua-2); }
@@ -191,7 +191,7 @@ html.ti-gsap .ti-type-card:not(.is-on) { transform: scale(.96); }
 }
 .ti-deliver-card:hover { border-color: rgba(255, 176, 32, .5); }
 .ti-deliver-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
-.ti-deliver-code { display: inline-grid; place-items: center; min-width: 44px; height: 44px; padding: 0 10px; border-radius: 10px; background: var(--ti-aqua); color: var(--ti-abyss); font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 600; letter-spacing: .02em; }
+.ti-deliver-code { display: inline-grid; place-items: center; min-width: 44px; height: 44px; padding: 0 10px; border-radius: 10px; background: var(--ti-aqua); color: var(--ti-abyss); font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-size: 18px; font-weight: 600; letter-spacing: .02em; }
 .ti-deliver-std { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ti-muted); text-align: right; }
 .ti-deliver-card h3 { font-size: 23px; font-weight: 500; color: #fff; }
 .ti-deliver-card > p { margin: 8px 0 18px; font-size: 14.5px; line-height: 1.55; color: var(--ti-muted); }
@@ -225,7 +225,7 @@ html.ti-gsap .ti-type-card:not(.is-on) { transform: scale(.96); }
 .ti-regs-copy p:not(.ti-kicker) { margin-top: 12px; font-size: 15.5px; line-height: 1.6; color: var(--ti-muted); }
 .ti-regs-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 .ti-regs-list li { padding: 16px 18px; border: 1px solid var(--ti-line); border-radius: var(--ti-radius); background: rgba(255, 255, 255, .03); }
-.ti-regs-list b { display: block; font-family: 'Outfit', sans-serif; font-size: 19px; font-weight: 600; color: var(--ti-aqua); }
+.ti-regs-list b { display: block; font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-size: 19px; font-weight: 600; color: var(--ti-aqua); }
 .ti-regs-list span { display: block; margin-top: 4px; font-size: 13px; line-height: 1.45; color: var(--ti-muted); }
 
 /* ============================================================
@@ -254,7 +254,7 @@ html:not(.ti-gsap) .ti-journey-line path { stroke-dashoffset: 0; }
 .ti-journey-list li { position: relative; padding: 20px 22px; border: 1px solid var(--ti-line); border-radius: var(--ti-radius); background: rgba(255, 255, 255, .03); }
 .ti-journey-dot { position: absolute; left: -58px; top: 18px; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--ti-abyss); border: 1px solid var(--ti-line); color: var(--ti-aqua); font-size: 12px; font-weight: 700; letter-spacing: .08em; transition: background .4s, color .4s, box-shadow .4s; }
 .ti-journey-list li.is-on .ti-journey-dot { background: var(--ti-aqua); color: var(--ti-abyss); box-shadow: 0 0 24px rgba(255, 176, 32, .55); }
-.ti-journey-list strong { display: block; font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 500; color: #fff; }
+.ti-journey-list strong { display: block; font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-size: 20px; font-weight: 500; color: #fff; }
 .ti-journey-list p { margin-top: 6px; font-size: 15px; line-height: 1.6; color: #d9cfe6; }
 
 /* ============================================================
@@ -274,7 +274,7 @@ html:not(.ti-gsap) .ti-journey-line path { stroke-dashoffset: 0; }
 .ti-faq .ti-head { margin-bottom: 0; position: sticky; top: calc(var(--eta-hh, 0px) + 24px); }
 .ti-faq-list { display: grid; gap: 10px; }
 .ti-faq-item { border: 1px solid var(--ti-line-light); border-radius: var(--ti-radius); background: #fff; padding: 0 22px; }
-.ti-faq-item summary { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 0; cursor: pointer; list-style: none; font-family: 'Outfit', sans-serif; font-size: 19px; font-weight: 500; color: var(--ti-navy); }
+.ti-faq-item summary { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 0; cursor: pointer; list-style: none; font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-size: 19px; font-weight: 500; color: var(--ti-navy); }
 .ti-faq-item summary::-webkit-details-marker { display: none; }
 .ti-faq-icon { position: relative; flex: 0 0 26px; width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--ti-line-light); }
 .ti-faq-icon::before, .ti-faq-icon::after { content: ""; position: absolute; left: 50%; top: 50%; width: 10px; height: 2px; background: var(--ti-blue); transform: translate(-50%, -50%); transition: transform .3s; }
@@ -289,7 +289,7 @@ html:not(.ti-gsap) .ti-journey-line path { stroke-dashoffset: 0; }
 .ti-related-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .ti-related-card { display: grid; gap: 8px; align-content: start; padding: 24px; border: 1px solid var(--ti-line-light); border-radius: var(--ti-radius); background: #fff; text-decoration: none !important; color: inherit; transition: transform .3s var(--ti-ease), box-shadow .3s; }
 .ti-related-card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(20, 13, 34, .1); }
-.ti-related-card strong { font-family: 'Outfit', sans-serif; font-size: 21px; font-weight: 500; color: var(--ti-navy); }
+.ti-related-card strong { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-size: 21px; font-weight: 500; color: var(--ti-navy); }
 .ti-related-card p { font-size: 14.5px; line-height: 1.6; color: var(--ti-muted-light); }
 .ti-related-card .ti-inline-link { margin-top: 8px; color: var(--ti-blue) !important; }
 

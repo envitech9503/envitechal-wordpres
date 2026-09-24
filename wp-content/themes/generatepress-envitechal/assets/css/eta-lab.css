@@ -25,11 +25,11 @@
     --lab-ease: cubic-bezier(.22, .61, .36, 1);
     color: var(--lab-text);
     background: var(--lab-ink);
-    font-family: 'Archivo', "Segoe UI", Arial, sans-serif;
+    font-family: 'Archivo', 'Archivo Fallback', Arial, sans-serif;
     overflow-x: clip;
 }
 .eta-lab * { box-sizing: border-box; }
-.eta-lab h1, .eta-lab h2, .eta-lab h3 { margin: 0; font-family: 'Outfit', 'Archivo', sans-serif; letter-spacing: -.01em; }
+.eta-lab h1, .eta-lab h2, .eta-lab h3 { margin: 0; font-family: 'Outfit', 'Outfit Fallback', sans-serif; letter-spacing: -.01em; }
 .eta-lab p { margin: 0; }
 .eta-lab ul, .eta-lab ol { margin: 0; padding: 0; list-style: none; }
 
@@ -46,7 +46,7 @@
 .lab-btn {
     display: inline-flex; align-items: center; gap: 10px;
     min-height: 48px; padding: 12px 22px; border-radius: 999px;
-    font: 700 14px/1 'Archivo', "Segoe UI", Arial, sans-serif; letter-spacing: .02em;
+    font: 700 14px/1 'Archivo', 'Archivo Fallback', Arial, sans-serif; letter-spacing: .02em;
     text-decoration: none !important; cursor: pointer;
     transition: transform .25s var(--lab-ease), background .25s, border-color .25s, color .25s;
 }
@@ -133,7 +133,7 @@ html:not(.lab-gsap) .lab-cue { display: none; }
 .lab-ledger-item:first-child { padding-left: 0; }
 .lab-ledger-item:last-child { border-right: 0; }
 .lab-ledger-k { font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--lab-mint); }
-.lab-ledger-item strong { font-family: 'Outfit', 'Archivo', sans-serif; font-size: 24px; font-weight: 500; color: #fff; }
+.lab-ledger-item strong { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-size: 24px; font-weight: 500; color: #fff; }
 .lab-ledger-s { font-size: 13px; color: var(--lab-muted); line-height: 1.45; }
 
 /* ============================================================
@@ -162,7 +162,7 @@ html:not(.lab-gsap) .lab-track { flex-wrap: wrap; }
 html:not(.lab-gsap) .lab-stage-card { flex: 1 1 280px; min-height: 0; }
 .lab-stage-card::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: radial-gradient(60% 40% at 0% 0%, rgba(125, 232, 205, .14), transparent 70%); opacity: 0; transition: opacity .5s; }
 .lab-stage-card.is-on::after { opacity: 1; }
-.lab-stage-n { font-family: 'Outfit', sans-serif; font-size: 44px; font-weight: 200; line-height: 1; color: var(--lab-mint); }
+.lab-stage-n { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-size: 44px; font-weight: 200; line-height: 1; color: var(--lab-mint); }
 .lab-stage-card h3 { margin-top: 10px; font-size: 26px; font-weight: 500; color: #fff; }
 .lab-stage-sub { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--lab-muted); }
 .lab-stage-card > p:last-child { align-self: end; margin-top: 12px; font-size: 15px; line-height: 1.6; color: #c6d8d0; }
@@ -182,7 +182,7 @@ html:not(.lab-gsap) .lab-stage-card { flex: 1 1 280px; min-height: 0; }
 }
 .lab-matrix-card:hover { border-color: rgba(125, 232, 205, .45); }
 .lab-matrix-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
-.lab-matrix-code { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 10px; background: var(--lab-mint); color: var(--lab-ink); font-family: 'Outfit', sans-serif; font-size: 22px; font-weight: 500; }
+.lab-matrix-code { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 10px; background: var(--lab-mint); color: var(--lab-ink); font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-size: 22px; font-weight: 500; }
 .lab-matrix-std { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--lab-muted); text-align: right; }
 .lab-matrix-card h3 { font-size: 24px; font-weight: 500; color: #fff; }
 .lab-matrix-card > p { margin: 8px 0 18px; font-size: 14.5px; line-height: 1.55; color: var(--lab-muted); }
@@ -237,7 +237,7 @@ html:not(.lab-gsap) .lab-method-line path { stroke-dashoffset: 0; }
 .lab-method-list li { position: relative; padding: 20px 22px; border: 1px solid var(--lab-line); border-radius: var(--lab-radius); background: rgba(255, 255, 255, .03); }
 .lab-method-dot { position: absolute; left: -58px; top: 18px; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--lab-ink); border: 1px solid var(--lab-line); color: var(--lab-mint); font-size: 12px; font-weight: 700; letter-spacing: .08em; transition: background .4s, color .4s, box-shadow .4s; }
 .lab-method-list li.is-on .lab-method-dot { background: var(--lab-mint); color: var(--lab-ink); box-shadow: 0 0 22px rgba(125, 232, 205, .5); }
-.lab-method-list strong { display: block; font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 500; color: #fff; }
+.lab-method-list strong { display: block; font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-size: 20px; font-weight: 500; color: #fff; }
 .lab-method-list p { margin-top: 6px; font-size: 15px; line-height: 1.6; color: #c6d8d0; }
 
 /* ============================================================
@@ -250,7 +250,7 @@ html:not(.lab-gsap) .lab-method-line path { stroke-dashoffset: 0; }
 .lab-faq .lab-kicker { color: var(--lab-green); }
 .lab-faq-list { display: grid; gap: 10px; }
 .lab-faq-item { border: 1px solid var(--lab-line-light); border-radius: var(--lab-radius); background: #fff; padding: 0 22px; }
-.lab-faq-item summary { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 0; cursor: pointer; list-style: none; font-family: 'Outfit', sans-serif; font-size: 19px; font-weight: 500; color: var(--eta-navy, #102229); }
+.lab-faq-item summary { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 0; cursor: pointer; list-style: none; font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-size: 19px; font-weight: 500; color: var(--eta-navy, #102229); }
 .lab-faq-item summary::-webkit-details-marker { display: none; }
 .lab-faq-icon { position: relative; flex: 0 0 26px; width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--lab-line-light); }
 .lab-faq-icon::before, .lab-faq-icon::after { content: ""; position: absolute; left: 50%; top: 50%; width: 10px; height: 2px; background: var(--lab-green); transform: translate(-50%, -50%); transition: transform .3s; }
@@ -267,7 +267,7 @@ html:not(.lab-gsap) .lab-method-line path { stroke-dashoffset: 0; }
 .lab-related-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .lab-related-card { display: grid; gap: 8px; align-content: start; padding: 24px; border: 1px solid var(--lab-line-light); border-radius: var(--lab-radius); background: #fff; text-decoration: none !important; color: inherit; transition: transform .3s var(--lab-ease), box-shadow .3s; }
 .lab-related-card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(16, 34, 41, .1); }
-.lab-related-card strong { font-family: 'Outfit', sans-serif; font-size: 21px; font-weight: 500; color: var(--eta-navy, #102229); }
+.lab-related-card strong { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-size: 21px; font-weight: 500; color: var(--eta-navy, #102229); }
 .lab-related-card p { font-size: 14.5px; line-height: 1.6; color: var(--lab-muted-light); }
 .lab-related-card .lab-inline-link { margin-top: 8px; color: var(--lab-green) !important; }
 

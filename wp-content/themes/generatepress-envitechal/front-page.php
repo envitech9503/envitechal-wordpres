@@ -122,7 +122,7 @@ $credentials = [
 html { overflow-x: clip; }
 body.home .site-main.eta-home-master { margin-top: 0; margin-left: 0; margin-right: 0; }
 
-.ets-twin { position: relative; background: #06090b; color: #EAF3EE; font-family: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+.ets-twin { position: relative; background: #06090b; color: #EAF3EE; font-family: 'Archivo', 'Archivo Fallback', Arial, sans-serif;
   width: 100vw; width: var(--eta-vw, 100vw); margin-left: calc(50% - 50vw); margin-left: calc(50% - var(--eta-vw, 100vw)/2); }
 html.ets-gsap .ets-twin { height: 265vh; height: 265svh; }
 .ets-stage { position: relative; overflow: hidden; height: calc(100vh - var(--eta-hh, 0px)); height: calc(100svh - var(--eta-hh, 0px)); }
@@ -144,14 +144,14 @@ html:not(.ets-gsap) .ets-gl { display: none; }
 .ets-l1 { position: absolute; inset: 0; z-index: 5; display: flex; flex-direction: column; align-items: center; justify-content: center;
   text-align: center; padding: 0 6vw 9vh; }
 .ets-kicker { font-size: 11.5px; letter-spacing: .3em; text-transform: uppercase; color: #8FB8A4; font-weight: 500; margin: 0 0 26px; }
-.ets-h1 { font-family: 'Outfit', 'Archivo', sans-serif; font-weight: 100; line-height: 1.02; letter-spacing: .08em; margin: 0;
+.ets-h1 { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 100; line-height: 1.02; letter-spacing: .08em; margin: 0;
   font-size: clamp(40px, 6.4vw, 96px); font-size: clamp(36px, min(6.2vw, 10svh), 96px);
   color: #F2FAF5; text-shadow: 0 0 34px rgba(140,255,205,.16); }
 .ets-h1 .ets-em { font-weight: 300; }
-.ets-sub { font-family: 'Archivo', "Segoe UI", Arial, sans-serif; font-size: clamp(15.5px, 1.3vw, 18px); font-weight: 400; color: #B4D2C2;
+.ets-sub { font-family: 'Archivo', 'Archivo Fallback', Arial, sans-serif; font-size: clamp(15.5px, 1.3vw, 18px); font-weight: 400; color: #B4D2C2;
   max-width: 620px; line-height: 1.65; letter-spacing: 0; margin: 24px 0 0; }
 .ets-ctas { display: flex; gap: 16px; margin-top: 34px; flex-wrap: wrap; justify-content: center; }
-.ets-btn { display: inline-flex; align-items: center; gap: 9px; font-family: 'Archivo', sans-serif; font-size: 13px; font-weight: 600;
+.ets-btn { display: inline-flex; align-items: center; gap: 9px; font-family: 'Archivo', 'Archivo Fallback', sans-serif; font-size: 13px; font-weight: 600;
   letter-spacing: .12em; text-transform: uppercase; text-decoration: none; padding: 15px 26px; border-radius: 2px;
   transition: background .25s ease, color .25s ease, border-color .25s ease; }
 .ets-btn .ets-arrow { display: inline-block; transition: transform .25s cubic-bezier(.2,.6,.2,1); }
@@ -167,7 +167,7 @@ html:not(.ets-gsap) .ets-gl { display: none; }
   align-items: center; gap: 9px; font-size: 10.5px; letter-spacing: .3em; text-transform: uppercase; color: #7FA391; }
 html:not(.ets-gsap) .ets-cue { display: none; }
 .ets-cueline { width: 1px; height: 40px; background: linear-gradient(#7FA391, transparent); animation: etsCueDrop 2.2s ease-in-out infinite; }
-.ets-skip { position: absolute; bottom: 24px; right: 104px; z-index: 6; appearance: none; cursor: pointer; font-family: 'Archivo', sans-serif;
+.ets-skip { position: absolute; bottom: 24px; right: 104px; z-index: 6; appearance: none; cursor: pointer; font-family: 'Archivo', 'Archivo Fallback', sans-serif;
   background: rgba(6,9,11,.4); color: #7FA391; border: 1px solid rgba(127,163,145,.4); border-radius: 999px;
   padding: 8px 18px; font-size: 10.5px; letter-spacing: .3em; text-transform: uppercase;
   transition: color .25s ease, border-color .25s ease; }
@@ -214,11 +214,11 @@ html:not(.ets-gsap) .ets-skip { display: none; }
 /* ---------- editorial notes (scenes 2–5) ---------- */
 .ets-note { position: absolute; z-index: 3; right: 7vw; top: 50%; transform: translateY(-50%); width: min(440px, 38vw); text-align: left; }
 html:not(.ets-gsap) .ets-note { display: none; }
-.ets-nnum { font-family: 'Outfit', sans-serif; font-weight: 100; font-size: 60px; color: rgba(141,230,201,.34); line-height: 1; display: block; margin-bottom: 0; }
+.ets-nnum { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 100; font-size: 60px; color: rgba(141,230,201,.34); line-height: 1; display: block; margin-bottom: 0; }
 .ets-note > .ets-mask { margin-bottom: 12px; }
 html.ets-gsap .ets-note { opacity: 0; }
 .ets-nkick { font-size: 10.5px; letter-spacing: .3em; text-transform: uppercase; color: #8FB8A4; font-weight: 600; display: block; margin-bottom: 0; }
-.ets-ntext { font-family: 'Outfit', sans-serif; font-weight: 200; font-size: clamp(19px, 1.85vw, 27px); line-height: 1.3; color: #EAF3EE; margin: 0; }
+.ets-ntext { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 200; font-size: clamp(19px, 1.85vw, 27px); line-height: 1.3; color: #EAF3EE; margin: 0; }
 .ets-nsmall { font-size: 12.5px; letter-spacing: .06em; color: #9CC3B2; margin-top: 12px; display: block; }
 
 /* ---------- monitoring tags (scene 3) ---------- */
@@ -240,13 +240,13 @@ html.ets-nogl .ets-tag:nth-child(6) { transform: translate(22vw,42vh); }
 html:not(.ets-gsap) .ets-words { display: none; }
 .ets-wrow { display: flex; gap: 3.6vw; flex-wrap: wrap; justify-content: center; }
 .ets-word { display: inline-block; overflow: hidden; }
-.ets-word .ets-line { font-family: 'Outfit', sans-serif; font-weight: 300; font-size: clamp(17px, 2.7vw, 38px); letter-spacing: .22em; color: #E7F6EE; }
+.ets-word .ets-line { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 300; font-size: clamp(17px, 2.7vw, 38px); letter-spacing: .22em; color: #E7F6EE; }
 .ets-wmicro { font-size: 12.5px; letter-spacing: .08em; color: #BFE0D2; opacity: 0; max-width: 640px; text-align: center; padding: 0 6vw; margin-top: 6px; }
 
 /* ---------- resolution (scene 7) ---------- */
 .ets-final { position: absolute; inset: 0; z-index: 4; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 6vw; }
 html:not(.ets-gsap) .ets-final { display: none; }
-.ets-final .ets-line { font-family: 'Outfit', sans-serif; font-weight: 200; font-size: clamp(34px, 5.4vw, 80px); letter-spacing: .16em; line-height: 1.14; color: #0F1D18; }
+.ets-final .ets-line { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 200; font-size: clamp(34px, 5.4vw, 80px); letter-spacing: .16em; line-height: 1.14; color: #0F1D18; }
 .ets-fcta { opacity: 0; margin-top: 36px; display: flex; flex-direction: column; align-items: center; gap: 18px; }
 .ets-fcta .ets-btn-ghost { color: #1E4436; border-color: rgba(20,60,47,.35); }
 .ets-fcta .ets-btn-ghost::after { background: #1E4436; }
@@ -389,19 +389,19 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
 /* Act numerals sat at 1.07-1.40:1 contrast — below the 3:1 WCAG minimum for
    large text, so they read as smudges rather than structure. Raised to clear
    3.4:1 while staying secondary to the heading beneath. */
-.etb-num { display: block; font-family: 'Outfit', sans-serif; font-weight: 200; font-size: 46px; line-height: 1; color: rgba(30,107,84,.75); margin-bottom: 4px; }
+.etb-num { display: block; font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 200; font-size: 46px; line-height: 1; color: rgba(30,107,84,.75); margin-bottom: 4px; }
 .etb-dark .etb-num { color: rgba(125,232,205,.46); }
-.etb-eyebrow { font-family: 'Archivo', sans-serif; font-size: 11.5px; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; color: var(--etb-emerald); margin: 0 0 14px; }
+.etb-eyebrow { font-family: 'Archivo', 'Archivo Fallback', sans-serif; font-size: 11.5px; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; color: var(--etb-emerald); margin: 0 0 14px; }
 .etb-dark .etb-eyebrow { color: #8FB8A4; }
-.etb-head h2, .etb-maritime h2 { font-family: 'Outfit', sans-serif; font-weight: 200; font-size: clamp(30px, 3.4vw, 48px); line-height: 1.12; letter-spacing: .01em; color: var(--etb-ink); margin: 0 0 18px; }
+.etb-head h2, .etb-maritime h2 { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 200; font-size: clamp(30px, 3.4vw, 48px); line-height: 1.12; letter-spacing: .01em; color: var(--etb-ink); margin: 0 0 18px; }
 .etb-dark .etb-head h2, .etb-maritime h2 { color: #F2FAF5; }
-.etb-lead { font-family: 'Archivo', "Segoe UI", Arial, sans-serif; font-size: 16.5px; font-weight: 400; line-height: 1.7; letter-spacing: 0; color: #42594D; margin: 0; max-width: 62ch; }
+.etb-lead { font-family: 'Archivo', 'Archivo Fallback', Arial, sans-serif; font-size: 16.5px; font-weight: 400; line-height: 1.7; letter-spacing: 0; color: #42594D; margin: 0; max-width: 62ch; }
 .etb-dark .etb-lead { color: #A3C4B4; }
-.etb-microlabel { font-family: 'Archivo', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; color: #8FB8A4; margin: 0 0 12px; }
+.etb-microlabel { font-family: 'Archivo', 'Archivo Fallback', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; color: #8FB8A4; margin: 0 0 12px; }
 .etb-matrix .etb-microlabel, .etb-why .etb-microlabel, .etb-vault .etb-microlabel { color: var(--etb-emerald); }
 
 /* buttons + links */
-.etb-btn { display: inline-flex; align-items: center; gap: 9px; font-family: 'Archivo', sans-serif; font-size: 12.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; text-decoration: none; padding: 14px 24px; border-radius: 2px; transition: background .25s ease, color .25s ease, border-color .25s ease; }
+.etb-btn { display: inline-flex; align-items: center; gap: 9px; font-family: 'Archivo', 'Archivo Fallback', sans-serif; font-size: 12.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; text-decoration: none; padding: 14px 24px; border-radius: 2px; transition: background .25s ease, color .25s ease, border-color .25s ease; }
 .etb-btn .etb-arrow, .etb-link .etb-arrow, .etb-obs-link .etb-arrow { display: inline-block; transition: transform .25s cubic-bezier(.2,.6,.2,1); }
 .etb-btn:hover .etb-arrow, .etb-link:hover .etb-arrow { transform: translateX(4px); }
 .etb-btn-solid { background: var(--etb-emerald); border: 1px solid var(--etb-emerald); color: #F2FAF5; }
@@ -412,7 +412,7 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
 .etb-btn-line:hover { border-color: rgba(20,60,47,.7); color: var(--etb-ink); }
 /* inline-flex with a 24px minimum keeps these standalone calls to action at
    the WCAG 2.2 AA target size (2.5.8); as text links they rendered 17px tall. */
-.etb-link { display: inline-flex; align-items: center; min-height: 24px; font-family: 'Archivo', sans-serif; font-size: 12.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; text-decoration: none; color: var(--etb-emerald); background: linear-gradient(currentColor, currentColor) left bottom / 0 1px no-repeat; padding-bottom: 3px; transition: background-size .3s cubic-bezier(.2,.6,.2,1), color .25s ease; }
+.etb-link { display: inline-flex; align-items: center; min-height: 24px; font-family: 'Archivo', 'Archivo Fallback', sans-serif; font-size: 12.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; text-decoration: none; color: var(--etb-emerald); background: linear-gradient(currentColor, currentColor) left bottom / 0 1px no-repeat; padding-bottom: 3px; transition: background-size .3s cubic-bezier(.2,.6,.2,1), color .25s ease; }
 .etb-link:hover { background-size: 100% 1px; color: #14503D; }
 .etb-link-light { color: var(--etb-aqua); } .etb-link-light:hover { color: #fff; }
 /* Any link sitting on a dark act inherits the aqua, not the emerald that is
@@ -430,7 +430,7 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
 .etb-ledger-item { padding: 24px 24px 26px; border-right: 1px solid rgba(125,232,205,.09); }
 .etb-ledger-item:last-child { border-right: 0; }
 .etb-ledger-auth { display: block; font-size: 10.5px; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; color: #7FA391; margin-bottom: 10px; }
-.etb-ledger-item strong { display: block; font-family: 'Outfit', sans-serif; font-weight: 300; font-size: 19px; letter-spacing: .02em; color: #EAF3EE; margin-bottom: 5px; }
+.etb-ledger-item strong { display: block; font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 300; font-size: 19px; letter-spacing: .02em; color: #EAF3EE; margin-bottom: 5px; }
 .etb-ledger-sub { display: block; font-size: 12.5px; letter-spacing: .08em; color: var(--etb-mist); }
 
 /* ---------- 03 service observatory ---------- */
@@ -439,8 +439,8 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
 .etb-obs-grid { display: grid; grid-template-columns: minmax(0,5fr) minmax(0,7fr); gap: 56px; align-items: start; }
 .etb-obs-index { display: flex; flex-direction: column; border-top: 1px solid var(--etb-dline); position: sticky; top: calc(var(--eta-hh, 90px) + 32px); }
 .etb-obs-link { display: grid; grid-template-columns: 44px 1fr 24px; align-items: center; gap: 10px; padding: 22px 6px; border-bottom: 1px solid var(--etb-dline); text-decoration: none; transition: padding-left .3s cubic-bezier(.2,.6,.2,1); }
-.etb-obs-i { font-family: 'Outfit', sans-serif; font-weight: 100; font-size: 22px; color: rgba(125,232,205,.35); }
-.etb-obs-t { font-family: 'Outfit', sans-serif; font-weight: 300; font-size: clamp(17px, 1.5vw, 21px); color: #C8DDD2; transition: color .25s ease; }
+.etb-obs-i { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 100; font-size: 22px; color: rgba(125,232,205,.35); }
+.etb-obs-t { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 300; font-size: clamp(17px, 1.5vw, 21px); color: #C8DDD2; transition: color .25s ease; }
 .etb-obs-link .etb-arrow { color: var(--etb-aqua); opacity: 0; transform: translateX(-6px); transition: opacity .25s ease, transform .25s ease; }
 .etb-obs-link:hover, .etb-obs-link.is-on { padding-left: 14px; }
 .etb-obs-link:hover .etb-obs-t, .etb-obs-link.is-on .etb-obs-t { color: #fff; }
@@ -453,9 +453,9 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
 .etb-obs-media img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.001); transition: transform 6s ease; }
 .etb-obs-plane.is-on .etb-obs-media img { transform: scale(1.05); }
 .etb-obs-body { padding-top: 22px; }
-.etb-obs-h { font-family: 'Outfit', sans-serif; font-weight: 300; font-size: 24px; color: #F2FAF5; margin: 0 0 10px; }
+.etb-obs-h { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 300; font-size: 24px; color: #F2FAF5; margin: 0 0 10px; }
 .etb-obs-p { font-size: 15px; line-height: 1.65; color: var(--etb-mist); margin: 0 0 12px; max-width: 560px; }
-.etb-params { font-family: 'Archivo', sans-serif; font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--etb-aqua); border-top: 1px solid var(--etb-dline); padding-top: 12px; margin: 0 0 18px; }
+.etb-params { font-family: 'Archivo', 'Archivo Fallback', sans-serif; font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--etb-aqua); border-top: 1px solid var(--etb-dline); padding-top: 12px; margin: 0 0 18px; }
 
 /* ---------- 04 compliance journey ---------- */
 .etb-journey { background: var(--etb-tealdeep); border-top: 1px solid rgba(125,232,205,.08); padding: 76px 0 88px; }
@@ -467,8 +467,8 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
 .etb-steps::after { content: ""; position: absolute; left: 8px; top: 8px; bottom: 8px; width: 1px; background: var(--etb-aqua); transform-origin: top; transform: scaleY(var(--tp, 0)); }
 .etb-steps li { display: grid; grid-template-columns: 62px 1fr; gap: 14px; padding: 16px 0; border-bottom: 1px solid rgba(125,232,205,.08); }
 .etb-steps li:last-child { border-bottom: 0; }
-.etb-step-n { font-family: 'Outfit', sans-serif; font-weight: 100; font-size: 40px; line-height: 1; color: rgba(125,232,205,.35); }
-.etb-steps strong { display: block; font-family: 'Outfit', sans-serif; font-weight: 300; font-size: 19px; letter-spacing: .08em; text-transform: uppercase; color: #F2FAF5; margin-bottom: 6px; }
+.etb-step-n { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 100; font-size: 40px; line-height: 1; color: rgba(125,232,205,.35); }
+.etb-steps strong { display: block; font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 300; font-size: 19px; letter-spacing: .08em; text-transform: uppercase; color: #F2FAF5; margin-bottom: 6px; }
 .etb-steps p { font-size: 14.5px; line-height: 1.6; color: var(--etb-mist); margin: 0; max-width: 520px; }
 
 /* ---------- 05 sector matrix ---------- */
@@ -476,14 +476,14 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
 .etb-matrix-grid { display: grid; grid-template-columns: minmax(0,7fr) minmax(0,5fr); gap: 64px; align-items: start; }
 .etb-matrix-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--etb-line); }
 .etb-matrix-row { display: flex; flex-direction: column; gap: 4px; padding: 13px 8px; border-bottom: 1px solid var(--etb-line); cursor: default; transition: padding-left .3s cubic-bezier(.2,.6,.2,1), background .3s ease; }
-.etb-matrix-name { font-family: 'Outfit', sans-serif; font-weight: 300; font-size: clamp(22px, 2.3vw, 34px); line-height: 1.1; color: #24352E; transition: color .25s ease; }
-.etb-matrix-svc { font-family: 'Archivo', sans-serif; font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--etb-sage); }
+.etb-matrix-name { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 300; font-size: clamp(22px, 2.3vw, 34px); line-height: 1.1; color: #24352E; transition: color .25s ease; }
+.etb-matrix-svc { font-family: 'Archivo', 'Archivo Fallback', sans-serif; font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--etb-sage); }
 .etb-matrix-row:hover, .etb-matrix-row:focus-visible, .etb-matrix-row.is-on { padding-left: 20px; }
 .etb-matrix-row:hover .etb-matrix-name, .etb-matrix-row:focus-visible .etb-matrix-name, .etb-matrix-row.is-on .etb-matrix-name { color: var(--etb-emerald); }
 .etb-matrix-row:focus-visible { outline: 1px solid var(--etb-emerald); outline-offset: 2px; }
 .etb-matrix-detail { position: sticky; top: calc(var(--eta-hh, 90px) + 40px); border: 1px solid var(--etb-line); border-radius: 2px; padding: 34px 32px 36px; background: #fff; }
-.etb-matrix-big { font-family: 'Outfit', sans-serif; font-weight: 200; font-size: 40px; line-height: 1.05; color: var(--etb-ink); margin: 0 0 12px; }
-.etb-matrix-lines { font-family: 'Archivo', sans-serif; font-size: 12.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--etb-emerald); line-height: 2; margin: 0 0 8px; border-top: 1px solid var(--etb-line); padding-top: 14px; }
+.etb-matrix-big { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 200; font-size: 40px; line-height: 1.05; color: var(--etb-ink); margin: 0 0 12px; }
+.etb-matrix-lines { font-family: 'Archivo', 'Archivo Fallback', sans-serif; font-size: 12.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--etb-emerald); line-height: 2; margin: 0 0 8px; border-top: 1px solid var(--etb-line); padding-top: 14px; }
 .etb-matrix-actions { margin: 14px 0 22px; }
 @media (min-width: 821px) { .etb-matrix-row .etb-matrix-svc { display: none; } }
 
@@ -509,10 +509,10 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
 .etb-vault-row:hover { background: rgba(30,107,84,.04); }
 .etb-vault-logo img { width: 44px; height: 44px; object-fit: contain; filter: grayscale(1); opacity: .75; transition: filter .3s ease, opacity .3s ease; }
 .etb-vault-row:hover .etb-vault-logo img { filter: none; opacity: 1; }
-.etb-vault-auth { font-family: 'Archivo', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--etb-ink); }
-.etb-vault-cred { font-family: 'Outfit', sans-serif; font-weight: 300; font-size: 18px; color: #24352E; }
-.etb-vault-loc { font-family: 'Archivo', sans-serif; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--etb-sage); text-align: right; }
-.etb-footnote { font-family: 'Archivo', "Segoe UI", Arial, sans-serif; font-size: 12.5px; font-style: normal; letter-spacing: .01em; color: var(--etb-sage); margin: 16px 0 0; }
+.etb-vault-auth { font-family: 'Archivo', 'Archivo Fallback', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--etb-ink); }
+.etb-vault-cred { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 300; font-size: 18px; color: #24352E; }
+.etb-vault-loc { font-family: 'Archivo', 'Archivo Fallback', sans-serif; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--etb-sage); text-align: right; }
+.etb-footnote { font-family: 'Archivo', 'Archivo Fallback', Arial, sans-serif; font-size: 12.5px; font-style: normal; letter-spacing: .01em; color: var(--etb-sage); margin: 16px 0 0; }
 
 /* ---------- 08 why the system works ---------- */
 .etb-why { padding: 80px 0 84px; }
@@ -532,11 +532,11 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
 .etb-clients li { padding: 9px 0; font-size: 13.5px; line-height: 1.35; color: var(--etb-ink); border-bottom: 1px solid var(--etb-line); }
 @media (max-width: 560px) { .etb-clients { grid-template-columns: 1fr; } }
 
-.etb-proof strong { display: block; font-family: 'Outfit', sans-serif; font-weight: 300; font-size: clamp(19px, 1.7vw, 23px); line-height: 1.5; letter-spacing: .06em; color: var(--etb-ink); margin-bottom: 8px; }
+.etb-proof strong { display: block; font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 300; font-size: clamp(19px, 1.7vw, 23px); line-height: 1.5; letter-spacing: .06em; color: var(--etb-ink); margin-bottom: 8px; }
 .etb-proof p { font-size: 14px; line-height: 1.6; color: var(--etb-sage); margin: 0; }
 .etb-fb { display: grid; grid-template-columns: 52px 1fr; gap: 12px; padding: 18px 0; border-bottom: 1px solid var(--etb-line); }
-.etb-fb > span { font-family: 'Outfit', sans-serif; font-weight: 100; font-size: 36px; line-height: 1; color: rgba(30,107,84,.3); }
-.etb-fb strong { display: block; font-family: 'Outfit', sans-serif; font-weight: 300; font-size: 19px; color: var(--etb-ink); margin-bottom: 5px; }
+.etb-fb > span { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 100; font-size: 36px; line-height: 1; color: rgba(30,107,84,.3); }
+.etb-fb strong { display: block; font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 300; font-size: 19px; color: var(--etb-ink); margin-bottom: 5px; }
 .etb-fb p { font-size: 14px; line-height: 1.6; color: var(--etb-sage); margin: 0; }
 
 /* ---------- 09 knowledge hub ---------- */
@@ -552,18 +552,18 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
 .etb-hub-feature-img { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; object-fit: cover; opacity: .52; }
 .etb-hub-feature::after { content: ""; position: absolute; inset: 0; z-index: 0; background: linear-gradient(to top, rgba(8,19,16,.96) 26%, rgba(8,19,16,.62) 58%, rgba(8,19,16,.28) 100%); }
 .etb-hub-feature > *:not(.etb-hub-feature-img) { position: relative; z-index: 1; }
-.etb-hub-feature h3 { font-family: 'Outfit', sans-serif; font-weight: 200; font-size: clamp(26px, 2.6vw, 40px); line-height: 1.14; margin: 0 0 14px; }
+.etb-hub-feature h3 { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 200; font-size: clamp(26px, 2.6vw, 40px); line-height: 1.14; margin: 0 0 14px; }
 .etb-hub-feature h3 a { color: #F2FAF5; text-decoration: none; }
 .etb-hub-feature h3 a:hover { color: var(--etb-aqua); }
 .etb-hub-p { font-size: 15px; line-height: 1.65; color: var(--etb-mist); margin: 0 0 22px; max-width: 480px; }
 .etb-hub-list { display: flex; flex-direction: column; }
 .etb-hub-list .eta-card.eta-post-card { background: transparent; border: 0; border-bottom: 1px solid var(--etb-line); border-radius: 0; box-shadow: none; padding: 0 0 18px; margin: 0 0 18px; transform: none !important; display: grid; grid-template-columns: 148px minmax(0,1fr); gap: 16px; align-items: start; }
 .etb-hub-list .eta-post-card img { border-radius: 2px; aspect-ratio: 4/3; width: 100%; height: auto; object-fit: cover; margin: 0; }
-.etb-hub-list .eta-post-card h3 { font-family: 'Outfit', sans-serif; font-weight: 300; font-size: 19px; line-height: 1.3; margin: 0 0 6px; }
+.etb-hub-list .eta-post-card h3 { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 300; font-size: 19px; line-height: 1.3; margin: 0 0 6px; }
 .etb-hub-list .eta-post-card h3 a { color: var(--etb-ink); text-decoration: none; }
 .etb-hub-list .eta-post-card h3 a:hover { color: var(--etb-emerald); }
 .etb-hub-list .eta-post-card p { font-size: 13px; line-height: 1.5; color: var(--etb-sage); margin: 0 0 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.etb-hub-list .eta-text-link { font-family: 'Archivo', sans-serif; font-size: 11.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--etb-emerald); }
+.etb-hub-list .eta-text-link { font-family: 'Archivo', 'Archivo Fallback', sans-serif; font-size: 11.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--etb-emerald); }
 .etb-hub-list .etb-actions { margin-top: 6px; }
 
 /* ---------- 10 final conversion scene ---------- */
