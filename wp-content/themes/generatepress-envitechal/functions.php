@@ -6324,3 +6324,106 @@ function eta_modern_wrap_content_tables($content)
 add_filter('the_content', function ($content) {
     return is_singular('post') ? eta_modern_wrap_content_tables($content) : $content;
 }, 20);
+
+/**
+ * Optimised image variants (QA 24-09-2026). The service, hero and card
+ * images were hardcoded as 1.5 to 2.4 MB full-size PNGs from the live
+ * uploads folder; ShortPixel rewrote some of them but not consistently
+ * (13.6 MB of images on /services/ at 390px). The theme now ships 1200w and
+ * 640w WebP renditions of each and swaps them in at output time, adding a
+ * srcset where the <img> has none. Open Graph and other <meta> tags keep the
+ * original PNG so social previews are unaffected.
+ */
+function eta_modern_optimised_image_map()
+{
+    return [
+        '2026/06/Environmental-Testing-Lab.png' => ['environmental-testing-lab-2026-06', 1586, 992],
+        '2026/04/environmental-testing-lab.png' => ['environmental-testing-lab-2026-04', 1672, 941],
+        '2026/05/water-testing-services-karachi-lahore.png' => ['water-testing-services-karachi-lahore', 1448, 1086],
+        '2026/06/Industrial-compliance-Monitoring.png' => ['industrial-compliance-monitoring', 1448, 1086],
+        '2026/06/Environmental-Consulting-Services.png' => ['environmental-consulting-services', 1586, 992],
+        '2026/06/Regulatory-compliance-Advisory.png' => ['regulatory-compliance-advisory', 1586, 992],
+        '2026/06/Regulatory-compliance-Advisory-Services.png' => ['regulatory-compliance-advisory-services', 1586, 992],
+        '2026/06/Calibration-Services.png' => ['calibration-services', 1448, 1086],
+        '2026/06/Ballast-Water-Testing-Services.png' => ['ballast-water-testing-services', 1586, 992],
+        '2026/06/Thermal-Imaging-Services.png' => ['thermal-imaging-services', 1586, 992],
+        '2026/06/IEE-EMP-Consulting.png' => ['iee-emp-consulting', 1586, 992],
+        '2026/06/Certification-Advisory-Services.png' => ['certification-advisory-services', 1586, 992],
+        '2026/05/iee-emp-emr-consulting-clean-1536x961.png' => ['iee-emp-emr-consulting-clean', 1536, 961],
+        '2026/05/environmental-testing-services-hero-v2.png' => ['environmental-testing-services-hero-v2', 1448, 1086],
+    ];
+}
+
+function eta_modern_optimised_image_url($path, $width = 1200)
+{
+    $map = eta_modern_optimised_image_map();
+    if (!isset($map[$path])) {
+        return '';
+    }
+    return get_stylesheet_directory_uri() . '/assets/images/opt/' . $map[$path][0] . '-' . (int) $width . 'w.webp';
+}
+
+function eta_modern_swap_optimised_images($html)
+{
+    if (!is_string($html) || $html === '' || strpos($html, '/wp-content/uploads/') === false) {
+        return $html;
+    }
+    $map = eta_modern_optimised_image_map();
+    $pattern = '#(?:https?://(?:www\.)?(?:staging\.)?envitechal\.com)?/wp-content/uploads/(' . implode('|', array_map('preg_quote', array_keys($map))) . ')#';
+
+    // Leave <meta ...> tags (Open Graph, Twitter cards) untouched.
+    $parts = preg_split('#(<meta\b[^>]*>)#i', $html, -1, PREG_SPLIT_DELIM_CAPTURE);
+    if (!is_array($parts)) {
+        return $html;
+    }
+    foreach ($parts as $i => $part) {
+        if ($i % 2 === 1) {
+            continue;
+        }
+        // <img> tags: swap src and add srcset/sizes when absent.
+        $part = preg_replace_callback('#<img\b[^>]*>#i', function ($m) use ($pattern, $map) {
+            $tag = $m[0];
+            $key = '';
+            if (preg_match('#\ssrc="' . substr($pattern, 1, -1) . '"#', $tag, $mm)) {
+                $key = $mm[1];
+            } elseif (preg_match('#\ssrc="data:image/svg\+xml;base64,([A-Za-z0-9+/=]+)"#', $tag, $mm)) {
+                // ShortPixel placeholder: the real URL sits in data-u inside the SVG.
+                $svg = base64_decode($mm[1], true);
+                if (is_string($svg) && preg_match('#data-u="([^"]+)"#', $svg, $du) && preg_match($pattern, rawurldecode($du[1]), $mu)) {
+                    $key = $mu[1];
+                    $tag = preg_replace('#\sdata-spai="1"#', ' data-spai-excluded="true"', $tag, 1);
+                    $tag = preg_replace('#\ssrcset="\s*"#', '', $tag, 1);
+                }
+            }
+            if ($key === '' || !isset($map[$key])) {
+                return $tag;
+            }
+            $tag = preg_replace('#\ssrc="[^"]*"#', ' src="' . esc_url(eta_modern_optimised_image_url($key, 1200)) . '"', $tag, 1);
+            if (stripos($tag, ' data-spai-excluded=') === false) {
+                $tag = preg_replace('#<img\b#i', '<img data-spai-excluded="true"', $tag, 1);
+            }
+            if (stripos($tag, ' srcset=') === false) {
+                $srcset = esc_url(eta_modern_optimised_image_url($key, 640)) . ' 640w, ' . esc_url(eta_modern_optimised_image_url($key, 1200)) . ' 1200w';
+                $sizes = stripos($tag, ' sizes=') === false ? ' sizes="(max-width: 700px) 100vw, 640px"' : '';
+                $tag = preg_replace('#<img\b#i', '<img srcset="' . $srcset . '"' . $sizes, $tag, 1);
+            }
+            if (!preg_match('#\swidth="#', $tag)) {
+                $tag = preg_replace('#<img\b#i', '<img width="1200" height="' . (int) round($map[$key][2] * 1200 / $map[$key][1]) . '"', $tag, 1);
+            }
+            return $tag;
+        }, $part);
+        // Remaining references (CSS url(), data attributes, JSON-LD) use the 1200w file.
+        $part = preg_replace_callback($pattern, function ($m) {
+            return eta_modern_optimised_image_url($m[1], 1200);
+        }, $part);
+        $parts[$i] = $part;
+    }
+    return implode('', $parts);
+}
+
+add_action('template_redirect', function () {
+    if (is_admin() || is_feed() || (function_exists('eta_modern_is_rest_like_request') && eta_modern_is_rest_like_request())) {
+        return;
+    }
+    ob_start('eta_modern_swap_optimised_images');
+}, 5);
