@@ -6369,7 +6369,13 @@ function eta_modern_optimised_image_map()
 
 function eta_modern_optimised_image_key($path)
 {
-    return preg_replace('#-\d+x\d+(\.[a-z]+)$#i', '$1', (string) $path);
+    $path = (string) $path;
+    $map = eta_modern_optimised_image_map();
+    if (isset($map[$path])) {
+        return $path; // exact key (some originals carry a -WxH suffix themselves)
+    }
+    $stripped = preg_replace('#-\d+x\d+(\.[a-z]+)$#i', '$1', $path);
+    return isset($map[$stripped]) ? $stripped : '';
 }
 
 function eta_modern_optimised_image_url($path, $width = 1200)
@@ -6428,7 +6434,7 @@ function eta_modern_swap_optimised_images($html)
             }
             if (stripos($tag, ' srcset=') === false) {
                 $srcset = esc_url(eta_modern_optimised_image_url($key, 640)) . ' 640w, ' . esc_url(eta_modern_optimised_image_url($key, 1200)) . ' 1200w';
-                $sizes = stripos($tag, ' sizes=') === false ? ' sizes="(max-width: 700px) 100vw, 640px"' : '';
+                $sizes = stripos($tag, ' sizes=') === false ? ' sizes="(max-width: 700px) 100vw, 50vw"' : '';
                 $tag = preg_replace('#<img\b#i', '<img srcset="' . $srcset . '"' . $sizes, $tag, 1);
             }
             if (!preg_match('#\swidth="#', $tag)) {
