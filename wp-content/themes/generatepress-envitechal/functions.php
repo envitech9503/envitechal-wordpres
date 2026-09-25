@@ -6367,6 +6367,11 @@ function eta_modern_optimised_image_map()
     ];
 }
 
+function eta_modern_optimised_image_key($path)
+{
+    return preg_replace('#-\d+x\d+(\.[a-z]+)$#i', '$1', (string) $path);
+}
+
 function eta_modern_optimised_image_url($path, $width = 1200)
 {
     $map = eta_modern_optimised_image_map();
@@ -6382,7 +6387,13 @@ function eta_modern_swap_optimised_images($html)
         return $html;
     }
     $map = eta_modern_optimised_image_map();
-    $pattern = '#(?:https?://(?:www\.)?(?:staging\.)?envitechal\.com)?/wp-content/uploads/(' . implode('|', array_map('preg_quote', array_keys($map))) . ')#';
+    // Keys match with or without a WordPress size suffix (-1024x768 etc.);
+    // eta_modern_optimised_image_key() normalises the capture back to the key.
+    $alts = [];
+    foreach (array_keys($map) as $key) {
+        $alts[] = preg_quote(substr($key, 0, -4), '#') . '(?:-\d+x\d+)?' . preg_quote(substr($key, -4), '#');
+    }
+    $pattern = '#(?:https?://(?:www\.)?(?:staging\.)?envitechal\.com)?/wp-content/uploads/(' . implode('|', $alts) . ')#';
 
     // Leave <meta ...> tags (Open Graph, Twitter cards) untouched.
     $parts = preg_split('#(<meta\b[^>]*>)#i', $html, -1, PREG_SPLIT_DELIM_CAPTURE);
@@ -6398,12 +6409,12 @@ function eta_modern_swap_optimised_images($html)
             $tag = $m[0];
             $key = '';
             if (preg_match('#\ssrc="' . substr($pattern, 1, -1) . '"#', $tag, $mm)) {
-                $key = $mm[1];
+                $key = eta_modern_optimised_image_key($mm[1]);
             } elseif (preg_match('#\ssrc="data:image/svg\+xml;base64,([A-Za-z0-9+/=]+)"#', $tag, $mm)) {
                 // ShortPixel placeholder: the real URL sits in data-u inside the SVG.
                 $svg = base64_decode($mm[1], true);
                 if (is_string($svg) && preg_match('#data-u="([^"]+)"#', $svg, $du) && preg_match($pattern, rawurldecode($du[1]), $mu)) {
-                    $key = $mu[1];
+                    $key = eta_modern_optimised_image_key($mu[1]);
                     $tag = preg_replace('#\sdata-spai="1"#', ' data-spai-excluded="true"', $tag, 1);
                     $tag = preg_replace('#\ssrcset="\s*"#', '', $tag, 1);
                 }
@@ -6427,7 +6438,7 @@ function eta_modern_swap_optimised_images($html)
         }, $part);
         // Remaining references (CSS url(), data attributes, JSON-LD) use the 1200w file.
         $part = preg_replace_callback($pattern, function ($m) {
-            return eta_modern_optimised_image_url($m[1], 1200);
+            return eta_modern_optimised_image_url(eta_modern_optimised_image_key($m[1]), 1200);
         }, $part);
         $parts[$i] = $part;
     }
