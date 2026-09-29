@@ -251,7 +251,7 @@ html:not(.ets-gsap) .ets-final { display: none; }
 .ets-fcta .ets-btn-ghost { color: #1E4436; border-color: rgba(20,60,47,.35); }
 .ets-fcta .ets-btn-ghost::after { background: #1E4436; }
 .ets-fcta .ets-btn-ghost:hover { color: #0F1B17; border-color: rgba(20,60,47,.7); }
-.ets-ftrust { font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: #7C9C8C; }
+.ets-ftrust { font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: #3E5C50; }
 
 /* ---------- mobile ---------- */
 @media (max-width: 820px) {
@@ -423,9 +423,10 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
 .etb-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--etb-aqua); box-shadow: 0 0 8px rgba(125,232,205,.7); margin-left: 8px; vertical-align: 2px; }
 
 /* ---------- 02 trust ledger ---------- */
-.etb-ledger { background: var(--etb-char); position: relative; padding-top: 84px; padding-bottom: 0; }
-.etb-ledger::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 84px; background: var(--etb-paper); }
-.etb-ledger::after { content: ""; position: absolute; top: 22px; left: 50%; width: 1px; height: 40px; background: linear-gradient(rgba(30,107,84,0), rgba(30,107,84,.6)); }
+.etb-ledger { background: var(--etb-char); position: relative; padding-bottom: 0; }
+/* The 84px "paper" hand-off strip and its centre tick were removed (QA 29-09-2026):
+   once the act padding was reduced to a 48 to 68px scale the strip read as an
+   empty band with a stray line between the hero's closing frame and the ledger. */
 .etb-ledger-row { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--etb-dline); }
 .etb-ledger-item { padding: 24px 24px 26px; border-right: 1px solid rgba(125,232,205,.09); }
 .etb-ledger-item:last-child { border-right: 0; }
@@ -439,7 +440,7 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
 .etb-obs-grid { display: grid; grid-template-columns: minmax(0,5fr) minmax(0,7fr); gap: 56px; align-items: start; }
 .etb-obs-index { display: flex; flex-direction: column; border-top: 1px solid var(--etb-dline); position: sticky; top: calc(var(--eta-hh, 90px) + 32px); }
 .etb-obs-link { display: grid; grid-template-columns: 44px 1fr 24px; align-items: center; gap: 10px; padding: 22px 6px; border-bottom: 1px solid var(--etb-dline); text-decoration: none; transition: padding-left .3s cubic-bezier(.2,.6,.2,1); }
-.etb-obs-i { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 100; font-size: 22px; color: rgba(125,232,205,.35); }
+.etb-obs-i { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 300; font-size: 22px; color: rgba(125,232,205,.78); }
 .etb-obs-t { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 300; font-size: clamp(17px, 1.5vw, 21px); color: #C8DDD2; transition: color .25s ease; }
 .etb-obs-link .etb-arrow { color: var(--etb-aqua); opacity: 0; transform: translateX(-6px); transition: opacity .25s ease, transform .25s ease; }
 .etb-obs-link:hover, .etb-obs-link.is-on { padding-left: 14px; }
