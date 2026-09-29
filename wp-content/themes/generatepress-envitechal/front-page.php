@@ -390,7 +390,7 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
    large text, so they read as smudges rather than structure. Raised to clear
    3.4:1 while staying secondary to the heading beneath. */
 .etb-num { display: block; font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 200; font-size: 46px; line-height: 1; color: rgba(30,107,84,.75); margin-bottom: 4px; }
-.etb-dark .etb-num { color: rgba(125,232,205,.46); }
+.etb-dark .etb-num { color: rgba(125,232,205,.72); }
 .etb-eyebrow { font-family: 'Archivo', 'Archivo Fallback', sans-serif; font-size: 11.5px; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; color: var(--etb-emerald); margin: 0 0 14px; }
 .etb-dark .etb-eyebrow { color: #8FB8A4; }
 .etb-head h2, .etb-maritime h2 { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 200; font-size: clamp(30px, 3.4vw, 48px); line-height: 1.12; letter-spacing: .01em; color: var(--etb-ink); margin: 0 0 18px; }
@@ -468,7 +468,7 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
 .etb-steps::after { content: ""; position: absolute; left: 8px; top: 8px; bottom: 8px; width: 1px; background: var(--etb-aqua); transform-origin: top; transform: scaleY(var(--tp, 0)); }
 .etb-steps li { display: grid; grid-template-columns: 62px 1fr; gap: 14px; padding: 16px 0; border-bottom: 1px solid rgba(125,232,205,.08); }
 .etb-steps li:last-child { border-bottom: 0; }
-.etb-step-n { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 100; font-size: 40px; line-height: 1; color: rgba(125,232,205,.35); }
+.etb-step-n { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 300; font-size: 40px; line-height: 1; color: rgba(125,232,205,.8); }
 .etb-steps strong { display: block; font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 300; font-size: 19px; letter-spacing: .08em; text-transform: uppercase; color: #F2FAF5; margin-bottom: 6px; }
 .etb-steps p { font-size: 14.5px; line-height: 1.6; color: var(--etb-mist); margin: 0; max-width: 520px; }
 
@@ -490,7 +490,7 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
 
 /* ---------- 06 maritime spotlight ---------- */
 .etb-maritime { position: relative; overflow: hidden; background: linear-gradient(180deg, #07141A 0%, #0A2430 62%, #0C2B38 100%); padding: 88px 0 100px; }
-.etb-maritime .etb-num { color: rgba(125,214,232,.49); }
+.etb-maritime .etb-num { color: rgba(125,214,232,.78); }
 .etb-maritime::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,20,26,.93) 0%, rgba(7,20,26,.62) 40%, rgba(9,26,34,.45) 68%, rgba(7,20,26,.78) 100%), url('/wp-content/themes/generatepress-envitechal/assets/images/eta-sea.webp') center 62%/cover no-repeat; opacity: .9; }
 .etb-sea { position: absolute; inset: auto 0 0 0; height: 46%; pointer-events: none; }
 .etb-wave { position: absolute; left: -4%; width: 108%; height: 120px; }

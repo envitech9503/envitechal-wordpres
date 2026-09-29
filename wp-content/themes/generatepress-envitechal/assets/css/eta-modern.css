@@ -2814,6 +2814,7 @@ h3 {
     background: var(--eta-navy);
     color: #d8e8df;
 }
+.eta-download-guidance .eta-eyebrow { color: #a9e2c7; } /* 2.7:1 -> 10:1 on navy (QA 29-09-2026) */
 
 .eta-about-vision-grid {
     display: grid;
@@ -9154,7 +9155,7 @@ h3 {
     font-size: 11px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
     color: var(--fsf-mint);
 }
-.fsf-label .fsf-n { color: rgba(125, 232, 205, .45); margin-right: 8px; font-variant-numeric: tabular-nums; }
+.fsf-label .fsf-n { color: rgba(125, 232, 205, .82); margin-right: 8px; font-variant-numeric: tabular-nums; }
 
 .eta-fs-footer .fsf-mail {
     display: inline-block; margin-bottom: 26px;
