@@ -78,16 +78,24 @@ function eta_modern_filter_robots_txt($output, $public)
     eta_modern_send_robots_headers();
 
     if (!eta_modern_is_staging_host()) {
-        return "User-agent: OAI-SearchBot\n"
-            . "Allow: /\n"
-            . "Content-Signal: ai-train=no, search=yes, ai-input=yes\n\n"
-            . "User-agent: GPTBot\n"
-            . "Disallow: /\n"
-            . "Content-Signal: ai-train=no, search=yes, ai-input=yes\n\n"
+        // AI policy (QA 05-10-2026): answer engines and user-initiated
+        // fetchers may read and cite the site; crawlers whose purpose is
+        // model training are refused, matching the Content-Signal line.
+        $signal = "Content-Signal: ai-train=no, search=yes, ai-input=yes\n";
+        $search = ['OAI-SearchBot', 'ChatGPT-User', 'Claude-SearchBot', 'Claude-User', 'PerplexityBot', 'Perplexity-User', 'DuckAssistBot', 'Applebot', 'bingbot', 'Googlebot'];
+        $training = ['GPTBot', 'ClaudeBot', 'CCBot', 'Google-Extended', 'Applebot-Extended', 'Bytespider', 'meta-externalagent', 'Meta-ExternalAgent', 'Amazonbot', 'cohere-training-data-crawler', 'Diffbot', 'Omgilibot'];
+        $out = '';
+        foreach ($search as $ua) {
+            $out .= "User-agent: {$ua}\nAllow: /\nDisallow: /wp-admin/\nAllow: /wp-admin/admin-ajax.php\n{$signal}\n";
+        }
+        foreach ($training as $ua) {
+            $out .= "User-agent: {$ua}\nDisallow: /\n{$signal}\n";
+        }
+        return $out
             . "User-agent: *\n"
             . "Disallow: /wp-admin/\n"
             . "Allow: /wp-admin/admin-ajax.php\n"
-            . "Content-Signal: ai-train=no, search=yes, ai-input=yes\n\n"
+            . $signal . "\n"
             . "Sitemap: https://envitechal.com/sitemap_index.xml\n";
     }
 

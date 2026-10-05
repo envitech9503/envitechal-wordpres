@@ -617,7 +617,7 @@ function eta_ai_visibility_llms_text($full = false)
     if ($full) {
         $corpus_file = __DIR__ . '/llms-full.txt';
         if (is_readable($corpus_file)) {
-            return (string) file_get_contents($corpus_file);
+            return eta_ai_visibility_canonicalise_llms((string) file_get_contents($corpus_file));
         }
     }
 
@@ -664,6 +664,17 @@ function eta_ai_visibility_llms_text($full = false)
         '',
         '## Knowledge Hub',
         '',
+        '- [Calibration certificates: intervals and traceability](' . home_url('/calibration-certificate-intervals-traceability/') . ') — how to read a calibration certificate and set recalibration intervals.',
+        '- [Thermal imaging inspection for electrical reliability](' . home_url('/thermal-imaging-inspection-electrical-reliability/') . ') — scope and reporting of infrared electrical inspections.',
+        '- [Water and environmental testing for food and beverage plants](' . home_url('/food-beverage-water-environmental-testing/') . ') — process water, effluent and hygiene monitoring evidence.',
+        '- [Environmental testing for pharmaceutical manufacturing](' . home_url('/pharmaceutical-environmental-testing-compliance/') . ') — effluent, air and water evidence for pharmaceutical sites.',
+        '- [Textile effluent testing and compliance in Pakistan](' . home_url('/textile-effluent-testing-compliance-pakistan/') . ') — ETP sampling, parameters and buyer requirements.',
+        '- [Water testing laboratory in Lahore](' . home_url('/water-testing-lab-lahore/') . ') — Lahore water testing scope against PEQS and WHO context.',
+        '- [ISO/IEC 17025 accredited testing laboratory guide](' . home_url('/iso-17025-accredited-lab-pakistan/') . ') — what accreditation covers and how to check a scope.',
+        '- [IEE vs EIA, EMP or NOC: which route](' . home_url('/iee-vs-eia-vs-emp-vs-noc-pakistan/') . ') — choosing the environmental approval route in Pakistan.',
+        '- [Noise level monitoring for industry and workplaces](' . home_url('/noise-level-monitoring-industrial-workplace/') . ') — boundary and occupational noise measurement.',
+        '- [PPWR heavy metal testing for EU export packaging](' . home_url('/ppwr-heavy-metal-testing-packaging-pakistan/') . ') — Regulation (EU) 2025/40 evidence for packaging components.',
+        '- [Ambient air quality monitoring in Pakistan](' . home_url('/ambient-air-quality-monitoring-pakistan/') . ') — parameters, durations and SEQS/PEQS comparison.',
         '- [How to read a water test report: PEQS, WHO and SEQS](' . home_url('/how-to-read-water-test-report-peqs-who/') . ') — explains how to interpret parameters, limits, units, and compliance context.',
         '- [Sindh EPA vs Punjab EPA: NOC and approvals compared](' . home_url('/sindh-epa-vs-punjab-epa-noc-lahore/') . ') — compares provincial environmental approval pathways and evidence needs.',
         '- [Water testing cost in Karachi](' . home_url('/water-testing-cost-karachi/') . ') — explains quotation factors without publishing or inventing prices.',
@@ -705,7 +716,41 @@ function eta_ai_visibility_llms_text($full = false)
         '- [WHO drinking-water guideline context](' . home_url('/how-to-read-water-test-report-peqs-who/') . ') — WHO comparison guidance for water reports.',
     ];
 
-    return implode("\n", $lines) . "\n";
+    return eta_ai_visibility_canonicalise_llms(implode("\n", $lines) . "\n");
+}
+
+/**
+ * Rewrite any link in an llms file that points at a reviewed legacy URL to
+ * its canonical destination, and drop list items that then duplicate an
+ * earlier destination (QA 05-10-2026: 24 entries in llms.txt pointed at
+ * URLs that 301-redirect, which answer engines treat as stale).
+ */
+function eta_ai_visibility_canonicalise_llms($text)
+{
+    if (!function_exists('eta_modern_legacy_redirect_target')) {
+        return $text;
+    }
+    $seen = [];
+    $out = [];
+    foreach (explode("\n", (string) $text) as $line) {
+        $line = preg_replace_callback('#\((https?://(?:www\.)?envitechal\.com(/[^)\s]*))\)#', function ($m) {
+            $target = eta_modern_legacy_redirect_target($m[2]);
+            if (!$target) {
+                return $m[0];
+            }
+            $target = preg_match('#^https?://#', $target) ? $target : home_url($target);
+            return '(' . $target . ')';
+        }, $line);
+        if (preg_match('#^- \[[^\]]*\]\((https?://[^)]+)\)#', $line, $mm)) {
+            $key = untrailingslashit(strtolower($mm[1]));
+            if (isset($seen[$key])) {
+                continue;
+            }
+            $seen[$key] = true;
+        }
+        $out[] = $line;
+    }
+    return implode("\n", $out);
 }
 
 function eta_ai_visibility_security_text($expires = '')
