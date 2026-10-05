@@ -2,7 +2,7 @@
 /**
  * QA-11: remove pasted chat-assistant citation pills (including the ecspak.com
  * link whose certificate fails) from post 22706 on staging. Run with:
- *   wp --path=/home/envitechal/staging.envitechal.com eval-file ~/fix-pills.php
+ *   wp --path=<root> eval-file scripts/fix-pills.php
  */
 $id = 22706;
 $post = get_post($id);
