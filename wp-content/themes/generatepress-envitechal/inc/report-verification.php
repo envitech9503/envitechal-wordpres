@@ -667,7 +667,7 @@ function eta_verify_render_panel()
                 out.appendChild(foot);
             }
 
-            if (state !== 'pending') {
+            if (state !== 'pending' && state !== 'invalid') {
                 var again = document.createElement('button');
                 again.type = 'button';
                 again.className = 'eta-iv-again';
@@ -700,6 +700,9 @@ function eta_verify_render_panel()
 
             busy = true;
             btn.disabled = true;
+            btn.setAttribute('aria-busy', 'true');
+            var btnLabel = btn.textContent;
+            btn.textContent = <?php echo wp_json_encode(__('Checking…', 'envi-tech-al-modern')); ?>;
             say('pending', <?php echo wp_json_encode(__('Checking with the laboratory reporting system…', 'envi-tech-al-modern')); ?>);
 
             fetch(endpoint, {
@@ -719,6 +722,8 @@ function eta_verify_render_panel()
                 .then(function () {
                     busy = false;
                     btn.disabled = false;
+                    btn.removeAttribute('aria-busy');
+                    btn.textContent = btnLabel;
                 });
         });
     }());

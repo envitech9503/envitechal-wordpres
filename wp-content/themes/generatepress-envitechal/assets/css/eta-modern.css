@@ -9469,6 +9469,16 @@ h3 {
 
 .eta-iv-panel .eta-iv-submit { width: 100%; min-height: 48px; }
 .eta-iv-panel .eta-iv-submit[disabled] { opacity: .6; cursor: progress; }
+/* QA 05-10-2026: the generic navy .eta-button all but disappeared on this
+   near-black panel at rest; the action is green in every state, and fields
+   keep their dark fill when focused instead of flashing light. */
+.eta-iv-panel .eta-iv-submit,
+.eta-iv-panel .eta-iv-submit:visited { background: #1F7A5F; border-color: #1F7A5F; color: #FFFFFF; }
+.eta-iv-panel .eta-iv-submit:hover,
+.eta-iv-panel .eta-iv-submit:focus-visible { background: #26936F; border-color: #26936F; color: #FFFFFF; }
+.eta-iv-panel .eta-iv-submit:focus-visible { outline: 2px solid #7DE8CD; outline-offset: 3px; }
+.eta-iv-field input:focus,
+.eta-iv-field input:focus-visible { background: rgba(3, 12, 10, .55); color: #FFFFFF; }
 
 .eta-iv-hint { margin: 6px 0 0; font-size: 13px; line-height: 1.45; color: #8AA79C; }
 
@@ -9516,10 +9526,14 @@ h3 {
 .eta-iv-result[data-state="verified"] .eta-iv-message { color: #7DE8CD; font-weight: 600; }
 .eta-iv-foot { margin: 14px 0 0; font-size: 13px; line-height: 1.5; color: #9FBBB0; }
 .eta-iv-again {
-    margin: 14px 0 0; padding: 0; border: 0; background: none; cursor: pointer;
-    font: inherit; font-size: 14px; color: #7DE8CD; text-decoration: underline; text-underline-offset: 3px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 44px; margin: 16px 0 0; padding: 10px 20px;
+    border: 1px solid rgba(125, 232, 205, .55); border-radius: 999px; background: transparent; cursor: pointer;
+    font: inherit; font-size: 14px; font-weight: 600; color: #7DE8CD; text-decoration: none;
+    transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
 }
-.eta-iv-again:hover, .eta-iv-again:focus-visible { color: #FFFFFF; }
+.eta-iv-again:hover, .eta-iv-again:focus-visible { background: rgba(125, 232, 205, .12); border-color: #7DE8CD; color: #FFFFFF; }
+.eta-iv-again:focus-visible { outline: 2px solid #7DE8CD; outline-offset: 2px; }
 
 /* Sample document. Shows where the two details sit on a real report so a
    first-time visitor is not guessing; also balances the copy column against
