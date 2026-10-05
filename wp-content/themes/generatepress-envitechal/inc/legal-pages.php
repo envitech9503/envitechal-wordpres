@@ -19,7 +19,7 @@ function eta_modern_legal_pages()
     return [
         'privacy-policy' => [
             'title' => 'Privacy Policy',
-            'excerpt' => 'How Envi Tech AL collects, uses, and protects personal information submitted through this website, including enquiry forms, report verification, and the site assistant.',
+            'excerpt' => 'How Envi Tech AL collects, uses and protects information from enquiries, job applications, report verification and the site assistant.',
         ],
         'terms-of-service' => [
             'title' => 'Terms of Use',
