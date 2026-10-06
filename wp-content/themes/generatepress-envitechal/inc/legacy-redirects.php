@@ -11,6 +11,14 @@ function eta_modern_legacy_redirect_map()
 {
     return [
         '/about/' => '/aboutus/',
+        // Search Console 404 report, 06-10-2026
+        '/sindh-epa-noc/' => '/sindh-epa-vs-punjab-epa-noc-lahore/',
+        '/water-testing-laboratory-in-karachi-pakistan-envi-tech-al/' => '/karachi-environmental-lab/',
+        '/benefits-environmental-lab-consultancy/' => '/services/environmental-consultancy/',
+        '/the-services-offered-by-environmental-certified-companies/' => '/services/',
+        '/challenges-faced-in-water-testing/' => '/services/water-testing-lab-services/',
+        '/tag/stack-emission-testing-services-karachi/' => '/gaseous-air-emission-testing-lab-near-me/',
+        '/tag/stack-emission-testing-services-lahore/' => '/gaseous-air-emission-testing-lab-near-me/',
         '/about-us/' => '/aboutus/',
         '/certificates-approvals/' => '/accreditations-certifications/',
         '/newsupdates/' => '/blognewsupdates/',
@@ -305,6 +313,14 @@ function eta_modern_legacy_request_target($request_method, $request_uri)
     $request_method = strtoupper(trim($request_method));
     if (!in_array($request_method, ['GET', 'HEAD'], true)) {
         return null;
+    }
+
+    // Old /staging1/ copy of the site (still linked externally): drop the prefix.
+    $path = (string) parse_url($request_uri, PHP_URL_PATH);
+    if (preg_match('#^/staging1(/.*)?$#', $path, $m)) {
+        $rest = isset($m[1]) && $m[1] !== '' ? $m[1] : '/';
+        $mapped = eta_modern_legacy_redirect_target($rest);
+        return $mapped ?: $rest;
     }
 
     return eta_modern_legacy_redirect_target($request_uri);
