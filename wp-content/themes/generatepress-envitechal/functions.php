@@ -68,6 +68,14 @@ add_action('wp_head', function () {
     printf('<link rel="preload" as="font" type="font/woff2" crossorigin href="%s">' . "\n", esc_url($fonts . '/outfit-var-latin.woff2'));
     printf('<link rel="preload" as="font" type="font/woff2" crossorigin href="%s">' . "\n", esc_url($fonts . '/archivo-var-latin.woff2'));
 
+    /* /services/ hero is a CSS background, found late by the browser; preload
+     * the sized variant so it is the LCP resource from the first round trip. */
+    if (is_post_type_archive('services') || is_page('services')) {
+        $hero = get_stylesheet_directory_uri() . '/assets/images/opt/environmental-testing-lab-2026-04';
+        printf('<link rel="preload" as="image" type="image/webp" fetchpriority="high" href="%1$s-640w.webp" media="(max-width: 700px)">' . "\n", esc_url($hero));
+        printf('<link rel="preload" as="image" type="image/webp" fetchpriority="high" href="%1$s-1200w.webp" media="(min-width: 701px)">' . "\n", esc_url($hero));
+    }
+
     printf('<meta name="theme-color" content="%s">' . "\n", esc_attr('#f4f7f3'));
     printf('<link rel="manifest" href="%s">' . "\n", esc_url(home_url('/?eta_manifest=1')));
     printf('<link rel="icon" type="image/png" sizes="32x32" data-spai-excluded="true" href="%s">' . "\n", esc_url($icon_32 ?: $base . '/favicon-32.png'));

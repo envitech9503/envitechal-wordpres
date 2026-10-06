@@ -379,9 +379,17 @@ import { gsap, ScrollTrigger, Lenis } from './assets/js/vendor/motion.js';
 
   /* ---------------- render loop (only while hero near viewport) ---------------- */
   var rafId = null, frames = 0, frameT0 = 0, slowChecked = false;
+  var lastActive = 0, idleSkip = 0;
   function loop(ts) {
     rafId = requestAnimationFrame(loop);
     state.n = (state.n || 0) + 1;
+    /* Idle throttle (perf 06-10-2026): once the eased values have settled and
+     * nobody has scrolled or moved the pointer for 1.5 s, draw every 4th
+     * frame only. The ambient drift stays alive at ~15 fps; any input returns
+     * the loop to full rate on the next frame. */
+    var moving = Math.abs(state.p - state.sp) > 0.0005 || Math.abs(state.px - state.spx) > 0.002 || Math.abs(state.py - state.spy) > 0.002;
+    if (moving) lastActive = ts;
+    if (!moving && ts - lastActive > 1500 && (idleSkip = (idleSkip + 1) % 4) !== 0) return;
     /* state.p is written by the ScrollTrigger onUpdate below; the scene keeps
      * its own slower easing so the 3D read stays calm under fast scrolling. */
     state.sp += (state.p - state.sp) * 0.075;
@@ -542,10 +550,24 @@ import { gsap, ScrollTrigger, Lenis } from './assets/js/vendor/motion.js';
     /* render only when hero is on screen */
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (en) {
-        en.forEach(function (e) { e.isIntersecting ? startLoop() : stopLoop(); });
+        en.forEach(function (e) { inView = e.isIntersecting; e.isIntersecting ? startLoop() : stopLoop(); });
       }, { rootMargin: '120px' }).observe(sec);
     } else startLoop();
+    /* Draw one still frame now; start the continuous loop on the first
+     * interaction or once the page has been idle for a few seconds, so the
+     * 3D scene never competes with first load on slower phones. */
+    var armed = false, inView = true;
+    function arm() {
+      if (armed) return; armed = true;
+      ['pointermove', 'pointerdown', 'wheel', 'touchstart', 'keydown', 'scroll'].forEach(function (ev) { window.removeEventListener(ev, arm, true); });
+      if (inView && !document.hidden) startLoop();
+    }
+    ['pointermove', 'pointerdown', 'wheel', 'touchstart', 'keydown', 'scroll'].forEach(function (ev) { window.addEventListener(ev, arm, { passive: true, capture: true }); });
+    var later = function () { setTimeout(arm, 4000); };
+    document.readyState === 'complete' ? later() : window.addEventListener('load', later, { once: true });
+    var startLoopNow = startLoop;
+    startLoop = function () { if (armed) startLoopNow(); };
     document.addEventListener('visibilitychange', function () { document.hidden ? stopLoop() : startLoop(); });
-    startLoop();
+    try { updateGL(0); projectTags(); } catch (e) {}
   }
 })();

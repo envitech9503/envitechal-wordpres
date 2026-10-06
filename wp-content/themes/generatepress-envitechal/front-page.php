@@ -350,7 +350,7 @@ html:not(.ets-gsap) .ets-final { display: none; }
     <button type="button" class="ets-skip" data-ets-skip aria-label="Skip intro and go to the services overview">Skip intro</button>
   </div>
 </section>
-<script type="module" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/eta-hero-twin.js?v=19" data-no-optimize="1" data-no-defer="1" data-litespeed-noopt="1"></script>
+<script type="module" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/eta-hero-twin.js?v=20" data-no-optimize="1" data-no-defer="1" data-litespeed-noopt="1"></script>
 <style>
 /* ================= Homepage body v7 — act-based premium system — 28-08-2026 ================= */
 :root {
