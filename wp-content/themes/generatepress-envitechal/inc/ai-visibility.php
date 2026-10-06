@@ -733,7 +733,7 @@ function eta_ai_visibility_canonicalise_llms($text)
     $seen = [];
     $out = [];
     foreach (explode("\n", (string) $text) as $line) {
-        $line = preg_replace_callback('#\((https?://(?:www\.)?envitechal\.com(/[^)\s]*))\)#', function ($m) {
+        $line = preg_replace_callback('#\((https?://(?:www\.|staging\.)?envitechal\.com(/[^)\s]*))\)#', function ($m) {
             $target = eta_modern_legacy_redirect_target($m[2]);
             if (!$target) {
                 return $m[0];
@@ -820,3 +820,47 @@ add_action('wp_head', function () {
         esc_url(home_url('/llms.txt'))
     );
 }, 20);
+
+/**
+ * Named authors for Article schema. Technical guides are credited to the
+ * technical lead; everything else to the founder. A post can override with
+ * the custom field `eta_author` set to "imran" or "hina".
+ */
+function eta_ai_visibility_author_people()
+{
+    return [
+        'imran' => [
+            '@type' => 'Person',
+            '@id' => home_url('/#person-imran-kazmi'),
+            'name' => 'Syed Imran Ali Kazmi',
+            'jobTitle' => 'CEO and Founder',
+            'worksFor' => ['@id' => home_url('/#organization')],
+            'url' => home_url('/aboutus/'),
+        ],
+        'hina' => [
+            '@type' => 'Person',
+            '@id' => home_url('/#person-hina-abidi'),
+            'name' => 'Hina Abidi',
+            'jobTitle' => 'Manager Lab & QC',
+            'worksFor' => ['@id' => home_url('/#organization')],
+            'url' => home_url('/aboutus/'),
+        ],
+    ];
+}
+
+function eta_ai_visibility_post_author_key($post_id)
+{
+    $override = strtolower(trim((string) get_post_meta($post_id, 'eta_author', true)));
+    if (in_array($override, ['imran', 'hina'], true)) {
+        return $override;
+    }
+    $slug = (string) get_post_field('post_name', $post_id);
+    $technical = '#(test|testing|lab|analysis|monitoring|sampling|calibration|thermal|ballast|stack|emission|noise|ambient|wastewater|water-quality|drinking-water|parameter|method|17025|microbiolog|soil|air-quality)#';
+    return preg_match($technical, $slug) ? 'hina' : 'imran';
+}
+
+function eta_ai_visibility_post_author($post_id)
+{
+    $people = eta_ai_visibility_author_people();
+    return $people[eta_ai_visibility_post_author_key($post_id)];
+}

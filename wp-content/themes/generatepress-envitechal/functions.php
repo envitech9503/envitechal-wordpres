@@ -1106,6 +1106,12 @@ function eta_modern_schema_local_business($location, $description = '')
         ],
         'image' => eta_modern_default_share_image(),
         'email' => 'info@envitechal.com',
+        'openingHoursSpecification' => [[
+            '@type' => 'OpeningHoursSpecification',
+            'dayOfWeek' => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            'opens' => '09:00',
+            'closes' => '17:00',
+        ]],
         'description' => $description ?: eta_modern_meta_description(),
         'hasOfferCatalog' => eta_modern_schema_offer_catalog($branch['areaServed']),
     ], $branch);
@@ -1378,7 +1384,7 @@ function eta_modern_rank_math_schema_templates($data)
             'url' => get_permalink(),
             'datePublished' => get_the_date('c'),
             'dateModified' => get_the_modified_date('c'),
-            'author' => ['@id' => home_url('/#organization')],
+            'author' => function_exists('eta_ai_visibility_post_author') ? eta_ai_visibility_post_author($post_id) : ['@id' => home_url('/#organization')],
             'publisher' => ['@id' => home_url('/#organization')],
             'inLanguage' => 'en-GB',
             'mainEntityOfPage' => get_permalink(),
@@ -1741,10 +1747,7 @@ add_action('wp_head', function () {
             'url' => get_permalink(),
             'datePublished' => get_the_date('c'),
             'dateModified' => get_the_modified_date('c'),
-            'author' => [
-                '@type' => 'Organization',
-                'name' => 'Envi Tech AL',
-            ],
+            'author' => function_exists('eta_ai_visibility_post_author') ? eta_ai_visibility_post_author(get_the_ID()) : ['@type' => 'Organization', 'name' => 'Envi Tech AL'],
             'publisher' => [
                 '@type' => 'Organization',
                 'name' => 'Envi Tech AL',
