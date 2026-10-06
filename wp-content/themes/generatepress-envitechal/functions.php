@@ -443,6 +443,14 @@ add_filter('pre_get_document_title', function ($title) {
         return 'Environmental Testing FAQs Pakistan | Envi Tech AL';
     }
 
+    if (is_page('privacy-policy')) {
+        return 'Privacy Policy | How Envi Tech AL Handles Your Data';
+    }
+
+    if (is_page('terms-of-service')) {
+        return 'Terms of Use | Envi Tech AL Website & Report Services';
+    }
+
     if (is_page('ourclients')) {
         return 'Clients | Envi Tech AL Environmental Testing Portfolio';
     }

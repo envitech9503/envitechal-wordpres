@@ -900,6 +900,11 @@ function eta_ai_visibility_full_corpus_urls()
         if (preg_match('#/(search|thank-you|wp-|feed)#', $path)) {
             continue;
         }
+        // Keep the corpus in step with the index: skip posts set to noindex.
+        $robots = get_post_meta($id, 'rank_math_robots', true);
+        if (is_array($robots) && in_array('noindex', $robots, true)) {
+            continue;
+        }
         $urls[] = $url;
     }
     return array_values(array_unique($urls));
