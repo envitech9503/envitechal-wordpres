@@ -945,6 +945,7 @@ function eta_ai_visibility_build_full_corpus()
         '',
     ];
     $corpus = implode("\n", $head) . implode("\n\n---\n\n", $sections) . "\n";
+    $corpus = eta_ai_visibility_resolve_internal_redirects($corpus);
     update_option('eta_llms_full_corpus', $corpus, false);
     update_option('eta_llms_full_corpus_built', gmdate('c') . ' ' . count($sections) . ' sections', false);
     return count($sections);
@@ -970,3 +971,36 @@ add_action('save_post', function ($post_id, $post) {
     }
 }, 20, 2);
 add_action('eta_llms_full_rebuild_once', 'eta_ai_visibility_build_full_corpus');
+
+/**
+ * Replace internal links that answer with a redirect by their final URL
+ * (old slugs, ?p= links, WordPress old-slug redirects). One HEAD request per
+ * distinct link, at most three hops; run only during the corpus build.
+ */
+function eta_ai_visibility_resolve_internal_redirects($text)
+{
+    $home = untrailingslashit(home_url());
+    $host = preg_quote((string) wp_parse_url($home, PHP_URL_HOST), '#');
+    if (!preg_match_all('#https?://(?:www\.)?' . $host . '/[^\s)\]"\'<>]*#', $text, $m)) {
+        return $text;
+    }
+    $map = [];
+    foreach (array_slice(array_unique($m[0]), 0, 400) as $url) {
+        $final = $url;
+        for ($hop = 0; $hop < 3; $hop++) {
+            $res = wp_remote_head($final, ['timeout' => 10, 'redirection' => 0]);
+            if (is_wp_error($res)) { break; }
+            $code = (int) wp_remote_retrieve_response_code($res);
+            $loc = (string) wp_remote_retrieve_header($res, 'location');
+            if ($code < 300 || $code > 399 || $loc === '') { break; }
+            if (strpos($loc, '/') === 0) { $loc = $home . $loc; }
+            if (strpos($loc, $home) !== 0) { break; }
+            $final = $loc;
+        }
+        if ($final !== $url) { $map[$url] = $final; }
+    }
+    if (!$map) { return $text; }
+    return preg_replace_callback('#https?://(?:www\.)?' . $host . '/[^\s)\]"\'<>]*#', function ($x) use ($map) {
+        return isset($map[$x[0]]) ? $map[$x[0]] : $x[0];
+    }, $text);
+}

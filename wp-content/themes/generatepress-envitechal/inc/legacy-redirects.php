@@ -37,7 +37,7 @@ function eta_modern_legacy_redirect_map()
         '/environmental-testing-lab-in-lahore/' => '/lahore-environmental-lab/',
         '/environmental-testing-lab-in-karachi-lahore/' => '/services/analytical-lab-services/',
         '/accredited-water-testing-lab-in-karachi/' => '/karachi-environmental-lab/',
-        '/leading-environmental-lab-consultancy-firm-in-pakistan/' => '/pakistans-1-renowned-environmental-lab-consultancy/',
+        '/leading-environmental-lab-consultancy-firm-in-pakistan/' => '/aboutus/',
         '/envi-tech-al-achieves-best-iso-iec-170252017-certificate/' => '/accreditations-certifications/',
         '/calibration-of-equipment-in-karachi/' => '/services/equipment-calibration-services/',
         '/ballast-water-testing-services-karachi/' => '/services/ballast-water-testing-services/',
