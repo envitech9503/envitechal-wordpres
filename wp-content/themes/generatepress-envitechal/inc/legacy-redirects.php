@@ -12,6 +12,7 @@ function eta_modern_legacy_redirect_map()
     return [
         '/about/' => '/aboutus/',
         // Search Console 404 report, 06-10-2026
+        '/the-reliable-services-offered-by-efficient-environmental-companies/' => '/services/environmental-consultancy/',
         '/sindh-epa-noc/' => '/sindh-epa-vs-punjab-epa-noc-lahore/',
         '/water-testing-laboratory-in-karachi-pakistan-envi-tech-al/' => '/karachi-environmental-lab/',
         '/benefits-environmental-lab-consultancy/' => '/services/environmental-consultancy/',
