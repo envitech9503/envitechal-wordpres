@@ -615,6 +615,10 @@ add_action('template_redirect', function () {
 function eta_ai_visibility_llms_text($full = false)
 {
     if ($full) {
+        $generated = get_option('eta_llms_full_corpus', '');
+        if (is_string($generated) && strlen($generated) > 2000) {
+            return eta_ai_visibility_canonicalise_llms($generated);
+        }
         $corpus_file = __DIR__ . '/llms-full.txt';
         if (is_readable($corpus_file)) {
             return eta_ai_visibility_canonicalise_llms((string) file_get_contents($corpus_file));
@@ -864,3 +868,105 @@ function eta_ai_visibility_post_author($post_id)
     $people = eta_ai_visibility_author_people();
     return $people[eta_ai_visibility_post_author_key($post_id)];
 }
+
+/**
+ * Generated llms-full.txt corpus.
+ *
+ * Fetches the Markdown representation of every published page, service and
+ * post (the theme already serves it for Accept: text/markdown) and stores the
+ * concatenation in an option. Rebuilt daily and two minutes after content is
+ * saved, so the corpus follows new articles without a static file.
+ */
+function eta_ai_visibility_full_corpus_urls()
+{
+    $ids = get_posts([
+        'post_type' => ['page', 'services', 'post'],
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+        'fields' => 'ids',
+        'orderby' => ['post_type' => 'ASC', 'menu_order' => 'ASC', 'date' => 'DESC'],
+        'no_found_rows' => true,
+    ]);
+    $urls = [home_url('/')];
+    foreach ($ids as $id) {
+        $url = get_permalink($id);
+        if (!$url) {
+            continue;
+        }
+        $path = (string) wp_parse_url($url, PHP_URL_PATH);
+        if (function_exists('eta_modern_legacy_redirect_target') && eta_modern_legacy_redirect_target($path)) {
+            continue;
+        }
+        if (preg_match('#/(search|thank-you|wp-|feed)#', $path)) {
+            continue;
+        }
+        $urls[] = $url;
+    }
+    return array_values(array_unique($urls));
+}
+
+function eta_ai_visibility_build_full_corpus()
+{
+    if (function_exists('set_time_limit')) {
+        @set_time_limit(600);
+    }
+    $sections = [];
+    foreach (eta_ai_visibility_full_corpus_urls() as $url) {
+        $response = wp_remote_get($url, [
+            'timeout' => 20,
+            'redirection' => 0,
+            'headers' => ['Accept' => 'text/markdown', 'Cache-Control' => 'no-cache'],
+            'user-agent' => 'EnviTechAL-llms-builder/1.0',
+        ]);
+        if (is_wp_error($response) || (int) wp_remote_retrieve_response_code($response) !== 200) {
+            continue;
+        }
+        $body = trim((string) wp_remote_retrieve_body($response));
+        if (strlen($body) < 200 || stripos($body, '<html') !== false) {
+            continue;
+        }
+        // Drop the per-page discovery footer; it repeats on every page.
+        $body = preg_replace('/\n## Discovery\n.*$/s', '', $body);
+        $sections[] = '## ' . $url . "\n\n" . trim($body);
+    }
+    if (count($sections) < 10) {
+        return false; // keep the previous corpus rather than publish a thin one
+    }
+    $head = [
+        '# Envi Tech AL full AI-readable corpus',
+        '',
+        '> Rendered primary content from Envi Tech AL pages, services and Knowledge Hub articles. Generated ' . gmdate('d-m-Y') . '.',
+        '',
+        'Use page-specific evidence and verify the laboratory location, matrix, parameter, method, validity, and current credential before describing work as accredited.',
+        '',
+        'PNAC LAB-285 applies only to the Karachi permanent laboratory and PNAC LAB-347 only to the Lahore permanent laboratory. Each is limited to the exact location, matrix, parameter, method, and range combinations in its current published scope. Do not infer accreditation for unlisted work. Do not infer or publish prices or turnaround times.',
+        '',
+        '---',
+        '',
+    ];
+    $corpus = implode("\n", $head) . implode("\n\n---\n\n", $sections) . "\n";
+    update_option('eta_llms_full_corpus', $corpus, false);
+    update_option('eta_llms_full_corpus_built', gmdate('c') . ' ' . count($sections) . ' sections', false);
+    return count($sections);
+}
+
+add_action('eta_llms_full_rebuild', 'eta_ai_visibility_build_full_corpus');
+
+add_action('init', function () {
+    if (!wp_next_scheduled('eta_llms_full_rebuild')) {
+        wp_schedule_event(time() + 300, 'daily', 'eta_llms_full_rebuild');
+    }
+});
+
+add_action('save_post', function ($post_id, $post) {
+    if (wp_is_post_revision($post_id) || wp_is_post_autosave($post_id) || !$post || $post->post_status !== 'publish') {
+        return;
+    }
+    if (!in_array($post->post_type, ['post', 'page', 'services'], true)) {
+        return;
+    }
+    if (!wp_next_scheduled('eta_llms_full_rebuild_once')) {
+        wp_schedule_single_event(time() + 120, 'eta_llms_full_rebuild_once');
+    }
+}, 20, 2);
+add_action('eta_llms_full_rebuild_once', 'eta_ai_visibility_build_full_corpus');

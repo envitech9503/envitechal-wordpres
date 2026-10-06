@@ -6460,3 +6460,21 @@ add_action('template_redirect', function () {
     }
     ob_start('eta_modern_swap_optimised_images');
 }, 5);
+
+/**
+ * Contact Form 7 mail: dates in dd-mm-yyyy (house format) for the
+ * submission-date tag and any date field value.
+ */
+add_filter('wpcf7_special_mail_tags', function ($output, $name, $html) {
+    if ($name === '_date') {
+        return wp_date('d-m-Y');
+    }
+    return $output;
+}, 20, 3);
+
+add_filter('wpcf7_mail_tag_replaced', function ($replaced, $submitted, $html, $mail_tag = null) {
+    if (is_string($replaced) && preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', trim($replaced), $m)) {
+        return $m[3] . '-' . $m[2] . '-' . $m[1];
+    }
+    return $replaced;
+}, 20, 4);
