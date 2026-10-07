@@ -3551,6 +3551,12 @@ h3 {
     background: rgba(255, 255, 255, 0.1);
 }
 
+.eta-post-meta .eta-post-author small {
+    font-size: 0.82em;
+    font-weight: 600;
+    opacity: 0.85;
+}
+
 .eta-post-layout {
     display: grid;
     grid-template-columns: minmax(0, 0.72fr) minmax(280px, 0.28fr);

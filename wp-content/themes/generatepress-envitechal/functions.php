@@ -4572,9 +4572,15 @@ function eta_modern_render_single_post_page()
                     <div>
                         <p class="eta-eyebrow"><?php echo esc_html(eta_modern_post_topic_label($post_id)); ?></p>
                         <h1 id="eta-post-title"><?php echo esc_html(eta_modern_display_title($post_id)); ?></h1>
+                        <?php $eta_author = function_exists('eta_ai_visibility_post_author') ? eta_ai_visibility_post_author($post_id) : null; ?>
                         <div class="eta-post-meta">
-                            <time datetime="<?php echo esc_attr(get_the_date('c', $post_id)); ?>"><?php echo esc_html(get_the_date('', $post_id)); ?></time>
-                            <span><?php esc_html_e('Envi Tech AL Knowledge Hub', 'envi-tech-al-modern'); ?></span>
+                            <?php if ($eta_author) : ?>
+                                <span class="eta-post-author"><?php echo esc_html($eta_author['name']); ?><?php if (!empty($eta_author['jobTitle'])) : ?><small> &middot; <?php echo esc_html($eta_author['jobTitle']); ?></small><?php endif; ?></span>
+                            <?php endif; ?>
+                            <time datetime="<?php echo esc_attr(get_the_date('c', $post_id)); ?>"><?php echo esc_html(get_the_date('j F Y', $post_id)); ?></time>
+                            <?php if (get_the_modified_date('Ymd', $post_id) !== get_the_date('Ymd', $post_id)) : ?>
+                                <time class="eta-post-updated" datetime="<?php echo esc_attr(get_the_modified_date('c', $post_id)); ?>"><?php echo esc_html('Updated ' . get_the_modified_date('j F Y', $post_id)); ?></time>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
