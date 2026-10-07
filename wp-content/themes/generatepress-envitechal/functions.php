@@ -4120,6 +4120,10 @@ function eta_modern_post_card_excerpt($post = null)
 function eta_modern_post_seo_overrides()
 {
     return [
+        'water-testing-lab-sample-to-report' => [
+            'Water Testing Lab: Sample to Defensible Report | Envi Tech AL',
+            'How an accredited water testing lab in Karachi and Lahore turns a sample into a defensible report: sampling, holding times, chain of custody, methods, QC and accreditation.',
+        ],
         'water-testing-lab-lahore' => [
             'Water Testing Lab in Lahore | Envi Tech AL',
             'Water testing in Lahore for drinking, process and wastewater samples: what to test, how results are reported and how they compare with PEQS and WHO limits.',
