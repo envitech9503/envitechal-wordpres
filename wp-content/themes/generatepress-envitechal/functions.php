@@ -3737,7 +3737,7 @@ function eta_modern_render_about_page()
     $about_image = 'https://envitechal.com/wp-content/uploads/2026/06/Environmental-Testing-Lab.png';
     ?>
     <section class="eta-about-hero" aria-labelledby="eta-about-title">
-        <img class="eta-about-hero-img" src="<?php echo esc_url($about_image); ?>" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high">
+        <img class="eta-about-hero-img" src="<?php echo esc_url($about_image); ?>" alt="Envi Tech AL environmental testing laboratory, Karachi" loading="eager" decoding="async" fetchpriority="high">
         <div class="eta-shell eta-about-hero-grid">
             <div class="eta-about-hero-copy">
                 <p class="eta-eyebrow"><?php esc_html_e('About Envi Tech AL', 'envi-tech-al-modern'); ?></p>
@@ -3920,7 +3920,7 @@ function eta_modern_render_downloads_page()
     $download_image = 'https://envitechal.com/wp-content/uploads/2026/06/Regulatory-compliance-Advisory.png';
     ?>
     <section class="eta-download-hero" aria-labelledby="eta-download-title">
-        <img class="eta-download-hero-img" src="<?php echo esc_url($download_image); ?>" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high">
+        <img class="eta-download-hero-img" src="<?php echo esc_url($download_image); ?>" alt="Envi Tech AL downloads: regulations, standards and reference documents" loading="eager" decoding="async" fetchpriority="high">
         <div class="eta-shell eta-download-hero-grid">
             <div>
                 <p class="eta-eyebrow"><?php esc_html_e('Downloads', 'envi-tech-al-modern'); ?></p>
@@ -4246,7 +4246,7 @@ function eta_modern_render_report_verification_page()
     $hero_image = 'https://envitechal.com/wp-content/uploads/2026/06/Regulatory-compliance-Advisory-Services.png';
     ?>
     <section class="eta-verify-hero" aria-labelledby="eta-verify-title">
-        <img class="eta-verify-hero-img" src="<?php echo esc_url($hero_image); ?>" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high">
+        <img class="eta-verify-hero-img" src="<?php echo esc_url($hero_image); ?>" alt="Envi Tech AL laboratory report verification" loading="eager" decoding="async" fetchpriority="high">
         <div class="eta-shell eta-verify-hero-grid">
             <div>
                 <p class="eta-eyebrow"><?php esc_html_e('Report Verification Portal', 'envi-tech-al-modern'); ?></p>
@@ -4452,7 +4452,7 @@ function eta_modern_render_knowledge_hub_page()
     $hero_image = 'https://envitechal.com/wp-content/uploads/2026/06/Environmental-Consulting-Services.png';
     ?>
     <section class="eta-knowledge-hero" aria-labelledby="eta-knowledge-title">
-        <img class="eta-knowledge-hero-img" src="<?php echo esc_url($hero_image); ?>" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high">
+        <img class="eta-knowledge-hero-img" src="<?php echo esc_url($hero_image); ?>" alt="Envi Tech AL Knowledge Hub: environmental testing and compliance guides" loading="eager" decoding="async" fetchpriority="high">
         <div class="eta-shell eta-knowledge-hero-grid">
             <div>
                 <p class="eta-eyebrow"><?php esc_html_e('Knowledge Hub', 'envi-tech-al-modern'); ?></p>
@@ -4567,7 +4567,7 @@ function eta_modern_render_single_post_page()
         ?>
         <?php if (!$is_premium_legacy) : ?>
             <section class="eta-post-hero" aria-labelledby="eta-post-title">
-                <img class="eta-post-hero-img" src="<?php echo esc_url($image); ?>" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high">
+                <img class="eta-post-hero-img" src="<?php echo esc_url($image); ?>" alt="<?php echo esc_attr(eta_modern_display_title($post_id)); ?>" loading="eager" decoding="async" fetchpriority="high">
                 <div class="eta-shell eta-post-hero-grid">
                     <div>
                         <p class="eta-eyebrow"><?php echo esc_html(eta_modern_post_topic_label($post_id)); ?></p>
@@ -4696,7 +4696,7 @@ function eta_modern_render_careers_page()
     $hero_image = 'https://envitechal.com/wp-content/uploads/2026/06/Industrial-compliance-Monitoring.png';
     ?>
     <section class="eta-career-hero" aria-labelledby="eta-career-title">
-        <img class="eta-career-hero-img" src="<?php echo esc_url($hero_image); ?>" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high">
+        <img class="eta-career-hero-img" src="<?php echo esc_url($hero_image); ?>" alt="Careers at Envi Tech AL environmental laboratory" loading="eager" decoding="async" fetchpriority="high">
         <div class="eta-shell eta-career-hero-grid">
             <div>
                 <p class="eta-eyebrow"><?php esc_html_e('Careers at Envi Tech AL', 'envi-tech-al-modern'); ?></p>
@@ -5730,7 +5730,7 @@ function eta_modern_render_cluster_service_page($slug)
     }
     ?>
     <section class="eta-lahore-hero eta-cluster-hero" aria-labelledby="eta-cluster-title">
-        <img class="eta-lahore-hero-img" src="<?php echo esc_url($data['image']); ?>" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high">
+        <img class="eta-lahore-hero-img" src="<?php echo esc_url($data['image']); ?>" alt="<?php echo esc_attr($data['title']); ?>" loading="eager" decoding="async" fetchpriority="high">
         <div class="eta-shell eta-lahore-hero-grid">
             <div>
                 <p class="eta-eyebrow"><?php echo esc_html($data['eyebrow']); ?></p>
@@ -6049,7 +6049,7 @@ function eta_modern_render_indexed_utility_page($slug)
     }
     ?>
     <section class="eta-utility-hero" aria-labelledby="eta-utility-title">
-        <img class="eta-utility-hero-img" src="<?php echo esc_url($data['image']); ?>" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high">
+        <img class="eta-utility-hero-img" src="<?php echo esc_url($data['image']); ?>" alt="<?php echo esc_attr($data['title']); ?>" loading="eager" decoding="async" fetchpriority="high">
         <div class="eta-shell eta-utility-hero-grid">
             <div>
                 <p class="eta-eyebrow"><?php echo esc_html($data['eyebrow']); ?></p>

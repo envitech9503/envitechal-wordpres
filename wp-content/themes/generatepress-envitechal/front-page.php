@@ -898,7 +898,7 @@ $etb_vault = [
                          src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/eta-hub-seqs-1320.webp'); ?>"
                          srcset="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/eta-hub-seqs-760.webp'); ?> 760w, <?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/eta-hub-seqs-1320.webp'); ?> 1320w"
                          sizes="(max-width: 1020px) 100vw, 56vw"
-                         width="1320" height="737" alt="" aria-hidden="true" loading="lazy" decoding="async"
+                         width="1320" height="737" alt="Sindh Environmental Quality Standards guide" loading="lazy" decoding="async"
                          data-spai-excluded="true">
                     <p class="etb-microlabel"><?php esc_html_e('Regulation / Sindh', 'envi-tech-al-modern'); ?></p>
                     <h3><a href="<?php echo esc_url(home_url('/sindh-environmental-quality-standards-seqs/')); ?>"><?php esc_html_e('Sindh Environmental Quality Standards guide', 'envi-tech-al-modern'); ?></a></h3>
