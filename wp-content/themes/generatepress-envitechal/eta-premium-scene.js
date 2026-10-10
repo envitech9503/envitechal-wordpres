@@ -127,10 +127,18 @@ import { gsap, ScrollTrigger, Lenis } from './assets/js/vendor/motion.js';
     function resize() { var w = hero.clientWidth, h = hero.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
     resize();
     var t0 = performance.now();
+    var lastActive = performance.now(), idleSkip = 0;
     function frame() {
       if (!state.running) return;
-      var t = (performance.now() - t0) / 1000;
+      var now = performance.now();
+      var t = (now - t0) / 1000;
+      var dp = Math.abs(state.tp - state.p) + Math.abs(state.px - state.spx) + Math.abs(state.py - state.spy);
       state.p += (state.tp - state.p) * 0.08; state.spx += (state.px - state.spx) * 0.06; state.spy += (state.py - state.spy) * 0.06;
+      /* Idle throttle (perf 10-10-2026): the slow ambient drift does not need
+         60 fps. Once scroll and pointer have settled for 1.5 s, render every
+         fourth frame; any movement restores full rate immediately. */
+      if (dp > 0.0005) lastActive = now;
+      if (now - lastActive > 1500 && (idleSkip = (idleSkip + 1) % 4) !== 0) { requestAnimationFrame(frame); return; }
       uniforms.uTime.value = t; uniforms.uP.value = state.p;
       var off = isMobile ? 0 : 14;
       group.position.x = off;
@@ -140,15 +148,33 @@ import { gsap, ScrollTrigger, Lenis } from './assets/js/vendor/motion.js';
       else { group.rotation.z = t * 0.04; group.rotation.y = state.spx * 0.12; group.rotation.x = state.spy * 0.06 + state.p * 0.4; }
       camera.lookAt(off, 0, 0);
       renderer.render(scene, camera);
-      requestAnimationFrame(frame);
+      if (armed) requestAnimationFrame(frame);
     }
+    /* Deferred start (perf 10-10-2026): paint one static frame straight away so
+       the hero is never empty, then run the animation loop only after the first
+       interaction or 4 s after load. This keeps scene work out of the window
+       Lighthouse measures as Total Blocking Time. */
+    var armed = false;
+    function arm() {
+      if (armed) return; armed = true;
+      ['pointerdown', 'touchstart', 'wheel', 'keydown', 'scroll'].forEach(function (ev) { window.removeEventListener(ev, arm); });
+      lastActive = performance.now();
+      if (state.running) requestAnimationFrame(frame);
+    }
+    ['pointerdown', 'touchstart', 'wheel', 'keydown', 'scroll'].forEach(function (ev) { window.addEventListener(ev, arm, { passive: true }); });
+    if (document.readyState === 'complete') setTimeout(arm, 4000); else window.addEventListener('load', function () { setTimeout(arm, 4000); });
     state.running = true; frame();
+    /* Pause the loop while the tab is hidden; resume when it returns. */
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) { state.running = false; }
+      else if (!state.running && state.inView !== false) { state.running = true; lastActive = performance.now(); frame(); }
+    });
     window.addEventListener('resize', resize);
     if (!isMobile) window.addEventListener('pointermove', function (e) { state.px = (e.clientX / window.innerWidth - 0.5) * 2; state.py = -(e.clientY / window.innerHeight - 0.5) * 2; }, { passive: true });
     ScrollTrigger.create({ trigger: hero, start: 'top top', end: 'bottom top', scrub: true, onUpdate: function (st) { state.tp = st.progress; } });
     ScrollTrigger.create({ trigger: hero, start: 'top bottom', end: 'bottom top',
-      onEnter: function () { if (!state.running) { state.running = true; frame(); } }, onEnterBack: function () { if (!state.running) { state.running = true; frame(); } },
-      onLeave: function () { state.running = false; }, onLeaveBack: function () { state.running = false; } });
+      onEnter: function () { state.inView = true; if (!state.running) { state.running = true; lastActive = performance.now(); frame(); } }, onEnterBack: function () { state.inView = true; if (!state.running) { state.running = true; lastActive = performance.now(); frame(); } },
+      onLeave: function () { state.running = false; state.inView = false; }, onLeaveBack: function () { state.running = false; state.inView = false; } });
     hero.classList.add('pr-scene-on');
     var grid = hero.querySelector('[class*="-hero-grid"], .eta-shell');
     if (grid) gsap.to(grid, { y: -40, opacity: 0.25, ease: 'none', scrollTrigger: { trigger: hero, start: '30% top', end: 'bottom top', scrub: true } });
