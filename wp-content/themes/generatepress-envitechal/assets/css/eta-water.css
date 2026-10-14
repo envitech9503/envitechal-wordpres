@@ -304,9 +304,8 @@ html:not(.wt-gsap) .wt-journey-line path { stroke-dashoffset: 0; }
 .wt-local-links { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px 22px; }
 .wt-local-links a { display: inline-block; padding: 8px 0; font-size: 15px; font-weight: 600; color: var(--wt-blue); }
 .wt-local-note { margin-top: 20px; font-size: 15.5px; line-height: 1.65; color: var(--wt-muted-light); max-width: 78ch; }
-.wt-expect-grid { margin-top: 24px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.wt-expect-grid { margin-top: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; }
 .wt-clients { margin-top: 24px; font-size: 15.5px; line-height: 1.7; color: var(--wt-muted-light); }
-@media (max-width: 1024px) { .wt-expect-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 860px) {
     .wt-intro-grid, .wt-local-grid, .wt-expect-grid { grid-template-columns: minmax(0, 1fr); }
 }

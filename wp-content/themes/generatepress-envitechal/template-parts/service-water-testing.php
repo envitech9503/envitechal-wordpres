@@ -41,6 +41,7 @@ $wt_expect = [
     ['Turnaround', 'Basic parameters within 24 hours and a full screening within 3 days, subject to the parameter list and method requirements.'],
     ['Sample volume', '1.5 litres per sample, so the laboratory can run the agreed panel and repeat checks where the method requires.'],
     ['Container', 'A clean container, and a sterile one for microbiological tests. Call first if you are unsure which applies.'],
+    ['Sample retention', 'Samples are retained for 5 days after testing.'],
     ['Drop-off or collection', 'Bring the sample to the Karachi or Lahore laboratory, or ask for field collection with chain-of-custody records.'],
 ];
 
