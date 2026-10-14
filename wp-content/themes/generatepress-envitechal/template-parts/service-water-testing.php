@@ -33,8 +33,8 @@ $wt_types = [
 ];
 
 $wt_labs = [
-    ['k' => 'PNAC LAB-285', 'city' => 'Karachi', 'address' => 'First Floor, 345, Street 15, Bahadurabad Block 3, Bahadur Yar Jang CHS, Karachi, Sindh 75900', 'hours' => 'Monday to Saturday, 09:00 to 17:00', 'phone' => '+92 310 2288801', 'tel' => 'tel:+923102288801', 'map' => 'https://www.google.com/maps/search/?api=1&query=Envi+Tech+AL+Environmental+Testing+Laboratory+Bahadurabad+Karachi'],
-    ['k' => 'PNAC LAB-347', 'city' => 'Lahore', 'address' => '87-E Madina Heights, Office A/30-31, 8th Floor, Maulana Shaukat Ali Road, Johar Town, Lahore, Punjab', 'hours' => 'Monday to Saturday, 09:00 to 17:00', 'phone' => '+92 42 32296099', 'tel' => 'tel:+924232296099', 'map' => 'https://www.google.com/maps/search/?api=1&query=Madina+Heights+Maulana+Shaukat+Ali+Road+Johar+Town+Lahore'],
+    ['k' => 'PNAC LAB-285', 'city' => 'Karachi', 'address' => 'First Floor, 345, Street 15, Bahadurabad Block 3, Bahadur Yar Jang CHS, Karachi, Sindh 75900', 'hours' => 'Monday to Saturday, 09:00 to 17:00', 'phone' => '+92 310 2288801', 'tel' => 'tel:+923102288801', 'map' => 'https://maps.google.com/?cid=4148971934819068223'],
+    ['k' => 'PNAC LAB-347', 'city' => 'Lahore', 'address' => '87-E Madina Heights, Office A/30-31, 8th Floor, Maulana Shaukat Ali Road, Johar Town, Lahore, Punjab', 'hours' => 'Monday to Saturday, 09:00 to 17:00', 'phone' => '+92 42 32296099', 'tel' => 'tel:+924232296099', 'map' => 'https://maps.google.com/?cid=15281919522941457955'],
 ];
 
 $wt_expect = [

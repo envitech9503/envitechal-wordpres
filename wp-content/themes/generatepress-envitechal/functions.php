@@ -1061,6 +1061,8 @@ function eta_modern_schema_local_business($location, $description = '')
             'name' => 'Envi Tech AL Karachi Environmental Laboratory',
             'url' => home_url('/karachi-environmental-lab/'),
             'telephone' => '+923102288801',
+            'hasMap' => 'https://maps.google.com/?cid=4148971934819068223',
+            'sameAs' => ['https://maps.google.com/?cid=4148971934819068223'],
             'description' => 'Environmental testing, field monitoring, and consultancy coordination for Karachi and Sindh. PNAC LAB-285 applies only to the Karachi permanent laboratory premises and the matrices, parameters, methods, and ranges listed in its current scope.',
             'areaServed' => ['Karachi', 'Sindh', 'Pakistan'],
             'geo' => [
@@ -1086,6 +1088,8 @@ function eta_modern_schema_local_business($location, $description = '')
             'name' => 'Envi Tech AL Lahore Environmental Laboratory',
             'url' => home_url('/lahore-environmental-lab/'),
             'telephone' => '+924232296099',
+            'hasMap' => 'https://maps.google.com/?cid=15281919522941457955',
+            'sameAs' => ['https://maps.google.com/?cid=15281919522941457955'],
             'description' => 'Environmental water and wastewater testing for Lahore and Punjab. PNAC LAB-347 applies only to the Lahore laboratory and the methods listed in its published scope.',
             'areaServed' => ['Lahore', 'Punjab', 'Pakistan'],
             'geo' => [
