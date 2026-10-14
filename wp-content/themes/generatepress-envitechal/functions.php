@@ -488,7 +488,7 @@ add_filter('pre_get_document_title', function ($title) {
 
     if (is_singular('services')) {
         if (get_post_field('post_name', get_the_ID()) === 'water-testing-lab-services') {
-            return 'Water Testing Laboratory in Karachi & Lahore | Envi Tech AL';
+            return 'Water Testing Laboratory Karachi & Lahore | Envi Tech AL';
         }
 
         if (get_post_field('post_name', get_the_ID()) === 'analytical-lab-services') {
@@ -524,7 +524,7 @@ function eta_modern_is_water_testing_service()
 
 function eta_modern_water_testing_seo_title()
 {
-    return 'Water Testing Laboratory in Karachi & Lahore | Envi Tech AL';
+    return 'Water Testing Laboratory Karachi & Lahore | Envi Tech AL';
 }
 
 function eta_modern_water_testing_og_image()
@@ -813,7 +813,7 @@ function eta_modern_meta_description()
 
     if (is_singular('services')) {
         if (get_post_field('post_name', get_the_ID()) === 'water-testing-lab-services') {
-            return 'Water quality testing laboratory in Karachi and Lahore for drinking water, wastewater, process and RO water, with scope-confirmed methods and verified reports.';
+            return 'ISO/IEC 17025 water testing laboratory in Karachi and Lahore for drinking water, wastewater and RO water. PNAC LAB-285 and LAB-347, verifiable reports.';
         }
 
         return eta_modern_service_profile_value(get_post_field('post_name', get_the_ID()), 'seo_description', eta_modern_plain_excerpt(get_the_ID(), 26));
@@ -1776,7 +1776,7 @@ add_action('wp_head', function () {
     ?>
     <meta name="description" content="<?php echo esc_attr($description); ?>">
     <?php if (is_singular('services') && get_post_field('post_name', get_the_ID()) === 'water-testing-lab-services') : ?>
-        <meta property="og:title" content="Water Testing Laboratory in Karachi &amp; Lahore | Envi Tech AL">
+        <meta property="og:title" content="Water Testing Laboratory Karachi &amp; Lahore | Envi Tech AL">
         <meta property="og:image" content="https://envitechal.com/wp-content/uploads/2026/05/water-testing-services-karachi-lahore.png">
     <?php endif; ?>
     <script type="application/ld+json" data-no-optimize="1" data-no-defer="1"><?php echo wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_AMP); ?></script>
@@ -3406,10 +3406,15 @@ function eta_modern_render_water_testing_page()
 function eta_modern_water_testing_faqs()
 {
     return [
-        ['How much does water testing cost in Pakistan?', 'Cost depends on the parameters required: a basic drinking water panel costs considerably less than a full SEQS effluent panel with heavy metals. Send your requirement through the quotation form or WhatsApp and the laboratory will return a precise quotation in PKR.'],
-        ['How long does laboratory water analysis take?', 'Routine analysis time depends on the parameter list, sample condition and method requirements. Microbiological tests require incubation periods set by the method. If a deadline is critical - a vessel sailing, an audit date, an EPA submission - tell us when you book and the laboratory will plan around it.'],
+        ['How much does water testing cost in Pakistan?', 'Cost depends on the parameters required: a basic drinking water panel costs considerably less than a full SEQS effluent panel with heavy metals. Send your requirement through the quotation form or WhatsApp and the laboratory will return a precise quotation in PKR. A fuller breakdown is in the Karachi water testing cost guide.'],
+        ['Where can I get my water tested near me in Karachi or Lahore?', 'Envi Tech AL operates water testing laboratories in Karachi (PNAC LAB-285) and Lahore (PNAC LAB-347). Both are open Monday to Saturday, 09:00 to 17:00. Our teams collect samples across both cities, or you can bring a sample to either laboratory after calling to confirm the container and the time it must arrive.'],
+        ['How long does laboratory water analysis take?', 'Basic parameters can be reported within 24 hours and a full screening within 3 days, subject to the parameter list, sample condition and method requirements. Microbiological tests require incubation periods set by the method. If a deadline is critical, such as a vessel sailing, an audit date or an EPA submission, tell us when you book and the laboratory will plan around it.'],
+        ['How much water do I need to send, and in what container?', 'Send 1.5 litres in a clean container. Microbiological testing needs a sterile container, and the sample should reach the laboratory promptly. Please call before collecting so the correct container and preservation are confirmed for your parameters.'],
         ['Which standards do you test water against?', 'The applicable comparison basis can include WHO guideline values, Pakistan drinking-water requirements, SEQS, NEQS, PEQS, or an industry or buyer specification. Confirm the exact standard, laboratory, parameters, methods, and reporting format before testing.'],
-        ['I am not in Karachi or Lahore - can you still test my water?', 'Field sampling teams operate across Karachi and Lahore. For other cities, contact the laboratory before dispatch so the team can guide bottle selection, preservation, labelling and transit conditions before accepting the sample.'],
+        ['Which water tests do I need for a home, a factory or an export buyer?', 'A home supply is usually tested for physico-chemical quality, trace metals and microbiology against WHO and PEQS drinking-water values. A factory effluent test follows SEQS, NEQS or PEQS as the permit requires. A buyer audit follows the buyer\'s written specification. Tell us the purpose and we will recommend the parameter list.'],
+        ['Is your water testing laboratory accredited?', 'The Karachi and Lahore laboratories are accredited by PNAC to ISO/IEC 17025 under LAB-285 and LAB-347. Accreditation applies to the methods within each laboratory\'s approved scope, and we confirm scope for your parameters before work begins.'],
+        ['Can you test RO plant water, bore water or swimming pool water?', 'Yes. Feed, permeate and reject water from RO plants, bore and groundwater, and swimming pool water are each scoped to the question being asked, with the standard or plant specification agreed first.'],
+        ['I am not in Karachi or Lahore. Can you still test my water?', 'Field sampling teams operate across Karachi and Lahore. For other cities, contact the laboratory before dispatch so the team can guide bottle selection, preservation, labelling and transit conditions before accepting the sample.'],
         ['How do I know the report is genuine?', 'Reports carrying supported verification details can be checked through the report verification portal using the report number and date. Contact Envi Tech AL if a report cannot be verified online.'],
     ];
 }

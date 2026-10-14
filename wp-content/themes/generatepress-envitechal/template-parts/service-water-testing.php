@@ -32,6 +32,18 @@ $wt_types = [
     ['Bore, ground and recreational water', 'Everything else that holds water', 'Groundwater and bore water screening, swimming pool and recreational water, and industrial intake checks, each scoped to the question being asked of it.', 'Standard set by use', null],
 ];
 
+$wt_labs = [
+    ['k' => 'PNAC LAB-285', 'city' => 'Karachi', 'address' => 'First Floor, 345, Street 15, Bahadurabad Block 3, Bahadur Yar Jang CHS, Karachi, Sindh 75900', 'hours' => 'Monday to Saturday, 09:00 to 17:00', 'phone' => '+92 310 2288801', 'tel' => 'tel:+923102288801', 'map' => 'https://www.google.com/maps/search/?api=1&query=Envi+Tech+AL+Environmental+Testing+Laboratory+Bahadurabad+Karachi'],
+    ['k' => 'PNAC LAB-347', 'city' => 'Lahore', 'address' => '87-E Madina Heights, Office A/30-31, 8th Floor, Maulana Shaukat Ali Road, Johar Town, Lahore, Punjab', 'hours' => 'Monday to Saturday, 09:00 to 17:00', 'phone' => '+92 42 32296099', 'tel' => 'tel:+924232296099', 'map' => 'https://www.google.com/maps/search/?api=1&query=Madina+Heights+Maulana+Shaukat+Ali+Road+Johar+Town+Lahore'],
+];
+
+$wt_expect = [
+    ['Turnaround', 'Basic parameters within 24 hours and a full screening within 3 days, subject to the parameter list and method requirements.'],
+    ['Sample volume', '1.5 litres per sample, so the laboratory can run the agreed panel and repeat checks where the method requires.'],
+    ['Container', 'A clean container, and a sterile one for microbiological tests. Call first if you are unsure which applies.'],
+    ['Drop-off or collection', 'Bring the sample to the Karachi or Lahore laboratory, or ask for field collection with chain-of-custody records.'],
+];
+
 $wt_serves = [
     ['Homes and residential buildings', 'Is the supply safe to drink, and what changed since the last test.'],
     ['Hospitals and hotels', 'Guest and patient safety with a report an inspector can read.'],
@@ -75,12 +87,12 @@ $wt_related = [
 
             <div class="eta-shell wt-hero-grid">
                 <div class="wt-hero-copy">
-                    <p class="wt-eyebrow"><span>Water and wastewater analysis</span><i>·</i><span>LAB-285 Karachi</span><i>·</i><span>LAB-347 Lahore</span></p>
+                    <p class="wt-eyebrow"><span>Water testing laboratory</span><i>·</i><span>LAB-285 Karachi</span><i>·</i><span>LAB-347 Lahore</span></p>
                     <h1 id="wt-title" class="wt-title">
                         <span class="wt-title-line">Every drop,</span>
                         <span class="wt-title-line"><em>measured</em> against the limit.</span>
                     </h1>
-                    <p class="wt-lead">Water quality testing for drinking water, wastewater, process water, RO performance and industrial discharge, for the people accountable for the result: a clear report, each value stated against its applicable limit, verifiable online.</p>
+                    <p class="wt-lead">Envi Tech AL is a water testing laboratory in Karachi and Lahore, accredited to ISO/IEC 17025 for methods within its approved scope. We test drinking water, wastewater, process water and RO performance, and report every value against its applicable limit in a document your regulator, buyer or auditor can verify online.</p>
                     <div class="wt-actions">
                         <a class="wt-btn wt-btn-solid" href="<?php echo esc_url($wt_contact); ?>">Request a quotation <span aria-hidden="true">&rarr;</span></a>
                         <a class="wt-btn wt-btn-ghost" href="#wt-params">Explore the parameters</a>
@@ -115,6 +127,20 @@ $wt_related = [
             <div class="wt-ledger-item"><span class="wt-ledger-k">Lahore</span><strong>PNAC LAB-347</strong><span class="wt-ledger-s">ISO/IEC 17025, methods within the published scope</span></div>
             <div class="wt-ledger-item"><span class="wt-ledger-k">Punjab</span><strong>EPA listed laboratory</strong><span class="wt-ledger-s">For the monitoring the province requires</span></div>
             <div class="wt-ledger-item"><span class="wt-ledger-k">Every report</span><strong>Verifiable online</strong><span class="wt-ledger-s">By report number and issue date</span></div>
+        </div>
+    </section>
+
+    <!-- ===== INTRO ===== -->
+    <section class="wt-intro" aria-labelledby="wt-intro-title">
+        <div class="eta-shell wt-intro-grid">
+            <header class="wt-head wt-head-light">
+                <p class="wt-kicker">Water testing in Pakistan</p>
+                <h2 id="wt-intro-title">A water test is only as useful as the question it answers.</h2>
+            </header>
+            <div class="wt-intro-copy">
+                <p>A homeowner asking whether a borewell supply is safe, a factory preparing an effluent submission to Sindh EPA or Punjab EPA, and a buyer auditing a supplier need different parameters, different methods and a different report. We start by agreeing the purpose, then match the sampling, the standard and the reporting format to it.</p>
+                <p>Results are read against the standard that applies: WHO drinking-water guideline values, PEQS, SEQS or NEQS, or a written industry specification. Where a method sits outside a laboratory&rsquo;s approved scope, we say so before work begins rather than after the report is issued. For typical costs, see the <a href="<?php echo esc_url(home_url('/water-testing-cost-karachi/')); ?>">Karachi water testing cost guide</a>.</p>
+            </div>
         </div>
     </section>
 
@@ -208,7 +234,7 @@ $wt_related = [
             <div class="wt-journey-copy">
                 <p class="wt-kicker">From sample to verified report</p>
                 <h2 id="wt-journey-title">A controlled path from requirement to usable laboratory evidence.</h2>
-                <p>Good scoping protects cost, turnaround planning, sample validity and the usefulness of the report.</p>
+                <p>Good scoping protects cost, turnaround planning, sample validity and the usefulness of the report. The full path is explained in <a href="<?php echo esc_url(home_url('/water-testing-lab-sample-to-report/')); ?>">how a water testing lab produces a defensible result</a>.</p>
                 <a class="wt-btn wt-btn-solid" href="<?php echo esc_url($wt_contact); ?>">Start a request <span aria-hidden="true">&rarr;</span></a>
             </div>
             <ol class="wt-journey-list">
@@ -239,6 +265,37 @@ $wt_related = [
                     </article>
                 <?php endforeach; ?>
             </div>
+        </div>
+    </section>
+
+    <!-- ===== WHERE WE TEST + WHAT TO EXPECT ===== -->
+    <section class="wt-local" aria-labelledby="wt-local-title">
+        <div class="eta-shell">
+            <header class="wt-head wt-head-light">
+                <p class="wt-kicker">Where we test</p>
+                <h2 id="wt-local-title">Water testing laboratory in Karachi and Lahore.</h2>
+            </header>
+            <div class="wt-local-grid">
+                <?php foreach ($wt_labs as $lab) : ?>
+                    <article class="wt-local-card">
+                        <p class="wt-local-k"><?php echo esc_html($lab['k']); ?></p>
+                        <h3><?php echo esc_html($lab['city']); ?></h3>
+                        <address><?php echo esc_html($lab['address']); ?></address>
+                        <p class="wt-local-meta"><?php echo esc_html($lab['hours']); ?></p>
+                        <p class="wt-local-links"><a href="<?php echo esc_url($lab['tel']); ?>"><?php echo esc_html($lab['phone']); ?></a> <a href="<?php echo esc_url($lab['map']); ?>" target="_blank" rel="noopener">Open in Maps</a></p>
+                    </article>
+                <?php endforeach; ?>
+            </div>
+            <p class="wt-local-note">Sampling teams collect across both cities. You can also bring a sample to either laboratory. Call before you set out so the container, preservation and arrival time are confirmed.</p>
+            <div class="wt-expect-grid">
+                <?php foreach ($wt_expect as $e) : ?>
+                    <article class="wt-why-card">
+                        <h3><?php echo esc_html($e[0]); ?></h3>
+                        <p><?php echo esc_html($e[1]); ?></p>
+                    </article>
+                <?php endforeach; ?>
+            </div>
+            <p class="wt-clients"><strong>Clients served include</strong> Pearl Continental Hotel Karachi, WWF and Hamdard University Group. Read more about <a href="<?php echo esc_url(home_url('/water-testing-lab-sample-to-report/')); ?>">how a laboratory turns a sample into a defensible report</a>, or the <a href="<?php echo esc_url(home_url('/water-testing-lab-lahore/')); ?>">Lahore water testing laboratory</a>.</p>
         </div>
     </section>
 

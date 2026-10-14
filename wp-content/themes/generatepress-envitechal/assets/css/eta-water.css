@@ -285,6 +285,33 @@ html:not(.wt-gsap) .wt-journey-line path { stroke-dashoffset: 0; }
 .wt-final-actions { display: grid; gap: 10px; justify-items: start; }
 
 /* ============================================================
+   INTRO, WHERE WE TEST, WHAT TO EXPECT (light)
+   ============================================================ */
+.wt-intro { padding: clamp(48px, 6vw, 80px) 0; background: var(--wt-foam); color: var(--eta-ink, #172a33); }
+.wt-intro-grid { display: grid; grid-template-columns: minmax(0, .4fr) minmax(0, .6fr); gap: clamp(28px, 6vw, 80px); align-items: start; }
+.wt-intro .wt-head { margin-bottom: 0; }
+.wt-intro-copy p { font-size: 17px; line-height: 1.7; color: var(--wt-muted-light); }
+.wt-intro-copy p + p { margin-top: 14px; }
+.wt-intro-copy a, .wt-clients a, .wt-journey-copy p a { color: var(--wt-blue); text-decoration: underline; text-underline-offset: 3px; }
+.wt-journey-copy p a { color: var(--wt-aqua-2); }
+.wt-local { padding: clamp(56px, 7vw, 96px) 0; background: var(--wt-foam-2); color: var(--eta-ink, #172a33); }
+.wt-local-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.wt-local-card { padding: 26px; border-radius: var(--wt-radius); background: #fff; border: 1px solid var(--wt-line-light); box-shadow: 0 12px 34px rgba(11, 38, 55, .06); }
+.wt-local-k { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--wt-blue); }
+.wt-local-card h3 { margin-top: 6px; font-size: 24px; font-weight: 500; color: var(--wt-navy); }
+.wt-local-card address { margin-top: 10px; font-style: normal; font-size: 15.5px; line-height: 1.6; color: var(--wt-muted-light); }
+.wt-local-meta { margin-top: 10px; font-size: 14.5px; font-weight: 600; color: var(--wt-navy); }
+.wt-local-links { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px 22px; }
+.wt-local-links a { display: inline-block; padding: 8px 0; font-size: 15px; font-weight: 600; color: var(--wt-blue); }
+.wt-local-note { margin-top: 20px; font-size: 15.5px; line-height: 1.65; color: var(--wt-muted-light); max-width: 78ch; }
+.wt-expect-grid { margin-top: 24px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.wt-clients { margin-top: 24px; font-size: 15.5px; line-height: 1.7; color: var(--wt-muted-light); }
+@media (max-width: 1024px) { .wt-expect-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 860px) {
+    .wt-intro-grid, .wt-local-grid, .wt-expect-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 1024px) {
