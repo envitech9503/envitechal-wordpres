@@ -456,7 +456,7 @@ add_filter('pre_get_document_title', function ($title) {
     }
 
     if (is_page('lahore-environmental-lab')) {
-        return 'Environmental Lab and EPA Testing in Lahore | Envi Tech AL';
+        return 'Environmental Lab in Lahore, PNAC LAB-347 | Envi Tech AL';
     }
 
     if (is_page('karachi-environmental-lab')) {
@@ -773,7 +773,7 @@ function eta_modern_meta_description()
     }
 
     if (is_page('lahore-environmental-lab')) {
-        return 'EPA testing in Lahore: environmental testing, water testing, monitoring, calibration and Punjab EPA compliance reporting by Envi Tech AL.';
+        return 'Environmental testing laboratory in Johar Town, Lahore: water testing, monitoring, calibration and Punjab EPA compliance reporting. Open Monday to Saturday.';
     }
 
     if (is_page('karachi-environmental-lab')) {
@@ -4142,8 +4142,8 @@ function eta_modern_post_seo_overrides()
             'What ISO/IEC 17025 accreditation means for an environmental laboratory in Pakistan, how PNAC scope works and how to check a laboratory before you rely on it.',
         ],
         'iee-vs-eia-vs-emp-vs-noc-pakistan' => [
-            'IEE vs EIA, EMP or NOC: Which Route? | Envi Tech AL',
-            'How IEE, EIA, EMP and NOC differ under Pakistan environmental law, which one a project needs, and what each submission to the EPA involves.',
+            'IEE vs EIA: Difference and Which You Need | Envi Tech AL',
+            'The difference between IEE and EIA in Pakistan, when each is required, and how EMP and NOC fit. Plain guidance on choosing the EPA approval route for a project.',
         ],
         'ppwr-heavy-metal-testing-packaging-pakistan' => [
             'PPWR Heavy Metal Testing for EU Export | Envi Tech AL',
@@ -5290,6 +5290,9 @@ function eta_modern_location_faqs($location)
         ['Do you provide environmental lab services in Lahore?', 'Yes. Envi Tech AL supports Lahore and wider Punjab clients through environmental testing, consultancy, monitoring, calibration coordination, and compliance-focused reporting.'],
         ['Can Lahore clients request water testing?', 'Yes. Drinking water, wastewater, RO plant water, bore water, process water, and industrial discharge testing can be scoped according to the intended use and reporting requirement.'],
         ['Do you support Punjab EPA related work?', 'Yes. The team can support documentation, monitoring, consultancy, and reporting pathways for projects and facilities preparing for environmental compliance review.'],
+        ['Where is the Lahore laboratory and when is it open?', 'The Lahore office is at 87-E Madina Heights, Office A/30-31, 8th Floor, Maulana Shaukat Ali Road, Johar Town, and is open Monday to Saturday, 09:00 to 17:00. The telephone number is +92 42 32296099. Samples can be brought to the laboratory, or field collection can be arranged.'],
+        ['How long does water testing take in Lahore, and how much sample is needed?', 'Basic parameters can be reported within 24 hours and a full screening within 3 days, subject to the parameter list and method requirements. Send 1.5 litres in a clean container, or a sterile one for microbiological tests.'],
+        ['Is the Lahore laboratory accredited?', 'The Lahore laboratory holds PNAC accreditation LAB-347 to ISO/IEC 17025. Accreditation applies to the methods within its approved scope, and the scope is confirmed for your parameters before work begins.'],
         ['Which details should I share for a quotation?', 'Share location, sample type, industry, report purpose, deadline, required standard or buyer requirement, and whether field sampling or consultancy support is needed.'],
     ];
 }
