@@ -40,7 +40,7 @@ add_filter('generate_logo_output', static function ($output, $logo_url, $html_at
         . '<span class="eta-logo-word"><span class="eta-logo-name">Envi Tech AL</span><span class="eta-logo-sub">%5$s</span></span>'
         . '</a></div>',
         esc_url(apply_filters('generate_logo_href', home_url('/'))),
-        esc_attr__('Envi Tech AL homepage', 'envi-tech-al-modern'),
+        esc_attr__('Envi Tech AL Environmental Testing Laboratory, homepage', 'envi-tech-al-modern'),
         esc_url($dir . 'envitechal-emblem-160.png'),
         esc_url($dir . 'envitechal-emblem-320.png'),
         esc_html__('Environmental Testing Laboratory', 'envi-tech-al-modern')

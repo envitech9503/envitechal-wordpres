@@ -29,7 +29,7 @@ $eta_year = date('Y');
         <div class="eta-shell fsf-top-grid">
 
             <section class="fsf-invite" aria-labelledby="fsf-invite-title">
-                <a class="fsf-logo" href="<?php echo esc_url(home_url('/')); ?>" aria-label="<?php esc_attr_e('Envi Tech AL homepage', 'envi-tech-al-modern'); ?>">
+                <a class="fsf-logo" href="<?php echo esc_url(home_url('/')); ?>" aria-label="<?php esc_attr_e('Envi Tech AL Environmental Testing Laboratory, homepage', 'envi-tech-al-modern'); ?>">
                     <?php
                     // High-resolution emblem supplied by the client (12-09-2026),
                     // cut out to a transparent background and shipped with the
