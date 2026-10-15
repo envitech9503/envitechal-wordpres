@@ -58,9 +58,9 @@ add_action('wp_head', function () {
     remove_action('wp_head', 'wp_site_icon', 99);
 
     $base = get_stylesheet_directory_uri() . '/assets/images';
-    $icon_32 = function_exists('get_site_icon_url') ? get_site_icon_url(32) : '';
-    $icon_192 = function_exists('get_site_icon_url') ? get_site_icon_url(192) : '';
-    $icon_180 = function_exists('get_site_icon_url') ? get_site_icon_url(180) : '';
+    /* Brand emblem icon set bundled with the theme (emblem only, so it stays
+     * legible at 16 to 32 px). Versioned so browsers drop the old tab icon. */
+    $icon_v = '2';
 
     /* Both brand faces are used above the fold, so preload them rather than
      * letting the stylesheet discover them a round trip later. */
@@ -78,10 +78,26 @@ add_action('wp_head', function () {
 
     printf('<meta name="theme-color" content="%s">' . "\n", esc_attr('#f4f7f3'));
     printf('<link rel="manifest" href="%s">' . "\n", esc_url(home_url('/?eta_manifest=1')));
-    printf('<link rel="icon" type="image/png" sizes="32x32" data-spai-excluded="true" href="%s">' . "\n", esc_url($icon_32 ?: $base . '/favicon-32.png'));
-    printf('<link rel="icon" type="image/png" sizes="192x192" data-spai-excluded="true" href="%s">' . "\n", esc_url($icon_192 ?: $base . '/favicon-192.png'));
-    printf('<link rel="apple-touch-icon" sizes="180x180" data-spai-excluded="true" href="%s">' . "\n", esc_url($icon_180 ?: $base . '/favicon-192.png'));
+    printf('<link rel="icon" href="%s" sizes="any">' . "\n", esc_url($base . '/favicon.ico?v=' . $icon_v));
+    printf('<link rel="icon" type="image/png" sizes="16x16" data-spai-excluded="true" href="%s">' . "\n", esc_url($base . '/favicon-16.png?v=' . $icon_v));
+    printf('<link rel="icon" type="image/png" sizes="32x32" data-spai-excluded="true" href="%s">' . "\n", esc_url($base . '/favicon-32.png?v=' . $icon_v));
+    printf('<link rel="icon" type="image/png" sizes="48x48" data-spai-excluded="true" href="%s">' . "\n", esc_url($base . '/favicon-48.png?v=' . $icon_v));
+    printf('<link rel="icon" type="image/png" sizes="192x192" data-spai-excluded="true" href="%s">' . "\n", esc_url($base . '/favicon-192.png?v=' . $icon_v));
+    printf('<link rel="apple-touch-icon" sizes="180x180" data-spai-excluded="true" href="%s">' . "\n", esc_url($base . '/apple-touch-icon.png?v=' . $icon_v));
 }, 4);
+
+/* Route every WordPress site-icon request (including /favicon.ico) to the
+ * bundled emblem set so the tab icon is identical everywhere. */
+add_filter('get_site_icon_url', function ($url, $size) {
+    $base = get_stylesheet_directory_uri() . '/assets/images';
+    $size = (int) $size;
+    if ($size <= 16) { $file = 'favicon-16.png'; }
+    elseif ($size <= 32) { $file = 'favicon-32.png'; }
+    elseif ($size <= 48) { $file = 'favicon-48.png'; }
+    elseif ($size <= 192) { $file = 'favicon-192.png'; }
+    else { $file = 'favicon-512.png'; }
+    return $base . '/' . $file . '?v=2';
+}, 10, 2);
 
 /**
  * Web app manifest. Generated rather than shipped as a static file so the
@@ -92,17 +108,15 @@ add_action('template_redirect', function () {
         return;
     }
 
+    $base = get_stylesheet_directory_uri() . '/assets/images';
     $icons = [];
     foreach ([192, 512] as $size) {
-        $url = function_exists('get_site_icon_url') ? get_site_icon_url($size) : '';
-        if ($url) {
-            $icons[] = [
-                'src' => $url,
-                'sizes' => $size . 'x' . $size,
-                'type' => 'image/png',
-                'purpose' => 'any',
-            ];
-        }
+        $icons[] = [
+            'src' => $base . '/favicon-' . $size . '.png?v=2',
+            'sizes' => $size . 'x' . $size,
+            'type' => 'image/png',
+            'purpose' => 'any',
+        ];
     }
 
     status_header(200);
