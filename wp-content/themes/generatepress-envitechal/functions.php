@@ -268,6 +268,19 @@ add_action('wp_enqueue_scripts', function () {
         file_exists($modern_css) ? (string) filemtime($modern_css) : wp_get_theme()->get('Version')
     );
 
+    /* Knowledge Hub article styles (every rule scoped to body.single-post) were split out
+     * of eta-modern.css on 16-10-2026 so other pages stop downloading them. Printed
+     * straight after eta-modern, which keeps the original cascade order on posts. */
+    if (is_singular('post')) {
+        $post_css = get_stylesheet_directory() . '/assets/css/eta-post.css';
+        wp_enqueue_style(
+            'eta-post',
+            get_stylesheet_directory_uri() . '/assets/css/eta-post.css',
+            ['eta-modern'],
+            file_exists($post_css) ? (string) filemtime($post_css) : wp_get_theme()->get('Version')
+        );
+    }
+
     wp_add_inline_style(
         'eta-modern',
         ':root{--eta-green-2:#1f6f52}.single-post .eta-post-side-panel{display:none!important}:where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{outline:3px solid #ffcc4d!important;outline-offset:3px!important}.eta-chatbot-launcher:focus-visible{box-shadow:0 0 0 2px #102229,0 0 0 6px #ffcc4d!important}'
