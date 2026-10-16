@@ -27,7 +27,7 @@ add_filter('generate_sidebar_layout', static function () {
 
 /**
  * Header logo lockup: the client-supplied high-resolution emblem (cut out to a
- * transparent background, shipped in the theme at 160/320 px) beside a text
+ * transparent background, shipped in the theme as WebP at 96/160/320 px) beside a text
  * wordmark. The previous raster wordmark was 320 px wide and read soft on dense
  * screens; text stays crisp at any density. ShortPixel is told to leave the
  * emblem alone so it is neither recompressed nor lazy-delayed above the fold.
@@ -36,14 +36,15 @@ add_filter('generate_logo_output', static function ($output, $logo_url, $html_at
     $dir = get_stylesheet_directory_uri() . '/assets/images/';
     return sprintf(
         '<div class="site-logo eta-logo"><a href="%1$s" rel="home" class="eta-logo-link" aria-label="%2$s">'
-        . '<img class="eta-logo-emblem" src="%3$s" srcset="%3$s 160w, %4$s 320w" sizes="56px" width="160" height="160" alt="" data-spai-excluded="true" decoding="async" fetchpriority="high">'
+        . '<img class="eta-logo-emblem" src="%3$s" srcset="%3$s 96w, %6$s 160w, %4$s 320w" sizes="48px" width="160" height="160" alt="" data-spai-excluded="true" decoding="async" fetchpriority="high">'
         . '<span class="eta-logo-word"><span class="eta-logo-name">Envi Tech AL</span><span class="eta-logo-sub">%5$s</span></span>'
         . '</a></div>',
         esc_url(apply_filters('generate_logo_href', home_url('/'))),
         esc_attr__('Envi Tech AL Environmental Testing Laboratory, homepage', 'envi-tech-al-modern'),
-        esc_url($dir . 'envitechal-emblem-160.png'),
-        esc_url($dir . 'envitechal-emblem-320.png'),
-        esc_html__('Environmental Testing Laboratory', 'envi-tech-al-modern')
+        esc_url($dir . 'envitechal-emblem-96.webp'),
+        esc_url($dir . 'envitechal-emblem-320.webp'),
+        esc_html__('Environmental Testing Laboratory', 'envi-tech-al-modern'),
+        esc_url($dir . 'envitechal-emblem-160.webp')
     );
 }, 10, 3);
 

@@ -38,8 +38,8 @@ $eta_year = date('Y');
                     ?>
                     <span class="fsf-logo-lockup">
                         <img class="fsf-logo-emblem"
-                             src="<?php echo esc_url($emblem_dir . 'envitechal-emblem-160.png'); ?>"
-                             srcset="<?php echo esc_url($emblem_dir . 'envitechal-emblem-160.png'); ?> 160w, <?php echo esc_url($emblem_dir . 'envitechal-emblem-320.png'); ?> 320w"
+                             src="<?php echo esc_url($emblem_dir . 'envitechal-emblem-160.webp'); ?>"
+                             srcset="<?php echo esc_url($emblem_dir . 'envitechal-emblem-96.webp'); ?> 96w, <?php echo esc_url($emblem_dir . 'envitechal-emblem-160.webp'); ?> 160w, <?php echo esc_url($emblem_dir . 'envitechal-emblem-320.webp'); ?> 320w"
                              sizes="80px" width="160" height="160" alt="" data-spai-excluded="true" loading="lazy" decoding="async">
                         <span class="fsf-logo-word">
                             <span class="fsf-logo-name">Envi Tech AL</span>
