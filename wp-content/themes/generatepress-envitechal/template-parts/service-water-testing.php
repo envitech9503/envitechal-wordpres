@@ -139,7 +139,7 @@ $wt_related = [
                 <h2 id="wt-intro-title">A water test is only as useful as the question it answers.</h2>
             </header>
             <div class="wt-intro-copy">
-                <p>A homeowner asking whether a borewell supply is safe, a factory preparing an effluent submission to Sindh EPA or Punjab EPA, and a buyer auditing a supplier need different parameters, different methods and a different report. We start by agreeing the purpose, then match the sampling, the standard and the reporting format to it.</p>
+                <p>A homeowner asking whether a borewell supply is safe, a factory preparing an effluent submission to Sindh EPA or Punjab EPA, and a buyer auditing a supplier need different parameters, different methods and a different report. As a water testing company with its own laboratories in Karachi and Lahore, we start by agreeing the purpose, then match the sampling, the standard and the reporting format to it.</p>
                 <p>Results are read against the standard that applies: WHO drinking-water guideline values, PEQS, SEQS or NEQS, or a written industry specification. Where a method sits outside a laboratory&rsquo;s approved scope, we say so before work begins rather than after the report is issued. For typical costs, see the <a href="<?php echo esc_url(home_url('/water-testing-cost-karachi/')); ?>">Karachi water testing cost guide</a>.</p>
             </div>
         </div>

@@ -4929,6 +4929,27 @@ h3 {
     margin-top: 18px;
 }
 
+.eta-lahore-epa-credentials {
+    margin: 14px 0 0;
+    color: var(--eta-muted);
+    font-weight: 600;
+}
+
+.eta-lahore-epa-list {
+    margin: 18px 0;
+    padding-left: 1.2em;
+    color: var(--eta-muted);
+    line-height: 1.7;
+}
+
+.eta-lahore-epa-list li + li {
+    margin-top: 8px;
+}
+
+.eta-lahore-epa-list strong {
+    color: var(--eta-ink);
+}
+
 .eta-lahore-service-grid,
 .eta-lahore-faq-grid {
     display: grid;

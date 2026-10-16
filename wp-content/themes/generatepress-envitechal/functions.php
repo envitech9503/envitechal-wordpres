@@ -744,7 +744,7 @@ function eta_modern_normalize_head_meta($html)
 function eta_modern_meta_description()
 {
     if (is_front_page()) {
-        return 'Envi Tech AL provides environmental testing, water and wastewater analysis, calibration, monitoring, and regulatory consultancy in Karachi and Lahore.';
+        return 'Water and environmental testing laboratory in Karachi and Lahore with PNAC ISO/IEC 17025 accredited methods (LAB-285, LAB-347). Open Monday to Saturday.';
     }
 
     if (is_page('contact-us-envi-tech-al')) {
@@ -3434,6 +3434,7 @@ function eta_modern_water_testing_faqs()
         ['Which standards do you test water against?', 'The applicable comparison basis can include WHO guideline values, Pakistan drinking-water requirements, SEQS, NEQS, PEQS, or an industry or buyer specification. Confirm the exact standard, laboratory, parameters, methods, and reporting format before testing.'],
         ['Which water tests do I need for a home, a factory or an export buyer?', 'A home supply is usually tested for physico-chemical quality, trace metals and microbiology against WHO and PEQS drinking-water values. A factory effluent test follows SEQS, NEQS or PEQS as the permit requires. A buyer audit follows the buyer\'s written specification. Tell us the purpose and we will recommend the parameter list.'],
         ['Is your water testing laboratory accredited?', 'The Karachi and Lahore laboratories are accredited by PNAC to ISO/IEC 17025 under LAB-285 and LAB-347. Accreditation applies to the methods within each laboratory\'s approved scope, and we confirm scope for your parameters before work begins.'],
+        ['How do I choose a water testing company in Pakistan?', 'Check that the company operates its own laboratory, that the methods you need fall within its PNAC ISO/IEC 17025 accredited scope, and that its reports can be verified independently. Envi Tech AL runs laboratories in Karachi (LAB-285) and Lahore (LAB-347) and confirms the method and its accreditation status before a sample is accepted.'],
         ['Can you test RO plant water, bore water or swimming pool water?', 'Yes. Feed, permeate and reject water from RO plants, bore and groundwater, and swimming pool water are each scoped to the question being asked, with the standard or plant specification agreed first.'],
         ['I am not in Karachi or Lahore. Can you still test my water?', 'Field sampling teams operate across Karachi and Lahore. For other cities, contact the laboratory before dispatch so the team can guide bottle selection, preservation, labelling and transit conditions before accepting the sample.'],
         ['How do I know the report is genuine?', 'Reports carrying supported verification details can be checked through the report verification portal using the report number and date. Contact Envi Tech AL if a report cannot be verified online.'],
@@ -5309,7 +5310,7 @@ function eta_modern_location_faqs($location)
     return [
         ['Do you provide environmental lab services in Lahore?', 'Yes. Envi Tech AL supports Lahore and wider Punjab clients through environmental testing, consultancy, monitoring, calibration coordination, and compliance-focused reporting.'],
         ['Can Lahore clients request water testing?', 'Yes. Drinking water, wastewater, RO plant water, bore water, process water, and industrial discharge testing can be scoped according to the intended use and reporting requirement.'],
-        ['Do you support Punjab EPA related work?', 'Yes. The team can support documentation, monitoring, consultancy, and reporting pathways for projects and facilities preparing for environmental compliance review.'],
+        ['Do you carry out Punjab EPA testing in Lahore?', 'Yes. Envi Tech AL is listed as an environmental laboratory on the official Punjab EPA record (certificate 2025 to 2028). The Lahore laboratory tests wastewater, stack emissions, ambient air, noise and drinking water, and reports each result against the applicable PEQS limit for Environmental Monitoring Reports and inspections.'],
         ['Where is the Lahore laboratory and when is it open?', 'The Lahore office is at 87-E Madina Heights, Office A/30-31, 8th Floor, Maulana Shaukat Ali Road, Johar Town, and is open Monday to Saturday, 09:00 to 17:00. The telephone number is +92 42 32296099. Samples can be brought to the laboratory, or field collection can be arranged.'],
         ['How long does water testing take in Lahore, and how much sample is needed?', 'Basic parameters can be reported within 24 hours and a full screening within 3 days, subject to the parameter list and method requirements. Send 1.5 litres in a clean container, or a sterile one for microbiological tests.'],
         ['Is the Lahore laboratory accredited?', 'The Lahore laboratory holds PNAC accreditation LAB-347 to ISO/IEC 17025. Accreditation applies to the methods within its approved scope, and the scope is confirmed for your parameters before work begins.'],
@@ -5621,7 +5622,7 @@ function eta_modern_cluster_page_data($slug)
             'covered' => ['Industrial wastewater', 'ETP inlet and outlet samples', 'Process discharge', 'Composite or grab sampling guidance', 'Discharge parameter selection', 'Compliance-ready reporting'],
             'parameters' => ['Temperature', 'pH', 'BOD', 'COD', 'TSS', 'TDS', 'Oil and grease', 'Phenolic compounds', 'Sulfide', 'Ammonia', 'Chloride', 'Sulfate', 'Chromium', 'Copper', 'Zinc', 'Nickel', 'Lead', 'Cadmium', 'Mercury'],
             'uses' => ['SEPA or Punjab EPA compliance support', 'Quarterly or annual monitoring', 'Buyer audit evidence', 'ETP troubleshooting', 'Internal EHS reporting', 'Corrective action follow-up'],
-            'related' => ['/sindh-environmental-quality-standards-seqs/' => 'SEQS effluent standards', '/services/water-testing-lab-services/' => 'water testing laboratory services', '/services/analytical-lab-services/' => 'Analytical lab services', '/services/environmental-consultancy/' => 'Environmental consultancy'],
+            'related' => ['/sindh-environmental-quality-standards-seqs/' => 'SEQS effluent standards', '/services/water-testing-lab-services/' => 'Water testing laboratory', '/services/analytical-lab-services/' => 'Analytical lab services', '/services/environmental-consultancy/' => 'Environmental consultancy'],
             'faqs' => [
                 ['Can Envi Tech AL test industrial wastewater?', 'Yes. Industrial wastewater can be tested for discharge, ETP performance, buyer audit, and internal monitoring needs in Karachi and Lahore.'],
                 ['Which parameters are usually required?', 'Common parameters include pH, BOD, COD, TSS, TDS, oil and grease, sulfide, ammonia, chloride, sulfate, and metals. The final list depends on the standard or report purpose.'],
@@ -5639,7 +5640,7 @@ function eta_modern_cluster_page_data($slug)
             'covered' => ['Drinking water safety checks', 'Bore water and groundwater', 'RO plant output', 'Storage tank checks', 'Microbiological testing', 'Metal and chemistry screening'],
             'parameters' => ['pH', 'Colour', 'Turbidity', 'TDS', 'Hardness', 'Chloride', 'Sulfate', 'Nitrate', 'Fluoride', 'Iron', 'Manganese', 'Copper', 'Lead', 'Arsenic', 'Residual chlorine', 'Total coliform', 'E. coli'],
             'uses' => ['Health and safety review', 'Hotel and hospital compliance', 'Buyer or tenant requirement', 'RO performance verification', 'Internal facility monitoring', 'Report verification support'],
-            'related' => ['/services/water-testing-lab-services/' => 'Water testing services', '/wastewater-testing-services/' => 'Wastewater testing', '/report-verification-portal/' => 'Report verification'],
+            'related' => ['/services/water-testing-lab-services/' => 'Water testing lab in Karachi and Lahore', '/wastewater-testing-services/' => 'Wastewater testing', '/report-verification-portal/' => 'Report verification'],
             'faqs' => [
                 ['Do you provide drinking water testing in Karachi?', 'Yes. Envi Tech AL provides drinking water testing in Karachi for homes, buildings, hospitals, hotels, schools, and industrial facilities.'],
                 ['Do you provide drinking water testing in Lahore?', 'Yes. Lahore clients can request drinking water testing with parameter selection based on the intended use of the report.'],
@@ -5896,11 +5897,13 @@ function eta_modern_render_lahore_page()
         ['03', 'Coordinate sampling and reporting', 'Align field visits, sample handling, lab analysis, technical review, and final report delivery with the customer timeline.'],
         ['04', 'Support the next compliance step', 'Help teams understand results, corrective actions, submission requirements, and follow-up monitoring where needed.'],
     ];
-    $faqs = [
-        ['Do you provide environmental lab services in Lahore?', 'Yes. Envi Tech AL supports Lahore and wider Punjab clients through environmental testing, consultancy, monitoring, calibration coordination, and compliance-focused reporting.'],
-        ['Can Lahore clients request water testing?', 'Yes. Drinking water, wastewater, RO plant water, bore water, process water, and industrial discharge testing can be scoped according to the intended use and reporting requirement.'],
-        ['Do you support Punjab EPA related work?', 'Yes. The team can support documentation, monitoring, consultancy, and reporting pathways for projects and facilities preparing for environmental compliance review.'],
-        ['Which details should I share for a quotation?', 'Share location, sample type, industry, report purpose, deadline, required standard or buyer requirement, and whether field sampling or consultancy support is needed.'],
+    // Same list as the FAQPage schema, so the visible answers and the markup match.
+    $faqs = eta_modern_location_faqs('lahore');
+    $epa_tests = [
+        ['Wastewater and effluent', 'pH, BOD5, COD, suspended and dissolved solids, oil and grease, and heavy metals, reported against the PEQS effluent limits for the discharge route.'],
+        ['Stack and generator emissions', 'Carbon monoxide, oxides of nitrogen, sulphur dioxide and particulate matter from boilers, generators and process stacks.'],
+        ['Ambient air and noise', 'Particulate matter (PM10 and PM2.5), gaseous pollutants and noise levels at the site boundary and in work areas.'],
+        ['Drinking water', 'Physico-chemical, trace metal and microbiological parameters, read against the Punjab drinking water standards and WHO guideline values.'],
     ];
     ?>
     <section class="eta-lahore-hero" aria-labelledby="eta-lahore-title">
@@ -5940,7 +5943,27 @@ function eta_modern_render_lahore_page()
             </div>
             <div class="eta-lahore-rich-copy">
                 <p><?php esc_html_e('Lahore businesses often need environmental support for water quality, wastewater discharge, air and stack emissions, noise, workplace conditions, project approvals, certification audits, buyer requirements, and operational risk control. Envi Tech AL connects laboratory discipline with field coordination and advisory thinking so clients do not receive isolated test numbers without context.', 'envi-tech-al-modern'); ?></p>
-                <p><?php esc_html_e('The Lahore page is designed for customers who are searching for an environmental lab in Lahore, water testing lab in Lahore, environmental consultancy in Lahore, or Punjab EPA compliance support and need a clear route to the right scope.', 'envi-tech-al-modern'); ?></p>
+                <p><?php esc_html_e('The Lahore laboratory in Johar Town handles testing, monitoring and Punjab EPA reporting for facilities in Lahore and across Punjab. Field sampling can be arranged for sites outside the city.', 'envi-tech-al-modern'); ?></p>
+            </div>
+        </div>
+    </section>
+
+    <section id="punjab-epa-testing" class="eta-band eta-lahore-intro eta-lahore-epa" aria-labelledby="eta-lahore-epa-title">
+        <div class="eta-shell eta-lahore-intro-grid">
+            <div>
+                <p class="eta-eyebrow"><?php esc_html_e('Punjab EPA testing', 'envi-tech-al-modern'); ?></p>
+                <h2 id="eta-lahore-epa-title"><?php esc_html_e('EPA testing in Lahore, reported against PEQS', 'envi-tech-al-modern'); ?></h2>
+                <p class="eta-lahore-epa-credentials"><?php esc_html_e('Punjab EPA listed laboratory · PNAC ISO/IEC 17025 · LAB-347', 'envi-tech-al-modern'); ?></p>
+            </div>
+            <div class="eta-lahore-rich-copy">
+                <p><?php esc_html_e('Facilities in Lahore and across Punjab are regulated by the Punjab Environmental Protection Agency (Punjab EPA), and their monitoring results are assessed against the Punjab Environmental Quality Standards (PEQS). Envi Tech AL is listed as an environmental laboratory on the official Punjab EPA record, and the Lahore laboratory holds PNAC accreditation LAB-347 to ISO/IEC 17025 for methods within its approved scope.', 'envi-tech-al-modern'); ?></p>
+                <ul class="eta-lahore-epa-list">
+                    <?php foreach ($epa_tests as $test) : ?>
+                        <li><strong><?php echo esc_html($test[0]); ?>:</strong> <?php echo esc_html($test[1]); ?></li>
+                    <?php endforeach; ?>
+                </ul>
+                <p><?php esc_html_e('Each result is reported against the PEQS limit that applies to it, in a format suited to Environmental Monitoring Reports, EMP conditions and Punjab EPA inspections. The report states what was measured and by which method; compliance with an approval is decided by the Punjab EPA.', 'envi-tech-al-modern'); ?></p>
+                <p><?php esc_html_e('For drinking water, wastewater and RO samples, see our', 'envi-tech-al-modern'); ?> <a class="eta-text-link" href="<?php echo esc_url(home_url('/services/water-testing-lab-services/')); ?>"><?php esc_html_e('water testing laboratory', 'envi-tech-al-modern'); ?></a>. <?php esc_html_e('The certificate is published on the', 'envi-tech-al-modern'); ?> <a class="eta-text-link" href="https://epd.punjab.gov.pk/system/files/EnviTech_%202025-2028_merged.pdf" target="_blank" rel="noopener"><?php esc_html_e('official Punjab EPA record (2025 to 2028)', 'envi-tech-al-modern'); ?></a>.</p>
             </div>
         </div>
     </section>
@@ -5953,7 +5976,7 @@ function eta_modern_render_lahore_page()
                     <article class="eta-lahore-service-card">
                         <h2><?php echo esc_html($service['title']); ?></h2>
                         <p><?php echo esc_html($service['text']); ?></p>
-                        <a class="eta-text-link" href="<?php echo esc_url($service['link']); ?>"><?php echo esc_html($service['link'] === home_url('/services/water-testing-lab-services/') ? 'Water testing laboratory' : __('View related service', 'envi-tech-al-modern')); ?></a>
+                        <a class="eta-text-link" href="<?php echo esc_url($service['link']); ?>"><?php echo esc_html($service['link'] === home_url('/services/water-testing-lab-services/') ? 'Water testing lab in Lahore' : __('View related service', 'envi-tech-al-modern')); ?></a>
                     </article>
                 <?php endforeach; ?>
             </div>
@@ -6160,7 +6183,7 @@ function eta_modern_seqs_title()
 
 function eta_modern_seqs_meta_description()
 {
-    return 'What SEQS means, the Sindh Environmental Quality Standards 2016 limits for effluent, air and noise, who must comply and how to test against them.';
+    return 'SEQS stands for Sindh Environmental Quality Standards. What SEQS means for your facility, the 2016 limits for effluent, air and noise, and how to test.';
 }
 
 function eta_modern_seqs_pdf_url()
@@ -6195,10 +6218,11 @@ function eta_modern_seqs_effluent_limits()
 function eta_modern_seqs_faqs()
 {
     return [
-        ['What does SEQS stand for?', 'SEQS stands for Sindh Environmental Quality Standards - the province\'s legally enforceable limits for effluent discharge, air emissions, ambient air quality, noise and drinking water, notified under the Sindh Environmental Protection Act 2014 and enforced by SEPA.'],
-        ['What is the difference between SEQS, NEQS and PEQS?', 'NEQS are the original national standards. After environmental regulation devolved to the provinces, Sindh notified SEQS (2016) and Punjab notified PEQS - each provincially enforceable. A facility in Karachi answers to SEQS and SEPA; a facility in Lahore answers to PEQS and the Punjab EPA. The frameworks are closely aligned but not identical, so always test against the standard your approval cites.'],
+        ['What does SEQS stand for?', 'SEQS stands for Sindh Environmental Quality Standards. They are the province\'s legally enforceable limits for effluent discharge, air emissions, ambient air quality, noise and drinking water, notified under the Sindh Environmental Protection Act 2014 and enforced by the Sindh Environmental Protection Agency (Sindh EPA).'],
+        ['What does SEQS mean for a facility in Sindh?', 'In practice, SEQS means the numerical limits against which a facility\'s monitoring results are assessed. Effluent, stack emission, ambient air and noise results in an Environmental Monitoring Report (EMR) are compared with the relevant SEQS table, so the standard determines which parameters are tested and the limits they are reported against.'],
+        ['What is the difference between SEQS, NEQS and PEQS?', 'NEQS are the original national standards. After environmental regulation devolved to the provinces, Sindh notified SEQS (2016) and Punjab notified PEQS, each enforceable within its province. A facility in Karachi answers to SEQS and the Sindh EPA; a facility in Lahore answers to PEQS and the Punjab EPA. The frameworks are closely aligned but not identical, so always test against the standard your approval cites.'],
         ['What are the SEQS limits for wastewater discharge?', 'Key effluent limits include pH 6-9, BOD5 of 80 mg/L into inland waters (250 mg/L into sewage treatment), COD of 150 mg/L into inland waters, oil and grease of 10 mg/L, and parameter-specific limits for heavy metals such as lead (0.5 mg/L), cadmium (0.1 mg/L) and mercury (0.01 mg/L). The full tables, including discharge-destination variations, are in the complete document above.'],
-        ['Where can I download the SEQS 2016 PDF?', 'The complete official SEQS 2016 notification is available from this page - see the download section above.'],
+        ['Where can I download the SEQS 2016 PDF?', 'The complete official SEQS 2016 notification is available from this page. See the download section above.'],
         ['How do I test my facility\'s effluent against SEQS?', 'Sampling must follow correct preservation and chain-of-custody practice. Send the discharge type, location, approval conditions, required parameters, and reporting purpose so Envi Tech AL can confirm the laboratory, methods, credential status, and exact SEQS panel before accepting the work.'],
     ];
 }
@@ -6212,7 +6236,8 @@ function eta_modern_render_seqs_hub_page()
             <div>
                 <p class="eta-eyebrow"><?php esc_html_e('Regulatory Compliance Guide', 'envi-tech-al-modern'); ?></p>
                 <h1 id="eta-seqs-title"><?php esc_html_e('Sindh Environmental Quality Standards (SEQS): Limits, Parameters and Compliance', 'envi-tech-al-modern'); ?></h1>
-                <p><?php esc_html_e('SEQS stands for the Sindh Environmental Quality Standards - the legally binding limits, notified under the Sindh Environmental Protection Act 2014, that govern what industries and facilities in Sindh may discharge to water, emit to air, and generate as noise. This guide explains what the standards require, presents the key limit values, and shows how facilities demonstrate compliance to the Sindh Environmental Protection Agency (SEPA).', 'envi-tech-al-modern'); ?></p>
+                <p class="eta-seqs-definition"><strong><?php esc_html_e('SEQS stands for Sindh Environmental Quality Standards.', 'envi-tech-al-modern'); ?></strong> <?php esc_html_e('They are the legally binding limits, notified under the Sindh Environmental Protection Act 2014, for what industries and facilities in Sindh may discharge to water, emit to air and generate as noise, together with standards for ambient air and drinking water.', 'envi-tech-al-modern'); ?></p>
+                <p><?php esc_html_e('This guide explains what the standards require, presents the key limit values and shows how facilities demonstrate compliance to the Sindh Environmental Protection Agency (Sindh EPA).', 'envi-tech-al-modern'); ?></p>
                 <p class="eta-seqs-reviewed"><?php esc_html_e('Last reviewed: June 2026', 'envi-tech-al-modern'); ?></p>
                 <div class="eta-actions">
                     <a class="eta-button" href="#seqs-download"><?php esc_html_e('Download SEQS 2016 (official PDF)', 'envi-tech-al-modern'); ?></a>
