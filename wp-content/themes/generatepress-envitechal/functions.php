@@ -261,25 +261,24 @@ add_action('wp_enqueue_scripts', function () {
         wp_get_theme('generatepress')->get('Version')
     );
 
+    /* eta-modern.css is the full stylesheet and the source of truth. eta-modern-core.css is
+     * generated from it with every rule scoped to body.single-post removed (about 44 KB),
+     * and is served everywhere except single posts. Same handle, so inline styles and
+     * dependants are unchanged. Regenerate it with scripts/build-eta-modern-core.js
+     * whenever eta-modern.css changes; tests/eta-modern-core-sync-test.py checks this. */
+    if (!is_singular('post')) {
+        $core_css = get_stylesheet_directory() . '/assets/css/eta-modern-core.css';
+        if (file_exists($core_css) && filemtime($core_css) >= filemtime($modern_css)) {
+            $modern_css = $core_css;
+        }
+    }
+
     wp_enqueue_style(
         'eta-modern',
-        get_stylesheet_directory_uri() . '/assets/css/eta-modern.css',
+        get_stylesheet_directory_uri() . '/assets/css/' . basename($modern_css),
         ['generatepress-parent'],
         file_exists($modern_css) ? (string) filemtime($modern_css) : wp_get_theme()->get('Version')
     );
-
-    /* Knowledge Hub article styles (every rule scoped to body.single-post) were split out
-     * of eta-modern.css on 16-10-2026 so other pages stop downloading them. Printed
-     * straight after eta-modern, which keeps the original cascade order on posts. */
-    if (is_singular('post')) {
-        $post_css = get_stylesheet_directory() . '/assets/css/eta-post.css';
-        wp_enqueue_style(
-            'eta-post',
-            get_stylesheet_directory_uri() . '/assets/css/eta-post.css',
-            ['eta-modern'],
-            file_exists($post_css) ? (string) filemtime($post_css) : wp_get_theme()->get('Version')
-        );
-    }
 
     wp_add_inline_style(
         'eta-modern',
