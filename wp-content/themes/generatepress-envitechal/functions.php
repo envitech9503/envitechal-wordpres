@@ -474,7 +474,7 @@ add_filter('pre_get_document_title', function ($title) {
     }
 
     if (is_page('karachi-environmental-lab')) {
-        return 'Environmental Testing Lab in Karachi | Envi Tech AL';
+        return 'Environmental Testing Lab Karachi, PNAC LAB-285 | Envi Tech AL';
     }
 
     if (is_page(['certificates-approvals', 'accreditations-certifications'])) {
@@ -506,7 +506,7 @@ add_filter('pre_get_document_title', function ($title) {
         }
 
         if (get_post_field('post_name', get_the_ID()) === 'analytical-lab-services') {
-            return 'Analytical Testing Laboratory Services | Envi Tech AL';
+            return 'Environmental Analytical Laboratory Services | Envi Tech AL';
         }
 
         if (get_post_field('post_name', get_the_ID()) === 'certification-advisory') {
@@ -791,7 +791,7 @@ function eta_modern_meta_description()
     }
 
     if (is_page('karachi-environmental-lab')) {
-        return 'Environmental, water and soil testing laboratory in Karachi: wastewater, stack emission, air and noise testing with Sindh EPA compliance support.';
+        return 'PNAC accredited environmental testing laboratory in Karachi (LAB-285): water, wastewater, stack emission, air and noise testing with Sindh EPA support.';
     }
 
     if (is_page(['certificates-approvals', 'accreditations-certifications'])) {
@@ -1016,6 +1016,7 @@ function eta_modern_schema_organization()
         '@type' => 'Organization',
         '@id' => home_url('/#organization'),
         'name' => 'Envi Tech AL',
+        'alternateName' => ['Envi Tech', 'EnviTech AL', 'Envitech AL', 'envitechal'],
         'legalName' => 'Envi Tech AL (Pvt.) Ltd.',
         'description' => 'Environmental testing laboratory and consultancy supporting laboratory analysis, field monitoring, equipment calibration, and environmental compliance documentation in Pakistan.',
         'url' => home_url('/'),
@@ -1328,6 +1329,7 @@ function eta_modern_rank_math_schema_templates($data)
             '@type' => 'WebSite',
             '@id' => home_url('/#website'),
             'name' => 'Envi Tech AL',
+            'alternateName' => ['Envi Tech', 'EnviTech AL', 'envitechal.com'],
             'url' => home_url('/'),
             'publisher' => ['@id' => home_url('/#organization')],
             'inLanguage' => 'en-GB',
@@ -2848,7 +2850,7 @@ function eta_modern_service_profiles()
             'hero' => 'Environmental lab analysis for compliance-critical decisions.',
             'lead' => 'Analytical testing support for industrial, commercial, healthcare, hospitality, maritime, and facility teams that need defensible environmental results.',
             'image' => 'https://envitechal.com/wp-content/uploads/2026/06/Environmental-Testing-Lab.png',
-            'seo_description' => 'Environmental testing laboratory and analytical services in Karachi and Lahore for water, wastewater, air, soil and compliance reporting by Envi Tech AL.',
+            'seo_description' => 'Environmental analytical laboratory in Karachi and Lahore: air, stack emissions, noise, soil and effluent analysis with PNAC-accredited reporting.',
             'outcomes' => ['Water and wastewater parameters', 'Air and emission support', 'Industrial sample analysis', 'Regulatory report inputs'],
             'proof' => ['Published scope checks', 'EPA-related documentation', 'Technical review', 'Karachi and Lahore support'],
             'best_for' => ['Industrial compliance teams', 'Hospitals and hotels', 'Exporters and buyers', 'Facility managers'],
@@ -5297,6 +5299,9 @@ function eta_modern_location_faqs($location)
             ['Which Karachi industrial areas do you support?', 'Envi Tech AL supports facilities in SITE, Korangi, Landhi, North Karachi, Federal B Area, Port Qasim, Bin Qasim, DHA and Clifton commercial areas, hospitals, hotels, construction sites, and industrial estates where services are applicable.'],
             ['What details are needed for a Karachi testing quotation?', 'Share the facility location, sample type, required parameters, report purpose, deadline, buyer or regulatory requirement, and whether field sampling or consultancy support is needed.'],
             ['Can customers verify Envi Tech AL reports?', 'Yes. Customers can use the report verification portal or contact the team with report details for verification support.'],
+            ['Is the Karachi laboratory accredited?', 'The Karachi laboratory holds PNAC accreditation LAB-285 to ISO/IEC 17025. Accreditation applies to the methods within its approved scope, and the scope is confirmed for your parameters before work begins.'],
+            ['Where is the Karachi laboratory and when is it open?', 'The Karachi office is at 345, First Floor, Street-15, Block-3, Bahadurabad, Karachi 75900, and is open Monday to Saturday, 09:00 to 17:00. The telephone number is +92 310 2288801. Samples can be brought to the laboratory, or field collection can be arranged.'],
+            ['How long does water testing take in Karachi, and how much sample is needed?', 'Basic parameters can be reported within 24 hours and a full screening within 3 days, subject to the parameter list and method requirements. Send 1.5 litres in a clean container, or a sterile one for microbiological tests.'],
         ];
     }
 
@@ -5339,6 +5344,7 @@ function eta_modern_render_karachi_page()
                 <p class="eta-eyebrow"><?php esc_html_e('Karachi Environmental Lab', 'envi-tech-al-modern'); ?></p>
                 <h1 id="eta-karachi-title"><?php esc_html_e('Environmental Testing Lab in Karachi, Sindh', 'envi-tech-al-modern'); ?></h1>
                 <p><?php esc_html_e('Envi Tech AL is a water and soil testing laboratory in Karachi providing environmental testing, analytical laboratory services, water and wastewater testing, stack emission testing, air monitoring, noise monitoring, industrial hygiene monitoring, and compliance support for Karachi and Sindh clients.', 'envi-tech-al-modern'); ?></p>
+                <p class="eta-karachi-links"><?php esc_html_e('The Karachi laboratory is accredited by PNAC under LAB-285 for methods within its approved scope. For drinking water, wastewater and RO samples, see our', 'envi-tech-al-modern'); ?> <a class="eta-text-link" href="<?php echo esc_url(home_url('/services/water-testing-lab-services/')); ?>"><?php esc_html_e('water testing lab in Karachi', 'envi-tech-al-modern'); ?></a><?php esc_html_e('; for air, noise, soil and emissions, see our', 'envi-tech-al-modern'); ?> <a class="eta-text-link" href="<?php echo esc_url(home_url('/services/analytical-lab-services/')); ?>"><?php esc_html_e('environmental analytical laboratory services', 'envi-tech-al-modern'); ?></a>.</p>
                 <div class="eta-actions">
                     <a class="eta-button" href="<?php echo esc_url(home_url('/contact-us-envi-tech-al/')); ?>"><?php esc_html_e('Request Testing Quote', 'envi-tech-al-modern'); ?></a>
                     <a class="eta-button eta-button-secondary" href="<?php echo esc_url(home_url('/report-verification-portal/')); ?>"><?php esc_html_e('Verify Report', 'envi-tech-al-modern'); ?></a>
