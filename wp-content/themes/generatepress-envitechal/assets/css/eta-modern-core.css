@@ -4946,6 +4946,17 @@ h3 {
     color: var(--eta-ink);
 }
 
+.eta-inline-link {
+    color: var(--eta-green);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.eta-nowrap {
+    white-space: nowrap;
+}
+
 .eta-lahore-service-grid,
 .eta-lahore-faq-grid {
     display: grid;

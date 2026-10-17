@@ -5965,17 +5965,17 @@ function eta_modern_render_lahore_page()
             <div>
                 <p class="eta-eyebrow"><?php esc_html_e('Punjab EPA testing', 'envi-tech-al-modern'); ?></p>
                 <h2 id="eta-lahore-epa-title"><?php esc_html_e('EPA testing in Lahore, reported against PEQS', 'envi-tech-al-modern'); ?></h2>
-                <p class="eta-lahore-epa-credentials"><?php esc_html_e('Punjab EPA listed laboratory · PNAC ISO/IEC 17025 · LAB-347', 'envi-tech-al-modern'); ?></p>
+                <p class="eta-lahore-epa-credentials"><?php esc_html_e('Punjab EPA listed laboratory · PNAC ISO/IEC 17025 ·', 'envi-tech-al-modern'); ?> <span class="eta-nowrap">LAB-347</span></p>
             </div>
             <div class="eta-lahore-rich-copy">
-                <p><?php esc_html_e('Facilities in Lahore and across Punjab are regulated by the Punjab Environmental Protection Agency (Punjab EPA), and their monitoring results are assessed against the Punjab Environmental Quality Standards (PEQS). Envi Tech AL is listed as an environmental laboratory on the official Punjab EPA record, and the Lahore laboratory holds PNAC accreditation LAB-347 to ISO/IEC 17025 for methods within its approved scope.', 'envi-tech-al-modern'); ?></p>
+                <p><?php esc_html_e('Facilities in Lahore and across Punjab are regulated by the Punjab Environmental Protection Agency (Punjab EPA), and their monitoring results are assessed against the Punjab Environmental Quality Standards (PEQS). Envi Tech AL is listed as an environmental laboratory on the official Punjab EPA record, and the Lahore laboratory holds PNAC accreditation', 'envi-tech-al-modern'); ?> <span class="eta-nowrap">LAB-347</span> <?php esc_html_e('to ISO/IEC 17025 for methods within its approved scope.', 'envi-tech-al-modern'); ?></p>
                 <ul class="eta-lahore-epa-list">
                     <?php foreach ($epa_tests as $test) : ?>
                         <li><strong><?php echo esc_html($test[0]); ?>:</strong> <?php echo esc_html($test[1]); ?></li>
                     <?php endforeach; ?>
                 </ul>
                 <p><?php esc_html_e('Each result is reported against the PEQS limit that applies to it, in a format suited to Environmental Monitoring Reports, EMP conditions and Punjab EPA inspections. The report states what was measured and by which method; compliance with an approval is decided by the Punjab EPA.', 'envi-tech-al-modern'); ?></p>
-                <p><?php esc_html_e('For drinking water, wastewater and RO samples, see our', 'envi-tech-al-modern'); ?> <a class="eta-text-link" href="<?php echo esc_url(home_url('/services/water-testing-lab-services/')); ?>"><?php esc_html_e('water testing laboratory', 'envi-tech-al-modern'); ?></a>. <?php esc_html_e('The certificate is published on the', 'envi-tech-al-modern'); ?> <a class="eta-text-link" href="https://epd.punjab.gov.pk/system/files/EnviTech_%202025-2028_merged.pdf" target="_blank" rel="noopener"><?php esc_html_e('official Punjab EPA record (2025 to 2028)', 'envi-tech-al-modern'); ?></a>.</p>
+                <p><?php esc_html_e('For drinking water, wastewater and RO samples, see our', 'envi-tech-al-modern'); ?> <a class="eta-inline-link" href="<?php echo esc_url(home_url('/services/water-testing-lab-services/')); ?>"><?php esc_html_e('water testing laboratory', 'envi-tech-al-modern'); ?></a>. <?php esc_html_e('The certificate is published on the', 'envi-tech-al-modern'); ?> <a class="eta-inline-link" href="https://epd.punjab.gov.pk/system/files/EnviTech_%202025-2028_merged.pdf" target="_blank" rel="noopener"><?php esc_html_e('official Punjab EPA record (2025 to 2028)', 'envi-tech-al-modern'); ?></a>.</p>
             </div>
         </div>
     </section>
