@@ -483,7 +483,7 @@ add_filter('pre_get_document_title', function ($title) {
     }
 
     if (is_page('lahore-environmental-lab')) {
-        return 'Environmental Lab in Lahore, PNAC LAB-347 | Envi Tech AL';
+        return 'Environmental Testing Lab Lahore, PNAC LAB-347 | Envi Tech AL';
     }
 
     if (is_page('karachi-environmental-lab')) {
@@ -1091,7 +1091,7 @@ function eta_modern_schema_local_business($location, $description = '')
             'telephone' => '+923102288801',
             'hasMap' => 'https://maps.google.com/?cid=4148971934819068223',
             'sameAs' => ['https://maps.google.com/?cid=4148971934819068223'],
-            'description' => 'Environmental testing, field monitoring, and consultancy coordination for Karachi and Sindh. PNAC LAB-285 applies only to the Karachi permanent laboratory premises and the matrices, parameters, methods, and ranges listed in its current scope.',
+            'description' => 'Water testing lab and environmental testing laboratory in Bahadurabad, Karachi: drinking water, wastewater, air, noise and soil testing, field monitoring and consultancy for Karachi and Sindh. PNAC LAB-285 applies only to the Karachi permanent laboratory premises and the matrices, parameters, methods, and ranges listed in its current scope.',
             'areaServed' => ['Karachi', 'Sindh', 'Pakistan'],
             'geo' => [
                 '@type' => 'GeoCoordinates',
@@ -1118,7 +1118,7 @@ function eta_modern_schema_local_business($location, $description = '')
             'telephone' => '+924232296099',
             'hasMap' => 'https://maps.google.com/?cid=15281919522941457955',
             'sameAs' => ['https://maps.google.com/?cid=15281919522941457955'],
-            'description' => 'Environmental water and wastewater testing for Lahore and Punjab. PNAC LAB-347 applies only to the Lahore laboratory and the methods listed in its published scope.',
+            'description' => 'Water testing lab and environmental testing laboratory in Johar Town, Lahore: drinking water and wastewater testing, monitoring and Punjab EPA reporting for Lahore and Punjab. PNAC LAB-347 applies only to the Lahore laboratory and the methods listed in its published scope.',
             'areaServed' => ['Lahore', 'Punjab', 'Pakistan'],
             'geo' => [
                 '@type' => 'GeoCoordinates',
@@ -5923,7 +5923,7 @@ function eta_modern_render_lahore_page()
         <div class="eta-shell eta-lahore-hero-grid">
             <div>
                 <p class="eta-eyebrow"><?php esc_html_e('Lahore Environmental Lab', 'envi-tech-al-modern'); ?></p>
-                <h1 id="eta-lahore-title"><?php esc_html_e('Environmental testing, consultancy, and compliance support for Lahore and Punjab.', 'envi-tech-al-modern'); ?></h1>
+                <h1 id="eta-lahore-title"><?php esc_html_e('Environmental testing lab in Lahore, with consultancy and Punjab EPA support.', 'envi-tech-al-modern'); ?></h1>
                 <p><?php esc_html_e('Envi Tech AL supports Lahore industries, commercial facilities, healthcare institutions, hotels, exporters, and project teams with EPA testing in Lahore, water testing, environmental monitoring, calibration coordination, and consultancy guidance for Punjab EPA requirements.', 'envi-tech-al-modern'); ?></p>
                 <div class="eta-actions">
                     <a class="eta-button" href="<?php echo esc_url(home_url('/contact-us-envi-tech-al/')); ?>"><?php esc_html_e('Request Lahore support', 'envi-tech-al-modern'); ?></a>
@@ -5975,7 +5975,7 @@ function eta_modern_render_lahore_page()
                     <?php endforeach; ?>
                 </ul>
                 <p><?php esc_html_e('Each result is reported against the PEQS limit that applies to it, in a format suited to Environmental Monitoring Reports, EMP conditions and Punjab EPA inspections. The report states what was measured and by which method; compliance with an approval is decided by the Punjab EPA.', 'envi-tech-al-modern'); ?></p>
-                <p><?php esc_html_e('For drinking water, wastewater and RO samples, see our', 'envi-tech-al-modern'); ?> <a class="eta-inline-link" href="<?php echo esc_url(home_url('/services/water-testing-lab-services/')); ?>"><?php esc_html_e('water testing laboratory', 'envi-tech-al-modern'); ?></a>. <?php esc_html_e('The certificate is published on the', 'envi-tech-al-modern'); ?> <a class="eta-inline-link" href="https://epd.punjab.gov.pk/system/files/EnviTech_%202025-2028_merged.pdf" target="_blank" rel="noopener"><?php esc_html_e('official Punjab EPA record (2025 to 2028)', 'envi-tech-al-modern'); ?></a>.</p>
+                <p><?php esc_html_e('For drinking water, wastewater and RO samples, see our', 'envi-tech-al-modern'); ?> <a class="eta-inline-link" href="<?php echo esc_url(home_url('/water-testing-lab-lahore/')); ?>"><?php esc_html_e('water testing lab in Lahore', 'envi-tech-al-modern'); ?></a>. <?php esc_html_e('The certificate is published on the', 'envi-tech-al-modern'); ?> <a class="eta-inline-link" href="https://epd.punjab.gov.pk/system/files/EnviTech_%202025-2028_merged.pdf" target="_blank" rel="noopener"><?php esc_html_e('official Punjab EPA record (2025 to 2028)', 'envi-tech-al-modern'); ?></a>.</p>
             </div>
         </div>
     </section>
@@ -5988,7 +5988,7 @@ function eta_modern_render_lahore_page()
                     <article class="eta-lahore-service-card">
                         <h2><?php echo esc_html($service['title']); ?></h2>
                         <p><?php echo esc_html($service['text']); ?></p>
-                        <a class="eta-text-link" href="<?php echo esc_url($service['link']); ?>"><?php echo esc_html($service['link'] === home_url('/services/water-testing-lab-services/') ? 'Water testing lab in Lahore' : __('View related service', 'envi-tech-al-modern')); ?></a>
+                        <a class="eta-text-link" href="<?php echo esc_url($service['link']); ?>"><?php echo esc_html($service['link'] === home_url('/services/water-testing-lab-services/') ? 'Water testing services' : __('View related service', 'envi-tech-al-modern')); ?></a>
                     </article>
                 <?php endforeach; ?>
             </div>

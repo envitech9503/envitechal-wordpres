@@ -90,9 +90,10 @@ $wt_related = [
                 <div class="wt-hero-copy">
                     <p class="wt-eyebrow"><span>Water testing laboratory</span><i>·</i><span>LAB-285 Karachi</span><i>·</i><span>LAB-347 Lahore</span></p>
                     <h1 id="wt-title" class="wt-title">
-                        <span class="wt-title-line">Every drop,</span>
-                        <span class="wt-title-line"><em>measured</em> against the limit.</span>
+                        <span class="wt-title-line">Water testing lab</span>
+                        <span class="wt-title-line">in <em>Karachi</em> &amp; Lahore.</span>
                     </h1>
+                    <p class="wt-tagline">Every drop, measured against the limit.</p>
                     <p class="wt-lead">Envi Tech AL is a water testing laboratory in Karachi and Lahore, accredited to ISO/IEC 17025 for methods within its approved scope. We test drinking water, wastewater, process water and RO performance, and report every value against its applicable limit in a document your regulator, buyer or auditor can verify online.</p>
                     <div class="wt-actions">
                         <a class="wt-btn wt-btn-solid" href="<?php echo esc_url($wt_contact); ?>">Request a quotation <span aria-hidden="true">&rarr;</span></a>
@@ -273,8 +274,9 @@ $wt_related = [
     <section class="wt-local" aria-labelledby="wt-local-title">
         <div class="eta-shell">
             <header class="wt-head wt-head-light">
-                <p class="wt-kicker">Where we test</p>
+                <p class="wt-kicker">Water testing lab near you</p>
                 <h2 id="wt-local-title">Water testing laboratory in Karachi and Lahore.</h2>
+                <p class="wt-local-answer">Looking for a water testing lab near you? Envi Tech AL runs two laboratories: in Bahadurabad, Karachi (PNAC LAB-285) and in Johar Town, Lahore (PNAC LAB-347). Both are open Monday to Saturday, 09:00 to 17:00. Bring your sample to the nearest laboratory, or ask for field collection anywhere in either city. For other cities in Pakistan, call before dispatch so the container and transit time can be confirmed.</p>
             </header>
             <div class="wt-local-grid">
                 <?php foreach ($wt_labs as $lab) : ?>

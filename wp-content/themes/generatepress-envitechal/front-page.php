@@ -58,7 +58,7 @@ $service_tiles = [
     ],
     [
         'kicker' => 'Water & Wastewater',
-        'title' => 'Water Testing Lab Services',
+        'title' => 'Water Testing Lab, Karachi & Lahore',
         'text' => 'Drinking water, wastewater, process water, RO performance, and discharge compliance testing.',
         'url' => home_url('/services/water-testing-lab-services/'),
         'image' => 'eta-svc-water',
@@ -485,7 +485,7 @@ html.etb-js .etb-r.in { opacity: 1; transform: none; }
 .etb-matrix-detail { position: sticky; top: calc(var(--eta-hh, 90px) + 40px); border: 1px solid var(--etb-line); border-radius: 2px; padding: 34px 32px 36px; background: #fff; }
 .etb-matrix-big { font-family: 'Outfit', 'Outfit Fallback', sans-serif; font-weight: 200; font-size: 40px; line-height: 1.05; color: var(--etb-ink); margin: 0 0 12px; }
 .etb-matrix-lines { font-family: 'Archivo', 'Archivo Fallback', sans-serif; font-size: 12.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--etb-emerald); line-height: 2; margin: 0 0 8px; border-top: 1px solid var(--etb-line); padding-top: 14px; }
-.etb-matrix-actions { margin: 14px 0 22px; }
+.etb-matrix-actions { display: flex; flex-direction: column; gap: 8px; margin: 14px 0 22px; }
 @media (min-width: 821px) { .etb-matrix-row .etb-matrix-svc { display: none; } }
 
 /* ---------- 06 maritime spotlight ---------- */
@@ -769,7 +769,8 @@ $etb_vault = [
                     <p class="etb-matrix-big" data-matrix-name><?php echo esc_html($etb_sectors[0][0]); ?></p>
                     <p class="etb-matrix-lines" data-matrix-svc><?php echo esc_html($etb_sectors[0][1]); ?></p>
                     <p class="etb-matrix-actions">
-                        <a class="etb-link" href="<?php echo esc_url(home_url('/karachi-environmental-lab/')); ?>"><?php esc_html_e('Environmental laboratory support in Karachi', 'envi-tech-al-modern'); ?> <span class="etb-arrow" aria-hidden="true">&rarr;</span></a>
+                        <a class="etb-link" href="<?php echo esc_url(home_url('/karachi-environmental-lab/')); ?>"><?php esc_html_e('Environmental testing lab in Karachi', 'envi-tech-al-modern'); ?> <span class="etb-arrow" aria-hidden="true">&rarr;</span></a>
+                        <a class="etb-link" href="<?php echo esc_url(home_url('/lahore-environmental-lab/')); ?>"><?php esc_html_e('Environmental testing lab in Lahore', 'envi-tech-al-modern'); ?> <span class="etb-arrow" aria-hidden="true">&rarr;</span></a>
                     </p>
                     <a class="etb-btn etb-btn-solid" href="<?php echo esc_url(home_url('/contact-us-envi-tech-al/')); ?>"><?php esc_html_e('Discuss your facility', 'envi-tech-al-modern'); ?> <span class="etb-arrow" aria-hidden="true">&rarr;</span></a>
                 </aside>

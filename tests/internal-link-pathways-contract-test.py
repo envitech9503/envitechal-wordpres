@@ -17,8 +17,10 @@ def main() -> None:
     industry = front[industry_start:industry_end]
     if "home_url('/karachi-environmental-lab/')" not in industry:
         raise AssertionError('homepage industry context must link to the Karachi laboratory page')
-    if 'Environmental laboratory support in Karachi' not in industry:
+    if 'Environmental testing lab in Karachi' not in industry:
         raise AssertionError('homepage Karachi link must have useful visible anchor text')
+    if "home_url('/lahore-environmental-lab/')" not in industry or 'Environmental testing lab in Lahore' not in industry:
+        raise AssertionError('homepage industry context must also link to the Lahore laboratory page')
 
     heading_position = functions.index('Related pathways')
     section_start = functions.rfind('<nav ', 0, heading_position)
