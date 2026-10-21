@@ -1,7 +1,14 @@
 # Handoff: keyword-support content and FAQ schema (20-10-2026)
 
-Branch `content-20-10-2026`. Nothing is deployed. Everything below was prepared
-in the cloud session for the next online session.
+Branch `content-20-10-2026`, merged to main (b73da9b, theme d275157).
+
+**Deployed 21-10-2026:** theme to staging and production via cPanel (backups
+`staging-envitechal-com-theme-before-20261021T122422Z` and
+`envitechal-com-theme-before-20261021T122431Z`); posts published on staging
+(23242, 23244, 23246) and production (23255, 23257, 23259); llms-full corpus
+rebuilt (58 sections); indexing requested for the seven URLs. Lighthouse on
+21-10 ran in a slow container (unchanged homepage TBT also tripled), so the
+water page figure of 60 is not a verified regression; re-run before 12-11.
 
 ## What is in the branch
 
