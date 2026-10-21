@@ -75,6 +75,9 @@ $wt_related = [
     ['Karachi environmental lab', 'LAB-285 and the field team behind it.', '/karachi-environmental-lab/'],
     ['Lahore environmental lab', 'LAB-347 and Punjab coverage.', '/lahore-environmental-lab/'],
     ['Equipment calibration', 'Traceable instruments for your own monitoring.', '/services/equipment-calibration-services/'],
+    ['Samples from any city', 'Holding times, bottles and courier dispatch to Karachi or Lahore.', '/water-testing-lab-pakistan-any-city/'],
+    ['Verifying accreditation', 'How to check a PNAC LAB number, scope and certificate.', '/verify-pnac-accredited-lab-pakistan/'],
+    ['Borewell, tanker and RO water', 'What to test for each Karachi source, with PEQS and WHO limits.', '/water-testing-karachi-borewell-tanker-ro/'],
 ];
 ?>
 

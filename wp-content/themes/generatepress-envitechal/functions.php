@@ -1165,6 +1165,25 @@ function eta_modern_schema_local_business($location, $description = '')
     ], $branch);
 }
 
+function eta_modern_post_meta_faqs($post_id)
+{
+    $raw = get_post_meta($post_id, 'eta_post_faqs', true);
+    if (!is_string($raw) || $raw === '') {
+        return [];
+    }
+    $decoded = json_decode($raw, true);
+    if (!is_array($decoded)) {
+        return [];
+    }
+    $faqs = [];
+    foreach ($decoded as $pair) {
+        if (is_array($pair) && isset($pair[0], $pair[1]) && is_string($pair[0]) && is_string($pair[1])) {
+            $faqs[] = [trim($pair[0]), trim($pair[1])];
+        }
+    }
+    return $faqs;
+}
+
 function eta_modern_schema_faq_page($faqs, $name = '')
 {
     $entities = [];
@@ -1440,6 +1459,12 @@ function eta_modern_rank_math_schema_templates($data)
             'image' => eta_modern_post_image_url($post_id),
         ];
         $faq_schema = eta_modern_is_emr_emp_post($post_id) ? eta_modern_schema_faq_page(eta_modern_emr_emp_faqs(), 'Environmental Monitoring Report (EMR/EMP) FAQ') : null;
+        if (!$faq_schema) {
+            // Any post can carry its own FAQ list in post meta (JSON array of
+            // [question, answer] pairs, written by the publishing scripts and
+            // mirrored by the visible FAQ section in the article body).
+            $faq_schema = eta_modern_schema_faq_page(eta_modern_post_meta_faqs($post_id), eta_modern_display_title($post_id) . ': FAQ');
+        }
         if ($faq_schema) {
             $schema['eta-post-faq'] = $faq_schema;
         }
@@ -4159,6 +4184,18 @@ function eta_modern_post_card_excerpt($post = null)
 function eta_modern_post_seo_overrides()
 {
     return [
+        'water-testing-lab-pakistan-any-city' => [
+            'Water Testing Lab in Pakistan: Any City | Envi Tech AL',
+            'Send a water sample from any city in Pakistan to a PNAC accredited lab in Karachi or Lahore: holding times, bottles, courier and field sampling.',
+        ],
+        'verify-pnac-accredited-lab-pakistan' => [
+            'Verify a PNAC Accredited Lab in Pakistan | Envi Tech AL',
+            'Check a lab\'s PNAC accreditation in three steps: LAB number in the PNAC directory, the scope document and the current certificate. Signs of a false claim.',
+        ],
+        'water-testing-karachi-borewell-tanker-ro' => [
+            'Water Testing in Karachi: Borewell, Tanker, RO | Envi Tech AL',
+            'What to test for each Karachi water source, borewell, tanker, RO and piped, with PEQS and WHO limits for TDS, hardness, arsenic, nitrate and bacteria.',
+        ],
         'water-testing-lab-sample-to-report' => [
             'Water Testing Lab: Sample to Defensible Report | Envi Tech AL',
             'How an accredited water testing lab in Karachi and Lahore turns a sample into a defensible report: sampling, holding times, chain of custody, methods, QC and accreditation.',
@@ -5359,6 +5396,7 @@ function eta_modern_render_karachi_page()
                 <h1 id="eta-karachi-title"><?php esc_html_e('Environmental Testing Lab in Karachi, Sindh', 'envi-tech-al-modern'); ?></h1>
                 <p><?php esc_html_e('Envi Tech AL is a water and soil testing laboratory in Karachi providing environmental testing, analytical laboratory services, water and wastewater testing, stack emission testing, air monitoring, noise monitoring, industrial hygiene monitoring, and compliance support for Karachi and Sindh clients.', 'envi-tech-al-modern'); ?></p>
                 <p class="eta-karachi-links"><?php esc_html_e('The Karachi laboratory is accredited by PNAC under LAB-285 for methods within its approved scope. For drinking water, wastewater and RO samples, see our', 'envi-tech-al-modern'); ?> <a class="eta-text-link" href="<?php echo esc_url(home_url('/services/water-testing-lab-services/')); ?>"><?php esc_html_e('water testing lab in Karachi', 'envi-tech-al-modern'); ?></a><?php esc_html_e('; for air, noise, soil and emissions, see our', 'envi-tech-al-modern'); ?> <a class="eta-text-link" href="<?php echo esc_url(home_url('/services/analytical-lab-services/')); ?>"><?php esc_html_e('environmental analytical laboratory services', 'envi-tech-al-modern'); ?></a>.</p>
+                <p class="eta-karachi-links"><?php esc_html_e('Testing borewell, tanker or RO water at home or at a facility? Read', 'envi-tech-al-modern'); ?> <a class="eta-text-link" href="<?php echo esc_url(home_url('/water-testing-karachi-borewell-tanker-ro/')); ?>"><?php esc_html_e('water testing in Karachi: borewell, tanker and RO water', 'envi-tech-al-modern'); ?></a><?php esc_html_e(', and', 'envi-tech-al-modern'); ?> <a class="eta-text-link" href="<?php echo esc_url(home_url('/verify-pnac-accredited-lab-pakistan/')); ?>"><?php esc_html_e('how to verify a PNAC accredited laboratory', 'envi-tech-al-modern'); ?></a> <?php esc_html_e('before relying on any report, including ours.', 'envi-tech-al-modern'); ?></p>
                 <div class="eta-actions">
                     <a class="eta-button" href="<?php echo esc_url(home_url('/contact-us-envi-tech-al/')); ?>"><?php esc_html_e('Request Testing Quote', 'envi-tech-al-modern'); ?></a>
                     <a class="eta-button eta-button-secondary" href="<?php echo esc_url(home_url('/report-verification-portal/')); ?>"><?php esc_html_e('Verify Report', 'envi-tech-al-modern'); ?></a>
@@ -5551,7 +5589,7 @@ function eta_modern_render_certificates_page()
             <div>
                 <p class="eta-eyebrow"><?php esc_html_e('Credentials and verification', 'envi-tech-al-modern'); ?></p>
                 <h1 id="eta-credentials-title"><?php esc_html_e('Certifications, Approvals & Laboratory Quality Credentials', 'envi-tech-al-modern'); ?></h1>
-                <p><?php esc_html_e('Visible proof points for clients, auditors, regulators, and procurement teams.', 'envi-tech-al-modern'); ?></p>
+                <p><?php esc_html_e('Visible proof points for clients, auditors, regulators, and procurement teams. To check any of these for yourself, read', 'envi-tech-al-modern'); ?> <a class="eta-inline-link" href="<?php echo esc_url(home_url('/verify-pnac-accredited-lab-pakistan/')); ?>"><?php esc_html_e('how to verify a PNAC accredited laboratory in Pakistan', 'envi-tech-al-modern'); ?></a>.</p>
                 <div class="eta-actions">
                     <a class="eta-button" href="<?php echo esc_url(home_url('/report-verification-portal/')); ?>"><?php esc_html_e('Verify Report', 'envi-tech-al-modern'); ?></a>
                     <a class="eta-button eta-button-secondary" href="<?php echo esc_url(home_url('/contact-us-envi-tech-al/')); ?>"><?php esc_html_e('Request certificate copy', 'envi-tech-al-modern'); ?></a>
@@ -5976,6 +6014,7 @@ function eta_modern_render_lahore_page()
                 </ul>
                 <p><?php esc_html_e('Each result is reported against the PEQS limit that applies to it, in a format suited to Environmental Monitoring Reports, EMP conditions and Punjab EPA inspections. The report states what was measured and by which method; compliance with an approval is decided by the Punjab EPA.', 'envi-tech-al-modern'); ?></p>
                 <p><?php esc_html_e('For drinking water, wastewater and RO samples, see our', 'envi-tech-al-modern'); ?> <a class="eta-inline-link" href="<?php echo esc_url(home_url('/water-testing-lab-lahore/')); ?>"><?php esc_html_e('water testing lab in Lahore', 'envi-tech-al-modern'); ?></a>. <?php esc_html_e('The certificate is published on the', 'envi-tech-al-modern'); ?> <a class="eta-inline-link" href="https://epd.punjab.gov.pk/system/files/EnviTech_%202025-2028_merged.pdf" target="_blank" rel="noopener"><?php esc_html_e('official Punjab EPA record (2025 to 2028)', 'envi-tech-al-modern'); ?></a>.</p>
+                <p><?php esc_html_e('Facilities elsewhere in Punjab, Islamabad or Khyber Pakhtunkhwa can send samples by courier: see', 'envi-tech-al-modern'); ?> <a class="eta-inline-link" href="<?php echo esc_url(home_url('/water-testing-lab-pakistan-any-city/')); ?>"><?php esc_html_e('how to get a sample tested from any city in Pakistan', 'envi-tech-al-modern'); ?></a>, <?php esc_html_e('and', 'envi-tech-al-modern'); ?> <a class="eta-inline-link" href="<?php echo esc_url(home_url('/verify-pnac-accredited-lab-pakistan/')); ?>"><?php esc_html_e('how to verify a PNAC accredited laboratory', 'envi-tech-al-modern'); ?></a>.</p>
             </div>
         </div>
     </section>
