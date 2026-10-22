@@ -14,6 +14,7 @@ require_once get_stylesheet_directory() . '/inc/ai-visibility.php';
 require_once get_stylesheet_directory() . '/inc/eta-agent.php';
 require_once get_stylesheet_directory() . '/inc/legal-pages.php';
 require_once get_stylesheet_directory() . '/inc/report-verification.php';
+require_once get_stylesheet_directory() . '/inc/standards-pages.php';
 
 /**
  * No template in this theme renders a sidebar, but GeneratePress still marked
@@ -157,6 +158,8 @@ function eta_modern_premium_config()
         'karachi-environmental-lab'               => ['grid',   '#7de8cd', '#dffbf2'],
         'lahore-environmental-lab'                => ['grid',   '#7de8cd', '#dffbf2'],
         'sindh-environmental-quality-standards-seqs' => ['sheets', '#7de8cd', '#dffbf2'],
+        'punjab-environmental-quality-standards-peqs' => ['sheets', '#7de8cd', '#dffbf2'],
+        'national-environmental-quality-standards-neqs' => ['sheets', '#7de8cd', '#dffbf2'],
         'environmental-testing-faqs-pakistan'     => ['field',  '#7de8cd', '#dffbf2'],
         'frequently-asked-questions-water-testing-in-karachi' => ['field', '#7de8cd', '#dffbf2'],
         'tdap-registered-lab-in-karachi-pakistan' => ['sheets', '#c9a15a', '#ffe9b3'],
@@ -363,6 +366,8 @@ add_filter('post_thumbnail_html', function ($html, $post_id) {
         'aboutus',
         'downloads',
         'sindh-environmental-quality-standards-seqs',
+        'punjab-environmental-quality-standards-peqs',
+        'national-environmental-quality-standards-neqs',
         'report-verification-portal',
         'blognewsupdates',
         'newsupdates',
@@ -404,6 +409,8 @@ add_filter('body_class', function ($classes) {
         'aboutus',
         'downloads',
         'sindh-environmental-quality-standards-seqs',
+        'punjab-environmental-quality-standards-peqs',
+        'national-environmental-quality-standards-neqs',
         'report-verification-portal',
         'blognewsupdates',
         'newsupdates',
@@ -452,6 +459,10 @@ add_filter('pre_get_document_title', function ($title) {
 
     if (is_page('sindh-environmental-quality-standards-seqs')) {
         return eta_modern_seqs_title();
+    }
+
+    if (eta_modern_is_standards_page()) {
+        return eta_modern_standards_title();
     }
 
     if (is_page('report-verification-portal')) {
@@ -617,6 +628,10 @@ function eta_modern_round3_page_title()
         return eta_modern_seqs_title();
     }
 
+    if (eta_modern_is_standards_page()) {
+        return eta_modern_standards_title();
+    }
+
     if (is_page('environmental-testing-faqs-pakistan')) {
         return 'Environmental Testing FAQs Pakistan | Envi Tech AL';
     }
@@ -777,6 +792,10 @@ function eta_modern_meta_description()
 
     if (is_page('sindh-environmental-quality-standards-seqs')) {
         return eta_modern_seqs_meta_description();
+    }
+
+    if (eta_modern_is_standards_page()) {
+        return eta_modern_standards_meta_description();
     }
 
     if (is_page('report-verification-portal')) {
@@ -1497,6 +1516,8 @@ function eta_modern_rank_math_schema_templates($data)
         if ($faq_schema) {
             $schema['eta-cluster-faq'] = $faq_schema;
         }
+    } elseif (eta_modern_is_standards_page()) {
+        $schema = array_merge($schema, eta_modern_standards_schema_nodes($description));
     } elseif (is_page('sindh-environmental-quality-standards-seqs')) {
         $schema['eta-seqs-article'] = [
             '@type' => 'Article',
