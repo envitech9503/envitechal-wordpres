@@ -4289,10 +4289,6 @@ function eta_modern_post_seo_overrides()
             'Environmental Consultancy in Pakistan | Envi Tech AL',
             'What an environmental consultancy does for projects in Karachi and Sindh: IEE and EIA, monitoring, EPA submissions, costs and how to choose a consultant.',
         ],
-        'how-to-choose-the-suitable-environmental-lab' => [
-            'How to Choose an Environmental Lab | Envi Tech AL',
-            'How to choose an environmental testing laboratory: accreditation scope, methods, turnaround, reporting quality and the questions to ask before you commit.',
-        ],
         'thermal-imaging-inspection-electrical-reliability' => [
             'Thermal Imaging for Electrical Reliability | Envi Tech AL',
             'Thermal imaging inspection of switchgear, panels and motors: how hotspots are found, what the thermogram shows and how it supports electrical reliability.',

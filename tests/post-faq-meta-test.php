@@ -91,6 +91,8 @@ foreach (['/water-testing-karachi-borewell-tanker-ro/', '/verify-pnac-accredited
     check("theme links to $path", strpos($functions, "home_url('" . $path . "')") !== false, $failures);
     check("SEO override for $path", strpos($functions, "'" . trim($path, '/') . "' => [") !== false, $failures);
 }
+preg_match_all("/^        '([a-z0-9-]+)' => \\[$/m", substr($functions, strpos($functions, 'function eta_modern_post_seo_overrides'), 20000), $keys);
+check('no duplicate SEO override keys', count($keys[1]) === count(array_unique($keys[1])), $failures);
 $water = file_get_contents($root . '/wp-content/themes/generatepress-envitechal/template-parts/service-water-testing.php');
 check('water page related cards include the new articles', strpos($water, '/water-testing-lab-pakistan-any-city/') !== false && strpos($water, '/water-testing-karachi-borewell-tanker-ro/') !== false, $failures);
 
