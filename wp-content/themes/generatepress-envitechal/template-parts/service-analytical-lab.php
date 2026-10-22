@@ -108,8 +108,8 @@ $lab_scope = [
                         <span>PNAC ISO/IEC 17025</span><i>·</i><span>LAB-285 Karachi</span><i>·</i><span>LAB-347 Lahore</span>
                     </p>
                     <h1 id="lab-title" class="lab-title">
-                        <span class="lab-title-line">Environmental analysis</span>
-                        <span class="lab-title-line">you can <em>defend</em>.</span>
+                        <span class="lab-title-line">Environmental testing lab</span>
+                        <span class="lab-title-line">results you can <em>defend</em>.</span>
                     </h1>
                     <p class="lab-lead"><?php echo esc_html($profile['lead']); ?></p>
                     <div class="lab-actions">
