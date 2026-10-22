@@ -1,7 +1,16 @@
 # Handoff: standards pages, keyword-gap content and title fixes (22-10-2026)
 
-Branch `content-22-10-2026`. Nothing is deployed. Built in the cloud session
-from the Search Console gap analysis of 21-10-2026.
+Branch `content-22-10-2026`, merged to main (45d458a, theme 90a0caa). Built in
+the cloud session from the Search Console gap analysis of 21-10-2026.
+
+**Deployed 22-10-2026:** theme to staging and production via cPanel (two
+deploys; the second removed a stale SEO override for the rewritten post);
+backups `staging-envitechal-com-theme-before-20261022T123453Z` and
+`envitechal-com-theme-before-20261022T123503Z` plus the 20:48 pair. Posts
+published on staging (4642 updated, 23258, 23260) and production (4642
+updated, 23271, 23273); llms-full corpus 62 sections; caches purged. All
+eight URLs verified live with titles, FAQ schema and tables; indexing
+requested in Search Console.
 
 ## What is in the branch
 
