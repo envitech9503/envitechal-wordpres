@@ -34,6 +34,11 @@ get_header();
             continue;
         }
 
+        if (in_array($slug, eta_modern_standards_slugs(), true)) {
+            eta_modern_render_standards_page();
+            continue;
+        }
+
         if ($slug === 'report-verification-portal') {
             eta_modern_render_report_verification_page();
             continue;

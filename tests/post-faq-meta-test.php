@@ -1,6 +1,6 @@
 <?php
 /**
- * FAQ schema from post meta, and the keyword-support content of 20-10-2026.
+ * FAQ schema from post meta, and the keyword-support content of 20-10-2026 and 22-10-2026.
  *
  * eta_modern_post_meta_faqs() is isolated from functions.php and run against
  * the JSON the publishing script writes, so the schema the theme emits and the
@@ -46,23 +46,31 @@ check('malformed pairs are skipped', eta_modern_post_meta_faqs(1) === [['Q1', 'A
 
 check('post schema falls back to meta FAQs', strpos($source, "eta_modern_schema_faq_page(eta_modern_post_meta_faqs(\$post_id)") !== false, $failures);
 
-$manifest = json_decode(file_get_contents($root . '/scripts/posts-20-10-2026/manifest.json'), true);
-check('manifest has three posts', is_array($manifest) && count($manifest['posts']) === 3, $failures);
-
-$owner_links = [
-    'water-testing-lab-pakistan-any-city' => ['https://envitechal.com/services/water-testing-lab-services/', 'https://envitechal.com/water-testing-lab-lahore/'],
-    'verify-pnac-accredited-lab-pakistan' => ['https://envitechal.com/karachi-environmental-lab/', 'https://envitechal.com/lahore-environmental-lab/'],
-    'water-testing-karachi-borewell-tanker-ro' => ['https://envitechal.com/services/water-testing-lab-services/'],
+$batches = [
+    '20-10-2026' => [
+        'water-testing-lab-pakistan-any-city' => ['https://envitechal.com/services/water-testing-lab-services/', 'https://envitechal.com/water-testing-lab-lahore/'],
+        'verify-pnac-accredited-lab-pakistan' => ['https://envitechal.com/karachi-environmental-lab/', 'https://envitechal.com/lahore-environmental-lab/'],
+        'water-testing-karachi-borewell-tanker-ro' => ['https://envitechal.com/services/water-testing-lab-services/'],
+    ],
+    '22-10-2026' => [
+        'how-to-choose-the-suitable-environmental-lab' => ['https://envitechal.com/karachi-environmental-lab/', 'https://envitechal.com/lahore-environmental-lab/', 'https://envitechal.com/verify-pnac-accredited-lab-pakistan/'],
+        'epa-certified-laboratories-pakistan' => ['https://envitechal.com/karachi-environmental-lab/', 'https://envitechal.com/lahore-environmental-lab/', 'https://envitechal.com/punjab-environmental-quality-standards-peqs/'],
+        'water-testing-cost-lahore' => ['https://envitechal.com/water-testing-lab-lahore/', 'https://envitechal.com/water-testing-cost-karachi/', 'https://envitechal.com/punjab-environmental-quality-standards-peqs/'],
+    ],
 ];
+foreach ($batches as $batch => $owner_links) {
+$manifest = json_decode(file_get_contents($root . '/scripts/posts-' . $batch . '/manifest.json'), true);
+check("manifest $batch has three posts", is_array($manifest) && count($manifest['posts']) === 3, $failures);
+
 $american = '/\b(organiz|analyz|recogniz|optimiz|utiliz|color\b|center\b|license\b|program\b)/i';
 
 foreach ($manifest['posts'] as $post) {
     $slug = $post['slug'];
-    $body = file_get_contents($root . '/scripts/posts-20-10-2026/' . $slug . '.html');
+    $body = file_get_contents($root . '/scripts/posts-' . $batch . '/' . $slug . '.html');
     check("$slug: body present", $body !== false && strlen($body) > 5000, $failures);
     check("$slug: no em or en dash", strpos($body, "\u{2014}") === false && strpos($body, "\u{2013}") === false, $failures);
     check("$slug: British spelling", !preg_match($american, strip_tags($body)), $failures);
-    check("$slug: hero image exists", file_exists($root . '/scripts/posts-20-10-2026/images/' . $post['image']), $failures);
+    check("$slug: hero image exists", file_exists($root . '/scripts/posts-' . $batch . '/images/' . $post['image']), $failures);
     check("$slug: SEO title within 60", strlen($post['seo_title']) <= 61, $failures);
     check("$slug: description within 160", strlen($post['description']) <= 160, $failures);
     foreach ($owner_links[$slug] as $link) {
@@ -74,6 +82,8 @@ foreach ($manifest['posts'] as $post) {
     }
     $GLOBALS['eta_test_meta'] = json_encode($post['faqs'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     check("$slug: meta round-trips to " . count($post['faqs']) . ' FAQs', count(eta_modern_post_meta_faqs(1)) === count($post['faqs']), $failures);
+    check("$slug: no compliance guarantee wording", !preg_match('/guaranteed compliance|ensure you pass|100% approval|will pass/i', strip_tags($body)), $failures);
+}
 }
 
 $functions = $source;

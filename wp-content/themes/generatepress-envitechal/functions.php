@@ -14,6 +14,7 @@ require_once get_stylesheet_directory() . '/inc/ai-visibility.php';
 require_once get_stylesheet_directory() . '/inc/eta-agent.php';
 require_once get_stylesheet_directory() . '/inc/legal-pages.php';
 require_once get_stylesheet_directory() . '/inc/report-verification.php';
+require_once get_stylesheet_directory() . '/inc/standards-pages.php';
 
 /**
  * No template in this theme renders a sidebar, but GeneratePress still marked
@@ -157,6 +158,8 @@ function eta_modern_premium_config()
         'karachi-environmental-lab'               => ['grid',   '#7de8cd', '#dffbf2'],
         'lahore-environmental-lab'                => ['grid',   '#7de8cd', '#dffbf2'],
         'sindh-environmental-quality-standards-seqs' => ['sheets', '#7de8cd', '#dffbf2'],
+        'punjab-environmental-quality-standards-peqs' => ['sheets', '#7de8cd', '#dffbf2'],
+        'national-environmental-quality-standards-neqs' => ['sheets', '#7de8cd', '#dffbf2'],
         'environmental-testing-faqs-pakistan'     => ['field',  '#7de8cd', '#dffbf2'],
         'frequently-asked-questions-water-testing-in-karachi' => ['field', '#7de8cd', '#dffbf2'],
         'tdap-registered-lab-in-karachi-pakistan' => ['sheets', '#c9a15a', '#ffe9b3'],
@@ -363,6 +366,8 @@ add_filter('post_thumbnail_html', function ($html, $post_id) {
         'aboutus',
         'downloads',
         'sindh-environmental-quality-standards-seqs',
+        'punjab-environmental-quality-standards-peqs',
+        'national-environmental-quality-standards-neqs',
         'report-verification-portal',
         'blognewsupdates',
         'newsupdates',
@@ -404,6 +409,8 @@ add_filter('body_class', function ($classes) {
         'aboutus',
         'downloads',
         'sindh-environmental-quality-standards-seqs',
+        'punjab-environmental-quality-standards-peqs',
+        'national-environmental-quality-standards-neqs',
         'report-verification-portal',
         'blognewsupdates',
         'newsupdates',
@@ -452,6 +459,10 @@ add_filter('pre_get_document_title', function ($title) {
 
     if (is_page('sindh-environmental-quality-standards-seqs')) {
         return eta_modern_seqs_title();
+    }
+
+    if (eta_modern_is_standards_page()) {
+        return eta_modern_standards_title();
     }
 
     if (is_page('report-verification-portal')) {
@@ -519,7 +530,7 @@ add_filter('pre_get_document_title', function ($title) {
         }
 
         if (get_post_field('post_name', get_the_ID()) === 'analytical-lab-services') {
-            return 'Environmental Analytical Laboratory Services | Envi Tech AL';
+            return 'Environmental Testing Lab in Pakistan | Envi Tech AL';
         }
 
         if (get_post_field('post_name', get_the_ID()) === 'certification-advisory') {
@@ -615,6 +626,10 @@ function eta_modern_round3_page_title()
 
     if (is_page('sindh-environmental-quality-standards-seqs')) {
         return eta_modern_seqs_title();
+    }
+
+    if (eta_modern_is_standards_page()) {
+        return eta_modern_standards_title();
     }
 
     if (is_page('environmental-testing-faqs-pakistan')) {
@@ -777,6 +792,10 @@ function eta_modern_meta_description()
 
     if (is_page('sindh-environmental-quality-standards-seqs')) {
         return eta_modern_seqs_meta_description();
+    }
+
+    if (eta_modern_is_standards_page()) {
+        return eta_modern_standards_meta_description();
     }
 
     if (is_page('report-verification-portal')) {
@@ -1497,6 +1516,8 @@ function eta_modern_rank_math_schema_templates($data)
         if ($faq_schema) {
             $schema['eta-cluster-faq'] = $faq_schema;
         }
+    } elseif (eta_modern_is_standards_page()) {
+        $schema = array_merge($schema, eta_modern_standards_schema_nodes($description));
     } elseif (is_page('sindh-environmental-quality-standards-seqs')) {
         $schema['eta-seqs-article'] = [
             '@type' => 'Article',
@@ -2888,7 +2909,7 @@ function eta_modern_service_profiles()
             'hero' => 'Environmental lab analysis for compliance-critical decisions.',
             'lead' => 'Analytical testing support for industrial, commercial, healthcare, hospitality, maritime, and facility teams that need defensible environmental results.',
             'image' => 'https://envitechal.com/wp-content/uploads/2026/06/Environmental-Testing-Lab.png',
-            'seo_description' => 'Environmental analytical laboratory in Karachi and Lahore: air, stack emissions, noise, soil and effluent analysis with PNAC-accredited reporting.',
+            'seo_description' => 'Environmental testing lab in Pakistan with PNAC accredited laboratories in Karachi and Lahore: air, stack emissions, noise, soil and effluent analysis.',
             'outcomes' => ['Water and wastewater parameters', 'Air and emission support', 'Industrial sample analysis', 'Regulatory report inputs'],
             'proof' => ['Published scope checks', 'EPA-related documentation', 'Technical review', 'Karachi and Lahore support'],
             'best_for' => ['Industrial compliance teams', 'Hospitals and hotels', 'Exporters and buyers', 'Facility managers'],
@@ -4184,6 +4205,18 @@ function eta_modern_post_card_excerpt($post = null)
 function eta_modern_post_seo_overrides()
 {
     return [
+        'how-to-choose-the-suitable-environmental-lab' => [
+            'Choose a Water Testing Company in Pakistan | Envi Tech AL',
+            'How to choose a water testing company in Pakistan: report purpose, PNAC scope, EPA certification, sampling, quotes compared and report verification.',
+        ],
+        'epa-certified-laboratories-pakistan' => [
+            'EPA Certified Laboratories in Pakistan | Envi Tech AL',
+            'What EPA certified laboratory means in Sindh and Punjab, where each agency publishes its list, how it differs from PNAC accreditation, and how to verify a lab.',
+        ],
+        'water-testing-cost-lahore' => [
+            'Water Testing Cost in Lahore | Envi Tech AL',
+            'What decides the cost of water testing in Lahore and Punjab: parameter panel, methods, accreditation, sampling and courier from Rawalpindi, Islamabad and more.',
+        ],
         'water-testing-lab-pakistan-any-city' => [
             'Water Testing Lab in Pakistan: Any City | Envi Tech AL',
             'Send a water sample from any city in Pakistan to a PNAC accredited lab in Karachi or Lahore: holding times, bottles, courier and field sampling.',
@@ -5589,7 +5622,7 @@ function eta_modern_render_certificates_page()
             <div>
                 <p class="eta-eyebrow"><?php esc_html_e('Credentials and verification', 'envi-tech-al-modern'); ?></p>
                 <h1 id="eta-credentials-title"><?php esc_html_e('Certifications, Approvals & Laboratory Quality Credentials', 'envi-tech-al-modern'); ?></h1>
-                <p><?php esc_html_e('Visible proof points for clients, auditors, regulators, and procurement teams. To check any of these for yourself, read', 'envi-tech-al-modern'); ?> <a class="eta-inline-link" href="<?php echo esc_url(home_url('/verify-pnac-accredited-lab-pakistan/')); ?>"><?php esc_html_e('how to verify a PNAC accredited laboratory in Pakistan', 'envi-tech-al-modern'); ?></a>.</p>
+                <p><?php esc_html_e('Visible proof points for clients, auditors, regulators, and procurement teams. To check any of these for yourself, read', 'envi-tech-al-modern'); ?> <a class="eta-inline-link" href="<?php echo esc_url(home_url('/verify-pnac-accredited-lab-pakistan/')); ?>"><?php esc_html_e('how to verify a PNAC accredited laboratory in Pakistan', 'envi-tech-al-modern'); ?></a> <?php esc_html_e('and', 'envi-tech-al-modern'); ?> <a class="eta-inline-link" href="<?php echo esc_url(home_url('/epa-certified-laboratories-pakistan/')); ?>"><?php esc_html_e('what EPA certified laboratory means in Sindh and Punjab', 'envi-tech-al-modern'); ?></a>.</p>
                 <div class="eta-actions">
                     <a class="eta-button" href="<?php echo esc_url(home_url('/report-verification-portal/')); ?>"><?php esc_html_e('Verify Report', 'envi-tech-al-modern'); ?></a>
                     <a class="eta-button eta-button-secondary" href="<?php echo esc_url(home_url('/contact-us-envi-tech-al/')); ?>"><?php esc_html_e('Request certificate copy', 'envi-tech-al-modern'); ?></a>
@@ -5717,10 +5750,10 @@ function eta_modern_cluster_page_data($slug)
         ],
         'noise-monitoring-dosimetry' => [
             'eyebrow' => 'Noise monitoring',
-            'title' => 'Noise Monitoring and Dosimetry Services',
-            'seo_title' => 'Noise Monitoring and Dosimetry Services | Envi Tech AL',
-            'meta' => 'Noise monitoring and dosimetry support for workplaces, factories, construction sites, hotels, hospitals and compliance reporting.',
-            'summary' => 'Noise monitoring and dosimetry help facilities understand workplace exposure, boundary noise, construction noise, and environmental impact. Envi Tech AL supports measurement planning, field monitoring, reporting, and follow-up guidance.',
+            'title' => 'Industrial Noise Survey, Monitoring and Dosimetry Services',
+            'seo_title' => 'Industrial Noise Survey and Monitoring | Envi Tech AL',
+            'meta' => 'Industrial noise survey, assessment and monitoring with personal dosimetry for factories, construction sites, hotels and hospitals, reported against SEQS and PEQS.',
+            'summary' => 'An industrial noise survey establishes where a facility stands against the day and night limits for its zone and what its workers are exposed to over a shift. Envi Tech AL plans the measurement, monitors boundary, area and personal noise in the field, and reports each result against the SEQS or PEQS limit and the occupational exposure criterion that applies.',
             'image' => 'https://envitechal.com/wp-content/uploads/2026/06/Industrial-compliance-Monitoring.png',
             'who' => ['Factories and workshops', 'Construction projects', 'Hospitals and hotels', 'Power and utility sites', 'EHS teams', 'Buyer audit teams'],
             'covered' => ['Boundary noise', 'Workplace noise', 'Personal exposure dosimetry', 'Area monitoring', 'Shift or activity-based monitoring', 'Report interpretation'],
@@ -5753,10 +5786,10 @@ function eta_modern_cluster_page_data($slug)
         ],
         'soil-hazardous-waste-testing' => [
             'eyebrow' => 'Soil and hazardous waste',
-            'title' => 'Soil and Hazardous Waste Testing Services',
-            'seo_title' => 'Soil and Hazardous Waste Testing Services | Envi Tech AL',
-            'meta' => 'Soil and hazardous waste testing support for industrial sites, due diligence, contamination checks and compliance documentation.',
-            'summary' => 'Soil and hazardous waste testing helps project owners, industries, consultants, and compliance teams understand contamination indicators, waste characteristics, and documentation needs before decisions or submissions.',
+            'title' => 'Soil Testing Laboratory in Karachi and Lahore: Soil and Hazardous Waste Testing',
+            'seo_title' => 'Soil Testing Laboratory Karachi & Lahore | Envi Tech AL',
+            'meta' => 'Soil testing laboratory in Karachi and Lahore: soil, sludge and hazardous waste analysis for industrial sites, due diligence, contamination checks and EPA documentation.',
+            'summary' => 'Envi Tech AL runs soil testing from its laboratories in Karachi and Lahore for project owners, industries, consultants and compliance teams who need contamination indicators, waste characteristics and the documentation behind a decision or submission. Samples can be dropped off at either laboratory or collected by the field team.',
             'image' => 'https://envitechal.com/wp-content/uploads/2026/06/Environmental-Testing-Lab.png',
             'who' => ['Industrial sites', 'Construction projects', 'Consultants and developers', 'Waste handlers', 'EHS teams', 'Due diligence teams'],
             'covered' => ['Soil screening', 'Sludge and waste samples', 'Metals and chemistry indicators', 'Site-specific parameters', 'Sampling guidance', 'Report support'],
@@ -6015,6 +6048,7 @@ function eta_modern_render_lahore_page()
                 <p><?php esc_html_e('Each result is reported against the PEQS limit that applies to it, in a format suited to Environmental Monitoring Reports, EMP conditions and Punjab EPA inspections. The report states what was measured and by which method; compliance with an approval is decided by the Punjab EPA.', 'envi-tech-al-modern'); ?></p>
                 <p><?php esc_html_e('For drinking water, wastewater and RO samples, see our', 'envi-tech-al-modern'); ?> <a class="eta-inline-link" href="<?php echo esc_url(home_url('/water-testing-lab-lahore/')); ?>"><?php esc_html_e('water testing lab in Lahore', 'envi-tech-al-modern'); ?></a>. <?php esc_html_e('The certificate is published on the', 'envi-tech-al-modern'); ?> <a class="eta-inline-link" href="https://epd.punjab.gov.pk/system/files/EnviTech_%202025-2028_merged.pdf" target="_blank" rel="noopener"><?php esc_html_e('official Punjab EPA record (2025 to 2028)', 'envi-tech-al-modern'); ?></a>.</p>
                 <p><?php esc_html_e('Facilities elsewhere in Punjab, Islamabad or Khyber Pakhtunkhwa can send samples by courier: see', 'envi-tech-al-modern'); ?> <a class="eta-inline-link" href="<?php echo esc_url(home_url('/water-testing-lab-pakistan-any-city/')); ?>"><?php esc_html_e('how to get a sample tested from any city in Pakistan', 'envi-tech-al-modern'); ?></a>, <?php esc_html_e('and', 'envi-tech-al-modern'); ?> <a class="eta-inline-link" href="<?php echo esc_url(home_url('/verify-pnac-accredited-lab-pakistan/')); ?>"><?php esc_html_e('how to verify a PNAC accredited laboratory', 'envi-tech-al-modern'); ?></a>.</p>
+                <p><?php esc_html_e('The full limit tables are on the', 'envi-tech-al-modern'); ?> <a class="eta-inline-link" href="<?php echo esc_url(home_url('/punjab-environmental-quality-standards-peqs/')); ?>"><?php esc_html_e('PEQS limits and compliance guide', 'envi-tech-al-modern'); ?></a>, <?php esc_html_e('and what decides the price of a test is explained in the', 'envi-tech-al-modern'); ?> <a class="eta-inline-link" href="<?php echo esc_url(home_url('/water-testing-cost-lahore/')); ?>"><?php esc_html_e('Lahore water testing cost guide', 'envi-tech-al-modern'); ?></a>.</p>
             </div>
         </div>
     </section>
@@ -6317,6 +6351,10 @@ function eta_modern_render_seqs_hub_page()
                 <p class="eta-eyebrow"><?php esc_html_e('Who must comply', 'envi-tech-al-modern'); ?></p>
                 <h2><?php esc_html_e('Who must comply', 'envi-tech-al-modern'); ?></h2>
                 <p><?php esc_html_e('SEQS obligations apply across textile and garment units, leather and tanneries, food and beverage plants, pharmaceutical manufacturers, chemical and cement works, oil and gas operations, hospitals, hotels, construction projects and commercial facilities - in practice, any operation in Sindh that discharges effluent, runs generators or boilers, emits to air, or operates under an EMP/EMR condition. Punjab facilities operate under the parallel Punjab Environmental Quality Standards (PEQS) enforced by the Punjab EPA. Confirm the applicable authority, laboratory location, parameter, method, and current credential for each assignment.', 'envi-tech-al-modern'); ?></p>
+                <p class="eta-seqs-link-row">
+                    <a class="eta-text-link" href="<?php echo esc_url(home_url('/punjab-environmental-quality-standards-peqs/')); ?>"><?php esc_html_e('PEQS limits for Punjab', 'envi-tech-al-modern'); ?></a>
+                    <a class="eta-text-link" href="<?php echo esc_url(home_url('/national-environmental-quality-standards-neqs/')); ?>"><?php esc_html_e('NEQS national standards', 'envi-tech-al-modern'); ?></a>
+                </p>
             </article>
         </div>
     </section>

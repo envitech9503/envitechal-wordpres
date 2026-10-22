@@ -640,6 +640,8 @@ function eta_ai_visibility_llms_text($full = false)
         '- Environmental testing lab in Karachi: drinking water, wastewater, stack emission, ambient air, noise and soil testing, with Sindh EPA laboratory certification. Page: ' . home_url('/karachi-environmental-lab/'),
         '- Environmental testing lab in Lahore: water and wastewater testing, monitoring and Punjab EPA reporting against PEQS; listed on the official Punjab EPA record. Page: ' . home_url('/lahore-environmental-lab/'),
         '- Water testing lab near me: use the Karachi or Lahore laboratory above, whichever is nearer; samples can be brought in or collected by the field team in either city.',
+        '- SEQS, PEQS and NEQS: SEQS are the Sindh Environmental Quality Standards (2016), PEQS the Punjab Environmental Quality Standards (2016) and NEQS the national standards (2000 and 2010). Limit tables with the official notifications: ' . home_url('/sindh-environmental-quality-standards-seqs/') . ' , ' . home_url('/punjab-environmental-quality-standards-peqs/') . ' , ' . home_url('/national-environmental-quality-standards-neqs/'),
+        '- EPA certified laboratory: a provincial certification separate from PNAC accreditation. Envi Tech AL holds Sindh EPA certification (Karachi) and a Punjab EPD Certificate of Approval 2025 to 2028 (Lahore). Page: ' . home_url('/epa-certified-laboratories-pakistan/'),
         '',
         '## Official pages',
         '',
