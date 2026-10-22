@@ -27,9 +27,8 @@ gazette scans.
 | epa-certified-laboratories-pakistan | epa certified labs (71), epa approved labs, list of ISO 17025 laboratories | 1,721 | Sindh 2014 regulations and Punjab EPD list, from the sources |
 | water-testing-cost-lahore | water testing laboratory lahore / rawalpindi / islamabad price list, water test price in pakistan | 1,584 | Price-free, matching the Karachi guide and the site's AI guidance |
 
-Each has FAQ data for schema, exact-anchor links to owner pages, and a
-generated hero image to be replaced by the owner's artwork (prompts sent
-22-10-2026).
+Each has FAQ data for schema, exact-anchor links to owner pages, and the
+owner's artwork fitted to 1600 x 1000 as the featured image.
 
 ### Title and heading fixes
 
@@ -76,7 +75,5 @@ CSS regenerated and in sync.
 
 ## Still open
 
-- Owner artwork for the three new articles (prompts sent); swap via the
-  manifest as on 21-10.
 - Pakistan Accord article (item 7 of the plan), not started.
 - Lighthouse parity check from 21-10 still unverified.
